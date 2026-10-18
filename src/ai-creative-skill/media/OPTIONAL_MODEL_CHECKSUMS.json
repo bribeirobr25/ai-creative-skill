@@ -1,0 +1,12 @@
+[
+  {
+    "filename": "realesr-general-wdn-x4v3.pth",
+    "sha256": "1641f8c4464b9f097c9fdda5589273713f67cf59f3d909e0bd688f0cee269dca",
+    "bytes": 4885111
+  },
+  {
+    "filename": "realesr-general-x4v3.pth",
+    "sha256": "8dc7edb9ac80ccdc30c3a5dca6616509367f05fbc184ad95b731f05bece96292",
+    "bytes": 4885111
+  }
+]

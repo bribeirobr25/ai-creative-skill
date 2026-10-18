@@ -1,0 +1,184 @@
+{
+  "version": "0.1.0-v2.4-candidate",
+  "description": "Structural mandatory-field validation for completed deliverables, not semantic/media QA; missing facts stay unknown.",
+  "types": {
+    "CHARACTER_BIBLE": {
+      "required": [
+        "name",
+        "narrative_role",
+        "backstory",
+        "distinctive_appearance",
+        "personality_motivations",
+        "unique_value",
+        "fiction_disclosure",
+        "canon_preserve_vary"
+      ],
+      "conditional": {
+        "recurring_talking_persona": [
+          "voice_performance_direction"
+        ],
+        "visual_production": [
+          "identity_reference_authority"
+        ],
+        "client_or_real_brand_claims": [
+          "claims_evidence"
+        ]
+      },
+      "optional": [
+        "relations",
+        "conflict_arc",
+        "signature_props",
+        "visual_reference_design",
+        "monetization_hypotheses",
+        "limitations"
+      ]
+    },
+    "CONTENT_IDEA": {
+      "required": [
+        "hook",
+        "format_and_hold",
+        "setting",
+        "why_it_works",
+        "payoff_or_audience_value"
+      ],
+      "conditional": {
+        "persona_led": [
+          "persona_narrative_fit"
+        ],
+        "commercial_claims": [
+          "claim_source_and_status"
+        ],
+        "platform_specific": [
+          "platform_fit"
+        ]
+      },
+      "optional": [
+        "series_potential",
+        "text_on_screen",
+        "creative_variant",
+        "production_feasibility",
+        "research_linkage"
+      ]
+    },
+    "STORYBOARD_PLAN": {
+      "required": [
+        "concept_ref",
+        "beat_sequence",
+        "spatial_relationships",
+        "critical_reveals",
+        "continuity_in_out",
+        "reference_authority_roles",
+        "open_creative_zones"
+      ],
+      "conditional": {
+        "multipart": [
+          "chapter_seams"
+        ],
+        "product_real": [
+          "product_identity_anchor"
+        ],
+        "dialogue": [
+          "speech_roles"
+        ],
+        "user_requested_image_storyboard": [
+          "visual_panels"
+        ]
+      },
+      "optional": [
+        "camera_suggestions",
+        "lighting",
+        "soundscape",
+        "visual_panels",
+        "alternative_treatments",
+        "shot_time_ranges"
+      ]
+    },
+    "VIDEO_CREATIVE_DIRECTION": {
+      "required": [
+        "intent",
+        "setting_atmosphere",
+        "script_and_creative_direction",
+        "creative_invariants",
+        "creative_open_zones",
+        "overall_delivery_constraints"
+      ],
+      "conditional": {
+        "visible_text_needed": [
+          "text_on_screen"
+        ],
+        "dialogue": [
+          "speaker_dialogue",
+          "voice_language"
+        ],
+        "multipart": [
+          "seam_state"
+        ],
+        "commercial_product": [
+          "product_identity_authority"
+        ],
+        "exact_timing": [
+          "timing_authority"
+        ]
+      },
+      "optional": [
+        "text_on_screen",
+        "camera_treatment",
+        "soundscape",
+        "storyboard_ref",
+        "edit_plan",
+        "optional_improvisation"
+      ]
+    },
+    "REFERENCE_MANIFEST": {
+      "required": [
+        "reference_ids",
+        "per_reference_role",
+        "authority_and_excluded_inheritance",
+        "approved_status",
+        "actual_input_selection"
+      ],
+      "conditional": {
+        "existing_media": [
+          "reusable_source_refs"
+        ],
+        "real_product": [
+          "real_product_anchor"
+        ],
+        "multipart": [
+          "approved_seam_reference"
+        ]
+      },
+      "optional": [
+        "candidate_refs",
+        "rejected_refs",
+        "view_coverage",
+        "crop_notes"
+      ]
+    },
+    "PROJECT_NEXT_ACTION": {
+      "required": [
+        "completed_now",
+        "current_project_state",
+        "recommended_next",
+        "value_of_next",
+        "is_authorized_now"
+      ],
+      "conditional": {
+        "pending_approval": [
+          "approval_scope"
+        ],
+        "blocked": [
+          "blocker_and_resolution"
+        ],
+        "dependent_task": [
+          "dependency"
+        ]
+      },
+      "optional": [
+        "alternative_paths",
+        "risk_of_skipping",
+        "reusable_assets"
+      ]
+    }
+  }
+}

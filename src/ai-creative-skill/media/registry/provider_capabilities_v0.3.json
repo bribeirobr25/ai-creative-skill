@@ -1,0 +1,88 @@
+{
+  "schema_version": "0.3-experimental",
+  "policy": "PROVIDER_NEUTRAL_NO_AUTO_PAID_CALLS",
+  "global_resolution_cap": null,
+  "routes": [
+    {
+      "id": "local.pillow.lanczos.image.v0.2",
+      "media_kind": "IMAGE",
+      "status": "EXECUTABLE_BASELINE",
+      "classification": "CONVENTIONAL_RESAMPLE_NOT_NEURAL",
+      "transport": "LOCAL_PYTHON",
+      "max_pixels": 64000000,
+      "even_dimensions": false,
+      "quality_status": "TECHNICAL_ONLY",
+      "third_party_transfer": false
+    },
+    {
+      "id": "local.realesrgan.srvgg.image.v0.2",
+      "media_kind": "IMAGE",
+      "status": "EXECUTABLE_EXPERIMENTAL",
+      "classification": "NEURAL_SINGLE_FRAME_NO_FIDELITY_APPROVAL",
+      "transport": "LOCAL_PYTORCH",
+      "max_pixels": 16000000,
+      "cpu_max_pixels": 1048576,
+      "mps_max_pixels": 16000000,
+      "even_dimensions": false,
+      "weight_names": [
+        "realesr-general-x4v3.pth",
+        "realesr-general-wdn-x4v3.pth"
+      ],
+      "quality_status": "TECHNICAL_ONLY_VISUAL_REVIEW_REQUIRED",
+      "third_party_transfer": false
+    },
+    {
+      "id": "local.ffmpeg.lanczos.video.v0.2",
+      "media_kind": "VIDEO",
+      "status": "EXECUTABLE_BASELINE",
+      "classification": "CONVENTIONAL_RESAMPLE_NOT_NEURAL",
+      "transport": "LOCAL_CLI",
+      "max_pixels": 33177600,
+      "max_duration_seconds": 30,
+      "even_dimensions": true,
+      "quality_status": "TECHNICAL_ONLY",
+      "third_party_transfer": false,
+      "note": "Extended route-capability preflight only. Actual video executor v0.1 still enforces 4K; next bridge must replace fixed v0.1 cap and prove 8K."
+    },
+    {
+      "id": "local.realesrgan.srvgg.video.v0.3",
+      "media_kind": "VIDEO",
+      "status": "EXECUTABLE_EXPERIMENTAL",
+      "classification": "NEURAL_FRAME_BY_FRAME_EXPERIMENTAL",
+      "transport": "LOCAL_PYTORCH_FFMPEG",
+      "max_pixels": 16000000,
+      "even_dimensions": true,
+      "max_duration_seconds": 5,
+      "quality_status": "TECHNICAL_ONLY_VISUAL_REVIEW_REQUIRED",
+      "third_party_transfer": false,
+      "host_evidence": "https://drive.google.com/drive/folders/1yc2Ivkrvrc52hVtBiNVPk-1PKLdVObUW",
+      "note": "5s MPS historical; v0.3 generic frame-by-frame local executor tested on short CPU fixture; full Della revalidation on MPS outstanding",
+      "weight_names": [
+        "realesr-general-wdn-x4v3.pth"
+      ],
+      "cpu_max_frames": 12,
+      "mps_max_frames": 120,
+      "cuda_max_frames": 120,
+      "cpu_max_source_pixels": 16384,
+      "max_source_pixels": 409920
+    },
+    {
+      "id": "mock.bfl.direct.video.v0.2",
+      "media_kind": "VIDEO",
+      "status": "MOCK_ONLY",
+      "classification": "SIMULATED",
+      "transport": "MOCK",
+      "max_pixels": null,
+      "third_party_transfer": true
+    },
+    {
+      "id": "mock.byteplus.direct.video.v0.2",
+      "media_kind": "VIDEO",
+      "status": "MOCK_ONLY",
+      "classification": "SIMULATED",
+      "transport": "MOCK",
+      "max_pixels": null,
+      "third_party_transfer": true
+    }
+  ]
+}
