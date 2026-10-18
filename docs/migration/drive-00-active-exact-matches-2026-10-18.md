@@ -25,3 +25,9 @@
 Zero Drive file deletions, zero Drive file moves, zero changes to old releases. Files that are project-specific, private, or third-party licensed remain outside the public history import.
 
 An exact matching text file may still have Drive-internal comments, revisions, URLs or audit references that are not preserved in a GitHub blob. Prior to any deletion, check those additional constraints. A permanent-delete connector is available, so irreversible cleanup is intentionally separated from this inventory/migration step.
+
+## Revision and comment check
+
+For all 11 exact-matching Drive items, the Google Drive API reported **1 available revision, no previous revision and 0 comments**, with no comment pagination. This lowers the risk of losing Drive-specific review context; it does not prove that all external links to the Drive item IDs have been updated.
+
+**Classification:** `CONTENT_VERIFIED_EXACT`, `DRIVE_REVISIONS_CHECKED`, `DRIVE_COMMENTS_CHECKED`, `DELETION_NOT_EXECUTED`.
