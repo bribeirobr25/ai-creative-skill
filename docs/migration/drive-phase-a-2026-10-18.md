@@ -42,3 +42,7 @@ The `influencer/` root contains 16 subfolders. Their immediate contents total **
 5. Prepare a per-file deletion list after migration readback; never treat same-name files as duplicates.
 
 **Deletion status: ZERO files deleted.** No promotion, publication of client assets, or change to installed V2.5.
+
+## V2.5 evidence imported after initial snapshot
+
+The original release validation report (30 recorded checks), Web Experience test run (35 tests) and original ZIP SHA-256 list were subsequently copied byte-for-byte into `docs/history/evidence/`. Their Drive sources remain preserved, and the original ZIP binaries remain in Drive for rollback. The 11 exact-matching files in `00_ACTIVE` were also checked for revisions and comments (one current revision, no prior revisions or comments for each). See the separate `drive-00-active-exact-matches-2026-10-18.md` record.
