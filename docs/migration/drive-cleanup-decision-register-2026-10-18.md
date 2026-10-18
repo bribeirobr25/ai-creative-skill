@@ -64,3 +64,11 @@ The 15 current top-level subfolders contain **693 immediate child entries combin
 ## Engineering decision
 
 Stop equating "Drive should primarily store media" with "delete all old documents today". Until the explicit preservation gate is met, the Drive contains historical-only sources. New AI Creative Skill design documentation must be created in GitHub, not duplicated into Drive. R1 research can proceed safely in parallel with any residual cold-archive decision.
+
+## Supplemental historical version checks
+
+- All **20** older-named files in `00_ACTIVE` map unambiguously by stable document family name to **20 later files** shipped in V2.5. See `drive-00-active-version-lineage-2026-10-18.md`. This is **lineage only**, not byte-equivalence or permission to destroy the earlier snapshot.
+- The two separate V2.2.1 candidate directories each contain **32 Markdown files**. **31 filenames overlap**, with **4 different file sizes** among those shared names, plus **one differently versioned Calibration file in each**. They are not duplicates at folder level; deletion is not approved. There are also nested validation/runtime artifacts in the two folders.
+- The 359-file historical archive count is complete at the direct-folder level from four paginated searches. It is distinct from the first-100 preview obtained by folder fetch.
+
+**Current cleanup gate:** one verified empty directory removed; **zero documents removed**. Before removing even the 11 exact matches, assess shared Drive URLs and legacy authority resolution, not merely content equality.
