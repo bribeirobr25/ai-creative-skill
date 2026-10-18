@@ -1,0 +1,71 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "AI Creative Skill external asset registry",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "registry_version",
+    "assets"
+  ],
+  "properties": {
+    "registry_version": {
+      "const": "0.1"
+    },
+    "assets": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "logical_id",
+          "provider",
+          "object_id",
+          "sha256",
+          "approval",
+          "rights"
+        ],
+        "properties": {
+          "logical_id": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9][a-zA-Z0-9/_-]*$"
+          },
+          "provider": {
+            "type": "string",
+            "minLength": 1
+          },
+          "object_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "origin": {
+            "type": "string"
+          },
+          "rights": {
+            "type": "string",
+            "minLength": 1
+          },
+          "approval": {
+            "type": "string",
+            "enum": [
+              "APPROVED",
+              "PROVISIONAL",
+              "PENDING",
+              "REJECTED",
+              "UNKNOWN"
+            ]
+          },
+          "use_scope": {
+            "type": "string"
+          },
+          "version": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

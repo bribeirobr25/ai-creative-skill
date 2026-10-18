@@ -1,0 +1,17 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "ai-creative-skill",
+  "version": "0.3.0",
+  "description": "V2.5 portable creative skill: inherited research/ads/organic/media; new functional website preview/edit and local image/video upscale, with authority/cost/QA controls and experimental neural routes.",
+  "keywords": [
+    "research",
+    "ads",
+    "organic-content",
+    "web-experience",
+    "landing-page",
+    "website",
+    "image-upscale",
+    "video-upscale",
+    "creative-qa"
+  ]
+}
