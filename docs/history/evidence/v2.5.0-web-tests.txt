@@ -1,0 +1,40 @@
+test_01_route_preview (test_web_runtime.WebTests.test_01_route_preview) ... ok
+test_02_route_research (test_web_runtime.WebTests.test_02_route_research) ... ok
+test_03_route_edit (test_web_runtime.WebTests.test_03_route_edit) ... ok
+test_04_route_publication_gate (test_web_runtime.WebTests.test_04_route_publication_gate) ... ok
+test_05_ambiguous_no_build (test_web_runtime.WebTests.test_05_ambiguous_no_build) ... ok
+test_06_valid_candidate_scaffold (test_web_runtime.WebTests.test_06_valid_candidate_scaffold) ... ok
+test_07_reject_unknown_state (test_web_runtime.WebTests.test_07_reject_unknown_state) ... ok
+test_08_reject_missing_family (test_web_runtime.WebTests.test_08_reject_missing_family) ... ok
+test_09_reject_wrong_type (test_web_runtime.WebTests.test_09_reject_wrong_type) ... ok
+test_10_valid_bool_and_number (test_web_runtime.WebTests.test_10_valid_bool_and_number) ... ok
+test_11_reject_legacy_alias (test_web_runtime.WebTests.test_11_reject_legacy_alias) ... ok
+test_12_reject_fake_QA_pass (test_web_runtime.WebTests.test_12_reject_fake_QA_pass) ... ok
+test_13_reject_browser_static (test_web_runtime.WebTests.test_13_reject_browser_static) ... ok
+test_14_reject_missing_evidence (test_web_runtime.WebTests.test_14_reject_missing_evidence) ... ok
+test_15_reject_stale_source_hash (test_web_runtime.WebTests.test_15_reject_stale_source_hash) ... ok
+test_16_reject_unverified_activation (test_web_runtime.WebTests.test_16_reject_unverified_activation) ... ok
+test_17_reject_publication_without_approval (test_web_runtime.WebTests.test_17_reject_publication_without_approval) ... ok
+test_18_reject_paid_fake_form (test_web_runtime.WebTests.test_18_reject_paid_fake_form) ... ok
+test_19_reject_local_form_external (test_web_runtime.WebTests.test_19_reject_local_form_external) ... ok
+test_20_reject_auto_user_acceptance (test_web_runtime.WebTests.test_20_reject_auto_user_acceptance) ... ok
+test_21_missing_file (test_web_runtime.WebTests.test_21_missing_file) ... ok
+test_22_path_escape (test_web_runtime.WebTests.test_22_path_escape) ... ok
+test_23_static_audit_clean (test_web_runtime.WebTests.test_23_static_audit_clean) ... ok
+test_24_revision_hero_only (test_web_runtime.WebTests.test_24_revision_hero_only) ... ok
+test_25_revision_shared_css_needs_browser_qa (test_web_runtime.WebTests.test_25_revision_shared_css_needs_browser_qa) ... ok
+test_26_preview_lifecycle (test_web_runtime.WebTests.test_26_preview_lifecycle) ... ok
+test_27_preview_restart_from_stale (test_web_runtime.WebTests.test_27_preview_restart_from_stale) ... ok
+test_28_wrong_verdict_mismatch (test_web_runtime.WebTests.test_28_wrong_verdict_mismatch) ... ok
+test_29_browser_missing_marked_not_tested (test_web_runtime.WebTests.test_29_browser_missing_marked_not_tested) ... ok
+test_30_no_images_external_required (test_web_runtime.WebTests.test_30_no_images_external_required) ... ok
+test_31_preview_claim_needs_browser_evidence (test_web_runtime.WebTests.test_31_preview_claim_needs_browser_evidence) ... ok
+test_32_critical_fail_requires_blocked (test_web_runtime.WebTests.test_32_critical_fail_requires_blocked) ... ok
+test_33_missing_fast_test_fails (test_web_runtime.WebTests.test_33_missing_fast_test_fails) ... ok
+test_34_preview_blocks_hidden_metadata (test_web_runtime.WebTests.test_34_preview_blocks_hidden_metadata) ... ok
+test_35_non_local_path_rejected (test_web_runtime.WebTests.test_35_non_local_path_rejected) ... ok
+
+----------------------------------------------------------------------
+Ran 35 tests in 3.556s
+
+OK

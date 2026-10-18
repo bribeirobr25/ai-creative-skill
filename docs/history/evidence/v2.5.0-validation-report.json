@@ -1,0 +1,53 @@
+{
+  "version": "2.5.0",
+  "plugin_version": "0.3.0",
+  "checks": {
+    "both_formats_identical": true,
+    "plugin_metadata": true,
+    "current_manifest": true,
+    "v24_reference_unchanged": true,
+    "no_user_media_or_checkpoints": true,
+    "zip_safety": true,
+    "runtimes_included": true,
+    "sha_manifest": true,
+    "agent_smoke": true,
+    "agent_web_route": true,
+    "agent_publication_gate": true,
+    "agent_web_edit": true,
+    "agent_mock_routes_unavailable": true,
+    "agent_no_neural_weights": true,
+    "agent_preview_cycle": true,
+    "agent_4k_image_quote": true,
+    "agent_neural_block": true,
+    "agent_35_web_tests": true,
+    "plugin_smoke": true,
+    "plugin_web_route": true,
+    "plugin_publication_gate": true,
+    "plugin_web_edit": true,
+    "plugin_mock_routes_unavailable": true,
+    "plugin_no_neural_weights": true,
+    "plugin_preview_cycle": true,
+    "plugin_4k_image_quote": true,
+    "plugin_neural_block": true,
+    "plugin_35_web_tests": true,
+    "synthetic_ffmpeg_input": true,
+    "video_real_conversion": true
+  },
+  "passed": 30,
+  "total": 30,
+  "all_pass": true,
+  "evidence": {
+    "inherited_reference_docs": 34,
+    "manifest_files": 73,
+    "agent_web_test_tail": "----------------------------------------------------------------------\nRan 35 tests in 3.460s\n\nOK\n",
+    "plugin_web_test_tail": "----------------------------------------------------------------------\nRan 35 tests in 3.206s\n\nOK\n",
+    "video_output_tail": "ct/label preservation QA\",\n        \"No flicker or perceptual quality QA\",\n        \"No neural detail reconstruction\",\n        \"No HDR/color-space validation\",\n        \"No subtitles/attachments support\",\n        \"Not proof of user satisfaction\"\n      ],\n      \"assessed_at\": \"2026-10-18T01:27:38.911014+00:00\"\n    },\n    \"actual_cash_incremental_usd\": \"0.00\",\n    \"actual_operational_cost_usd\": null,\n    \"classification\": \"CONVENTIONAL_UPSCALE\"\n  }\n}\n"
+  },
+  "limits": [
+    "not a clean host auto-invocation validation",
+    "browser Playwright / full accessibility not verified",
+    "neural no official weights installed in distribution",
+    "no commercial connectors or paid API calls",
+    "no end-to-end quality certification"
+  ]
+}
