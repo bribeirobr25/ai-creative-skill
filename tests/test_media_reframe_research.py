@@ -1,5 +1,5 @@
-"""R1 non-production smoke test for research-only synthetic reframe.
-No customer assets, models, provider credentials or paid network calls.
+"""R1 research tests: one portable image geometry test, one optional FFmpeg video integration.
+Both use exclusively generated synthetic media; not a production media route.
 """
 import importlib.util
 import json
@@ -12,12 +12,23 @@ from pathlib import Path
 
 SCRIPT = Path(__file__).resolve().parents[1] / "docs" / "research" / "media-reframe" / "r1_offline_smoke.py"
 
+
+@unittest.skipUnless(importlib.util.find_spec("PIL") is not None, "Pillow unavailable")
 class MediaReframeResearchOfflineTests(unittest.TestCase):
-    @unittest.skipUnless(importlib.util.find_spec("PIL") is not None, "Pillow not installed")
-    def test_synthetic_crops_pad_and_scene_cut_video(self):
+    def test_image_roi_geometry_and_safe_pad_fallback(self):
+        module_spec = importlib.util.spec_from_file_location("r1_offline_smoke", SCRIPT)
+        module = importlib.util.module_from_spec(module_spec)
+        module_spec.loader.exec_module(module)
+        with tempfile.TemporaryDirectory(prefix="r1-reframe-image-") as work:
+            report = module.test_images(Path(work))
+            self.assertEqual(report["status"], "PASS")
+            self.assertTrue(module.protected_inside((475, 85, 610, 315), (438, 0, 202, 360)))
+            self.assertFalse(module.protected_inside((50, 85, 610, 315), (438, 0, 202, 360)))
+
+    def test_video_reframe_scene_cut_fps_audio_and_frames(self):
         if not shutil.which("ffmpeg") or not shutil.which("ffprobe"):
-            self.skipTest("requires ffmpeg and ffprobe; no external install performed")
-        with tempfile.TemporaryDirectory(prefix="r1-reframe-") as work:
+            self.skipTest("requires FFmpeg/ffprobe; no automatic external dependency installation")
+        with tempfile.TemporaryDirectory(prefix="r1-reframe-video-") as work:
             run = subprocess.run([sys.executable, str(SCRIPT), "--out", work],
                                  capture_output=True, text=True, timeout=120)
             self.assertEqual(run.returncode, 0, run.stderr)
