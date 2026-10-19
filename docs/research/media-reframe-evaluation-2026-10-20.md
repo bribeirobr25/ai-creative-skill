@@ -57,7 +57,7 @@ Environment observed: Pillow **12.3.0**, OpenCV **4.13.0.92** for decoded-frame 
   "composition": {
     "protected_regions": [{"id": "product", "bbox_xyxy": [0, 0, 100, 100], "coordinate_space": "source_pixels", "must_remain_visible": true}],
     "roi_source": "user | manual | detector", "scene_boundaries_seconds": [],
-    "max_crop_loss_fraction": 0.0, "allow_source_pixel_replacement": false
+    "max_protected_roi_loss_fraction": 0.0, "allow_source_pixel_replacement": false
   },
   "preserve": {"identity": true, "product": true, "text_logo": true, "audio": true, "fps": true, "duration": true},
   "authority": {"external_upload_authorized": false, "paid_execution_authorized": false, "publication_authorized": false},
