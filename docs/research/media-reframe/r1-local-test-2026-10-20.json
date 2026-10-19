@@ -1,0 +1,59 @@
+{
+  "run_date": "2026-10-20",
+  "benchmark": "R1 deterministic offline, synthetic-only",
+  "execution_origin": "container local, not GitHub Actions",
+  "cost_paid_usd": 0,
+  "image_lib": "Pillow 12.3.0",
+  "opencv_for_decode_only": "4.13.0.92",
+  "environment": {
+    "ffmpeg": "ffmpeg version 7.1.5-0+deb13u1 Copyright (c) 2000-2026 the FFmpeg developers",
+    "ffmpeg_build_note": "--enable-gpl"
+  },
+  "images": {
+    "status": "PASS",
+    "checks": [
+      "single subject protected box fits crop",
+      "two-subject crop detected unsafe, switched to pad",
+      "16:9->9:16, 16:9->5:4, 9:16->21:9 output dimensions"
+    ],
+    "files": [
+      "single_source.png",
+      "single_crop_9x16.png",
+      "two_subjects_source.png",
+      "two_subjects_pad_9x16.png",
+      "two_subjects_pad_5x4.png",
+      "portrait_pad_21x9.png"
+    ]
+  },
+  "video": {
+    "status": "PASS",
+    "source_dimensions": [
+      640,
+      360
+    ],
+    "output_dimensions": [
+      360,
+      640
+    ],
+    "fps_before_after": [
+      "12/1",
+      "12/1"
+    ],
+    "duration_seconds_before_after": [
+      3,
+      3
+    ],
+    "audio_preserved": true,
+    "encoded_frames_subject_visible": "PASS",
+    "semantic_QA": "NOT_TESTED: synthetic geometry does not validate real faces, logo fidelity, temporal perceptual QA or scene coherence",
+    "tracking": "manual scene-conditioned trajectory, not vision-based auto tracking",
+    "source_sha256": "ce639b5dbc33604fbf17e2474fec78e61ab9cc572d4254db556358cf1d06f253",
+    "reframed_sha256": "c9bbb94619c5eb50d37359fcfb05a5a9f3997e72cb8e385fe6fa28aa0eb307fa"
+  },
+  "limitations": [
+    "source/output MP4 and image examples deliberately not committed to public GitHub",
+    "audio stream presence/copy is checked; waveform comparison not checked",
+    "semantic/temporal perceptual QA not conducted",
+    "no GPU/provider/credential invocation"
+  ]
+}
