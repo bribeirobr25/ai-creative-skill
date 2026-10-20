@@ -1,0 +1,12 @@
+# Raw executor diagnostics contain machine-local paths; retain locally.
+__pycache__/
+runs/*/execution*.md
+runs/*/evidence*/
+runs/*/qa*.cjs
+runs/*/native-validation-attempt.txt
+runs/*/web-delivery*.json
+runs/*/hashes*.json
+runs/*/method-self-review*.md
+runs/*/r*/evidence/
+runs/*/r*/qa/
+runs/*/record-*.py

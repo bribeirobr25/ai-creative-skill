@@ -1,0 +1,697 @@
+{
+  "scope": "functional_and_rendered_evidence_not_design_rating",
+  "runAt": "2026-10-20T21:17:25.538Z",
+  "browserVersion": "153.0.8010.12",
+  "passed": 100,
+  "failed": 0,
+  "rows": [
+    {
+      "variant": "A/r1",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "checks": [
+        {
+          "id": "load-home",
+          "pass": true,
+          "detail": true
+        },
+        {
+          "id": "home-content",
+          "pass": true,
+          "detail": true
+        },
+        {
+          "id": "home-disclosure",
+          "pass": true,
+          "detail": true
+        },
+        {
+          "id": "home-no-overflow",
+          "pass": true,
+          "detail": {
+            "viewport": 1440,
+            "scroll": 1440
+          }
+        },
+        {
+          "id": "home-images",
+          "pass": true,
+          "detail": true
+        },
+        {
+          "id": "catalog-navigation",
+          "pass": true,
+          "detail": true
+        },
+        {
+          "id": "catalog-no-overflow",
+          "pass": true,
+          "detail": {
+            "viewport": 1440,
+            "scroll": 1440
+          }
+        },
+        {
+          "id": "catalog-images",
+          "pass": true,
+          "detail": true
+        },
+        {
+          "id": "budget-filter",
+          "pass": true,
+          "detail": true
+        },
+        {
+          "id": "reset-filter",
+          "pass": true,
+          "detail": true
+        },
+        {
+          "id": "arco-detail",
+          "pass": true,
+          "detail": true
+        },
+        {
+          "id": "product-no-overflow",
+          "pass": true,
+          "detail": {
+            "viewport": 1440,
+            "scroll": 1440
+          }
+        },
+        {
+          "id": "product-images",
+          "pass": true,
+          "detail": true
+        },
+        {
+          "id": "add-and-cart",
+          "pass": true,
+          "detail": true
+        },
+        {
+          "id": "quantity-two-subtotal",
+          "pass": true,
+          "detail": true
+        },
+        {
+          "id": "cart-no-overflow",
+          "pass": true,
+          "detail": {
+            "viewport": 1440,
+            "scroll": 1440
+          }
+        },
+        {
+          "id": "cart-images",
+          "pass": true,
+          "detail": true
+        },
+        {
+          "id": "quantity-limits",
+          "pass": true,
+          "detail": true
+        },
+        {
+          "id": "remove-and-empty",
+          "pass": true,
+          "detail": true
+        },
+        {
+          "id": "cart-disclosure",
+          "pass": true,
+          "detail": true
+        },
+        {
+          "id": "return-home",
+          "pass": true,
+          "detail": true
+        },
+        {
+          "id": "keyboard-navigation",
+          "pass": true,
+          "detail": true
+        },
+        {
+          "id": "no-script-errors",
+          "pass": true,
+          "detail": true
+        },
+        {
+          "id": "no-external-requests",
+          "pass": true,
+          "detail": true
+        },
+        {
+          "id": "no-failed-resources",
+          "pass": true,
+          "detail": true
+        }
+      ],
+      "captures": [
+        "A-r1-1440-home.jpg",
+        "A-r1-1440-home-full.jpg",
+        "A-r1-1440-catalog.jpg",
+        "A-r1-1440-product.jpg",
+        "A-r1-1440-cart-one.jpg",
+        "A-r1-1440-cart-two.jpg",
+        "A-r1-1440-cart-empty.jpg"
+      ],
+      "errors": [],
+      "external": [],
+      "failedRequests": []
+    },
+    {
+      "variant": "A/r1",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "checks": [
+        {
+          "id": "load-home",
+          "pass": true,
+          "detail": true
+        },
+        {
+          "id": "home-content",
+          "pass": true,
+          "detail": true
+        },
+        {
+          "id": "home-disclosure",
+          "pass": true,
+          "detail": true
+        },
+        {
+          "id": "home-no-overflow",
+          "pass": true,
+          "detail": {
+            "viewport": 390,
+            "scroll": 390
+          }
+        },
+        {
+          "id": "home-images",
+          "pass": true,
+          "detail": true
+        },
+        {
+          "id": "catalog-navigation",
+          "pass": true,
+          "detail": true
+        },
+        {
+          "id": "catalog-no-overflow",
+          "pass": true,
+          "detail": {
+            "viewport": 390,
+            "scroll": 390
+          }
+        },
+        {
+          "id": "catalog-images",
+          "pass": true,
+          "detail": true
+        },
+        {
+          "id": "budget-filter",
+          "pass": true,
+          "detail": true
+        },
+        {
+          "id": "reset-filter",
+          "pass": true,
+          "detail": true
+        },
+        {
+          "id": "arco-detail",
+          "pass": true,
+          "detail": true
+        },
+        {
+          "id": "product-no-overflow",
+          "pass": true,
+          "detail": {
+            "viewport": 390,
+            "scroll": 390
+          }
+        },
+        {
+          "id": "product-images",
+          "pass": true,
+          "detail": true
+        },
+        {
+          "id": "add-and-cart",
+          "pass": true,
+          "detail": true
+        },
+        {
+          "id": "quantity-two-subtotal",
+          "pass": true,
+          "detail": true
+        },
+        {
+          "id": "cart-no-overflow",
+          "pass": true,
+          "detail": {
+            "viewport": 390,
+            "scroll": 390
+          }
+        },
+        {
+          "id": "cart-images",
+          "pass": true,
+          "detail": true
+        },
+        {
+          "id": "quantity-limits",
+          "pass": true,
+          "detail": true
+        },
+        {
+          "id": "remove-and-empty",
+          "pass": true,
+          "detail": true
+        },
+        {
+          "id": "cart-disclosure",
+          "pass": true,
+          "detail": true
+        },
+        {
+          "id": "return-home",
+          "pass": true,
+          "detail": true
+        },
+        {
+          "id": "keyboard-navigation",
+          "pass": true,
+          "detail": true
+        },
+        {
+          "id": "no-script-errors",
+          "pass": true,
+          "detail": true
+        },
+        {
+          "id": "no-external-requests",
+          "pass": true,
+          "detail": true
+        },
+        {
+          "id": "no-failed-resources",
+          "pass": true,
+          "detail": true
+        }
+      ],
+      "captures": [
+        "A-r1-390-home.jpg",
+        "A-r1-390-home-full.jpg",
+        "A-r1-390-catalog.jpg",
+        "A-r1-390-product.jpg",
+        "A-r1-390-cart-one.jpg",
+        "A-r1-390-cart-two.jpg",
+        "A-r1-390-cart-empty.jpg"
+      ],
+      "errors": [],
+      "external": [],
+      "failedRequests": []
+    },
+    {
+      "variant": "B/r1",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "checks": [
+        {
+          "id": "load-home",
+          "pass": true,
+          "detail": true
+        },
+        {
+          "id": "home-content",
+          "pass": true,
+          "detail": true
+        },
+        {
+          "id": "home-disclosure",
+          "pass": true,
+          "detail": true
+        },
+        {
+          "id": "home-no-overflow",
+          "pass": true,
+          "detail": {
+            "viewport": 1440,
+            "scroll": 1440
+          }
+        },
+        {
+          "id": "home-images",
+          "pass": true,
+          "detail": true
+        },
+        {
+          "id": "catalog-navigation",
+          "pass": true,
+          "detail": true
+        },
+        {
+          "id": "catalog-no-overflow",
+          "pass": true,
+          "detail": {
+            "viewport": 1440,
+            "scroll": 1440
+          }
+        },
+        {
+          "id": "catalog-images",
+          "pass": true,
+          "detail": true
+        },
+        {
+          "id": "budget-filter",
+          "pass": true,
+          "detail": true
+        },
+        {
+          "id": "reset-filter",
+          "pass": true,
+          "detail": true
+        },
+        {
+          "id": "arco-detail",
+          "pass": true,
+          "detail": true
+        },
+        {
+          "id": "product-no-overflow",
+          "pass": true,
+          "detail": {
+            "viewport": 1440,
+            "scroll": 1440
+          }
+        },
+        {
+          "id": "product-images",
+          "pass": true,
+          "detail": true
+        },
+        {
+          "id": "add-and-cart",
+          "pass": true,
+          "detail": true
+        },
+        {
+          "id": "quantity-two-subtotal",
+          "pass": true,
+          "detail": true
+        },
+        {
+          "id": "cart-no-overflow",
+          "pass": true,
+          "detail": {
+            "viewport": 1440,
+            "scroll": 1440
+          }
+        },
+        {
+          "id": "cart-images",
+          "pass": true,
+          "detail": true
+        },
+        {
+          "id": "quantity-limits",
+          "pass": true,
+          "detail": true
+        },
+        {
+          "id": "remove-and-empty",
+          "pass": true,
+          "detail": true
+        },
+        {
+          "id": "cart-disclosure",
+          "pass": true,
+          "detail": true
+        },
+        {
+          "id": "return-home",
+          "pass": true,
+          "detail": true
+        },
+        {
+          "id": "keyboard-navigation",
+          "pass": true,
+          "detail": true
+        },
+        {
+          "id": "no-script-errors",
+          "pass": true,
+          "detail": true
+        },
+        {
+          "id": "no-external-requests",
+          "pass": true,
+          "detail": true
+        },
+        {
+          "id": "no-failed-resources",
+          "pass": true,
+          "detail": true
+        }
+      ],
+      "captures": [
+        "B-r1-1440-home.jpg",
+        "B-r1-1440-home-full.jpg",
+        "B-r1-1440-catalog.jpg",
+        "B-r1-1440-product.jpg",
+        "B-r1-1440-cart-one.jpg",
+        "B-r1-1440-cart-two.jpg",
+        "B-r1-1440-cart-empty.jpg"
+      ],
+      "errors": [],
+      "external": [],
+      "failedRequests": []
+    },
+    {
+      "variant": "B/r1",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "checks": [
+        {
+          "id": "load-home",
+          "pass": true,
+          "detail": true
+        },
+        {
+          "id": "home-content",
+          "pass": true,
+          "detail": true
+        },
+        {
+          "id": "home-disclosure",
+          "pass": true,
+          "detail": true
+        },
+        {
+          "id": "home-no-overflow",
+          "pass": true,
+          "detail": {
+            "viewport": 390,
+            "scroll": 390
+          }
+        },
+        {
+          "id": "home-images",
+          "pass": true,
+          "detail": true
+        },
+        {
+          "id": "catalog-navigation",
+          "pass": true,
+          "detail": true
+        },
+        {
+          "id": "catalog-no-overflow",
+          "pass": true,
+          "detail": {
+            "viewport": 390,
+            "scroll": 390
+          }
+        },
+        {
+          "id": "catalog-images",
+          "pass": true,
+          "detail": true
+        },
+        {
+          "id": "budget-filter",
+          "pass": true,
+          "detail": true
+        },
+        {
+          "id": "reset-filter",
+          "pass": true,
+          "detail": true
+        },
+        {
+          "id": "arco-detail",
+          "pass": true,
+          "detail": true
+        },
+        {
+          "id": "product-no-overflow",
+          "pass": true,
+          "detail": {
+            "viewport": 390,
+            "scroll": 390
+          }
+        },
+        {
+          "id": "product-images",
+          "pass": true,
+          "detail": true
+        },
+        {
+          "id": "add-and-cart",
+          "pass": true,
+          "detail": true
+        },
+        {
+          "id": "quantity-two-subtotal",
+          "pass": true,
+          "detail": true
+        },
+        {
+          "id": "cart-no-overflow",
+          "pass": true,
+          "detail": {
+            "viewport": 390,
+            "scroll": 390
+          }
+        },
+        {
+          "id": "cart-images",
+          "pass": true,
+          "detail": true
+        },
+        {
+          "id": "quantity-limits",
+          "pass": true,
+          "detail": true
+        },
+        {
+          "id": "remove-and-empty",
+          "pass": true,
+          "detail": true
+        },
+        {
+          "id": "cart-disclosure",
+          "pass": true,
+          "detail": true
+        },
+        {
+          "id": "return-home",
+          "pass": true,
+          "detail": true
+        },
+        {
+          "id": "keyboard-navigation",
+          "pass": true,
+          "detail": true
+        },
+        {
+          "id": "no-script-errors",
+          "pass": true,
+          "detail": true
+        },
+        {
+          "id": "no-external-requests",
+          "pass": true,
+          "detail": true
+        },
+        {
+          "id": "no-failed-resources",
+          "pass": true,
+          "detail": true
+        }
+      ],
+      "captures": [
+        "B-r1-390-home.jpg",
+        "B-r1-390-home-full.jpg",
+        "B-r1-390-catalog.jpg",
+        "B-r1-390-product.jpg",
+        "B-r1-390-cart-one.jpg",
+        "B-r1-390-cart-two.jpg",
+        "B-r1-390-cart-empty.jpg"
+      ],
+      "errors": [],
+      "external": [],
+      "failedRequests": []
+    }
+  ],
+  "smokes": [
+    {
+      "variant": "A/r1",
+      "width": 320,
+      "scrollWidth": 320,
+      "noOverflow": true
+    },
+    {
+      "variant": "A/r1",
+      "width": 768,
+      "scrollWidth": 768,
+      "noOverflow": true
+    },
+    {
+      "variant": "B/r1",
+      "width": 320,
+      "scrollWidth": 320,
+      "noOverflow": true
+    },
+    {
+      "variant": "B/r1",
+      "width": 768,
+      "scrollWidth": 768,
+      "noOverflow": true
+    }
+  ],
+  "sha256": {
+    "A-r1-1440-cart-empty.jpg": "c14c9af92fa9ced9d7ce9be41998446f7d23dbeab9b41fa59e485fa432d29116",
+    "A-r1-1440-cart-one.jpg": "7e0e9d9fcc0ccbb83f54cd9439760437533cb7d2522ead81cbdb5cd61a02a6a1",
+    "A-r1-1440-cart-two.jpg": "0fe6e214f04d96111d5e0fcb979f1363f6d46f71502958db015daefaac64aa2e",
+    "A-r1-1440-catalog.jpg": "2dc468007c966a5c6f0102144bb10a6c8abc9a2245d721652e75e83aaee05871",
+    "A-r1-1440-home-full.jpg": "eed59a6530ad6d4bbda9c45040e06d15432c7751439bc4daae7a2f7bdcdeaee8",
+    "A-r1-1440-home.jpg": "5628794b41b017df53bdced41f23d4764b79265f36ffe872a78958a2622fc65d",
+    "A-r1-1440-product.jpg": "9e42b7cf32d34e3bcf471b7c68f4c5e16c2718323a45222f9aaefcecd1e6004d",
+    "A-r1-390-cart-empty.jpg": "efa7cdd60d722aae9bccb8c5b85e322f1b17dd210b229b1c9f54c6c29f95910b",
+    "A-r1-390-cart-one.jpg": "27fe69ceb47dadbffbcba13f5291180c8aea2a1b89956a0a47e995c26f675cc7",
+    "A-r1-390-cart-two.jpg": "9004131910363dad74f6cf36d7b4a956210218d51a39ebab865cf32f05504bac",
+    "A-r1-390-catalog.jpg": "641753ba203acc71b4e079eac82dd352e4f4aa65171916d02c9c390d98d719c7",
+    "A-r1-390-home-full.jpg": "8fabd6d281f8f30a85b18b97d691c5c7f905ca4c0398f93e3936410b459defb5",
+    "A-r1-390-home.jpg": "7cf7583bdc2414072351759c29f93c7d715dc593f2655dfde1875a4c50ad5715",
+    "A-r1-390-product.jpg": "1a686d36b80087d44b9e9f5761b27bde2408aea61d6e8fb36708242734682efa",
+    "B-r1-1440-cart-empty.jpg": "6b6abb9671d56cdb5cc65134450e9ab78be3d1fbcb3497d8472cbaa30ba5f875",
+    "B-r1-1440-cart-one.jpg": "c8c93cb6d8dc9b43a790437012bcfdfdfca2bc6bf0c27177c621afdd5974a8e6",
+    "B-r1-1440-cart-two.jpg": "57ddf656a073006fa4ee8f8cdb4d510a1a52721ac074f727086652b918f8614c",
+    "B-r1-1440-catalog.jpg": "4ff98b1b3ac49ddab94671e954c947fab97a1560dcb4ab69a2e268eed6610e9c",
+    "B-r1-1440-home-full.jpg": "a1665783eb9a4799c4ef5679fcf9a12831c5727be8239f567a448f0770a681be",
+    "B-r1-1440-home.jpg": "6a9c4cf9a5aa763423f203faae99c7d57616fdc2e8e113c83fa3fdaa6d825d81",
+    "B-r1-1440-product.jpg": "2de4ca0c52ca62353f53bd381b0cdf72ee076e5365f381ca397e3523a828765f",
+    "B-r1-390-cart-empty.jpg": "8570b51614827509d2c40084683788fa26152f1f6c6304927d8969969f9622d2",
+    "B-r1-390-cart-one.jpg": "1d575227fca01a23a153bf71987a19f6acd5b54b396ca775f522112bf7ff3516",
+    "B-r1-390-cart-two.jpg": "eab63092809be9c6f7f72ab467505d9ae8531acd27129221f2094e40149480b9",
+    "B-r1-390-catalog.jpg": "ba665d5ff40fc28d18df50e521d6a29a5826bbafd0c38592e43bf5e4764dc85a",
+    "B-r1-390-home-full.jpg": "76d396eb9a09da1ea81f8976ffc231b3ba0885a8ed52d8c056ff971f6e69ff6a",
+    "B-r1-390-home.jpg": "8bc7611e073a4ee52725a29f64e5c3cc69c946f213141901059994f86dffb1ad",
+    "B-r1-390-product.jpg": "2189095801142e3864852fcc3c135b02c68ba9e4f0fd25e75c220ab16fd47560"
+  }
+}

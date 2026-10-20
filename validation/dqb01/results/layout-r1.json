@@ -1,0 +1,257 @@
+{
+  "scope": "layout observations, not universal quality thresholds",
+  "result": [
+    {
+      "variant": "A/r1",
+      "width": 1440,
+      "home": {
+        "headline": {
+          "x": 64.078125,
+          "y": 180,
+          "width": 1311.828125,
+          "height": 97.515625,
+          "bottom": 277.515625,
+          "font": "Georgia, \"Times New Roman\", serif",
+          "fontSize": "92.88px",
+          "fontWeight": "400"
+        },
+        "primaryAction": {
+          "x": 64.078125,
+          "y": 773.296875,
+          "width": 187.828125,
+          "height": 53,
+          "bottom": 826.296875,
+          "font": "Arial, Helvetica, sans-serif",
+          "fontSize": "13px",
+          "fontWeight": "400"
+        },
+        "pageHeight": 2485
+      },
+      "catalog": {
+        "arcoPrice": {
+          "x": 572.6875,
+          "y": 852.609375,
+          "width": 35.59375,
+          "height": 24.796875,
+          "bottom": 877.40625,
+          "font": "Arial, Helvetica, sans-serif",
+          "fontSize": "16px",
+          "fontWeight": "400"
+        },
+        "pageHeight": 1287
+      },
+      "product": {
+        "name": {
+          "x": 885.265625,
+          "y": 267.140625,
+          "width": 490.625,
+          "height": 76.21875,
+          "bottom": 343.359375,
+          "font": "Georgia, \"Times New Roman\", serif",
+          "fontSize": "74px",
+          "fontWeight": "400"
+        },
+        "primaryAction": {
+          "x": 885.265625,
+          "y": 637.1875,
+          "width": 490.625,
+          "height": 53,
+          "bottom": 690.1875,
+          "font": "Arial, Helvetica, sans-serif",
+          "fontSize": "13px",
+          "fontWeight": "400"
+        },
+        "pageHeight": 1321
+      }
+    },
+    {
+      "variant": "A/r1",
+      "width": 390,
+      "home": {
+        "headline": {
+          "x": 23.40625,
+          "y": 155.5,
+          "width": 340,
+          "height": 116.25,
+          "bottom": 271.75,
+          "font": "Georgia, \"Times New Roman\", serif",
+          "fontSize": "57px",
+          "fontWeight": "400"
+        },
+        "primaryAction": {
+          "x": 23.40625,
+          "y": 382.0625,
+          "width": 224,
+          "height": 53,
+          "bottom": 435.0625,
+          "font": "Arial, Helvetica, sans-serif",
+          "fontSize": "13px",
+          "fontWeight": "400"
+        },
+        "pageHeight": 2820
+      },
+      "catalog": {
+        "arcoPrice": {
+          "x": 288.59375,
+          "y": 699.046875,
+          "width": 33.375,
+          "height": 23.25,
+          "bottom": 722.296875,
+          "font": "Arial, Helvetica, sans-serif",
+          "fontSize": "15px",
+          "fontWeight": "400"
+        },
+        "pageHeight": 1602
+      },
+      "product": {
+        "name": {
+          "x": 23.40625,
+          "y": 192.09375,
+          "width": 278.234375,
+          "height": 50.46875,
+          "bottom": 242.5625,
+          "font": "Georgia, \"Times New Roman\", serif",
+          "fontSize": "49px",
+          "fontWeight": "400"
+        },
+        "primaryAction": {
+          "x": 23.40625,
+          "y": 678.140625,
+          "width": 343.1875,
+          "height": 53,
+          "bottom": 731.140625,
+          "font": "Arial, Helvetica, sans-serif",
+          "fontSize": "13px",
+          "fontWeight": "400"
+        },
+        "pageHeight": 1330
+      }
+    },
+    {
+      "variant": "B/r1",
+      "width": 1440,
+      "home": {
+        "headline": {
+          "x": 64.078125,
+          "y": 183.390625,
+          "width": 493.328125,
+          "height": 164.5,
+          "bottom": 347.890625,
+          "font": "Arial, Helvetica, sans-serif",
+          "fontSize": "80.64px",
+          "fontWeight": "400"
+        },
+        "primaryAction": {
+          "x": 891.5,
+          "y": 284.890625,
+          "width": 213.28125,
+          "height": 59,
+          "bottom": 343.890625,
+          "font": "Arial, Helvetica, sans-serif",
+          "fontSize": "14px",
+          "fontWeight": "400"
+        },
+        "pageHeight": 1763
+      },
+      "catalog": {
+        "arcoPrice": {
+          "x": 670.625,
+          "y": 361.890625,
+          "width": 33.375,
+          "height": 22.5,
+          "bottom": 384.390625,
+          "font": "Arial, Helvetica, sans-serif",
+          "fontSize": "15px",
+          "fontWeight": "400"
+        },
+        "pageHeight": 1186
+      },
+      "product": {
+        "name": {
+          "x": 792.359375,
+          "y": 263.390625,
+          "width": 131.9375,
+          "height": 70,
+          "bottom": 333.390625,
+          "font": "Arial, Helvetica, sans-serif",
+          "fontSize": "70px",
+          "fontWeight": "400"
+        },
+        "primaryAction": {
+          "x": 792.359375,
+          "y": 585.765625,
+          "width": 583.5625,
+          "height": 59,
+          "bottom": 644.765625,
+          "font": "Arial, Helvetica, sans-serif",
+          "fontSize": "14px",
+          "fontWeight": "400"
+        },
+        "pageHeight": 1151
+      }
+    },
+    {
+      "variant": "B/r1",
+      "width": 390,
+      "home": {
+        "headline": {
+          "x": 22,
+          "y": 146.390625,
+          "width": 342.578125,
+          "height": 114.21875,
+          "bottom": 260.609375,
+          "font": "Arial, Helvetica, sans-serif",
+          "fontSize": "56px",
+          "fontWeight": "400"
+        },
+        "primaryAction": {
+          "x": 22,
+          "y": 372.890625,
+          "width": 199.828125,
+          "height": 57,
+          "bottom": 429.890625,
+          "font": "Arial, Helvetica, sans-serif",
+          "fontSize": "13px",
+          "fontWeight": "400"
+        },
+        "pageHeight": 2246
+      },
+      "catalog": {
+        "arcoPrice": {
+          "x": 336.84375,
+          "y": 395.578125,
+          "width": 31.15625,
+          "height": 21,
+          "bottom": 416.578125,
+          "font": "Arial, Helvetica, sans-serif",
+          "fontSize": "14px",
+          "fontWeight": "400"
+        },
+        "pageHeight": 1517
+      },
+      "product": {
+        "name": {
+          "x": 22,
+          "y": 163,
+          "width": 100.984375,
+          "height": 53,
+          "bottom": 216,
+          "font": "Arial, Helvetica, sans-serif",
+          "fontSize": "53px",
+          "fontWeight": "400"
+        },
+        "primaryAction": {
+          "x": 22,
+          "y": 682.15625,
+          "width": 346,
+          "height": 57,
+          "bottom": 739.15625,
+          "font": "Arial, Helvetica, sans-serif",
+          "fontSize": "13px",
+          "fontWeight": "400"
+        },
+        "pageHeight": 1135
+      }
+    }
+  ]
+}

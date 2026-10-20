@@ -1,0 +1,39 @@
+{
+  "license": "Pexels License",
+  "license_url": "https://www.pexels.com/license/",
+  "checked_on": "2026-10-20",
+  "scope": "Illustrative photos embedded in fictional local website benchmark, no endorsement or actual sale. Not repository MIT assets.",
+  "assets": [
+    {
+      "file": "arco.jpg",
+      "author": "Mohamed Hergafi",
+      "source": "https://www.pexels.com/photo/photo-of-a-brown-leather-bag-on-white-surface-8502477/",
+      "download": "https://images.pexels.com/photos/8502477/pexels-photo-8502477.jpeg?cs=srgb&fm=jpg&w=1600",
+      "role": "Arco product reference; synthetic product data is not factual description of photographed merchandise"
+    },
+    {
+      "file": "trama.jpg",
+      "author": "Muneeb Malhotra",
+      "source": "https://www.pexels.com/photo/brown-bag-on-white-background-22434773/",
+      "download": "https://images.pexels.com/photos/22434773/pexels-photo-22434773.jpeg?cs=srgb&fm=jpg&w=1600",
+      "role": "Trama product reference; synthetic product data is not factual description of photographed merchandise"
+    },
+    {
+      "file": "editorial.jpg",
+      "author": "Berna",
+      "source": "https://www.pexels.com/photo/elegant-brown-leather-handbag-on-fabric-background-31666160/",
+      "download": "https://images.pexels.com/photos/31666160/pexels-photo-31666160.jpeg?cs=srgb&fm=jpg&w=1600",
+      "role": "Generic material/detail illustration, never a second angle of Arco or Trama"
+    }
+  ],
+  "rejected_candidate": {
+    "source": "https://www.pexels.com/photo/leather-bag-and-belt-27127406/",
+    "reason": "Visible third-party wordmark; excluded before freeze, not supplied to either condition"
+  },
+  "limitations": [
+    "Different photographers and backgrounds",
+    "Only one full view per SKU",
+    "No lifestyle, generated brand universe or motion assets",
+    "Asset constraints shared by A/B but not necessarily by native Higgsfield"
+  ]
+}

@@ -1,0 +1,174 @@
+{
+  "scope": "AUTOMATED_UI_SMOKE_NOT_HUMAN_REVIEW",
+  "human_responses": 0,
+  "rows": [
+    {
+      "packet": "R1-r0",
+      "width": 1440,
+      "noOverflow": true,
+      "emptyFormRejected": true,
+      "scoreFields": 36,
+      "humanChecked": false,
+      "links": [
+        {
+          "label": "X",
+          "loaded": true
+        },
+        {
+          "label": "Y",
+          "loaded": true
+        }
+      ],
+      "downloadWorks": true,
+      "errors": [],
+      "pass": true
+    },
+    {
+      "packet": "R1-r0",
+      "width": 390,
+      "noOverflow": true,
+      "emptyFormRejected": true,
+      "scoreFields": 36,
+      "humanChecked": false,
+      "links": [
+        {
+          "label": "X",
+          "loaded": true
+        },
+        {
+          "label": "Y",
+          "loaded": true
+        }
+      ],
+      "downloadWorks": true,
+      "errors": [],
+      "pass": true
+    },
+    {
+      "packet": "R2-r0",
+      "width": 1440,
+      "noOverflow": true,
+      "emptyFormRejected": true,
+      "scoreFields": 36,
+      "humanChecked": false,
+      "links": [
+        {
+          "label": "X",
+          "loaded": true
+        },
+        {
+          "label": "Y",
+          "loaded": true
+        }
+      ],
+      "downloadWorks": true,
+      "errors": [],
+      "pass": true
+    },
+    {
+      "packet": "R2-r0",
+      "width": 390,
+      "noOverflow": true,
+      "emptyFormRejected": true,
+      "scoreFields": 36,
+      "humanChecked": false,
+      "links": [
+        {
+          "label": "X",
+          "loaded": true
+        },
+        {
+          "label": "Y",
+          "loaded": true
+        }
+      ],
+      "downloadWorks": true,
+      "errors": [],
+      "pass": true
+    },
+    {
+      "packet": "R1-r1",
+      "width": 1440,
+      "noOverflow": true,
+      "emptyFormRejected": true,
+      "scoreFields": 36,
+      "humanChecked": false,
+      "links": [
+        {
+          "label": "X",
+          "loaded": true
+        },
+        {
+          "label": "Y",
+          "loaded": true
+        }
+      ],
+      "downloadWorks": true,
+      "errors": [],
+      "pass": true
+    },
+    {
+      "packet": "R1-r1",
+      "width": 390,
+      "noOverflow": true,
+      "emptyFormRejected": true,
+      "scoreFields": 36,
+      "humanChecked": false,
+      "links": [
+        {
+          "label": "X",
+          "loaded": true
+        },
+        {
+          "label": "Y",
+          "loaded": true
+        }
+      ],
+      "downloadWorks": true,
+      "errors": [],
+      "pass": true
+    },
+    {
+      "packet": "R2-r1",
+      "width": 1440,
+      "noOverflow": true,
+      "emptyFormRejected": true,
+      "scoreFields": 36,
+      "humanChecked": false,
+      "links": [
+        {
+          "label": "X",
+          "loaded": true
+        },
+        {
+          "label": "Y",
+          "loaded": true
+        }
+      ],
+      "downloadWorks": true,
+      "errors": [],
+      "pass": true
+    },
+    {
+      "packet": "R2-r1",
+      "width": 390,
+      "noOverflow": true,
+      "emptyFormRejected": true,
+      "scoreFields": 36,
+      "humanChecked": false,
+      "links": [
+        {
+          "label": "X",
+          "loaded": true
+        },
+        {
+          "label": "Y",
+          "loaded": true
+        }
+      ],
+      "downloadWorks": true,
+      "errors": [],
+      "pass": true
+    }
+  ]
+}
