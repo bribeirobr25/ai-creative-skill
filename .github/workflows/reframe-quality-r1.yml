@@ -1,0 +1,59 @@
+name: R1 Research Reframe Quality (synthetic only)
+
+on:
+  push:
+    branches: ['feature/media-reframe-research']
+    paths:
+      - 'docs/research/media-reframe/**'
+      - '.github/workflows/reframe-quality-r1.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  offline-reframe-quality:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install open-source benchmark dependencies
+        run: |
+          python -m pip install 'Pillow>=10,<13' 'numpy>=1.24,<3'
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq ffmpeg
+      - name: Generate local synthetic media and assess loss vs aligned reference
+        run: |
+          python docs/research/media-reframe/r1_quality_benchmark.py --output-dir r1-output > r1-console.json
+      - name: Assert bounded results and limitations
+        run: |
+          python - <<'PY'
+          import json
+          r=json.load(open('r1-output/r1_quality_results.json', encoding='utf-8'))
+          c=r['images']['comparisons']
+          assert [v['source_label'] for v in c] == ['2160p','1080p','720p','480p']
+          assert all(v['protected_box_retained_geometry'] for v in c)
+          assert c[0]['linear_upscale_required'] < 1
+          assert c[1]['linear_upscale_required'] > 1
+          assert c[1]['psnr_db_vs_aligned_4k_reference'] > c[2]['psnr_db_vs_aligned_4k_reference'] > c[3]['psnr_db_vs_aligned_4k_reference']
+          assert c[1]['microtext_roi_psnr_db'] > c[2]['microtext_roi_psnr_db'] > c[3]['microtext_roi_psnr_db']
+          assert r['images']['two_subject_crop_safely_possible'] is False
+          assert r['video']['status']=='PASS_TECHNICAL_ONLY'
+          assert all(r['video']['checks'].values())
+          assert r['production_quality_status'].startswith('UNVERIFIED')
+          assert r['provider_calls']==0 and r['paid_cost_usd']==0
+          print('R1 synthetic resolution loss and audio/frame checks: PASS')
+          PY
+      - name: Attach measurement JSON, not customer media
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: r1-quality-research-results
+          path: r1-output/r1_quality_results.json
+          if-no-files-found: warn
+          retention-days: 7
