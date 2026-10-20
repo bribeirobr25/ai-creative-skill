@@ -1,0 +1,35 @@
+[
+  {
+    "id": "M016",
+    "sha256": "35f19e4b0a38fd58e39690078b61cdd58ad722cf3a674e742aa2b0eaa78bed8c",
+    "width": 1920,
+    "height": 1080,
+    "fps": "24/1",
+    "container_duration_seconds": 13.078,
+    "audio_sample_rate": "48000",
+    "inspection_fps": 3,
+    "continuous_motion_listening_approval": "UNVERIFIED"
+  },
+  {
+    "id": "P-M01",
+    "sha256": "01b7cd2981b87b6bb62342afd4c67c3a386940dbea92f7429e1f52a172257acc",
+    "width": 480,
+    "height": 854,
+    "fps": "24/1",
+    "container_duration_seconds": 12.041667,
+    "audio_sample_rate": "32000",
+    "inspection_fps": 3,
+    "continuous_motion_listening_approval": "UNVERIFIED"
+  },
+  {
+    "id": "P-M02",
+    "sha256": "12726e0d81841d57eecfa66fa642a705448ba9a5f7f69a1c917067cd31583001",
+    "width": 480,
+    "height": 854,
+    "fps": "24/1",
+    "container_duration_seconds": 30.05,
+    "audio_sample_rate": "32000",
+    "inspection_fps": 3,
+    "continuous_motion_listening_approval": "UNVERIFIED"
+  }
+]

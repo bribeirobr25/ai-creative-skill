@@ -1,0 +1,11 @@
+{
+  "protected_regions_unchanged": true,
+  "preservation_failures": [],
+  "target_regions_unchanged": [],
+  "shared_css_js_changed": [
+    "styles.css"
+  ],
+  "browser_retest_required": true,
+  "human_approval_not_inferred": true,
+  "status": "PARTIAL"
+}
