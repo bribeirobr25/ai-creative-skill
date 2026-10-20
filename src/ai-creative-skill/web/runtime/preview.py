@@ -1,5 +1,5 @@
 """Bounded local preview lifecycle. No public deployment, no killing unrelated processes."""
-import argparse,functools,hashlib,http.server,json,os,pathlib,signal,socket,subprocess,sys,time,urllib.request,uuid
+import argparse,functools,hashlib,hmac,http.server,json,os,pathlib,signal,socket,subprocess,sys,time,urllib.request,uuid
 
 META='.web-preview-owner.json'
 _HANDLES={}
@@ -38,6 +38,9 @@ def server(root,port,token):
             return super().do_HEAD()
         def do_GET(self):
             if self.path=='/__web_preview_health__':
+                if not hmac.compare_digest(self.headers.get('X-Web-Preview-Token',''), token):
+                    self.send_error(404)
+                    return
                 payload=json.dumps({'token':token,'root':str(root),'pid':os.getpid()}).encode()
                 self.send_response(200);self.send_header('Content-Type','application/json');self.send_header('Content-Length',str(len(payload)));self.end_headers();self.wfile.write(payload)
             elif self._unsafe_path():
@@ -48,7 +51,8 @@ def server(root,port,token):
 
 def health(meta):
     try:
-        with urllib.request.urlopen(meta['url']+'__web_preview_health__',timeout=1.0) as r:
+        request=urllib.request.Request(meta['url']+'__web_preview_health__',headers={'X-Web-Preview-Token':meta['token']})
+        with urllib.request.urlopen(request,timeout=1.0) as r:
             obj=json.loads(r.read());return r.status==200 and obj.get('token')==meta['token'] and obj.get('root')==meta['root']
     except Exception:return False
 
