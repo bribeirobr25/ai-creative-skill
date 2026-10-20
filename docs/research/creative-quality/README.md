@@ -2,6 +2,9 @@
 
 Research candidate, 20 October 2026. **No release, production approval or canon change.**
 
+Continuation: [Phase 2 — independent review preparation and cross-category transfer](phase2/README.md).
+The original findings below remain the PR #9 evidence; phase 2 does not declare a human preference winner.
+
 The user's assessment is the starting signal: Higgsfield looks better in product photos, hyper-motion and websites; the 30-second commercial looks roughly comparable. This investigation preserves that feedback without treating it as a controlled causal verdict.
 
 ## Executive decision

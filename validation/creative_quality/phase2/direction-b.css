@@ -1,0 +1,11 @@
+/* One authored direction: make the learning path and workshop choice scannable;
+   keep message/CTA before the visual on mobile. No copy or asset change. */
+.hero{gap:64px;padding-top:56px;padding-bottom:64px;grid-template-columns:1.15fr 1fr}
+.hero h1{font-size:clamp(38px,4.3vw,62px);max-width:18ch;letter-spacing:-.045em}
+.hero .eyebrow{color:var(--accent)}
+.learning-map{background:#e7eee8;border:0;border-radius:0;padding:32px;border-top:5px solid var(--accent)}
+.learning-map ol{gap:0;margin:20px 0 0}.learning-map li{border-top:1px solid var(--line);padding:12px 0;font-weight:600}.learning-map b{font-size:12px;letter-spacing:.1em}.learning-map p{border-top:1px solid var(--line);padding-top:16px}
+.section-heading{max-width:680px}.section-heading h2{font-size:38px;margin:14px 0}.section-heading p:last-child{color:var(--muted)}
+.cards{gap:24px}.cards article{border-radius:0;border-width:1px 0 0;background:transparent;padding:24px 0;position:relative}.cards .number{display:block;font-size:32px;color:var(--accent);line-height:1;margin-bottom:18px}.cards h3{font-size:26px}.cards dl{border-top:1px solid var(--line)}.plan{background:var(--accent);color:#fff;border:0;padding:14px 16px;border-radius:4px;min-height:50px;margin-top:12px}
+.how{background:#e7eee8;padding:36px;margin-bottom:48px;border:0}.how h2{max-width:20ch}
+@media(max-width:760px){.hero{grid-template-columns:1fr;gap:32px;padding-top:32px;padding-bottom:48px}.hero h1{font-size:38px}.learning-map{padding:24px}.section-heading h2{font-size:30px}.cards{gap:10px}.cards article{padding:28px 0}.how{padding:24px}.how h2{font-size:28px}}

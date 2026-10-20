@@ -109,7 +109,11 @@ const check = (id, expected, actual, ok) => ({
     const tab=await page.locator('#tab-consequence').getAttribute('aria-selected');
     checks.push(check('tabs-keyboard','true',tab,tab==='true'));
    }
-   if(width<760){
+   if(target.kind==='workshop'){
+    const observed=await require('./phase2/workshop_checks.cjs')({page,width,check,shot});
+    checks.push(...observed.checks);metrics.workshopVisual=observed.visual;
+   }
+   if(width<760 && target.kind!=='workshop'){
     await page.evaluate(()=>scrollTo(0,0));
     await page.locator('.menu-toggle').click();
     checks.push(check('mobile-menu','true',await page.locator('.menu-toggle').getAttribute('aria-expanded'),await page.locator('.menu-toggle').getAttribute('aria-expanded')==='true'));

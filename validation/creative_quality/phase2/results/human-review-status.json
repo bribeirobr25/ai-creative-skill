@@ -1,0 +1,8 @@
+{
+  "gate": "AWAITING_HUMAN_REVIEW",
+  "submitted_records": 0,
+  "intake_complete": false,
+  "intake_errors": [],
+  "next_step": "Coordinator must verify distinct genuine humans, independence and prior exposure, preserve dissent, then obtain owner acceptance. Form completeness cannot certify preference.",
+  "owner_acceptance": "NOT_GIVEN"
+}

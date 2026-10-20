@@ -1,0 +1,3 @@
+/* Deliberate mutation control, separate from the art-direction candidate.
+   Geometry and image decoding remain intact; the essential path disappears. */
+.learning-map { opacity: 0; }

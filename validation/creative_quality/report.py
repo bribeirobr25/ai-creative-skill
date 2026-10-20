@@ -28,6 +28,8 @@ def main():
     p.add_argument("--harness-root", required=True, type=Path)
     p.add_argument("--evidence", required=True, type=Path)
     p.add_argument("--output", required=True, type=Path)
+    p.add_argument("--baseline-commit", default=BASELINE)
+    p.add_argument("--expected-failure", action="append", help="Repeat for this research case's explicitly expected failures")
     a = p.parse_args()
     sys.path.insert(0, str(a.harness_root.resolve()))
     harness = importlib.import_module("validation.harness")
@@ -52,12 +54,15 @@ def main():
                 build_sha256=case["build_sha256"]))
     report = {
         "schema": "creative-quality-research/1",
-        "baseline_commit": BASELINE,
+        "baseline_commit": a.baseline_commit,
         "harness_commit": subprocess.check_output(["git","-C",str(a.harness_root),"rev-parse","HEAD"], text=True).strip(),
         "browser": source["browser"], "playwright": source["playwright"],
-        "captured_at": source["time"], "results": rows, "evidence": assets,
+        "captured_at": source["time"],
+        "capture_sessions": source.get("capture_sessions", [source["time"]]),
+        "results": rows, "evidence": assets,
         "counts": dict(collections.Counter(r["outcome"] for r in rows)),
-        "expected_research_failure": "CQ-web-b-390-hero-not-collapsed",
+        "expected_research_failures": a.expected_failure or ["CQ-web-b-390-hero-not-collapsed"],
+        "expected_research_failure": None if a.expected_failure else "CQ-web-b-390-hero-not-collapsed",
         "provider_generation_calls": 0, "human_quality_approval": "UNVERIFIED",
         "limitation": "One automated reviewer; Chromium emulation; no randomized generation experiment or professional certification."
     }
@@ -65,7 +70,7 @@ def main():
     a.output.write_text(json.dumps(report, indent=2) + "\n")
     print(json.dumps(report["counts"]))
     observed = {r["id"] for r in rows if r["outcome"] == "FAIL"}
-    if observed != {report["expected_research_failure"]}:
+    if observed != set(report["expected_research_failures"]):
         raise SystemExit("Unexpected failure set; investigate without rewriting baseline")
 
 if __name__ == "__main__":
