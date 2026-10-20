@@ -35,3 +35,11 @@ Runtime tests require optional local packages described in the source installati
 - \`.github/workflows/\`: offline CI only.
 
 Original ZIP releases and old snapshots remain preserved in Google Drive.
+
+## Reusable validation
+
+The [validation harness](validation/README.md) adds synthetic canonical-helper probes,
+controlled fault/mutation tests, fictional journey definitions and illustrative cost
+simulations. Read the [initial findings](validation/reports/2026-10-20-findings.md):
+known defects remain explicit FAILs, and a green regression check is not production approval.
+No paid provider calls, private assets or installed-skill changes are involved.
