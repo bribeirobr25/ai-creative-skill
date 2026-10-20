@@ -12,9 +12,13 @@ def snapshot(root,regions):
         else:element=soup.find(id=name)
         if element is None:raise ValueError('Region not found '+name)
         result['sections'][name]=digest(str(element))
-    for file in ['styles.css','app.js']:
-        p=root/file
-        if p.is_file():result['global_files'][file]=hashlib.sha256(p.read_bytes()).hexdigest()
+    linked=[tag.get('src') or tag.get('href') for tag in soup.select('script[src],link[rel="stylesheet"][href]')]
+    for file in sorted(set(['styles.css','app.js']+[x for x in linked if x])):
+        p=(root/file).resolve()
+        if p.is_relative_to(root.resolve()) and p.is_file():
+            result['global_files'][file]=hashlib.sha256(p.read_bytes()).hexdigest()
+        elif file not in ('styles.css','app.js'):
+            result['global_files'][file]='MISSING_OR_EXTERNAL'
     return result
 
 def compare(before_root,after_root,preserved,changed):
