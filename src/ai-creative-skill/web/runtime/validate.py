@@ -53,14 +53,22 @@ def check(record, project_root, package_installed=False):
     for i,item in enumerate(asset['assets_used']):
         path=item['path'];t=contained_path(project_root,path)
         if t is None or not t.is_file():fail('MISSING_ASSET','WEB_ASSET_PLAN/assets_used/'+str(i),'Asset not present or path unsafe')
-        if record['route']=='WEB_PUBLICATION':
-            # Publication needs both owner approval and a rights declaration for this
-            # particular destination. Preview permission is not publication permission.
-            publication_scopes={'public_website','commercial_publication','web_publication'}
-            if (item['approval']!='APPROVED_FOR_THIS_USE' or item['rights']=='UNKNOWN'
-                    or item['use_scope'] not in publication_scopes):
+        if record['route']=='WEB_PUBLICATION' or record['state'] in ('PUBLICATION_PREFLIGHT','PUBLICATION_APPROVED','LIVE_VERIFIED'):
+            # A human review record + content binding is a preflight requirement,
+            # never legal certification or a replacement for deployment authority.
+            clearance=item.get('publication_clearance',{})
+            evidence=contained_path(project_root,clearance.get('evidence_ref'))
+            compatible=(item['approval']=='APPROVED_FOR_THIS_USE' and item['rights']!='UNKNOWN'
+                and item['use_scope'] in clearance.get('allowed_uses',[])
+                and clearance.get('conditions_status') in ('SATISFIED','NOT_APPLICABLE')
+                and (item['rights']!='RESTRICTED' or clearance.get('conditions_status')=='SATISFIED'))
+            bound=(t is not None and t.is_file() and evidence is not None and evidence.is_file()
+                and evidence.stat().st_size>0 and evidence!=t
+                and clearance.get('asset_sha256')==sha256(t)
+                and clearance.get('evidence_sha256')==sha256(evidence))
+            if not compatible or not bound:
                 fail('RIGHTS_GATE','WEB_ASSET_PLAN/assets_used/'+str(i),
-                     'Publication requires approved, rights-declared assets whose scope includes this public use')
+                     'Publication requires scoped approval and a current, asset-bound rights review with satisfied conditions; declarations alone are insufficient')
     for field in ['product_service_truth_refs','known_unknown_boundary']:
         for s in brief[field]:
             if not s.strip():fail('EMPTY_TRUTH','WEB_BRIEF/'+field,'Empty item')

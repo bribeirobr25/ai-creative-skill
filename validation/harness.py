@@ -296,7 +296,12 @@ GROUPS={'routing':routing,'web_contracts':web_contracts,'preserve':preserve,'str
 
 def run(include_host=False):
     before=tree_hash(SKILL);records=[]
-    for group,fn in {**GROUPS,**({'preview':preview_checks,'video':video_checks} if include_host else {})}.items():
+    from validation import boundary_checks
+    ctx=sys.modules[__name__]
+    extra={'boundaries':lambda:boundary_checks.non_http(ctx),'boundary_mutations':lambda:boundary_checks.mutations(ctx)}
+    if include_host:extra.update({'preview':preview_checks,'video':video_checks,'boundary_http':lambda:boundary_checks.http_checks(ctx),
+        'boundary_http_mutations':lambda:[r for r in boundary_checks.mutations(ctx,True) if r['id'] in ('BOUNDARY-MUTATION-nofollow','BOUNDARY-MUTATION-health-auth')]})
+    for group,fn in {**GROUPS,**extra}.items():
         try:rr=fn()
         except Exception as exc:rr=[{'id':'HARNESS-'+group,'expected':'group executes','actual':type(exc).__name__+': '+str(exc)[:180],'outcome':'FAIL','execution_mode':'deterministic','classification':'HARNESS_OR_ENVIRONMENT_ERROR'}]
         for row in rr:row['group']=group
@@ -335,11 +340,20 @@ def expectation_errors(records,known,signatures=None,expected_ids=None):
             'changed_failure_evidence':sorted(r['id'] for r in records if r['id'] in (signatures or {}) and
                 r['outcome']=='FAIL' and r['actual']!=signatures[r['id']])}
 
+HOST_GROUPS=('preview','video','boundary_http','boundary_http_mutations')
+
+def expectations(profile='candidate'):
+    file='validation/known_findings.json' if profile=='historical' else 'validation/candidates/boundary-hardening-v1/expectations.json'
+    return json.loads((ROOT/file).read_text())
+
 def main():
-    p=argparse.ArgumentParser();p.add_argument('--output',default='validation/reports/current.json');p.add_argument('--host',action='store_true');p.add_argument('--check',action='store_true');a=p.parse_args()
+    p=argparse.ArgumentParser();p.add_argument('--output',default='validation/reports/current.json');p.add_argument('--host',action='store_true');p.add_argument('--profile',choices=('candidate','historical'),default='candidate');p.add_argument('--check',action='store_true');a=p.parse_args()
     records=run(a.host);catalog=json.loads((ROOT/'validation/scenarios/register.json').read_text())
     for row in records:
         group=catalog['groups'][row['group']]
+        if row['group']=='boundaries':
+            owner=next((owner for prefix,owner in [('BOUNDARY-route-','routing'),('BOUNDARY-rights-','web_contracts'),('BOUNDARY-shape-','structural'),('BOUNDARY-revision-','preserve')] if row['id'].startswith(prefix)),None)
+            if owner:group={**catalog['groups'][owner],'fixture_refs':['validation/boundary_checks.py']}
         for key in ('capability','contract','risk','fixture_refs','severity','recommended_correction','regression_coverage'):row[key]=group[key]
         row['reproducibility']='python -m validation.harness'+(' --host' if a.host else '')
         row['evidence_ref']='records/'+row['id']
@@ -347,13 +361,17 @@ def main():
         row['environment_ref']='environment'
         row['inputs_ref']='validation/harness.py:'+row['group']
     for gap in catalog['unexecuted']:records.append(gap)
-    known=json.loads((ROOT/'validation/known_findings.json').read_text())
-    expected_ids=[id for id,group in known.get('expected_record_groups',{}).items() if a.host or group not in ('preview','video')]
+    known=expectations(a.profile)
+    expected_ids=[id for id,group in known.get('expected_record_groups',{}).items() if a.host or group not in HOST_GROUPS]
     review=expectation_errors(records,known['expected_failures'],known.get('actual_signatures'),expected_ids)
-    result={'schema_version':'1.0','harness_version':'0.1.0','environment':environment(),'records':records,
+    result={'schema_version':'1.0','harness_version':'0.2.0-boundary-candidate','validation_profile':a.profile,'environment':environment(),'records':records,
             'summary':{s:sum(r['outcome']==s for r in records) for s in ('PASS','FAIL','BLOCKED','NOT_RUN','UNVERIFIED')},
             'regression_gate':review,'production_approval':'UNVERIFIED',
-            'warning':'Known FAILs remain failures. A green regression check means no unreviewed delta, not production readiness.'}
+            'warning':'Candidate checks do not rewrite historical evidence or certify legal, creative, host or production acceptance.'}
+    if a.profile=='candidate':
+        old=json.loads((ROOT/'validation/known_findings.json').read_text())
+        result['remediation_results']=[{'original_id':id,'historical_outcome':'FAIL','current_outcome':next((r['outcome'] for r in records if r['id']==id),'NOT_RUN'),
+            'remediation_ref':'validation/candidates/boundary-hardening-v1/remediation.json'} for id in old['expected_failures']]
     out=Path(a.output);out.parent.mkdir(parents=True,exist_ok=True);out.write_text(json.dumps(result,indent=2,ensure_ascii=False)+'\n')
     economics=out.with_name(out.stem+'-economics.json');economics.write_text(json.dumps(sensitivity(),indent=2)+'\n')
     print(json.dumps({'summary':result['summary'],'regression_gate':review,'report':str(out)},indent=2))
