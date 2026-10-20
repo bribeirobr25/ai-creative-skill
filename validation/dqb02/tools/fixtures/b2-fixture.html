@@ -1,0 +1,17 @@
+<!doctype html><html lang="pt-BR"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>fx2</title>
+<style>a:focus,button:focus,input:focus,select:focus{outline:2px solid #000}</style>
+<nav><a href="#home" data-testid="nav-home">Início</a> <a href="#schedule" data-testid="nav-schedule">Horários</a> <a href="#plan" data-testid="nav-plan">Planejar</a></nav>
+<main id="app"></main><footer>Protótipo demonstrativo. Marca, local, horários e preços fictícios. Nada é reservado.</footer>
+<script>
+const S=[];["Ter","Qua","Qui","Sex"].forEach(d=>{S.push([d,"17:00","aberta"],[d,"19:00","aberta"])});S.push(["Sáb","10:00","aberta"],["Sáb","14:00","aberta"],["Sáb","17:00","aberta"],["Dom","10:00","aberta"],["Sáb","07:00","nascer-sol"],["Dom","07:00","nascer-sol"],["Dom","15:00","privativa"],["Qua","20:00","privativa"]);
+let f="all";const N={aberta:["Sessão aberta",18,8],"nascer-sol":["Nascer do sol",22,8],privativa:["Sauna privativa",120,6]};
+function r(){const h=location.hash.slice(1)||"home",a=document.getElementById("app");
+if(h==="home")a.innerHTML='<h1>Aqueça. Mergulhe. Descanse.</h1>';
+else if(h==="schedule")a.innerHTML='<button data-testid="schedule-filter-all" onclick="f=\'all\';r()">Todas</button><button data-testid="schedule-filter-sunrise" onclick="f=\'nascer-sol\';r()">Nascer do sol</button><ul>'+S.filter(s=>f==="all"||s[2]===f).map(s=>`<li data-testid="schedule-slot" data-session="${s[2]}">${s[0]} ${s[1]} ${N[s[2]][0]}</li>`).join("")+'</ul>'+Object.keys(N).map(k=>`<a data-testid="session-${k}" href="#s/${k}">${N[k][0]}</a>`).join(" ");
+else if(h.startsWith("s/")){const k=h.slice(2);a.innerHTML=`<h2>${N[k][0]}</h2><p>€${N[k][1]}</p>`}
+else if(h==="plan"){a.innerHTML='<select data-testid="plan-session" id="ps"><option value="aberta">Sessão aberta</option><option value="nascer-sol">Nascer do sol</option><option value="privativa">Sauna privativa</option></select><input type="number" data-testid="plan-people" id="pp" value="1"><p data-testid="plan-total" id="pt"></p><p id="pe"></p>';
+const c=()=>{const k=ps.value,n=+pp.value,m=N[k][2];pe.removeAttribute("data-testid");pe.textContent="";
+if(!Number.isInteger(n)||n<1||n>m){pt.textContent="—";pe.setAttribute("data-testid","plan-error");pe.textContent="Limite: 1 a "+m+" pessoas";return}
+pt.textContent="€"+(k==="privativa"?120:N[k][1]*n)};ps.onchange=c;pp.oninput=c;pp.onchange=c;c()}}
+addEventListener("hashchange",r);r();
+</script></html>
