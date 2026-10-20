@@ -15,11 +15,32 @@ def server(root,port,token):
     root=pathlib.Path(root).resolve()
     class H(http.server.SimpleHTTPRequestHandler):
         def __init__(self,*a,**k):super().__init__(*a,directory=str(root),**k)
+        def _unsafe_path(self):
+            from urllib.parse import urlsplit, unquote
+            raw=urlsplit(self.path).path
+            for _ in range(6):
+                decoded=unquote(raw)
+                if decoded==raw:break
+                raw=decoded
+            parts=[p for p in raw.split('/') if p]
+            if '%' in raw or any(p.startswith('.') for p in parts):return True
+            candidate=(root / raw.lstrip('/')).resolve()
+            return not candidate.is_relative_to(root)
+        def send_head(self):
+            if self._unsafe_path():
+                self.send_error(403,'Path outside preview scope')
+                return None
+            return super().send_head()
+        def do_HEAD(self):
+            if self._unsafe_path():
+                self.send_error(403,'Path outside preview scope')
+                return
+            return super().do_HEAD()
         def do_GET(self):
             if self.path=='/__web_preview_health__':
                 payload=json.dumps({'token':token,'root':str(root),'pid':os.getpid()}).encode()
                 self.send_response(200);self.send_header('Content-Type','application/json');self.send_header('Content-Length',str(len(payload)));self.end_headers();self.wfile.write(payload)
-            elif any(part.startswith('.') for part in self.path.split('?',1)[0].split('/') if part):
+            elif self._unsafe_path():
                 self.send_error(403,'Hidden files are not served')
             else:super().do_GET()
         def log_message(self,*a):pass
