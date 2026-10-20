@@ -20,3 +20,26 @@ The original release builder is unchanged and deliberately refuses to label the 
 Residual integration questions are explicit: approval of the narrow `publication_clearance` schema proposal; trusted review provenance and license interpretation; browser/agent end-to-end behavior; static dependency-analysis limits; and Unix-only preview lifecycle. All seven previously unexecuted journeys and both unverified acceptance records retain their status. No claim of Windows, legal, perceptual or commercial certification is made.
 
 Recommendation: approve this candidate only for **integration review** after exact-head CI and schema/security review. Keep release promotion and installation separate. No merge, paid inference, private media publication or project-canon change is included.
+
+## Original-ID remediation index
+
+Each current PASS is recorded in the candidate report; historical FAIL records are unchanged.
+
+| Original ID | Family | Candidate result |
+|---|---|---|
+| `ROUTE-research_negated_publish` | F05 | PASS |
+| `ROUTE-research_negated_publish_en` | F05 | PASS |
+| `ROUTE-research_domain` | F05 | PASS |
+| `ROUTE-preview_negated_publish` | F05 | PASS |
+| `WEB-rights-UNKNOWN-PROVISIONAL` | F02 | PASS |
+| `WEB-rights-RESTRICTED-APPROVED_FOR_THIS_USE` | F02 | PASS |
+| `PRESERVE-protected-plus-css` | F03 | PASS |
+| `PRESERVE-new-script` | F04 | PASS |
+| `SHAPE-whitespace-CHARACTER_BIBLE` | F06 | PASS |
+| `SHAPE-whitespace-CONTENT_IDEA` | F06 | PASS |
+| `SHAPE-whitespace-STORYBOARD_PLAN` | F06 | PASS |
+| `SHAPE-whitespace-VIDEO_CREATIVE_DIRECTION` | F06 | PASS |
+| `SHAPE-whitespace-REFERENCE_MANIFEST` | F06 | PASS |
+| `SHAPE-whitespace-PROJECT_NEXT_ACTION` | F06 | PASS |
+| `PREVIEW-encoded-hidden` | F01 | PASS |
+| `PREVIEW-symlink-escape` | F01 | PASS |
