@@ -22,7 +22,11 @@ def resolve(text: str, intent: Optional[str]=None, deep:bool=False)->Route:
         r=intent; reason='explicit_intent'
     else:
         t=text.casefold()
-        if any(x in t for x in ('publiqu','deploy','coloque no ar','put it live','domínio')) and any(x in t for x in ('site','website','landing','página','page')):
+        if any(x in t for x in ('pesquise','pesquisar','research','analise','benchmark','audite')) and any(x in t for x in ('site','sites','website','landing','página','page','domínio','domain')):
+            r='WEB_RESEARCH_ONLY'
+        elif any(x in t for x in ('não publique','nao publique','do not publish','do not deploy','não coloque no ar','nao coloque no ar')) and any(x in t for x in ('crie uma landing','crie um site','build a website','create a landing')):
+            r='WEB_PREVIEW'
+        elif any(x in t for x in ('publique','publicar','deploy','coloque no ar','put it live')) and any(x in t for x in ('site','website','landing','página','page')):
             r='WEB_PUBLICATION'
         elif any(x in t for x in ('mude apenas','altere apenas','edite','refine','corrija o hero','update the hero')) and any(x in t for x in ('site','página','landing','hero','website')):
             r='WEB_EDIT'
