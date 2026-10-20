@@ -315,9 +315,11 @@ def tool_version(tool):
 
 def environment():
     def git(*args):return subprocess.check_output(['git',*args],cwd=ROOT,text=True).strip()
+    complete_history=git('rev-parse','--is-shallow-repository')=='false'
     return {'python':platform.python_version(),'os':platform.system(),'release':platform.release(),'machine':platform.machine(),
       'packages':{name:version(name) for name in ['Pillow','numpy','jsonschema','beautifulsoup4']},
-      'git_head':git('rev-parse','HEAD'),'source_commit':git('log','-1','--format=%H','--','src/ai-creative-skill'),
+      'git_head':git('rev-parse','HEAD'),'source_commit':git('log','-1','--format=%H','--','src/ai-creative-skill') if complete_history else None,
+      'source_commit_history_complete':complete_history,
       'dirty':bool(git('status','--porcelain')),'canonical_tree_sha256':tree_hash(SKILL),
       'harness_sha256':harness_hash(),
       'executed_at_utc':datetime.datetime.now(datetime.timezone.utc).isoformat(),
