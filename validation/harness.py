@@ -266,7 +266,7 @@ def mutations():
     rows=[]
     specs=[('router-authority',SKILL/'web/runtime/router.py','build,auth=ROUTES[r]','build,auth=(True,False)'),
            ('media-paid',SKILL/'media/runtime/media_upscale_v02.py','if not isinstance(self.allow_paid_submission,bool) or self.allow_paid_submission:','if False:'),
-           ('shape-missing',SKILL/'scripts/validate_deliverable.py',"missing=[k for k in needed if k not in item or item[k] is None or item[k]=='' or item[k]==[] or item[k]=={}]",'missing=[]')]
+           ('shape-missing',SKILL/'scripts/validate_deliverable.py',"missing=[k for k in needed if k not in item or item[k] is None or (isinstance(item[k],str) and not item[k].strip()) or item[k]==[] or item[k]=={}]",'missing=[]')]
     with tempfile.TemporaryDirectory() as td:
         base=Path(td);req=image_fixture(base)
         for name,source,old,new in specs:
