@@ -1,0 +1,4349 @@
+{
+  "schema_version": "1.0",
+  "harness_version": "0.1.0",
+  "environment": {
+    "python": "3.11.9",
+    "os": "Darwin",
+    "release": "23.4.0",
+    "machine": "arm64",
+    "packages": {
+      "Pillow": "11.1.0",
+      "numpy": "1.26.4",
+      "jsonschema": "4.23.0",
+      "beautifulsoup4": "4.12.3"
+    },
+    "git_head": "a148e0ff4a7c4bc15fddca859c3c31116a4f40ab",
+    "source_commit": "639cda1d02f40337a420c1d9c373cd8190c43615",
+    "dirty": false,
+    "canonical_tree_sha256": "e653b3f926907358e4d0a0da2e705939aecbab9edaf9e150c9068ccc7ac2bf53",
+    "harness_sha256": "ec0bdc73972e27cf61fd7b338a509d9065f7cc4747d5c7bd7b12e46642870749",
+    "executed_at_utc": "2026-10-20T12:15:21.214015+00:00",
+    "tools": {
+      "ffmpeg": "ffmpeg version 9.0.1 Copyright (c) 2000-2026 the FFmpeg developers",
+      "ffprobe": "ffprobe version 9.0.1 Copyright (c) 2007-2026 the FFmpeg developers",
+      "node": "v22.20.0"
+    },
+    "seed": 20261020,
+    "provider_calls": 0,
+    "paid_calls": 0,
+    "private_assets_used": false
+  },
+  "records": [
+    {
+      "id": "ROUTE-research",
+      "expected": "WEB_RESEARCH_ONLY",
+      "actual": {
+        "request": "pesquise referências de sites",
+        "route": "WEB_RESEARCH_ONLY"
+      },
+      "outcome": "PASS",
+      "execution_mode": "deterministic",
+      "group": "routing",
+      "capability": "Web independent invocation",
+      "contract": "src/ai-creative-skill/web/runtime/router.py",
+      "risk": "Negation must not expand research or preview into publication.",
+      "fixture_refs": [
+        "validation/harness.py:routing"
+      ],
+      "severity": "High",
+      "recommended_correction": "Honor explicit constraints before lexical intent scoring; retain the authority gate.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/ROUTE-research",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:routing"
+    },
+    {
+      "id": "ROUTE-research_negated_publish",
+      "expected": "WEB_RESEARCH_ONLY",
+      "actual": {
+        "request": "pesquise referências de sites; não publique",
+        "route": "WEB_PUBLICATION"
+      },
+      "outcome": "FAIL",
+      "execution_mode": "deterministic",
+      "group": "routing",
+      "capability": "Web independent invocation",
+      "contract": "src/ai-creative-skill/web/runtime/router.py",
+      "risk": "Negation must not expand research or preview into publication.",
+      "fixture_refs": [
+        "validation/harness.py:routing"
+      ],
+      "severity": "High",
+      "recommended_correction": "Honor explicit constraints before lexical intent scoring; retain the authority gate.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/ROUTE-research_negated_publish",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:routing"
+    },
+    {
+      "id": "ROUTE-research_negated_publish_en",
+      "expected": "WEB_RESEARCH_ONLY",
+      "actual": {
+        "request": "research website examples; do not deploy",
+        "route": "WEB_PUBLICATION"
+      },
+      "outcome": "FAIL",
+      "execution_mode": "deterministic",
+      "group": "routing",
+      "capability": "Web independent invocation",
+      "contract": "src/ai-creative-skill/web/runtime/router.py",
+      "risk": "Negation must not expand research or preview into publication.",
+      "fixture_refs": [
+        "validation/harness.py:routing"
+      ],
+      "severity": "High",
+      "recommended_correction": "Honor explicit constraints before lexical intent scoring; retain the authority gate.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/ROUTE-research_negated_publish_en",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:routing"
+    },
+    {
+      "id": "ROUTE-research_domain",
+      "expected": "WEB_RESEARCH_ONLY",
+      "actual": {
+        "request": "pesquise sites e opções de domínio",
+        "route": "WEB_PUBLICATION"
+      },
+      "outcome": "FAIL",
+      "execution_mode": "deterministic",
+      "group": "routing",
+      "capability": "Web independent invocation",
+      "contract": "src/ai-creative-skill/web/runtime/router.py",
+      "risk": "Negation must not expand research or preview into publication.",
+      "fixture_refs": [
+        "validation/harness.py:routing"
+      ],
+      "severity": "High",
+      "recommended_correction": "Honor explicit constraints before lexical intent scoring; retain the authority gate.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/ROUTE-research_domain",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:routing"
+    },
+    {
+      "id": "ROUTE-preview",
+      "expected": "WEB_PREVIEW",
+      "actual": {
+        "request": "crie uma landing para um serviço fictício",
+        "route": "WEB_PREVIEW"
+      },
+      "outcome": "PASS",
+      "execution_mode": "deterministic",
+      "group": "routing",
+      "capability": "Web independent invocation",
+      "contract": "src/ai-creative-skill/web/runtime/router.py",
+      "risk": "Negation must not expand research or preview into publication.",
+      "fixture_refs": [
+        "validation/harness.py:routing"
+      ],
+      "severity": "High",
+      "recommended_correction": "Honor explicit constraints before lexical intent scoring; retain the authority gate.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/ROUTE-preview",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:routing"
+    },
+    {
+      "id": "ROUTE-preview_negated_publish",
+      "expected": "WEB_PREVIEW",
+      "actual": {
+        "request": "crie uma landing; não publique",
+        "route": "WEB_PUBLICATION"
+      },
+      "outcome": "FAIL",
+      "execution_mode": "deterministic",
+      "group": "routing",
+      "capability": "Web independent invocation",
+      "contract": "src/ai-creative-skill/web/runtime/router.py",
+      "risk": "Negation must not expand research or preview into publication.",
+      "fixture_refs": [
+        "validation/harness.py:routing"
+      ],
+      "severity": "High",
+      "recommended_correction": "Honor explicit constraints before lexical intent scoring; retain the authority gate.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/ROUTE-preview_negated_publish",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:routing"
+    },
+    {
+      "id": "ROUTE-concept",
+      "expected": "WEB_CONCEPT_ONLY",
+      "actual": {
+        "request": "conceito visual de landing",
+        "route": "WEB_CONCEPT_ONLY"
+      },
+      "outcome": "PASS",
+      "execution_mode": "deterministic",
+      "group": "routing",
+      "capability": "Web independent invocation",
+      "contract": "src/ai-creative-skill/web/runtime/router.py",
+      "risk": "Negation must not expand research or preview into publication.",
+      "fixture_refs": [
+        "validation/harness.py:routing"
+      ],
+      "severity": "High",
+      "recommended_correction": "Honor explicit constraints before lexical intent scoring; retain the authority gate.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/ROUTE-concept",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:routing"
+    },
+    {
+      "id": "ROUTE-edit",
+      "expected": "WEB_EDIT",
+      "actual": {
+        "request": "mude apenas o hero",
+        "route": "WEB_EDIT"
+      },
+      "outcome": "PASS",
+      "execution_mode": "deterministic",
+      "group": "routing",
+      "capability": "Web independent invocation",
+      "contract": "src/ai-creative-skill/web/runtime/router.py",
+      "risk": "Negation must not expand research or preview into publication.",
+      "fixture_refs": [
+        "validation/harness.py:routing"
+      ],
+      "severity": "High",
+      "recommended_correction": "Honor explicit constraints before lexical intent scoring; retain the authority gate.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/ROUTE-edit",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:routing"
+    },
+    {
+      "id": "ROUTE-publish",
+      "expected": "WEB_PUBLICATION",
+      "actual": {
+        "request": "publique site",
+        "route": "WEB_PUBLICATION"
+      },
+      "outcome": "PASS",
+      "execution_mode": "deterministic",
+      "group": "routing",
+      "capability": "Web independent invocation",
+      "contract": "src/ai-creative-skill/web/runtime/router.py",
+      "risk": "Negation must not expand research or preview into publication.",
+      "fixture_refs": [
+        "validation/harness.py:routing"
+      ],
+      "severity": "High",
+      "recommended_correction": "Honor explicit constraints before lexical intent scoring; retain the authority gate.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/ROUTE-publish",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:routing"
+    },
+    {
+      "id": "ROUTE-explicit-WEB_RESEARCH_ONLY",
+      "expected": "WEB_RESEARCH_ONLY",
+      "actual": "WEB_RESEARCH_ONLY",
+      "outcome": "PASS",
+      "execution_mode": "deterministic",
+      "group": "routing",
+      "capability": "Web independent invocation",
+      "contract": "src/ai-creative-skill/web/runtime/router.py",
+      "risk": "Negation must not expand research or preview into publication.",
+      "fixture_refs": [
+        "validation/harness.py:routing"
+      ],
+      "severity": "High",
+      "recommended_correction": "Honor explicit constraints before lexical intent scoring; retain the authority gate.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/ROUTE-explicit-WEB_RESEARCH_ONLY",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:routing"
+    },
+    {
+      "id": "ROUTE-explicit-WEB_CONCEPT_ONLY",
+      "expected": "WEB_CONCEPT_ONLY",
+      "actual": "WEB_CONCEPT_ONLY",
+      "outcome": "PASS",
+      "execution_mode": "deterministic",
+      "group": "routing",
+      "capability": "Web independent invocation",
+      "contract": "src/ai-creative-skill/web/runtime/router.py",
+      "risk": "Negation must not expand research or preview into publication.",
+      "fixture_refs": [
+        "validation/harness.py:routing"
+      ],
+      "severity": "High",
+      "recommended_correction": "Honor explicit constraints before lexical intent scoring; retain the authority gate.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/ROUTE-explicit-WEB_CONCEPT_ONLY",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:routing"
+    },
+    {
+      "id": "ROUTE-explicit-WEB_PREVIEW",
+      "expected": "WEB_PREVIEW",
+      "actual": "WEB_PREVIEW",
+      "outcome": "PASS",
+      "execution_mode": "deterministic",
+      "group": "routing",
+      "capability": "Web independent invocation",
+      "contract": "src/ai-creative-skill/web/runtime/router.py",
+      "risk": "Negation must not expand research or preview into publication.",
+      "fixture_refs": [
+        "validation/harness.py:routing"
+      ],
+      "severity": "High",
+      "recommended_correction": "Honor explicit constraints before lexical intent scoring; retain the authority gate.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/ROUTE-explicit-WEB_PREVIEW",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:routing"
+    },
+    {
+      "id": "ROUTE-explicit-WEB_EDIT",
+      "expected": "WEB_EDIT",
+      "actual": "WEB_EDIT",
+      "outcome": "PASS",
+      "execution_mode": "deterministic",
+      "group": "routing",
+      "capability": "Web independent invocation",
+      "contract": "src/ai-creative-skill/web/runtime/router.py",
+      "risk": "Negation must not expand research or preview into publication.",
+      "fixture_refs": [
+        "validation/harness.py:routing"
+      ],
+      "severity": "High",
+      "recommended_correction": "Honor explicit constraints before lexical intent scoring; retain the authority gate.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/ROUTE-explicit-WEB_EDIT",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:routing"
+    },
+    {
+      "id": "ROUTE-explicit-WEB_PUBLICATION",
+      "expected": "WEB_PUBLICATION",
+      "actual": "WEB_PUBLICATION",
+      "outcome": "PASS",
+      "execution_mode": "deterministic",
+      "group": "routing",
+      "capability": "Web independent invocation",
+      "contract": "src/ai-creative-skill/web/runtime/router.py",
+      "risk": "Negation must not expand research or preview into publication.",
+      "fixture_refs": [
+        "validation/harness.py:routing"
+      ],
+      "severity": "High",
+      "recommended_correction": "Honor explicit constraints before lexical intent scoring; retain the authority gate.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/ROUTE-explicit-WEB_PUBLICATION",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:routing"
+    },
+    {
+      "id": "ROUTE-publication-gate",
+      "expected": true,
+      "actual": true,
+      "outcome": "PASS",
+      "execution_mode": "deterministic",
+      "group": "routing",
+      "capability": "Web independent invocation",
+      "contract": "src/ai-creative-skill/web/runtime/router.py",
+      "risk": "Negation must not expand research or preview into publication.",
+      "fixture_refs": [
+        "validation/harness.py:routing"
+      ],
+      "severity": "High",
+      "recommended_correction": "Honor explicit constraints before lexical intent scoring; retain the authority gate.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/ROUTE-publication-gate",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:routing"
+    },
+    {
+      "id": "WEB-valid-partial",
+      "expected": [],
+      "actual": [],
+      "outcome": "PASS",
+      "execution_mode": "deterministic",
+      "group": "web_contracts",
+      "capability": "Web contracts and evidence",
+      "contract": "src/ai-creative-skill/web/runtime/validate.py",
+      "risk": "Stale evidence, missing authority, rights or destinations must block the relevant claim.",
+      "fixture_refs": [
+        "validation/fixtures/site.html"
+      ],
+      "severity": "High",
+      "recommended_correction": "Strengthen publication rights/use-scope checks; retain internal-anchor compatibility.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/WEB-valid-partial",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:web_contracts"
+    },
+    {
+      "id": "WEB-publication-gate",
+      "expected": "PUBLICATION_GATE",
+      "actual": [
+        "PUBLICATION_GATE"
+      ],
+      "outcome": "PASS",
+      "execution_mode": "deterministic",
+      "group": "web_contracts",
+      "capability": "Web contracts and evidence",
+      "contract": "src/ai-creative-skill/web/runtime/validate.py",
+      "risk": "Stale evidence, missing authority, rights or destinations must block the relevant claim.",
+      "fixture_refs": [
+        "validation/fixtures/site.html"
+      ],
+      "severity": "High",
+      "recommended_correction": "Strengthen publication rights/use-scope checks; retain internal-anchor compatibility.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/WEB-publication-gate",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:web_contracts"
+    },
+    {
+      "id": "WEB-false-browser",
+      "expected": "STATIC_AS_BROWSER",
+      "actual": [
+        "DUPLICATE_CHECK",
+        "MISSING_FAST_QA",
+        "STATIC_AS_BROWSER"
+      ],
+      "outcome": "PASS",
+      "execution_mode": "deterministic",
+      "group": "web_contracts",
+      "capability": "Web contracts and evidence",
+      "contract": "src/ai-creative-skill/web/runtime/validate.py",
+      "risk": "Stale evidence, missing authority, rights or destinations must block the relevant claim.",
+      "fixture_refs": [
+        "validation/fixtures/site.html"
+      ],
+      "severity": "High",
+      "recommended_correction": "Strengthen publication rights/use-scope checks; retain internal-anchor compatibility.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/WEB-false-browser",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:web_contracts"
+    },
+    {
+      "id": "WEB-stale-evidence",
+      "expected": "STALE_BUILD_EVIDENCE",
+      "actual": [
+        "STALE_BUILD_EVIDENCE"
+      ],
+      "outcome": "PASS",
+      "execution_mode": "deterministic",
+      "group": "web_contracts",
+      "capability": "Web contracts and evidence",
+      "contract": "src/ai-creative-skill/web/runtime/validate.py",
+      "risk": "Stale evidence, missing authority, rights or destinations must block the relevant claim.",
+      "fixture_refs": [
+        "validation/fixtures/site.html"
+      ],
+      "severity": "High",
+      "recommended_correction": "Strengthen publication rights/use-scope checks; retain internal-anchor compatibility.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/WEB-stale-evidence",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:web_contracts"
+    },
+    {
+      "id": "WEB-missing-evidence",
+      "expected": "EVIDENCE_FILE_MISSING",
+      "actual": [
+        "EVIDENCE_FILE_MISSING"
+      ],
+      "outcome": "PASS",
+      "execution_mode": "deterministic",
+      "group": "web_contracts",
+      "capability": "Web contracts and evidence",
+      "contract": "src/ai-creative-skill/web/runtime/validate.py",
+      "risk": "Stale evidence, missing authority, rights or destinations must block the relevant claim.",
+      "fixture_refs": [
+        "validation/fixtures/site.html"
+      ],
+      "severity": "High",
+      "recommended_correction": "Strengthen publication rights/use-scope checks; retain internal-anchor compatibility.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/WEB-missing-evidence",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:web_contracts"
+    },
+    {
+      "id": "WEB-human-acceptance",
+      "expected": "HUMAN_APPROVAL_NOT_AUTOMATABLE",
+      "actual": [
+        "HUMAN_APPROVAL_NOT_AUTOMATABLE"
+      ],
+      "outcome": "PASS",
+      "execution_mode": "deterministic",
+      "group": "web_contracts",
+      "capability": "Web contracts and evidence",
+      "contract": "src/ai-creative-skill/web/runtime/validate.py",
+      "risk": "Stale evidence, missing authority, rights or destinations must block the relevant claim.",
+      "fixture_refs": [
+        "validation/fixtures/site.html"
+      ],
+      "severity": "High",
+      "recommended_correction": "Strengthen publication rights/use-scope checks; retain internal-anchor compatibility.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/WEB-human-acceptance",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:web_contracts"
+    },
+    {
+      "id": "WEB-critical-failure",
+      "expected": "FALSE_CRITICAL_VERDICT",
+      "actual": [
+        "FALSE_CRITICAL_VERDICT"
+      ],
+      "outcome": "PASS",
+      "execution_mode": "deterministic",
+      "group": "web_contracts",
+      "capability": "Web contracts and evidence",
+      "contract": "src/ai-creative-skill/web/runtime/validate.py",
+      "risk": "Stale evidence, missing authority, rights or destinations must block the relevant claim.",
+      "fixture_refs": [
+        "validation/fixtures/site.html"
+      ],
+      "severity": "High",
+      "recommended_correction": "Strengthen publication rights/use-scope checks; retain internal-anchor compatibility.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/WEB-critical-failure",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:web_contracts"
+    },
+    {
+      "id": "WEB-typed-approval-'false'",
+      "expected": "SCHEMA",
+      "actual": [
+        "SCHEMA"
+      ],
+      "outcome": "PASS",
+      "execution_mode": "deterministic",
+      "group": "web_contracts",
+      "capability": "Web contracts and evidence",
+      "contract": "src/ai-creative-skill/web/runtime/validate.py",
+      "risk": "Stale evidence, missing authority, rights or destinations must block the relevant claim.",
+      "fixture_refs": [
+        "validation/fixtures/site.html"
+      ],
+      "severity": "High",
+      "recommended_correction": "Strengthen publication rights/use-scope checks; retain internal-anchor compatibility.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/WEB-typed-approval-'false'",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:web_contracts"
+    },
+    {
+      "id": "WEB-typed-approval-1",
+      "expected": "SCHEMA",
+      "actual": [
+        "SCHEMA"
+      ],
+      "outcome": "PASS",
+      "execution_mode": "deterministic",
+      "group": "web_contracts",
+      "capability": "Web contracts and evidence",
+      "contract": "src/ai-creative-skill/web/runtime/validate.py",
+      "risk": "Stale evidence, missing authority, rights or destinations must block the relevant claim.",
+      "fixture_refs": [
+        "validation/fixtures/site.html"
+      ],
+      "severity": "High",
+      "recommended_correction": "Strengthen publication rights/use-scope checks; retain internal-anchor compatibility.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/WEB-typed-approval-1",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:web_contracts"
+    },
+    {
+      "id": "WEB-typed-approval-None",
+      "expected": "SCHEMA",
+      "actual": [
+        "SCHEMA"
+      ],
+      "outcome": "PASS",
+      "execution_mode": "deterministic",
+      "group": "web_contracts",
+      "capability": "Web contracts and evidence",
+      "contract": "src/ai-creative-skill/web/runtime/validate.py",
+      "risk": "Stale evidence, missing authority, rights or destinations must block the relevant claim.",
+      "fixture_refs": [
+        "validation/fixtures/site.html"
+      ],
+      "severity": "High",
+      "recommended_correction": "Strengthen publication rights/use-scope checks; retain internal-anchor compatibility.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/WEB-typed-approval-None",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:web_contracts"
+    },
+    {
+      "id": "WEB-unsafe-source-10",
+      "expected": "MISSING_SOURCE",
+      "actual": [
+        "MISSING_SOURCE"
+      ],
+      "outcome": "PASS",
+      "execution_mode": "deterministic",
+      "group": "web_contracts",
+      "capability": "Web contracts and evidence",
+      "contract": "src/ai-creative-skill/web/runtime/validate.py",
+      "risk": "Stale evidence, missing authority, rights or destinations must block the relevant claim.",
+      "fixture_refs": [
+        "validation/fixtures/site.html"
+      ],
+      "severity": "High",
+      "recommended_correction": "Strengthen publication rights/use-scope checks; retain internal-anchor compatibility.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/WEB-unsafe-source-10",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:web_contracts"
+    },
+    {
+      "id": "WEB-unsafe-source-11",
+      "expected": "MISSING_SOURCE",
+      "actual": [
+        "MISSING_SOURCE"
+      ],
+      "outcome": "PASS",
+      "execution_mode": "deterministic",
+      "group": "web_contracts",
+      "capability": "Web contracts and evidence",
+      "contract": "src/ai-creative-skill/web/runtime/validate.py",
+      "risk": "Stale evidence, missing authority, rights or destinations must block the relevant claim.",
+      "fixture_refs": [
+        "validation/fixtures/site.html"
+      ],
+      "severity": "High",
+      "recommended_correction": "Strengthen publication rights/use-scope checks; retain internal-anchor compatibility.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/WEB-unsafe-source-11",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:web_contracts"
+    },
+    {
+      "id": "WEB-unsafe-source-12",
+      "expected": "MISSING_SOURCE",
+      "actual": [
+        "MISSING_SOURCE"
+      ],
+      "outcome": "PASS",
+      "execution_mode": "deterministic",
+      "group": "web_contracts",
+      "capability": "Web contracts and evidence",
+      "contract": "src/ai-creative-skill/web/runtime/validate.py",
+      "risk": "Stale evidence, missing authority, rights or destinations must block the relevant claim.",
+      "fixture_refs": [
+        "validation/fixtures/site.html"
+      ],
+      "severity": "High",
+      "recommended_correction": "Strengthen publication rights/use-scope checks; retain internal-anchor compatibility.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/WEB-unsafe-source-12",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:web_contracts"
+    },
+    {
+      "id": "WEB-rights-UNKNOWN-PROVISIONAL",
+      "expected": "RIGHTS_GATE",
+      "actual": [],
+      "outcome": "FAIL",
+      "execution_mode": "deterministic",
+      "group": "web_contracts",
+      "capability": "Web contracts and evidence",
+      "contract": "src/ai-creative-skill/web/runtime/validate.py",
+      "risk": "Stale evidence, missing authority, rights or destinations must block the relevant claim.",
+      "fixture_refs": [
+        "validation/fixtures/site.html"
+      ],
+      "severity": "High",
+      "recommended_correction": "Strengthen publication rights/use-scope checks; retain internal-anchor compatibility.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/WEB-rights-UNKNOWN-PROVISIONAL",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:web_contracts"
+    },
+    {
+      "id": "WEB-rights-RESTRICTED-APPROVED_FOR_THIS_USE",
+      "expected": "RIGHTS_GATE",
+      "actual": [],
+      "outcome": "FAIL",
+      "execution_mode": "deterministic",
+      "group": "web_contracts",
+      "capability": "Web contracts and evidence",
+      "contract": "src/ai-creative-skill/web/runtime/validate.py",
+      "risk": "Stale evidence, missing authority, rights or destinations must block the relevant claim.",
+      "fixture_refs": [
+        "validation/fixtures/site.html"
+      ],
+      "severity": "High",
+      "recommended_correction": "Strengthen publication rights/use-scope checks; retain internal-anchor compatibility.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/WEB-rights-RESTRICTED-APPROVED_FOR_THIS_USE",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:web_contracts"
+    },
+    {
+      "id": "WEB-rights-UNKNOWN-APPROVED_FOR_THIS_USE",
+      "expected": "RIGHTS_GATE",
+      "actual": [
+        "RIGHTS_GATE"
+      ],
+      "outcome": "PASS",
+      "execution_mode": "deterministic",
+      "group": "web_contracts",
+      "capability": "Web contracts and evidence",
+      "contract": "src/ai-creative-skill/web/runtime/validate.py",
+      "risk": "Stale evidence, missing authority, rights or destinations must block the relevant claim.",
+      "fixture_refs": [
+        "validation/fixtures/site.html"
+      ],
+      "severity": "High",
+      "recommended_correction": "Strengthen publication rights/use-scope checks; retain internal-anchor compatibility.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/WEB-rights-UNKNOWN-APPROVED_FOR_THIS_USE",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:web_contracts"
+    },
+    {
+      "id": "WEB-internal-cta-no-external-target",
+      "expected": "valid internal anchor needs no external target",
+      "actual": [],
+      "outcome": "PASS",
+      "execution_mode": "deterministic",
+      "group": "web_contracts",
+      "capability": "Web contracts and evidence",
+      "contract": "src/ai-creative-skill/web/runtime/validate.py",
+      "risk": "Stale evidence, missing authority, rights or destinations must block the relevant claim.",
+      "fixture_refs": [
+        "validation/fixtures/site.html"
+      ],
+      "severity": "High",
+      "recommended_correction": "Strengthen publication rights/use-scope checks; retain internal-anchor compatibility.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/WEB-internal-cta-no-external-target",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:web_contracts"
+    },
+    {
+      "id": "WEB-missing-revision",
+      "expected": "SCHEMA",
+      "actual": [
+        "SCHEMA"
+      ],
+      "outcome": "PASS",
+      "execution_mode": "deterministic",
+      "group": "web_contracts",
+      "capability": "Web contracts and evidence",
+      "contract": "src/ai-creative-skill/web/runtime/validate.py",
+      "risk": "Stale evidence, missing authority, rights or destinations must block the relevant claim.",
+      "fixture_refs": [
+        "validation/fixtures/site.html"
+      ],
+      "severity": "High",
+      "recommended_correction": "Strengthen publication rights/use-scope checks; retain internal-anchor compatibility.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/WEB-missing-revision",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:web_contracts"
+    },
+    {
+      "id": "WEB-content-change",
+      "expected": "STALE_BUILD_EVIDENCE",
+      "actual": [
+        "STALE_BUILD_EVIDENCE",
+        "STALE_BUILD_EVIDENCE",
+        "STALE_BUILD_EVIDENCE",
+        "STALE_BUILD_EVIDENCE",
+        "STALE_BUILD_EVIDENCE",
+        "STALE_BUILD_EVIDENCE",
+        "STALE_BUILD_EVIDENCE",
+        "STALE_BUILD_EVIDENCE",
+        "STALE_BUILD_EVIDENCE",
+        "STALE_BUILD_EVIDENCE",
+        "STALE_BUILD_EVIDENCE",
+        "STALE_BUILD_EVIDENCE"
+      ],
+      "outcome": "PASS",
+      "execution_mode": "deterministic",
+      "group": "web_contracts",
+      "capability": "Web contracts and evidence",
+      "contract": "src/ai-creative-skill/web/runtime/validate.py",
+      "risk": "Stale evidence, missing authority, rights or destinations must block the relevant claim.",
+      "fixture_refs": [
+        "validation/fixtures/site.html"
+      ],
+      "severity": "High",
+      "recommended_correction": "Strengthen publication rights/use-scope checks; retain internal-anchor compatibility.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/WEB-content-change",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:web_contracts"
+    },
+    {
+      "id": "PRESERVE-allowed",
+      "expected": "source pass",
+      "actual": {
+        "protected_regions_unchanged": true,
+        "preservation_failures": [],
+        "target_regions_unchanged": [],
+        "shared_css_js_changed": [],
+        "browser_retest_required": false,
+        "human_approval_not_inferred": true,
+        "status": "SOURCE_PRESERVATION_PASS"
+      },
+      "outcome": "PASS",
+      "execution_mode": "deterministic",
+      "group": "preserve",
+      "capability": "Localized repair and canon preservation",
+      "contract": "src/ai-creative-skill/web/runtime/revision.py",
+      "risk": "Protected changes must fail even when global assets change; new executable assets need retest.",
+      "fixture_refs": [
+        "validation/fixtures/site.html"
+      ],
+      "severity": "High",
+      "recommended_correction": "Make failure dominate partial status; compare both old and new dependency sets.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/PRESERVE-allowed",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:preserve"
+    },
+    {
+      "id": "PRESERVE-protected",
+      "expected": "FAIL dominates",
+      "actual": {
+        "protected_regions_unchanged": false,
+        "preservation_failures": [
+          "facts"
+        ],
+        "target_regions_unchanged": [],
+        "shared_css_js_changed": [],
+        "browser_retest_required": false,
+        "human_approval_not_inferred": true,
+        "status": "FAIL"
+      },
+      "outcome": "PASS",
+      "execution_mode": "deterministic",
+      "group": "preserve",
+      "capability": "Localized repair and canon preservation",
+      "contract": "src/ai-creative-skill/web/runtime/revision.py",
+      "risk": "Protected changes must fail even when global assets change; new executable assets need retest.",
+      "fixture_refs": [
+        "validation/fixtures/site.html"
+      ],
+      "severity": "High",
+      "recommended_correction": "Make failure dominate partial status; compare both old and new dependency sets.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/PRESERVE-protected",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:preserve"
+    },
+    {
+      "id": "PRESERVE-protected-plus-css",
+      "expected": "FAIL dominates",
+      "actual": {
+        "protected_regions_unchanged": false,
+        "preservation_failures": [
+          "facts"
+        ],
+        "target_regions_unchanged": [],
+        "shared_css_js_changed": [
+          "styles.css"
+        ],
+        "browser_retest_required": true,
+        "human_approval_not_inferred": true,
+        "status": "PARTIAL"
+      },
+      "outcome": "FAIL",
+      "execution_mode": "deterministic",
+      "group": "preserve",
+      "capability": "Localized repair and canon preservation",
+      "contract": "src/ai-creative-skill/web/runtime/revision.py",
+      "risk": "Protected changes must fail even when global assets change; new executable assets need retest.",
+      "fixture_refs": [
+        "validation/fixtures/site.html"
+      ],
+      "severity": "High",
+      "recommended_correction": "Make failure dominate partial status; compare both old and new dependency sets.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/PRESERVE-protected-plus-css",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:preserve"
+    },
+    {
+      "id": "PRESERVE-new-script",
+      "expected": "browser retest",
+      "actual": {
+        "protected_regions_unchanged": true,
+        "preservation_failures": [],
+        "target_regions_unchanged": [],
+        "shared_css_js_changed": [],
+        "browser_retest_required": false,
+        "human_approval_not_inferred": true,
+        "status": "SOURCE_PRESERVATION_PASS"
+      },
+      "outcome": "FAIL",
+      "execution_mode": "deterministic",
+      "group": "preserve",
+      "capability": "Localized repair and canon preservation",
+      "contract": "src/ai-creative-skill/web/runtime/revision.py",
+      "risk": "Protected changes must fail even when global assets change; new executable assets need retest.",
+      "fixture_refs": [
+        "validation/fixtures/site.html"
+      ],
+      "severity": "High",
+      "recommended_correction": "Make failure dominate partial status; compare both old and new dependency sets.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/PRESERVE-new-script",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:preserve"
+    },
+    {
+      "id": "SHAPE-valid-CHARACTER_BIBLE",
+      "expected": "PASS_STRUCTURAL; semantic false",
+      "actual": {
+        "result": "PASS_STRUCTURAL",
+        "missing": [],
+        "checked": 8,
+        "semantic_verified": false
+      },
+      "outcome": "PASS",
+      "execution_mode": "deterministic",
+      "group": "structural",
+      "capability": "Deliverable shape across capabilities",
+      "contract": "src/ai-creative-skill/scripts/validate_deliverable.py",
+      "risk": "Required substantive fields must reject whitespace; structural pass is not semantic acceptance.",
+      "fixture_refs": [
+        "validation/harness.py:structural"
+      ],
+      "severity": "Medium",
+      "recommended_correction": "Normalize whitespace before required-field checks without claiming semantic validation.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/SHAPE-valid-CHARACTER_BIBLE",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:structural"
+    },
+    {
+      "id": "SHAPE-missing-CHARACTER_BIBLE-name",
+      "expected": "FAIL_STRUCTURAL",
+      "actual": {
+        "result": "FAIL_STRUCTURAL",
+        "missing": [
+          "name"
+        ],
+        "checked": 8,
+        "semantic_verified": false
+      },
+      "outcome": "PASS",
+      "execution_mode": "deterministic",
+      "group": "structural",
+      "capability": "Deliverable shape across capabilities",
+      "contract": "src/ai-creative-skill/scripts/validate_deliverable.py",
+      "risk": "Required substantive fields must reject whitespace; structural pass is not semantic acceptance.",
+      "fixture_refs": [
+        "validation/harness.py:structural"
+      ],
+      "severity": "Medium",
+      "recommended_correction": "Normalize whitespace before required-field checks without claiming semantic validation.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/SHAPE-missing-CHARACTER_BIBLE-name",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:structural"
+    },
+    {
+      "id": "SHAPE-missing-CHARACTER_BIBLE-narrative_role",
+      "expected": "FAIL_STRUCTURAL",
+      "actual": {
+        "result": "FAIL_STRUCTURAL",
+        "missing": [
+          "narrative_role"
+        ],
+        "checked": 8,
+        "semantic_verified": false
+      },
+      "outcome": "PASS",
+      "execution_mode": "deterministic",
+      "group": "structural",
+      "capability": "Deliverable shape across capabilities",
+      "contract": "src/ai-creative-skill/scripts/validate_deliverable.py",
+      "risk": "Required substantive fields must reject whitespace; structural pass is not semantic acceptance.",
+      "fixture_refs": [
+        "validation/harness.py:structural"
+      ],
+      "severity": "Medium",
+      "recommended_correction": "Normalize whitespace before required-field checks without claiming semantic validation.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/SHAPE-missing-CHARACTER_BIBLE-narrative_role",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:structural"
+    },
+    {
+      "id": "SHAPE-missing-CHARACTER_BIBLE-backstory",
+      "expected": "FAIL_STRUCTURAL",
+      "actual": {
+        "result": "FAIL_STRUCTURAL",
+        "missing": [
+          "backstory"
+        ],
+        "checked": 8,
+        "semantic_verified": false
+      },
+      "outcome": "PASS",
+      "execution_mode": "deterministic",
+      "group": "structural",
+      "capability": "Deliverable shape across capabilities",
+      "contract": "src/ai-creative-skill/scripts/validate_deliverable.py",
+      "risk": "Required substantive fields must reject whitespace; structural pass is not semantic acceptance.",
+      "fixture_refs": [
+        "validation/harness.py:structural"
+      ],
+      "severity": "Medium",
+      "recommended_correction": "Normalize whitespace before required-field checks without claiming semantic validation.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/SHAPE-missing-CHARACTER_BIBLE-backstory",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:structural"
+    },
+    {
+      "id": "SHAPE-missing-CHARACTER_BIBLE-distinctive_appearance",
+      "expected": "FAIL_STRUCTURAL",
+      "actual": {
+        "result": "FAIL_STRUCTURAL",
+        "missing": [
+          "distinctive_appearance"
+        ],
+        "checked": 8,
+        "semantic_verified": false
+      },
+      "outcome": "PASS",
+      "execution_mode": "deterministic",
+      "group": "structural",
+      "capability": "Deliverable shape across capabilities",
+      "contract": "src/ai-creative-skill/scripts/validate_deliverable.py",
+      "risk": "Required substantive fields must reject whitespace; structural pass is not semantic acceptance.",
+      "fixture_refs": [
+        "validation/harness.py:structural"
+      ],
+      "severity": "Medium",
+      "recommended_correction": "Normalize whitespace before required-field checks without claiming semantic validation.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/SHAPE-missing-CHARACTER_BIBLE-distinctive_appearance",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:structural"
+    },
+    {
+      "id": "SHAPE-missing-CHARACTER_BIBLE-personality_motivations",
+      "expected": "FAIL_STRUCTURAL",
+      "actual": {
+        "result": "FAIL_STRUCTURAL",
+        "missing": [
+          "personality_motivations"
+        ],
+        "checked": 8,
+        "semantic_verified": false
+      },
+      "outcome": "PASS",
+      "execution_mode": "deterministic",
+      "group": "structural",
+      "capability": "Deliverable shape across capabilities",
+      "contract": "src/ai-creative-skill/scripts/validate_deliverable.py",
+      "risk": "Required substantive fields must reject whitespace; structural pass is not semantic acceptance.",
+      "fixture_refs": [
+        "validation/harness.py:structural"
+      ],
+      "severity": "Medium",
+      "recommended_correction": "Normalize whitespace before required-field checks without claiming semantic validation.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/SHAPE-missing-CHARACTER_BIBLE-personality_motivations",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:structural"
+    },
+    {
+      "id": "SHAPE-missing-CHARACTER_BIBLE-unique_value",
+      "expected": "FAIL_STRUCTURAL",
+      "actual": {
+        "result": "FAIL_STRUCTURAL",
+        "missing": [
+          "unique_value"
+        ],
+        "checked": 8,
+        "semantic_verified": false
+      },
+      "outcome": "PASS",
+      "execution_mode": "deterministic",
+      "group": "structural",
+      "capability": "Deliverable shape across capabilities",
+      "contract": "src/ai-creative-skill/scripts/validate_deliverable.py",
+      "risk": "Required substantive fields must reject whitespace; structural pass is not semantic acceptance.",
+      "fixture_refs": [
+        "validation/harness.py:structural"
+      ],
+      "severity": "Medium",
+      "recommended_correction": "Normalize whitespace before required-field checks without claiming semantic validation.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/SHAPE-missing-CHARACTER_BIBLE-unique_value",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:structural"
+    },
+    {
+      "id": "SHAPE-missing-CHARACTER_BIBLE-fiction_disclosure",
+      "expected": "FAIL_STRUCTURAL",
+      "actual": {
+        "result": "FAIL_STRUCTURAL",
+        "missing": [
+          "fiction_disclosure"
+        ],
+        "checked": 8,
+        "semantic_verified": false
+      },
+      "outcome": "PASS",
+      "execution_mode": "deterministic",
+      "group": "structural",
+      "capability": "Deliverable shape across capabilities",
+      "contract": "src/ai-creative-skill/scripts/validate_deliverable.py",
+      "risk": "Required substantive fields must reject whitespace; structural pass is not semantic acceptance.",
+      "fixture_refs": [
+        "validation/harness.py:structural"
+      ],
+      "severity": "Medium",
+      "recommended_correction": "Normalize whitespace before required-field checks without claiming semantic validation.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/SHAPE-missing-CHARACTER_BIBLE-fiction_disclosure",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:structural"
+    },
+    {
+      "id": "SHAPE-missing-CHARACTER_BIBLE-canon_preserve_vary",
+      "expected": "FAIL_STRUCTURAL",
+      "actual": {
+        "result": "FAIL_STRUCTURAL",
+        "missing": [
+          "canon_preserve_vary"
+        ],
+        "checked": 8,
+        "semantic_verified": false
+      },
+      "outcome": "PASS",
+      "execution_mode": "deterministic",
+      "group": "structural",
+      "capability": "Deliverable shape across capabilities",
+      "contract": "src/ai-creative-skill/scripts/validate_deliverable.py",
+      "risk": "Required substantive fields must reject whitespace; structural pass is not semantic acceptance.",
+      "fixture_refs": [
+        "validation/harness.py:structural"
+      ],
+      "severity": "Medium",
+      "recommended_correction": "Normalize whitespace before required-field checks without claiming semantic validation.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/SHAPE-missing-CHARACTER_BIBLE-canon_preserve_vary",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:structural"
+    },
+    {
+      "id": "SHAPE-conditional-CHARACTER_BIBLE-recurring_talking_persona",
+      "expected": "FAIL_STRUCTURAL",
+      "actual": {
+        "result": "FAIL_STRUCTURAL",
+        "missing": [
+          "voice_performance_direction"
+        ],
+        "checked": 9,
+        "semantic_verified": false
+      },
+      "outcome": "PASS",
+      "execution_mode": "deterministic",
+      "group": "structural",
+      "capability": "Deliverable shape across capabilities",
+      "contract": "src/ai-creative-skill/scripts/validate_deliverable.py",
+      "risk": "Required substantive fields must reject whitespace; structural pass is not semantic acceptance.",
+      "fixture_refs": [
+        "validation/harness.py:structural"
+      ],
+      "severity": "Medium",
+      "recommended_correction": "Normalize whitespace before required-field checks without claiming semantic validation.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/SHAPE-conditional-CHARACTER_BIBLE-recurring_talking_persona",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:structural"
+    },
+    {
+      "id": "SHAPE-conditional-CHARACTER_BIBLE-visual_production",
+      "expected": "FAIL_STRUCTURAL",
+      "actual": {
+        "result": "FAIL_STRUCTURAL",
+        "missing": [
+          "identity_reference_authority"
+        ],
+        "checked": 9,
+        "semantic_verified": false
+      },
+      "outcome": "PASS",
+      "execution_mode": "deterministic",
+      "group": "structural",
+      "capability": "Deliverable shape across capabilities",
+      "contract": "src/ai-creative-skill/scripts/validate_deliverable.py",
+      "risk": "Required substantive fields must reject whitespace; structural pass is not semantic acceptance.",
+      "fixture_refs": [
+        "validation/harness.py:structural"
+      ],
+      "severity": "Medium",
+      "recommended_correction": "Normalize whitespace before required-field checks without claiming semantic validation.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/SHAPE-conditional-CHARACTER_BIBLE-visual_production",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:structural"
+    },
+    {
+      "id": "SHAPE-conditional-CHARACTER_BIBLE-client_or_real_brand_claims",
+      "expected": "FAIL_STRUCTURAL",
+      "actual": {
+        "result": "FAIL_STRUCTURAL",
+        "missing": [
+          "claims_evidence"
+        ],
+        "checked": 9,
+        "semantic_verified": false
+      },
+      "outcome": "PASS",
+      "execution_mode": "deterministic",
+      "group": "structural",
+      "capability": "Deliverable shape across capabilities",
+      "contract": "src/ai-creative-skill/scripts/validate_deliverable.py",
+      "risk": "Required substantive fields must reject whitespace; structural pass is not semantic acceptance.",
+      "fixture_refs": [
+        "validation/harness.py:structural"
+      ],
+      "severity": "Medium",
+      "recommended_correction": "Normalize whitespace before required-field checks without claiming semantic validation.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/SHAPE-conditional-CHARACTER_BIBLE-client_or_real_brand_claims",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:structural"
+    },
+    {
+      "id": "SHAPE-whitespace-CHARACTER_BIBLE",
+      "expected": "FAIL_STRUCTURAL",
+      "actual": {
+        "result": "PASS_STRUCTURAL",
+        "missing": [],
+        "checked": 8,
+        "semantic_verified": false
+      },
+      "outcome": "FAIL",
+      "execution_mode": "deterministic",
+      "group": "structural",
+      "capability": "Deliverable shape across capabilities",
+      "contract": "src/ai-creative-skill/scripts/validate_deliverable.py",
+      "risk": "Required substantive fields must reject whitespace; structural pass is not semantic acceptance.",
+      "fixture_refs": [
+        "validation/harness.py:structural"
+      ],
+      "severity": "Medium",
+      "recommended_correction": "Normalize whitespace before required-field checks without claiming semantic validation.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/SHAPE-whitespace-CHARACTER_BIBLE",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:structural"
+    },
+    {
+      "id": "SHAPE-valid-CONTENT_IDEA",
+      "expected": "PASS_STRUCTURAL; semantic false",
+      "actual": {
+        "result": "PASS_STRUCTURAL",
+        "missing": [],
+        "checked": 5,
+        "semantic_verified": false
+      },
+      "outcome": "PASS",
+      "execution_mode": "deterministic",
+      "group": "structural",
+      "capability": "Deliverable shape across capabilities",
+      "contract": "src/ai-creative-skill/scripts/validate_deliverable.py",
+      "risk": "Required substantive fields must reject whitespace; structural pass is not semantic acceptance.",
+      "fixture_refs": [
+        "validation/harness.py:structural"
+      ],
+      "severity": "Medium",
+      "recommended_correction": "Normalize whitespace before required-field checks without claiming semantic validation.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/SHAPE-valid-CONTENT_IDEA",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:structural"
+    },
+    {
+      "id": "SHAPE-missing-CONTENT_IDEA-hook",
+      "expected": "FAIL_STRUCTURAL",
+      "actual": {
+        "result": "FAIL_STRUCTURAL",
+        "missing": [
+          "hook"
+        ],
+        "checked": 5,
+        "semantic_verified": false
+      },
+      "outcome": "PASS",
+      "execution_mode": "deterministic",
+      "group": "structural",
+      "capability": "Deliverable shape across capabilities",
+      "contract": "src/ai-creative-skill/scripts/validate_deliverable.py",
+      "risk": "Required substantive fields must reject whitespace; structural pass is not semantic acceptance.",
+      "fixture_refs": [
+        "validation/harness.py:structural"
+      ],
+      "severity": "Medium",
+      "recommended_correction": "Normalize whitespace before required-field checks without claiming semantic validation.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/SHAPE-missing-CONTENT_IDEA-hook",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:structural"
+    },
+    {
+      "id": "SHAPE-missing-CONTENT_IDEA-format_and_hold",
+      "expected": "FAIL_STRUCTURAL",
+      "actual": {
+        "result": "FAIL_STRUCTURAL",
+        "missing": [
+          "format_and_hold"
+        ],
+        "checked": 5,
+        "semantic_verified": false
+      },
+      "outcome": "PASS",
+      "execution_mode": "deterministic",
+      "group": "structural",
+      "capability": "Deliverable shape across capabilities",
+      "contract": "src/ai-creative-skill/scripts/validate_deliverable.py",
+      "risk": "Required substantive fields must reject whitespace; structural pass is not semantic acceptance.",
+      "fixture_refs": [
+        "validation/harness.py:structural"
+      ],
+      "severity": "Medium",
+      "recommended_correction": "Normalize whitespace before required-field checks without claiming semantic validation.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/SHAPE-missing-CONTENT_IDEA-format_and_hold",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:structural"
+    },
+    {
+      "id": "SHAPE-missing-CONTENT_IDEA-setting",
+      "expected": "FAIL_STRUCTURAL",
+      "actual": {
+        "result": "FAIL_STRUCTURAL",
+        "missing": [
+          "setting"
+        ],
+        "checked": 5,
+        "semantic_verified": false
+      },
+      "outcome": "PASS",
+      "execution_mode": "deterministic",
+      "group": "structural",
+      "capability": "Deliverable shape across capabilities",
+      "contract": "src/ai-creative-skill/scripts/validate_deliverable.py",
+      "risk": "Required substantive fields must reject whitespace; structural pass is not semantic acceptance.",
+      "fixture_refs": [
+        "validation/harness.py:structural"
+      ],
+      "severity": "Medium",
+      "recommended_correction": "Normalize whitespace before required-field checks without claiming semantic validation.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/SHAPE-missing-CONTENT_IDEA-setting",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:structural"
+    },
+    {
+      "id": "SHAPE-missing-CONTENT_IDEA-why_it_works",
+      "expected": "FAIL_STRUCTURAL",
+      "actual": {
+        "result": "FAIL_STRUCTURAL",
+        "missing": [
+          "why_it_works"
+        ],
+        "checked": 5,
+        "semantic_verified": false
+      },
+      "outcome": "PASS",
+      "execution_mode": "deterministic",
+      "group": "structural",
+      "capability": "Deliverable shape across capabilities",
+      "contract": "src/ai-creative-skill/scripts/validate_deliverable.py",
+      "risk": "Required substantive fields must reject whitespace; structural pass is not semantic acceptance.",
+      "fixture_refs": [
+        "validation/harness.py:structural"
+      ],
+      "severity": "Medium",
+      "recommended_correction": "Normalize whitespace before required-field checks without claiming semantic validation.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/SHAPE-missing-CONTENT_IDEA-why_it_works",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:structural"
+    },
+    {
+      "id": "SHAPE-missing-CONTENT_IDEA-payoff_or_audience_value",
+      "expected": "FAIL_STRUCTURAL",
+      "actual": {
+        "result": "FAIL_STRUCTURAL",
+        "missing": [
+          "payoff_or_audience_value"
+        ],
+        "checked": 5,
+        "semantic_verified": false
+      },
+      "outcome": "PASS",
+      "execution_mode": "deterministic",
+      "group": "structural",
+      "capability": "Deliverable shape across capabilities",
+      "contract": "src/ai-creative-skill/scripts/validate_deliverable.py",
+      "risk": "Required substantive fields must reject whitespace; structural pass is not semantic acceptance.",
+      "fixture_refs": [
+        "validation/harness.py:structural"
+      ],
+      "severity": "Medium",
+      "recommended_correction": "Normalize whitespace before required-field checks without claiming semantic validation.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/SHAPE-missing-CONTENT_IDEA-payoff_or_audience_value",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:structural"
+    },
+    {
+      "id": "SHAPE-conditional-CONTENT_IDEA-persona_led",
+      "expected": "FAIL_STRUCTURAL",
+      "actual": {
+        "result": "FAIL_STRUCTURAL",
+        "missing": [
+          "persona_narrative_fit"
+        ],
+        "checked": 6,
+        "semantic_verified": false
+      },
+      "outcome": "PASS",
+      "execution_mode": "deterministic",
+      "group": "structural",
+      "capability": "Deliverable shape across capabilities",
+      "contract": "src/ai-creative-skill/scripts/validate_deliverable.py",
+      "risk": "Required substantive fields must reject whitespace; structural pass is not semantic acceptance.",
+      "fixture_refs": [
+        "validation/harness.py:structural"
+      ],
+      "severity": "Medium",
+      "recommended_correction": "Normalize whitespace before required-field checks without claiming semantic validation.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/SHAPE-conditional-CONTENT_IDEA-persona_led",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:structural"
+    },
+    {
+      "id": "SHAPE-conditional-CONTENT_IDEA-commercial_claims",
+      "expected": "FAIL_STRUCTURAL",
+      "actual": {
+        "result": "FAIL_STRUCTURAL",
+        "missing": [
+          "claim_source_and_status"
+        ],
+        "checked": 6,
+        "semantic_verified": false
+      },
+      "outcome": "PASS",
+      "execution_mode": "deterministic",
+      "group": "structural",
+      "capability": "Deliverable shape across capabilities",
+      "contract": "src/ai-creative-skill/scripts/validate_deliverable.py",
+      "risk": "Required substantive fields must reject whitespace; structural pass is not semantic acceptance.",
+      "fixture_refs": [
+        "validation/harness.py:structural"
+      ],
+      "severity": "Medium",
+      "recommended_correction": "Normalize whitespace before required-field checks without claiming semantic validation.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/SHAPE-conditional-CONTENT_IDEA-commercial_claims",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:structural"
+    },
+    {
+      "id": "SHAPE-conditional-CONTENT_IDEA-platform_specific",
+      "expected": "FAIL_STRUCTURAL",
+      "actual": {
+        "result": "FAIL_STRUCTURAL",
+        "missing": [
+          "platform_fit"
+        ],
+        "checked": 6,
+        "semantic_verified": false
+      },
+      "outcome": "PASS",
+      "execution_mode": "deterministic",
+      "group": "structural",
+      "capability": "Deliverable shape across capabilities",
+      "contract": "src/ai-creative-skill/scripts/validate_deliverable.py",
+      "risk": "Required substantive fields must reject whitespace; structural pass is not semantic acceptance.",
+      "fixture_refs": [
+        "validation/harness.py:structural"
+      ],
+      "severity": "Medium",
+      "recommended_correction": "Normalize whitespace before required-field checks without claiming semantic validation.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/SHAPE-conditional-CONTENT_IDEA-platform_specific",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:structural"
+    },
+    {
+      "id": "SHAPE-whitespace-CONTENT_IDEA",
+      "expected": "FAIL_STRUCTURAL",
+      "actual": {
+        "result": "PASS_STRUCTURAL",
+        "missing": [],
+        "checked": 5,
+        "semantic_verified": false
+      },
+      "outcome": "FAIL",
+      "execution_mode": "deterministic",
+      "group": "structural",
+      "capability": "Deliverable shape across capabilities",
+      "contract": "src/ai-creative-skill/scripts/validate_deliverable.py",
+      "risk": "Required substantive fields must reject whitespace; structural pass is not semantic acceptance.",
+      "fixture_refs": [
+        "validation/harness.py:structural"
+      ],
+      "severity": "Medium",
+      "recommended_correction": "Normalize whitespace before required-field checks without claiming semantic validation.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/SHAPE-whitespace-CONTENT_IDEA",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:structural"
+    },
+    {
+      "id": "SHAPE-valid-STORYBOARD_PLAN",
+      "expected": "PASS_STRUCTURAL; semantic false",
+      "actual": {
+        "result": "PASS_STRUCTURAL",
+        "missing": [],
+        "checked": 7,
+        "semantic_verified": false
+      },
+      "outcome": "PASS",
+      "execution_mode": "deterministic",
+      "group": "structural",
+      "capability": "Deliverable shape across capabilities",
+      "contract": "src/ai-creative-skill/scripts/validate_deliverable.py",
+      "risk": "Required substantive fields must reject whitespace; structural pass is not semantic acceptance.",
+      "fixture_refs": [
+        "validation/harness.py:structural"
+      ],
+      "severity": "Medium",
+      "recommended_correction": "Normalize whitespace before required-field checks without claiming semantic validation.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/SHAPE-valid-STORYBOARD_PLAN",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:structural"
+    },
+    {
+      "id": "SHAPE-missing-STORYBOARD_PLAN-concept_ref",
+      "expected": "FAIL_STRUCTURAL",
+      "actual": {
+        "result": "FAIL_STRUCTURAL",
+        "missing": [
+          "concept_ref"
+        ],
+        "checked": 7,
+        "semantic_verified": false
+      },
+      "outcome": "PASS",
+      "execution_mode": "deterministic",
+      "group": "structural",
+      "capability": "Deliverable shape across capabilities",
+      "contract": "src/ai-creative-skill/scripts/validate_deliverable.py",
+      "risk": "Required substantive fields must reject whitespace; structural pass is not semantic acceptance.",
+      "fixture_refs": [
+        "validation/harness.py:structural"
+      ],
+      "severity": "Medium",
+      "recommended_correction": "Normalize whitespace before required-field checks without claiming semantic validation.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/SHAPE-missing-STORYBOARD_PLAN-concept_ref",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:structural"
+    },
+    {
+      "id": "SHAPE-missing-STORYBOARD_PLAN-beat_sequence",
+      "expected": "FAIL_STRUCTURAL",
+      "actual": {
+        "result": "FAIL_STRUCTURAL",
+        "missing": [
+          "beat_sequence"
+        ],
+        "checked": 7,
+        "semantic_verified": false
+      },
+      "outcome": "PASS",
+      "execution_mode": "deterministic",
+      "group": "structural",
+      "capability": "Deliverable shape across capabilities",
+      "contract": "src/ai-creative-skill/scripts/validate_deliverable.py",
+      "risk": "Required substantive fields must reject whitespace; structural pass is not semantic acceptance.",
+      "fixture_refs": [
+        "validation/harness.py:structural"
+      ],
+      "severity": "Medium",
+      "recommended_correction": "Normalize whitespace before required-field checks without claiming semantic validation.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/SHAPE-missing-STORYBOARD_PLAN-beat_sequence",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:structural"
+    },
+    {
+      "id": "SHAPE-missing-STORYBOARD_PLAN-spatial_relationships",
+      "expected": "FAIL_STRUCTURAL",
+      "actual": {
+        "result": "FAIL_STRUCTURAL",
+        "missing": [
+          "spatial_relationships"
+        ],
+        "checked": 7,
+        "semantic_verified": false
+      },
+      "outcome": "PASS",
+      "execution_mode": "deterministic",
+      "group": "structural",
+      "capability": "Deliverable shape across capabilities",
+      "contract": "src/ai-creative-skill/scripts/validate_deliverable.py",
+      "risk": "Required substantive fields must reject whitespace; structural pass is not semantic acceptance.",
+      "fixture_refs": [
+        "validation/harness.py:structural"
+      ],
+      "severity": "Medium",
+      "recommended_correction": "Normalize whitespace before required-field checks without claiming semantic validation.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/SHAPE-missing-STORYBOARD_PLAN-spatial_relationships",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:structural"
+    },
+    {
+      "id": "SHAPE-missing-STORYBOARD_PLAN-critical_reveals",
+      "expected": "FAIL_STRUCTURAL",
+      "actual": {
+        "result": "FAIL_STRUCTURAL",
+        "missing": [
+          "critical_reveals"
+        ],
+        "checked": 7,
+        "semantic_verified": false
+      },
+      "outcome": "PASS",
+      "execution_mode": "deterministic",
+      "group": "structural",
+      "capability": "Deliverable shape across capabilities",
+      "contract": "src/ai-creative-skill/scripts/validate_deliverable.py",
+      "risk": "Required substantive fields must reject whitespace; structural pass is not semantic acceptance.",
+      "fixture_refs": [
+        "validation/harness.py:structural"
+      ],
+      "severity": "Medium",
+      "recommended_correction": "Normalize whitespace before required-field checks without claiming semantic validation.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/SHAPE-missing-STORYBOARD_PLAN-critical_reveals",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:structural"
+    },
+    {
+      "id": "SHAPE-missing-STORYBOARD_PLAN-continuity_in_out",
+      "expected": "FAIL_STRUCTURAL",
+      "actual": {
+        "result": "FAIL_STRUCTURAL",
+        "missing": [
+          "continuity_in_out"
+        ],
+        "checked": 7,
+        "semantic_verified": false
+      },
+      "outcome": "PASS",
+      "execution_mode": "deterministic",
+      "group": "structural",
+      "capability": "Deliverable shape across capabilities",
+      "contract": "src/ai-creative-skill/scripts/validate_deliverable.py",
+      "risk": "Required substantive fields must reject whitespace; structural pass is not semantic acceptance.",
+      "fixture_refs": [
+        "validation/harness.py:structural"
+      ],
+      "severity": "Medium",
+      "recommended_correction": "Normalize whitespace before required-field checks without claiming semantic validation.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/SHAPE-missing-STORYBOARD_PLAN-continuity_in_out",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:structural"
+    },
+    {
+      "id": "SHAPE-missing-STORYBOARD_PLAN-reference_authority_roles",
+      "expected": "FAIL_STRUCTURAL",
+      "actual": {
+        "result": "FAIL_STRUCTURAL",
+        "missing": [
+          "reference_authority_roles"
+        ],
+        "checked": 7,
+        "semantic_verified": false
+      },
+      "outcome": "PASS",
+      "execution_mode": "deterministic",
+      "group": "structural",
+      "capability": "Deliverable shape across capabilities",
+      "contract": "src/ai-creative-skill/scripts/validate_deliverable.py",
+      "risk": "Required substantive fields must reject whitespace; structural pass is not semantic acceptance.",
+      "fixture_refs": [
+        "validation/harness.py:structural"
+      ],
+      "severity": "Medium",
+      "recommended_correction": "Normalize whitespace before required-field checks without claiming semantic validation.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/SHAPE-missing-STORYBOARD_PLAN-reference_authority_roles",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:structural"
+    },
+    {
+      "id": "SHAPE-missing-STORYBOARD_PLAN-open_creative_zones",
+      "expected": "FAIL_STRUCTURAL",
+      "actual": {
+        "result": "FAIL_STRUCTURAL",
+        "missing": [
+          "open_creative_zones"
+        ],
+        "checked": 7,
+        "semantic_verified": false
+      },
+      "outcome": "PASS",
+      "execution_mode": "deterministic",
+      "group": "structural",
+      "capability": "Deliverable shape across capabilities",
+      "contract": "src/ai-creative-skill/scripts/validate_deliverable.py",
+      "risk": "Required substantive fields must reject whitespace; structural pass is not semantic acceptance.",
+      "fixture_refs": [
+        "validation/harness.py:structural"
+      ],
+      "severity": "Medium",
+      "recommended_correction": "Normalize whitespace before required-field checks without claiming semantic validation.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/SHAPE-missing-STORYBOARD_PLAN-open_creative_zones",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:structural"
+    },
+    {
+      "id": "SHAPE-conditional-STORYBOARD_PLAN-multipart",
+      "expected": "FAIL_STRUCTURAL",
+      "actual": {
+        "result": "FAIL_STRUCTURAL",
+        "missing": [
+          "chapter_seams"
+        ],
+        "checked": 8,
+        "semantic_verified": false
+      },
+      "outcome": "PASS",
+      "execution_mode": "deterministic",
+      "group": "structural",
+      "capability": "Deliverable shape across capabilities",
+      "contract": "src/ai-creative-skill/scripts/validate_deliverable.py",
+      "risk": "Required substantive fields must reject whitespace; structural pass is not semantic acceptance.",
+      "fixture_refs": [
+        "validation/harness.py:structural"
+      ],
+      "severity": "Medium",
+      "recommended_correction": "Normalize whitespace before required-field checks without claiming semantic validation.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/SHAPE-conditional-STORYBOARD_PLAN-multipart",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:structural"
+    },
+    {
+      "id": "SHAPE-conditional-STORYBOARD_PLAN-product_real",
+      "expected": "FAIL_STRUCTURAL",
+      "actual": {
+        "result": "FAIL_STRUCTURAL",
+        "missing": [
+          "product_identity_anchor"
+        ],
+        "checked": 8,
+        "semantic_verified": false
+      },
+      "outcome": "PASS",
+      "execution_mode": "deterministic",
+      "group": "structural",
+      "capability": "Deliverable shape across capabilities",
+      "contract": "src/ai-creative-skill/scripts/validate_deliverable.py",
+      "risk": "Required substantive fields must reject whitespace; structural pass is not semantic acceptance.",
+      "fixture_refs": [
+        "validation/harness.py:structural"
+      ],
+      "severity": "Medium",
+      "recommended_correction": "Normalize whitespace before required-field checks without claiming semantic validation.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/SHAPE-conditional-STORYBOARD_PLAN-product_real",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:structural"
+    },
+    {
+      "id": "SHAPE-conditional-STORYBOARD_PLAN-dialogue",
+      "expected": "FAIL_STRUCTURAL",
+      "actual": {
+        "result": "FAIL_STRUCTURAL",
+        "missing": [
+          "speech_roles"
+        ],
+        "checked": 8,
+        "semantic_verified": false
+      },
+      "outcome": "PASS",
+      "execution_mode": "deterministic",
+      "group": "structural",
+      "capability": "Deliverable shape across capabilities",
+      "contract": "src/ai-creative-skill/scripts/validate_deliverable.py",
+      "risk": "Required substantive fields must reject whitespace; structural pass is not semantic acceptance.",
+      "fixture_refs": [
+        "validation/harness.py:structural"
+      ],
+      "severity": "Medium",
+      "recommended_correction": "Normalize whitespace before required-field checks without claiming semantic validation.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/SHAPE-conditional-STORYBOARD_PLAN-dialogue",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:structural"
+    },
+    {
+      "id": "SHAPE-conditional-STORYBOARD_PLAN-user_requested_image_storyboard",
+      "expected": "FAIL_STRUCTURAL",
+      "actual": {
+        "result": "FAIL_STRUCTURAL",
+        "missing": [
+          "visual_panels"
+        ],
+        "checked": 8,
+        "semantic_verified": false
+      },
+      "outcome": "PASS",
+      "execution_mode": "deterministic",
+      "group": "structural",
+      "capability": "Deliverable shape across capabilities",
+      "contract": "src/ai-creative-skill/scripts/validate_deliverable.py",
+      "risk": "Required substantive fields must reject whitespace; structural pass is not semantic acceptance.",
+      "fixture_refs": [
+        "validation/harness.py:structural"
+      ],
+      "severity": "Medium",
+      "recommended_correction": "Normalize whitespace before required-field checks without claiming semantic validation.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/SHAPE-conditional-STORYBOARD_PLAN-user_requested_image_storyboard",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:structural"
+    },
+    {
+      "id": "SHAPE-whitespace-STORYBOARD_PLAN",
+      "expected": "FAIL_STRUCTURAL",
+      "actual": {
+        "result": "PASS_STRUCTURAL",
+        "missing": [],
+        "checked": 7,
+        "semantic_verified": false
+      },
+      "outcome": "FAIL",
+      "execution_mode": "deterministic",
+      "group": "structural",
+      "capability": "Deliverable shape across capabilities",
+      "contract": "src/ai-creative-skill/scripts/validate_deliverable.py",
+      "risk": "Required substantive fields must reject whitespace; structural pass is not semantic acceptance.",
+      "fixture_refs": [
+        "validation/harness.py:structural"
+      ],
+      "severity": "Medium",
+      "recommended_correction": "Normalize whitespace before required-field checks without claiming semantic validation.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/SHAPE-whitespace-STORYBOARD_PLAN",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:structural"
+    },
+    {
+      "id": "SHAPE-valid-VIDEO_CREATIVE_DIRECTION",
+      "expected": "PASS_STRUCTURAL; semantic false",
+      "actual": {
+        "result": "PASS_STRUCTURAL",
+        "missing": [],
+        "checked": 6,
+        "semantic_verified": false
+      },
+      "outcome": "PASS",
+      "execution_mode": "deterministic",
+      "group": "structural",
+      "capability": "Deliverable shape across capabilities",
+      "contract": "src/ai-creative-skill/scripts/validate_deliverable.py",
+      "risk": "Required substantive fields must reject whitespace; structural pass is not semantic acceptance.",
+      "fixture_refs": [
+        "validation/harness.py:structural"
+      ],
+      "severity": "Medium",
+      "recommended_correction": "Normalize whitespace before required-field checks without claiming semantic validation.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/SHAPE-valid-VIDEO_CREATIVE_DIRECTION",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:structural"
+    },
+    {
+      "id": "SHAPE-missing-VIDEO_CREATIVE_DIRECTION-intent",
+      "expected": "FAIL_STRUCTURAL",
+      "actual": {
+        "result": "FAIL_STRUCTURAL",
+        "missing": [
+          "intent"
+        ],
+        "checked": 6,
+        "semantic_verified": false
+      },
+      "outcome": "PASS",
+      "execution_mode": "deterministic",
+      "group": "structural",
+      "capability": "Deliverable shape across capabilities",
+      "contract": "src/ai-creative-skill/scripts/validate_deliverable.py",
+      "risk": "Required substantive fields must reject whitespace; structural pass is not semantic acceptance.",
+      "fixture_refs": [
+        "validation/harness.py:structural"
+      ],
+      "severity": "Medium",
+      "recommended_correction": "Normalize whitespace before required-field checks without claiming semantic validation.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/SHAPE-missing-VIDEO_CREATIVE_DIRECTION-intent",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:structural"
+    },
+    {
+      "id": "SHAPE-missing-VIDEO_CREATIVE_DIRECTION-setting_atmosphere",
+      "expected": "FAIL_STRUCTURAL",
+      "actual": {
+        "result": "FAIL_STRUCTURAL",
+        "missing": [
+          "setting_atmosphere"
+        ],
+        "checked": 6,
+        "semantic_verified": false
+      },
+      "outcome": "PASS",
+      "execution_mode": "deterministic",
+      "group": "structural",
+      "capability": "Deliverable shape across capabilities",
+      "contract": "src/ai-creative-skill/scripts/validate_deliverable.py",
+      "risk": "Required substantive fields must reject whitespace; structural pass is not semantic acceptance.",
+      "fixture_refs": [
+        "validation/harness.py:structural"
+      ],
+      "severity": "Medium",
+      "recommended_correction": "Normalize whitespace before required-field checks without claiming semantic validation.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/SHAPE-missing-VIDEO_CREATIVE_DIRECTION-setting_atmosphere",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:structural"
+    },
+    {
+      "id": "SHAPE-missing-VIDEO_CREATIVE_DIRECTION-script_and_creative_direction",
+      "expected": "FAIL_STRUCTURAL",
+      "actual": {
+        "result": "FAIL_STRUCTURAL",
+        "missing": [
+          "script_and_creative_direction"
+        ],
+        "checked": 6,
+        "semantic_verified": false
+      },
+      "outcome": "PASS",
+      "execution_mode": "deterministic",
+      "group": "structural",
+      "capability": "Deliverable shape across capabilities",
+      "contract": "src/ai-creative-skill/scripts/validate_deliverable.py",
+      "risk": "Required substantive fields must reject whitespace; structural pass is not semantic acceptance.",
+      "fixture_refs": [
+        "validation/harness.py:structural"
+      ],
+      "severity": "Medium",
+      "recommended_correction": "Normalize whitespace before required-field checks without claiming semantic validation.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/SHAPE-missing-VIDEO_CREATIVE_DIRECTION-script_and_creative_direction",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:structural"
+    },
+    {
+      "id": "SHAPE-missing-VIDEO_CREATIVE_DIRECTION-creative_invariants",
+      "expected": "FAIL_STRUCTURAL",
+      "actual": {
+        "result": "FAIL_STRUCTURAL",
+        "missing": [
+          "creative_invariants"
+        ],
+        "checked": 6,
+        "semantic_verified": false
+      },
+      "outcome": "PASS",
+      "execution_mode": "deterministic",
+      "group": "structural",
+      "capability": "Deliverable shape across capabilities",
+      "contract": "src/ai-creative-skill/scripts/validate_deliverable.py",
+      "risk": "Required substantive fields must reject whitespace; structural pass is not semantic acceptance.",
+      "fixture_refs": [
+        "validation/harness.py:structural"
+      ],
+      "severity": "Medium",
+      "recommended_correction": "Normalize whitespace before required-field checks without claiming semantic validation.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/SHAPE-missing-VIDEO_CREATIVE_DIRECTION-creative_invariants",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:structural"
+    },
+    {
+      "id": "SHAPE-missing-VIDEO_CREATIVE_DIRECTION-creative_open_zones",
+      "expected": "FAIL_STRUCTURAL",
+      "actual": {
+        "result": "FAIL_STRUCTURAL",
+        "missing": [
+          "creative_open_zones"
+        ],
+        "checked": 6,
+        "semantic_verified": false
+      },
+      "outcome": "PASS",
+      "execution_mode": "deterministic",
+      "group": "structural",
+      "capability": "Deliverable shape across capabilities",
+      "contract": "src/ai-creative-skill/scripts/validate_deliverable.py",
+      "risk": "Required substantive fields must reject whitespace; structural pass is not semantic acceptance.",
+      "fixture_refs": [
+        "validation/harness.py:structural"
+      ],
+      "severity": "Medium",
+      "recommended_correction": "Normalize whitespace before required-field checks without claiming semantic validation.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/SHAPE-missing-VIDEO_CREATIVE_DIRECTION-creative_open_zones",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:structural"
+    },
+    {
+      "id": "SHAPE-missing-VIDEO_CREATIVE_DIRECTION-overall_delivery_constraints",
+      "expected": "FAIL_STRUCTURAL",
+      "actual": {
+        "result": "FAIL_STRUCTURAL",
+        "missing": [
+          "overall_delivery_constraints"
+        ],
+        "checked": 6,
+        "semantic_verified": false
+      },
+      "outcome": "PASS",
+      "execution_mode": "deterministic",
+      "group": "structural",
+      "capability": "Deliverable shape across capabilities",
+      "contract": "src/ai-creative-skill/scripts/validate_deliverable.py",
+      "risk": "Required substantive fields must reject whitespace; structural pass is not semantic acceptance.",
+      "fixture_refs": [
+        "validation/harness.py:structural"
+      ],
+      "severity": "Medium",
+      "recommended_correction": "Normalize whitespace before required-field checks without claiming semantic validation.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/SHAPE-missing-VIDEO_CREATIVE_DIRECTION-overall_delivery_constraints",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:structural"
+    },
+    {
+      "id": "SHAPE-conditional-VIDEO_CREATIVE_DIRECTION-visible_text_needed",
+      "expected": "FAIL_STRUCTURAL",
+      "actual": {
+        "result": "FAIL_STRUCTURAL",
+        "missing": [
+          "text_on_screen"
+        ],
+        "checked": 7,
+        "semantic_verified": false
+      },
+      "outcome": "PASS",
+      "execution_mode": "deterministic",
+      "group": "structural",
+      "capability": "Deliverable shape across capabilities",
+      "contract": "src/ai-creative-skill/scripts/validate_deliverable.py",
+      "risk": "Required substantive fields must reject whitespace; structural pass is not semantic acceptance.",
+      "fixture_refs": [
+        "validation/harness.py:structural"
+      ],
+      "severity": "Medium",
+      "recommended_correction": "Normalize whitespace before required-field checks without claiming semantic validation.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/SHAPE-conditional-VIDEO_CREATIVE_DIRECTION-visible_text_needed",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:structural"
+    },
+    {
+      "id": "SHAPE-conditional-VIDEO_CREATIVE_DIRECTION-dialogue",
+      "expected": "FAIL_STRUCTURAL",
+      "actual": {
+        "result": "FAIL_STRUCTURAL",
+        "missing": [
+          "speaker_dialogue",
+          "voice_language"
+        ],
+        "checked": 8,
+        "semantic_verified": false
+      },
+      "outcome": "PASS",
+      "execution_mode": "deterministic",
+      "group": "structural",
+      "capability": "Deliverable shape across capabilities",
+      "contract": "src/ai-creative-skill/scripts/validate_deliverable.py",
+      "risk": "Required substantive fields must reject whitespace; structural pass is not semantic acceptance.",
+      "fixture_refs": [
+        "validation/harness.py:structural"
+      ],
+      "severity": "Medium",
+      "recommended_correction": "Normalize whitespace before required-field checks without claiming semantic validation.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/SHAPE-conditional-VIDEO_CREATIVE_DIRECTION-dialogue",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:structural"
+    },
+    {
+      "id": "SHAPE-conditional-VIDEO_CREATIVE_DIRECTION-multipart",
+      "expected": "FAIL_STRUCTURAL",
+      "actual": {
+        "result": "FAIL_STRUCTURAL",
+        "missing": [
+          "seam_state"
+        ],
+        "checked": 7,
+        "semantic_verified": false
+      },
+      "outcome": "PASS",
+      "execution_mode": "deterministic",
+      "group": "structural",
+      "capability": "Deliverable shape across capabilities",
+      "contract": "src/ai-creative-skill/scripts/validate_deliverable.py",
+      "risk": "Required substantive fields must reject whitespace; structural pass is not semantic acceptance.",
+      "fixture_refs": [
+        "validation/harness.py:structural"
+      ],
+      "severity": "Medium",
+      "recommended_correction": "Normalize whitespace before required-field checks without claiming semantic validation.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/SHAPE-conditional-VIDEO_CREATIVE_DIRECTION-multipart",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:structural"
+    },
+    {
+      "id": "SHAPE-conditional-VIDEO_CREATIVE_DIRECTION-commercial_product",
+      "expected": "FAIL_STRUCTURAL",
+      "actual": {
+        "result": "FAIL_STRUCTURAL",
+        "missing": [
+          "product_identity_authority"
+        ],
+        "checked": 7,
+        "semantic_verified": false
+      },
+      "outcome": "PASS",
+      "execution_mode": "deterministic",
+      "group": "structural",
+      "capability": "Deliverable shape across capabilities",
+      "contract": "src/ai-creative-skill/scripts/validate_deliverable.py",
+      "risk": "Required substantive fields must reject whitespace; structural pass is not semantic acceptance.",
+      "fixture_refs": [
+        "validation/harness.py:structural"
+      ],
+      "severity": "Medium",
+      "recommended_correction": "Normalize whitespace before required-field checks without claiming semantic validation.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/SHAPE-conditional-VIDEO_CREATIVE_DIRECTION-commercial_product",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:structural"
+    },
+    {
+      "id": "SHAPE-conditional-VIDEO_CREATIVE_DIRECTION-exact_timing",
+      "expected": "FAIL_STRUCTURAL",
+      "actual": {
+        "result": "FAIL_STRUCTURAL",
+        "missing": [
+          "timing_authority"
+        ],
+        "checked": 7,
+        "semantic_verified": false
+      },
+      "outcome": "PASS",
+      "execution_mode": "deterministic",
+      "group": "structural",
+      "capability": "Deliverable shape across capabilities",
+      "contract": "src/ai-creative-skill/scripts/validate_deliverable.py",
+      "risk": "Required substantive fields must reject whitespace; structural pass is not semantic acceptance.",
+      "fixture_refs": [
+        "validation/harness.py:structural"
+      ],
+      "severity": "Medium",
+      "recommended_correction": "Normalize whitespace before required-field checks without claiming semantic validation.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/SHAPE-conditional-VIDEO_CREATIVE_DIRECTION-exact_timing",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:structural"
+    },
+    {
+      "id": "SHAPE-whitespace-VIDEO_CREATIVE_DIRECTION",
+      "expected": "FAIL_STRUCTURAL",
+      "actual": {
+        "result": "PASS_STRUCTURAL",
+        "missing": [],
+        "checked": 6,
+        "semantic_verified": false
+      },
+      "outcome": "FAIL",
+      "execution_mode": "deterministic",
+      "group": "structural",
+      "capability": "Deliverable shape across capabilities",
+      "contract": "src/ai-creative-skill/scripts/validate_deliverable.py",
+      "risk": "Required substantive fields must reject whitespace; structural pass is not semantic acceptance.",
+      "fixture_refs": [
+        "validation/harness.py:structural"
+      ],
+      "severity": "Medium",
+      "recommended_correction": "Normalize whitespace before required-field checks without claiming semantic validation.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/SHAPE-whitespace-VIDEO_CREATIVE_DIRECTION",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:structural"
+    },
+    {
+      "id": "SHAPE-valid-REFERENCE_MANIFEST",
+      "expected": "PASS_STRUCTURAL; semantic false",
+      "actual": {
+        "result": "PASS_STRUCTURAL",
+        "missing": [],
+        "checked": 5,
+        "semantic_verified": false
+      },
+      "outcome": "PASS",
+      "execution_mode": "deterministic",
+      "group": "structural",
+      "capability": "Deliverable shape across capabilities",
+      "contract": "src/ai-creative-skill/scripts/validate_deliverable.py",
+      "risk": "Required substantive fields must reject whitespace; structural pass is not semantic acceptance.",
+      "fixture_refs": [
+        "validation/harness.py:structural"
+      ],
+      "severity": "Medium",
+      "recommended_correction": "Normalize whitespace before required-field checks without claiming semantic validation.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/SHAPE-valid-REFERENCE_MANIFEST",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:structural"
+    },
+    {
+      "id": "SHAPE-missing-REFERENCE_MANIFEST-reference_ids",
+      "expected": "FAIL_STRUCTURAL",
+      "actual": {
+        "result": "FAIL_STRUCTURAL",
+        "missing": [
+          "reference_ids"
+        ],
+        "checked": 5,
+        "semantic_verified": false
+      },
+      "outcome": "PASS",
+      "execution_mode": "deterministic",
+      "group": "structural",
+      "capability": "Deliverable shape across capabilities",
+      "contract": "src/ai-creative-skill/scripts/validate_deliverable.py",
+      "risk": "Required substantive fields must reject whitespace; structural pass is not semantic acceptance.",
+      "fixture_refs": [
+        "validation/harness.py:structural"
+      ],
+      "severity": "Medium",
+      "recommended_correction": "Normalize whitespace before required-field checks without claiming semantic validation.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/SHAPE-missing-REFERENCE_MANIFEST-reference_ids",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:structural"
+    },
+    {
+      "id": "SHAPE-missing-REFERENCE_MANIFEST-per_reference_role",
+      "expected": "FAIL_STRUCTURAL",
+      "actual": {
+        "result": "FAIL_STRUCTURAL",
+        "missing": [
+          "per_reference_role"
+        ],
+        "checked": 5,
+        "semantic_verified": false
+      },
+      "outcome": "PASS",
+      "execution_mode": "deterministic",
+      "group": "structural",
+      "capability": "Deliverable shape across capabilities",
+      "contract": "src/ai-creative-skill/scripts/validate_deliverable.py",
+      "risk": "Required substantive fields must reject whitespace; structural pass is not semantic acceptance.",
+      "fixture_refs": [
+        "validation/harness.py:structural"
+      ],
+      "severity": "Medium",
+      "recommended_correction": "Normalize whitespace before required-field checks without claiming semantic validation.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/SHAPE-missing-REFERENCE_MANIFEST-per_reference_role",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:structural"
+    },
+    {
+      "id": "SHAPE-missing-REFERENCE_MANIFEST-authority_and_excluded_inheritance",
+      "expected": "FAIL_STRUCTURAL",
+      "actual": {
+        "result": "FAIL_STRUCTURAL",
+        "missing": [
+          "authority_and_excluded_inheritance"
+        ],
+        "checked": 5,
+        "semantic_verified": false
+      },
+      "outcome": "PASS",
+      "execution_mode": "deterministic",
+      "group": "structural",
+      "capability": "Deliverable shape across capabilities",
+      "contract": "src/ai-creative-skill/scripts/validate_deliverable.py",
+      "risk": "Required substantive fields must reject whitespace; structural pass is not semantic acceptance.",
+      "fixture_refs": [
+        "validation/harness.py:structural"
+      ],
+      "severity": "Medium",
+      "recommended_correction": "Normalize whitespace before required-field checks without claiming semantic validation.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/SHAPE-missing-REFERENCE_MANIFEST-authority_and_excluded_inheritance",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:structural"
+    },
+    {
+      "id": "SHAPE-missing-REFERENCE_MANIFEST-approved_status",
+      "expected": "FAIL_STRUCTURAL",
+      "actual": {
+        "result": "FAIL_STRUCTURAL",
+        "missing": [
+          "approved_status"
+        ],
+        "checked": 5,
+        "semantic_verified": false
+      },
+      "outcome": "PASS",
+      "execution_mode": "deterministic",
+      "group": "structural",
+      "capability": "Deliverable shape across capabilities",
+      "contract": "src/ai-creative-skill/scripts/validate_deliverable.py",
+      "risk": "Required substantive fields must reject whitespace; structural pass is not semantic acceptance.",
+      "fixture_refs": [
+        "validation/harness.py:structural"
+      ],
+      "severity": "Medium",
+      "recommended_correction": "Normalize whitespace before required-field checks without claiming semantic validation.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/SHAPE-missing-REFERENCE_MANIFEST-approved_status",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:structural"
+    },
+    {
+      "id": "SHAPE-missing-REFERENCE_MANIFEST-actual_input_selection",
+      "expected": "FAIL_STRUCTURAL",
+      "actual": {
+        "result": "FAIL_STRUCTURAL",
+        "missing": [
+          "actual_input_selection"
+        ],
+        "checked": 5,
+        "semantic_verified": false
+      },
+      "outcome": "PASS",
+      "execution_mode": "deterministic",
+      "group": "structural",
+      "capability": "Deliverable shape across capabilities",
+      "contract": "src/ai-creative-skill/scripts/validate_deliverable.py",
+      "risk": "Required substantive fields must reject whitespace; structural pass is not semantic acceptance.",
+      "fixture_refs": [
+        "validation/harness.py:structural"
+      ],
+      "severity": "Medium",
+      "recommended_correction": "Normalize whitespace before required-field checks without claiming semantic validation.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/SHAPE-missing-REFERENCE_MANIFEST-actual_input_selection",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:structural"
+    },
+    {
+      "id": "SHAPE-conditional-REFERENCE_MANIFEST-existing_media",
+      "expected": "FAIL_STRUCTURAL",
+      "actual": {
+        "result": "FAIL_STRUCTURAL",
+        "missing": [
+          "reusable_source_refs"
+        ],
+        "checked": 6,
+        "semantic_verified": false
+      },
+      "outcome": "PASS",
+      "execution_mode": "deterministic",
+      "group": "structural",
+      "capability": "Deliverable shape across capabilities",
+      "contract": "src/ai-creative-skill/scripts/validate_deliverable.py",
+      "risk": "Required substantive fields must reject whitespace; structural pass is not semantic acceptance.",
+      "fixture_refs": [
+        "validation/harness.py:structural"
+      ],
+      "severity": "Medium",
+      "recommended_correction": "Normalize whitespace before required-field checks without claiming semantic validation.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/SHAPE-conditional-REFERENCE_MANIFEST-existing_media",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:structural"
+    },
+    {
+      "id": "SHAPE-conditional-REFERENCE_MANIFEST-real_product",
+      "expected": "FAIL_STRUCTURAL",
+      "actual": {
+        "result": "FAIL_STRUCTURAL",
+        "missing": [
+          "real_product_anchor"
+        ],
+        "checked": 6,
+        "semantic_verified": false
+      },
+      "outcome": "PASS",
+      "execution_mode": "deterministic",
+      "group": "structural",
+      "capability": "Deliverable shape across capabilities",
+      "contract": "src/ai-creative-skill/scripts/validate_deliverable.py",
+      "risk": "Required substantive fields must reject whitespace; structural pass is not semantic acceptance.",
+      "fixture_refs": [
+        "validation/harness.py:structural"
+      ],
+      "severity": "Medium",
+      "recommended_correction": "Normalize whitespace before required-field checks without claiming semantic validation.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/SHAPE-conditional-REFERENCE_MANIFEST-real_product",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:structural"
+    },
+    {
+      "id": "SHAPE-conditional-REFERENCE_MANIFEST-multipart",
+      "expected": "FAIL_STRUCTURAL",
+      "actual": {
+        "result": "FAIL_STRUCTURAL",
+        "missing": [
+          "approved_seam_reference"
+        ],
+        "checked": 6,
+        "semantic_verified": false
+      },
+      "outcome": "PASS",
+      "execution_mode": "deterministic",
+      "group": "structural",
+      "capability": "Deliverable shape across capabilities",
+      "contract": "src/ai-creative-skill/scripts/validate_deliverable.py",
+      "risk": "Required substantive fields must reject whitespace; structural pass is not semantic acceptance.",
+      "fixture_refs": [
+        "validation/harness.py:structural"
+      ],
+      "severity": "Medium",
+      "recommended_correction": "Normalize whitespace before required-field checks without claiming semantic validation.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/SHAPE-conditional-REFERENCE_MANIFEST-multipart",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:structural"
+    },
+    {
+      "id": "SHAPE-whitespace-REFERENCE_MANIFEST",
+      "expected": "FAIL_STRUCTURAL",
+      "actual": {
+        "result": "PASS_STRUCTURAL",
+        "missing": [],
+        "checked": 5,
+        "semantic_verified": false
+      },
+      "outcome": "FAIL",
+      "execution_mode": "deterministic",
+      "group": "structural",
+      "capability": "Deliverable shape across capabilities",
+      "contract": "src/ai-creative-skill/scripts/validate_deliverable.py",
+      "risk": "Required substantive fields must reject whitespace; structural pass is not semantic acceptance.",
+      "fixture_refs": [
+        "validation/harness.py:structural"
+      ],
+      "severity": "Medium",
+      "recommended_correction": "Normalize whitespace before required-field checks without claiming semantic validation.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/SHAPE-whitespace-REFERENCE_MANIFEST",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:structural"
+    },
+    {
+      "id": "SHAPE-valid-PROJECT_NEXT_ACTION",
+      "expected": "PASS_STRUCTURAL; semantic false",
+      "actual": {
+        "result": "PASS_STRUCTURAL",
+        "missing": [],
+        "checked": 5,
+        "semantic_verified": false
+      },
+      "outcome": "PASS",
+      "execution_mode": "deterministic",
+      "group": "structural",
+      "capability": "Deliverable shape across capabilities",
+      "contract": "src/ai-creative-skill/scripts/validate_deliverable.py",
+      "risk": "Required substantive fields must reject whitespace; structural pass is not semantic acceptance.",
+      "fixture_refs": [
+        "validation/harness.py:structural"
+      ],
+      "severity": "Medium",
+      "recommended_correction": "Normalize whitespace before required-field checks without claiming semantic validation.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/SHAPE-valid-PROJECT_NEXT_ACTION",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:structural"
+    },
+    {
+      "id": "SHAPE-missing-PROJECT_NEXT_ACTION-completed_now",
+      "expected": "FAIL_STRUCTURAL",
+      "actual": {
+        "result": "FAIL_STRUCTURAL",
+        "missing": [
+          "completed_now"
+        ],
+        "checked": 5,
+        "semantic_verified": false
+      },
+      "outcome": "PASS",
+      "execution_mode": "deterministic",
+      "group": "structural",
+      "capability": "Deliverable shape across capabilities",
+      "contract": "src/ai-creative-skill/scripts/validate_deliverable.py",
+      "risk": "Required substantive fields must reject whitespace; structural pass is not semantic acceptance.",
+      "fixture_refs": [
+        "validation/harness.py:structural"
+      ],
+      "severity": "Medium",
+      "recommended_correction": "Normalize whitespace before required-field checks without claiming semantic validation.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/SHAPE-missing-PROJECT_NEXT_ACTION-completed_now",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:structural"
+    },
+    {
+      "id": "SHAPE-missing-PROJECT_NEXT_ACTION-current_project_state",
+      "expected": "FAIL_STRUCTURAL",
+      "actual": {
+        "result": "FAIL_STRUCTURAL",
+        "missing": [
+          "current_project_state"
+        ],
+        "checked": 5,
+        "semantic_verified": false
+      },
+      "outcome": "PASS",
+      "execution_mode": "deterministic",
+      "group": "structural",
+      "capability": "Deliverable shape across capabilities",
+      "contract": "src/ai-creative-skill/scripts/validate_deliverable.py",
+      "risk": "Required substantive fields must reject whitespace; structural pass is not semantic acceptance.",
+      "fixture_refs": [
+        "validation/harness.py:structural"
+      ],
+      "severity": "Medium",
+      "recommended_correction": "Normalize whitespace before required-field checks without claiming semantic validation.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/SHAPE-missing-PROJECT_NEXT_ACTION-current_project_state",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:structural"
+    },
+    {
+      "id": "SHAPE-missing-PROJECT_NEXT_ACTION-recommended_next",
+      "expected": "FAIL_STRUCTURAL",
+      "actual": {
+        "result": "FAIL_STRUCTURAL",
+        "missing": [
+          "recommended_next"
+        ],
+        "checked": 5,
+        "semantic_verified": false
+      },
+      "outcome": "PASS",
+      "execution_mode": "deterministic",
+      "group": "structural",
+      "capability": "Deliverable shape across capabilities",
+      "contract": "src/ai-creative-skill/scripts/validate_deliverable.py",
+      "risk": "Required substantive fields must reject whitespace; structural pass is not semantic acceptance.",
+      "fixture_refs": [
+        "validation/harness.py:structural"
+      ],
+      "severity": "Medium",
+      "recommended_correction": "Normalize whitespace before required-field checks without claiming semantic validation.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/SHAPE-missing-PROJECT_NEXT_ACTION-recommended_next",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:structural"
+    },
+    {
+      "id": "SHAPE-missing-PROJECT_NEXT_ACTION-value_of_next",
+      "expected": "FAIL_STRUCTURAL",
+      "actual": {
+        "result": "FAIL_STRUCTURAL",
+        "missing": [
+          "value_of_next"
+        ],
+        "checked": 5,
+        "semantic_verified": false
+      },
+      "outcome": "PASS",
+      "execution_mode": "deterministic",
+      "group": "structural",
+      "capability": "Deliverable shape across capabilities",
+      "contract": "src/ai-creative-skill/scripts/validate_deliverable.py",
+      "risk": "Required substantive fields must reject whitespace; structural pass is not semantic acceptance.",
+      "fixture_refs": [
+        "validation/harness.py:structural"
+      ],
+      "severity": "Medium",
+      "recommended_correction": "Normalize whitespace before required-field checks without claiming semantic validation.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/SHAPE-missing-PROJECT_NEXT_ACTION-value_of_next",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:structural"
+    },
+    {
+      "id": "SHAPE-missing-PROJECT_NEXT_ACTION-is_authorized_now",
+      "expected": "FAIL_STRUCTURAL",
+      "actual": {
+        "result": "FAIL_STRUCTURAL",
+        "missing": [
+          "is_authorized_now"
+        ],
+        "checked": 5,
+        "semantic_verified": false
+      },
+      "outcome": "PASS",
+      "execution_mode": "deterministic",
+      "group": "structural",
+      "capability": "Deliverable shape across capabilities",
+      "contract": "src/ai-creative-skill/scripts/validate_deliverable.py",
+      "risk": "Required substantive fields must reject whitespace; structural pass is not semantic acceptance.",
+      "fixture_refs": [
+        "validation/harness.py:structural"
+      ],
+      "severity": "Medium",
+      "recommended_correction": "Normalize whitespace before required-field checks without claiming semantic validation.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/SHAPE-missing-PROJECT_NEXT_ACTION-is_authorized_now",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:structural"
+    },
+    {
+      "id": "SHAPE-conditional-PROJECT_NEXT_ACTION-pending_approval",
+      "expected": "FAIL_STRUCTURAL",
+      "actual": {
+        "result": "FAIL_STRUCTURAL",
+        "missing": [
+          "approval_scope"
+        ],
+        "checked": 6,
+        "semantic_verified": false
+      },
+      "outcome": "PASS",
+      "execution_mode": "deterministic",
+      "group": "structural",
+      "capability": "Deliverable shape across capabilities",
+      "contract": "src/ai-creative-skill/scripts/validate_deliverable.py",
+      "risk": "Required substantive fields must reject whitespace; structural pass is not semantic acceptance.",
+      "fixture_refs": [
+        "validation/harness.py:structural"
+      ],
+      "severity": "Medium",
+      "recommended_correction": "Normalize whitespace before required-field checks without claiming semantic validation.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/SHAPE-conditional-PROJECT_NEXT_ACTION-pending_approval",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:structural"
+    },
+    {
+      "id": "SHAPE-conditional-PROJECT_NEXT_ACTION-blocked",
+      "expected": "FAIL_STRUCTURAL",
+      "actual": {
+        "result": "FAIL_STRUCTURAL",
+        "missing": [
+          "blocker_and_resolution"
+        ],
+        "checked": 6,
+        "semantic_verified": false
+      },
+      "outcome": "PASS",
+      "execution_mode": "deterministic",
+      "group": "structural",
+      "capability": "Deliverable shape across capabilities",
+      "contract": "src/ai-creative-skill/scripts/validate_deliverable.py",
+      "risk": "Required substantive fields must reject whitespace; structural pass is not semantic acceptance.",
+      "fixture_refs": [
+        "validation/harness.py:structural"
+      ],
+      "severity": "Medium",
+      "recommended_correction": "Normalize whitespace before required-field checks without claiming semantic validation.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/SHAPE-conditional-PROJECT_NEXT_ACTION-blocked",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:structural"
+    },
+    {
+      "id": "SHAPE-conditional-PROJECT_NEXT_ACTION-dependent_task",
+      "expected": "FAIL_STRUCTURAL",
+      "actual": {
+        "result": "FAIL_STRUCTURAL",
+        "missing": [
+          "dependency"
+        ],
+        "checked": 6,
+        "semantic_verified": false
+      },
+      "outcome": "PASS",
+      "execution_mode": "deterministic",
+      "group": "structural",
+      "capability": "Deliverable shape across capabilities",
+      "contract": "src/ai-creative-skill/scripts/validate_deliverable.py",
+      "risk": "Required substantive fields must reject whitespace; structural pass is not semantic acceptance.",
+      "fixture_refs": [
+        "validation/harness.py:structural"
+      ],
+      "severity": "Medium",
+      "recommended_correction": "Normalize whitespace before required-field checks without claiming semantic validation.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/SHAPE-conditional-PROJECT_NEXT_ACTION-dependent_task",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:structural"
+    },
+    {
+      "id": "SHAPE-whitespace-PROJECT_NEXT_ACTION",
+      "expected": "FAIL_STRUCTURAL",
+      "actual": {
+        "result": "PASS_STRUCTURAL",
+        "missing": [],
+        "checked": 5,
+        "semantic_verified": false
+      },
+      "outcome": "FAIL",
+      "execution_mode": "deterministic",
+      "group": "structural",
+      "capability": "Deliverable shape across capabilities",
+      "contract": "src/ai-creative-skill/scripts/validate_deliverable.py",
+      "risk": "Required substantive fields must reject whitespace; structural pass is not semantic acceptance.",
+      "fixture_refs": [
+        "validation/harness.py:structural"
+      ],
+      "severity": "Medium",
+      "recommended_correction": "Normalize whitespace before required-field checks without claiming semantic validation.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/SHAPE-whitespace-PROJECT_NEXT_ACTION",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:structural"
+    },
+    {
+      "id": "SHAPE-independent-bounded",
+      "expected": "BOUNDED_SCOPE",
+      "actual": {
+        "result": "BOUNDED_SCOPE",
+        "missing": [],
+        "note": "No guarantee of a full deliverable"
+      },
+      "outcome": "PASS",
+      "execution_mode": "deterministic",
+      "group": "structural",
+      "capability": "Deliverable shape across capabilities",
+      "contract": "src/ai-creative-skill/scripts/validate_deliverable.py",
+      "risk": "Required substantive fields must reject whitespace; structural pass is not semantic acceptance.",
+      "fixture_refs": [
+        "validation/harness.py:structural"
+      ],
+      "severity": "Medium",
+      "recommended_correction": "Normalize whitespace before required-field checks without claiming semantic validation.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/SHAPE-independent-bounded",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:structural"
+    },
+    {
+      "id": "MEDIA-path-invariant-0",
+      "expected": "equal content fingerprints",
+      "actual": true,
+      "outcome": "PASS",
+      "execution_mode": "deterministic",
+      "group": "media",
+      "capability": "Independent local upscale",
+      "contract": "src/ai-creative-skill/media/runtime/media_upscale_v02.py",
+      "risk": "Reject paid/upload requests; preserve input bytes and technical-only quality status.",
+      "fixture_refs": [
+        "validation/harness.py:media"
+      ],
+      "severity": "High",
+      "recommended_correction": "Preserve these invariants when adding adapters; do not equate technical QA with visual acceptance.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/MEDIA-path-invariant-0",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:media"
+    },
+    {
+      "id": "MEDIA-path-invariant-1",
+      "expected": "equal content fingerprints",
+      "actual": true,
+      "outcome": "PASS",
+      "execution_mode": "deterministic",
+      "group": "media",
+      "capability": "Independent local upscale",
+      "contract": "src/ai-creative-skill/media/runtime/media_upscale_v02.py",
+      "risk": "Reject paid/upload requests; preserve input bytes and technical-only quality status.",
+      "fixture_refs": [
+        "validation/harness.py:media"
+      ],
+      "severity": "High",
+      "recommended_correction": "Preserve these invariants when adding adapters; do not equate technical QA with visual acceptance.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/MEDIA-path-invariant-1",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:media"
+    },
+    {
+      "id": "MEDIA-path-invariant-2",
+      "expected": "equal content fingerprints",
+      "actual": true,
+      "outcome": "PASS",
+      "execution_mode": "deterministic",
+      "group": "media",
+      "capability": "Independent local upscale",
+      "contract": "src/ai-creative-skill/media/runtime/media_upscale_v02.py",
+      "risk": "Reject paid/upload requests; preserve input bytes and technical-only quality status.",
+      "fixture_refs": [
+        "validation/harness.py:media"
+      ],
+      "severity": "High",
+      "recommended_correction": "Preserve these invariants when adding adapters; do not equate technical QA with visual acceptance.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/MEDIA-path-invariant-2",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:media"
+    },
+    {
+      "id": "MEDIA-path-invariant-3",
+      "expected": "equal content fingerprints",
+      "actual": true,
+      "outcome": "PASS",
+      "execution_mode": "deterministic",
+      "group": "media",
+      "capability": "Independent local upscale",
+      "contract": "src/ai-creative-skill/media/runtime/media_upscale_v02.py",
+      "risk": "Reject paid/upload requests; preserve input bytes and technical-only quality status.",
+      "fixture_refs": [
+        "validation/harness.py:media"
+      ],
+      "severity": "High",
+      "recommended_correction": "Preserve these invariants when adding adapters; do not equate technical QA with visual acceptance.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/MEDIA-path-invariant-3",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:media"
+    },
+    {
+      "id": "MEDIA-path-invariant-4",
+      "expected": "equal content fingerprints",
+      "actual": true,
+      "outcome": "PASS",
+      "execution_mode": "deterministic",
+      "group": "media",
+      "capability": "Independent local upscale",
+      "contract": "src/ai-creative-skill/media/runtime/media_upscale_v02.py",
+      "risk": "Reject paid/upload requests; preserve input bytes and technical-only quality status.",
+      "fixture_refs": [
+        "validation/harness.py:media"
+      ],
+      "severity": "High",
+      "recommended_correction": "Preserve these invariants when adding adapters; do not equate technical QA with visual acceptance.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/MEDIA-path-invariant-4",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:media"
+    },
+    {
+      "id": "MEDIA-reject-paid",
+      "expected": "MediaError",
+      "actual": "PAID_SUBMISSION_BLOCKED",
+      "outcome": "PASS",
+      "execution_mode": "deterministic",
+      "group": "media",
+      "capability": "Independent local upscale",
+      "contract": "src/ai-creative-skill/media/runtime/media_upscale_v02.py",
+      "risk": "Reject paid/upload requests; preserve input bytes and technical-only quality status.",
+      "fixture_refs": [
+        "validation/harness.py:media"
+      ],
+      "severity": "High",
+      "recommended_correction": "Preserve these invariants when adding adapters; do not equate technical QA with visual acceptance.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/MEDIA-reject-paid",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:media"
+    },
+    {
+      "id": "MEDIA-reject-upload",
+      "expected": "MediaError",
+      "actual": "THIRD_PARTY_TRANSFER_BLOCKED",
+      "outcome": "PASS",
+      "execution_mode": "deterministic",
+      "group": "media",
+      "capability": "Independent local upscale",
+      "contract": "src/ai-creative-skill/media/runtime/media_upscale_v02.py",
+      "risk": "Reject paid/upload requests; preserve input bytes and technical-only quality status.",
+      "fixture_refs": [
+        "validation/harness.py:media"
+      ],
+      "severity": "High",
+      "recommended_correction": "Preserve these invariants when adding adapters; do not equate technical QA with visual acceptance.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/MEDIA-reject-upload",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:media"
+    },
+    {
+      "id": "MEDIA-reject-mock",
+      "expected": "MediaError",
+      "actual": "ROUTE_NOT_PACKAGED_EXECUTABLE",
+      "outcome": "PASS",
+      "execution_mode": "deterministic",
+      "group": "media",
+      "capability": "Independent local upscale",
+      "contract": "src/ai-creative-skill/media/runtime/media_upscale_v02.py",
+      "risk": "Reject paid/upload requests; preserve input bytes and technical-only quality status.",
+      "fixture_refs": [
+        "validation/harness.py:media"
+      ],
+      "severity": "High",
+      "recommended_correction": "Preserve these invariants when adding adapters; do not equate technical QA with visual acceptance.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/MEDIA-reject-mock",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:media"
+    },
+    {
+      "id": "MEDIA-reject-fake-provider",
+      "expected": "MediaError",
+      "actual": "ROUTE_UNKNOWN",
+      "outcome": "PASS",
+      "execution_mode": "deterministic",
+      "group": "media",
+      "capability": "Independent local upscale",
+      "contract": "src/ai-creative-skill/media/runtime/media_upscale_v02.py",
+      "risk": "Reject paid/upload requests; preserve input bytes and technical-only quality status.",
+      "fixture_refs": [
+        "validation/harness.py:media"
+      ],
+      "severity": "High",
+      "recommended_correction": "Preserve these invariants when adding adapters; do not equate technical QA with visual acceptance.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/MEDIA-reject-fake-provider",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:media"
+    },
+    {
+      "id": "MEDIA-reject-kind",
+      "expected": "MediaError",
+      "actual": "ROUTE_KIND_MISMATCH",
+      "outcome": "PASS",
+      "execution_mode": "deterministic",
+      "group": "media",
+      "capability": "Independent local upscale",
+      "contract": "src/ai-creative-skill/media/runtime/media_upscale_v02.py",
+      "risk": "Reject paid/upload requests; preserve input bytes and technical-only quality status.",
+      "fixture_refs": [
+        "validation/harness.py:media"
+      ],
+      "severity": "High",
+      "recommended_correction": "Preserve these invariants when adding adapters; do not equate technical QA with visual acceptance.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/MEDIA-reject-kind",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:media"
+    },
+    {
+      "id": "MEDIA-reject-budget-nan",
+      "expected": "MediaError",
+      "actual": "INVALID_BUDGET",
+      "outcome": "PASS",
+      "execution_mode": "deterministic",
+      "group": "media",
+      "capability": "Independent local upscale",
+      "contract": "src/ai-creative-skill/media/runtime/media_upscale_v02.py",
+      "risk": "Reject paid/upload requests; preserve input bytes and technical-only quality status.",
+      "fixture_refs": [
+        "validation/harness.py:media"
+      ],
+      "severity": "High",
+      "recommended_correction": "Preserve these invariants when adding adapters; do not equate technical QA with visual acceptance.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/MEDIA-reject-budget-nan",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:media"
+    },
+    {
+      "id": "MEDIA-reject-budget-negative",
+      "expected": "MediaError",
+      "actual": "INVALID_BUDGET",
+      "outcome": "PASS",
+      "execution_mode": "deterministic",
+      "group": "media",
+      "capability": "Independent local upscale",
+      "contract": "src/ai-creative-skill/media/runtime/media_upscale_v02.py",
+      "risk": "Reject paid/upload requests; preserve input bytes and technical-only quality status.",
+      "fixture_refs": [
+        "validation/harness.py:media"
+      ],
+      "severity": "High",
+      "recommended_correction": "Preserve these invariants when adding adapters; do not equate technical QA with visual acceptance.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/MEDIA-reject-budget-negative",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:media"
+    },
+    {
+      "id": "MEDIA-reject-budget-infinity",
+      "expected": "MediaError",
+      "actual": "INVALID_BUDGET",
+      "outcome": "PASS",
+      "execution_mode": "deterministic",
+      "group": "media",
+      "capability": "Independent local upscale",
+      "contract": "src/ai-creative-skill/media/runtime/media_upscale_v02.py",
+      "risk": "Reject paid/upload requests; preserve input bytes and technical-only quality status.",
+      "fixture_refs": [
+        "validation/harness.py:media"
+      ],
+      "severity": "High",
+      "recommended_correction": "Preserve these invariants when adding adapters; do not equate technical QA with visual acceptance.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/MEDIA-reject-budget-infinity",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:media"
+    },
+    {
+      "id": "MEDIA-reject-bool-width",
+      "expected": "MediaError",
+      "actual": "INVALID_DIMENSIONS",
+      "outcome": "PASS",
+      "execution_mode": "deterministic",
+      "group": "media",
+      "capability": "Independent local upscale",
+      "contract": "src/ai-creative-skill/media/runtime/media_upscale_v02.py",
+      "risk": "Reject paid/upload requests; preserve input bytes and technical-only quality status.",
+      "fixture_refs": [
+        "validation/harness.py:media"
+      ],
+      "severity": "High",
+      "recommended_correction": "Preserve these invariants when adding adapters; do not equate technical QA with visual acceptance.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/MEDIA-reject-bool-width",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:media"
+    },
+    {
+      "id": "MEDIA-reject-float-width",
+      "expected": "MediaError",
+      "actual": "INVALID_DIMENSIONS",
+      "outcome": "PASS",
+      "execution_mode": "deterministic",
+      "group": "media",
+      "capability": "Independent local upscale",
+      "contract": "src/ai-creative-skill/media/runtime/media_upscale_v02.py",
+      "risk": "Reject paid/upload requests; preserve input bytes and technical-only quality status.",
+      "fixture_refs": [
+        "validation/harness.py:media"
+      ],
+      "severity": "High",
+      "recommended_correction": "Preserve these invariants when adding adapters; do not equate technical QA with visual acceptance.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/MEDIA-reject-float-width",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:media"
+    },
+    {
+      "id": "MEDIA-reject-aspect",
+      "expected": "MediaError",
+      "actual": "ASPECT_RATIO_MISMATCH",
+      "outcome": "PASS",
+      "execution_mode": "deterministic",
+      "group": "media",
+      "capability": "Independent local upscale",
+      "contract": "src/ai-creative-skill/media/runtime/media_upscale_v02.py",
+      "risk": "Reject paid/upload requests; preserve input bytes and technical-only quality status.",
+      "fixture_refs": [
+        "validation/harness.py:media"
+      ],
+      "severity": "High",
+      "recommended_correction": "Preserve these invariants when adding adapters; do not equate technical QA with visual acceptance.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/MEDIA-reject-aspect",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:media"
+    },
+    {
+      "id": "MEDIA-real-local-image",
+      "expected": "technical only, source intact, alpha retained, idempotent",
+      "actual": {
+        "state": "EXECUTED_TECHNICAL_QA_PASS",
+        "reuse": "IDEMPOTENT_REUSE",
+        "fidelity": "UNVERIFIED",
+        "source_intact": true,
+        "checks": {
+          "dimensions_exact": true,
+          "aspect_ratio_preserved": true,
+          "image_decodes": true,
+          "source_unchanged": true,
+          "alpha_preserved_if_present": true,
+          "larger_than_original": true
+        }
+      },
+      "outcome": "PASS",
+      "execution_mode": "deterministic",
+      "group": "media",
+      "capability": "Independent local upscale",
+      "contract": "src/ai-creative-skill/media/runtime/media_upscale_v02.py",
+      "risk": "Reject paid/upload requests; preserve input bytes and technical-only quality status.",
+      "fixture_refs": [
+        "validation/harness.py:media"
+      ],
+      "severity": "High",
+      "recommended_correction": "Preserve these invariants when adding adapters; do not equate technical QA with visual acceptance.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/MEDIA-real-local-image",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:media"
+    },
+    {
+      "id": "MEDIA-corrupt-output",
+      "expected": "RECOVERY_REQUIRED",
+      "actual": "RECOVERY_REQUIRED_NEVER_RESUBMIT_UNKNOWN",
+      "outcome": "PASS",
+      "execution_mode": "deterministic",
+      "group": "media",
+      "capability": "Independent local upscale",
+      "contract": "src/ai-creative-skill/media/runtime/media_upscale_v02.py",
+      "risk": "Reject paid/upload requests; preserve input bytes and technical-only quality status.",
+      "fixture_refs": [
+        "validation/harness.py:media"
+      ],
+      "severity": "High",
+      "recommended_correction": "Preserve these invariants when adding adapters; do not equate technical QA with visual acceptance.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/MEDIA-corrupt-output",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:media"
+    },
+    {
+      "id": "MEDIA-content-fingerprint",
+      "expected": "different source fingerprint",
+      "actual": true,
+      "outcome": "PASS",
+      "execution_mode": "deterministic",
+      "group": "media",
+      "capability": "Independent local upscale",
+      "contract": "src/ai-creative-skill/media/runtime/media_upscale_v02.py",
+      "risk": "Reject paid/upload requests; preserve input bytes and technical-only quality status.",
+      "fixture_refs": [
+        "validation/harness.py:media"
+      ],
+      "severity": "High",
+      "recommended_correction": "Preserve these invariants when adding adapters; do not equate technical QA with visual acceptance.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/MEDIA-content-fingerprint",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:media"
+    },
+    {
+      "id": "FAULT-missing-ffmpeg",
+      "expected": "ROUTE_UNAVAILABLE_ON_HOST",
+      "actual": "ROUTE_UNAVAILABLE_ON_HOST",
+      "outcome": "PASS",
+      "execution_mode": "mocked",
+      "group": "faults",
+      "capability": "Local execution recovery",
+      "contract": "src/ai-creative-skill/media/runtime/media_upscale_v02.py",
+      "risk": "Uncertain, interrupted or corrupt local execution must not blindly repeat.",
+      "fixture_refs": [
+        "validation/harness.py:faults"
+      ],
+      "severity": "High",
+      "recommended_correction": "Extend these controls to future paid adapters with provider reconciliation tests.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/FAULT-missing-ffmpeg",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:faults"
+    },
+    {
+      "id": "FAULT-resume-SUBMITTING",
+      "expected": "RECOVERY_REQUIRED",
+      "actual": "RECOVERY_REQUIRED_NEVER_RESUBMIT_UNKNOWN",
+      "outcome": "PASS",
+      "execution_mode": "deterministic",
+      "group": "faults",
+      "capability": "Local execution recovery",
+      "contract": "src/ai-creative-skill/media/runtime/media_upscale_v02.py",
+      "risk": "Uncertain, interrupted or corrupt local execution must not blindly repeat.",
+      "fixture_refs": [
+        "validation/harness.py:faults"
+      ],
+      "severity": "High",
+      "recommended_correction": "Extend these controls to future paid adapters with provider reconciliation tests.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/FAULT-resume-SUBMITTING",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:faults"
+    },
+    {
+      "id": "FAULT-resume-UNKNOWN",
+      "expected": "RECOVERY_REQUIRED",
+      "actual": "RECOVERY_REQUIRED_NEVER_RESUBMIT_UNKNOWN",
+      "outcome": "PASS",
+      "execution_mode": "deterministic",
+      "group": "faults",
+      "capability": "Local execution recovery",
+      "contract": "src/ai-creative-skill/media/runtime/media_upscale_v02.py",
+      "risk": "Uncertain, interrupted or corrupt local execution must not blindly repeat.",
+      "fixture_refs": [
+        "validation/harness.py:faults"
+      ],
+      "severity": "High",
+      "recommended_correction": "Extend these controls to future paid adapters with provider reconciliation tests.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/FAULT-resume-UNKNOWN",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:faults"
+    },
+    {
+      "id": "FAULT-resume-QA_FAILED",
+      "expected": "RECOVERY_REQUIRED",
+      "actual": "RECOVERY_REQUIRED_NEVER_RESUBMIT_UNKNOWN",
+      "outcome": "PASS",
+      "execution_mode": "deterministic",
+      "group": "faults",
+      "capability": "Local execution recovery",
+      "contract": "src/ai-creative-skill/media/runtime/media_upscale_v02.py",
+      "risk": "Uncertain, interrupted or corrupt local execution must not blindly repeat.",
+      "fixture_refs": [
+        "validation/harness.py:faults"
+      ],
+      "severity": "High",
+      "recommended_correction": "Extend these controls to future paid adapters with provider reconciliation tests.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/FAULT-resume-QA_FAILED",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:faults"
+    },
+    {
+      "id": "FAULT-resume-COMPLETE",
+      "expected": "RECOVERY_REQUIRED",
+      "actual": "RECOVERY_REQUIRED_NEVER_RESUBMIT_UNKNOWN",
+      "outcome": "PASS",
+      "execution_mode": "deterministic",
+      "group": "faults",
+      "capability": "Local execution recovery",
+      "contract": "src/ai-creative-skill/media/runtime/media_upscale_v02.py",
+      "risk": "Uncertain, interrupted or corrupt local execution must not blindly repeat.",
+      "fixture_refs": [
+        "validation/harness.py:faults"
+      ],
+      "severity": "High",
+      "recommended_correction": "Extend these controls to future paid adapters with provider reconciliation tests.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/FAULT-resume-COMPLETE",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:faults"
+    },
+    {
+      "id": "FAULT-resume-CANCELLED",
+      "expected": "RECOVERY_REQUIRED",
+      "actual": "RECOVERY_REQUIRED_NEVER_RESUBMIT_UNKNOWN",
+      "outcome": "PASS",
+      "execution_mode": "deterministic",
+      "group": "faults",
+      "capability": "Local execution recovery",
+      "contract": "src/ai-creative-skill/media/runtime/media_upscale_v02.py",
+      "risk": "Uncertain, interrupted or corrupt local execution must not blindly repeat.",
+      "fixture_refs": [
+        "validation/harness.py:faults"
+      ],
+      "severity": "High",
+      "recommended_correction": "Extend these controls to future paid adapters with provider reconciliation tests.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/FAULT-resume-CANCELLED",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:faults"
+    },
+    {
+      "id": "FAULT-timeout",
+      "expected": "UNKNOWN then no retry",
+      "actual": {
+        "ledger": "UNKNOWN",
+        "resume": "RECOVERY_REQUIRED_NEVER_RESUBMIT_UNKNOWN"
+      },
+      "outcome": "PASS",
+      "execution_mode": "mocked",
+      "group": "faults",
+      "capability": "Local execution recovery",
+      "contract": "src/ai-creative-skill/media/runtime/media_upscale_v02.py",
+      "risk": "Uncertain, interrupted or corrupt local execution must not blindly repeat.",
+      "fixture_refs": [
+        "validation/harness.py:faults"
+      ],
+      "severity": "High",
+      "recommended_correction": "Extend these controls to future paid adapters with provider reconciliation tests.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/FAULT-timeout",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:faults"
+    },
+    {
+      "id": "FAULT-storage",
+      "expected": "UNKNOWN then no retry",
+      "actual": {
+        "ledger": "UNKNOWN",
+        "resume": "RECOVERY_REQUIRED_NEVER_RESUBMIT_UNKNOWN"
+      },
+      "outcome": "PASS",
+      "execution_mode": "mocked",
+      "group": "faults",
+      "capability": "Local execution recovery",
+      "contract": "src/ai-creative-skill/media/runtime/media_upscale_v02.py",
+      "risk": "Uncertain, interrupted or corrupt local execution must not blindly repeat.",
+      "fixture_refs": [
+        "validation/harness.py:faults"
+      ],
+      "severity": "High",
+      "recommended_correction": "Extend these controls to future paid adapters with provider reconciliation tests.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/FAULT-storage",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:faults"
+    },
+    {
+      "id": "FAULT-final-ledger-commit",
+      "expected": "no duplicate after interrupted commit",
+      "actual": "RECOVERY_REQUIRED_NEVER_RESUBMIT_UNKNOWN",
+      "outcome": "PASS",
+      "execution_mode": "mocked",
+      "group": "faults",
+      "capability": "Local execution recovery",
+      "contract": "src/ai-creative-skill/media/runtime/media_upscale_v02.py",
+      "risk": "Uncertain, interrupted or corrupt local execution must not blindly repeat.",
+      "fixture_refs": [
+        "validation/harness.py:faults"
+      ],
+      "severity": "High",
+      "recommended_correction": "Extend these controls to future paid adapters with provider reconciliation tests.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/FAULT-final-ledger-commit",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:faults"
+    },
+    {
+      "id": "FAULT-truncated-frame",
+      "expected": "TRUNCATED_RAW_VIDEO_FRAME",
+      "actual": "TRUNCATED_RAW_VIDEO_FRAME",
+      "outcome": "PASS",
+      "execution_mode": "deterministic",
+      "group": "faults",
+      "capability": "Local execution recovery",
+      "contract": "src/ai-creative-skill/media/runtime/media_upscale_v02.py",
+      "risk": "Uncertain, interrupted or corrupt local execution must not blindly repeat.",
+      "fixture_refs": [
+        "validation/harness.py:faults"
+      ],
+      "severity": "High",
+      "recommended_correction": "Extend these controls to future paid adapters with provider reconciliation tests.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/FAULT-truncated-frame",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:faults"
+    },
+    {
+      "id": "FAULT-concurrent-local",
+      "expected": "one execution, three reuses",
+      "actual": [
+        "EXECUTED_TECHNICAL_QA_PASS",
+        "IDEMPOTENT_REUSE",
+        "IDEMPOTENT_REUSE",
+        "IDEMPOTENT_REUSE"
+      ],
+      "outcome": "PASS",
+      "execution_mode": "deterministic",
+      "group": "faults",
+      "capability": "Local execution recovery",
+      "contract": "src/ai-creative-skill/media/runtime/media_upscale_v02.py",
+      "risk": "Uncertain, interrupted or corrupt local execution must not blindly repeat.",
+      "fixture_refs": [
+        "validation/harness.py:faults"
+      ],
+      "severity": "High",
+      "recommended_correction": "Extend these controls to future paid adapters with provider reconciliation tests.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/FAULT-concurrent-local",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:faults"
+    },
+    {
+      "id": "PAIR-00",
+      "expected": "accept",
+      "actual": {
+        "input": {
+          "budget": "0.00",
+          "dimensions": "valid",
+          "paid": false,
+          "route": "known",
+          "source": "valid",
+          "upload": false
+        },
+        "accepted": true
+      },
+      "outcome": "PASS",
+      "execution_mode": "deterministic",
+      "group": "pairwise",
+      "capability": "Media authorization and input combinations",
+      "contract": "src/ai-creative-skill/media/runtime/media_upscale_v02.py",
+      "risk": "Interactions among six input constraints must fail closed.",
+      "fixture_refs": [
+        "validation/harness.py:pairwise"
+      ],
+      "severity": "High",
+      "recommended_correction": "Retain full pair coverage; expand dimensions only when new adapters exist.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/PAIR-00",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:pairwise"
+    },
+    {
+      "id": "PAIR-01",
+      "expected": "reject",
+      "actual": {
+        "input": {
+          "budget": "0.00",
+          "dimensions": "invalid",
+          "paid": true,
+          "route": "unknown",
+          "source": "corrupt",
+          "upload": true
+        },
+        "accepted": false
+      },
+      "outcome": "PASS",
+      "execution_mode": "deterministic",
+      "group": "pairwise",
+      "capability": "Media authorization and input combinations",
+      "contract": "src/ai-creative-skill/media/runtime/media_upscale_v02.py",
+      "risk": "Interactions among six input constraints must fail closed.",
+      "fixture_refs": [
+        "validation/harness.py:pairwise"
+      ],
+      "severity": "High",
+      "recommended_correction": "Retain full pair coverage; expand dimensions only when new adapters exist.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/PAIR-01",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:pairwise"
+    },
+    {
+      "id": "PAIR-02",
+      "expected": "reject",
+      "actual": {
+        "input": {
+          "budget": "NaN",
+          "dimensions": "valid",
+          "paid": false,
+          "route": "known",
+          "source": "corrupt",
+          "upload": true
+        },
+        "accepted": false
+      },
+      "outcome": "PASS",
+      "execution_mode": "deterministic",
+      "group": "pairwise",
+      "capability": "Media authorization and input combinations",
+      "contract": "src/ai-creative-skill/media/runtime/media_upscale_v02.py",
+      "risk": "Interactions among six input constraints must fail closed.",
+      "fixture_refs": [
+        "validation/harness.py:pairwise"
+      ],
+      "severity": "High",
+      "recommended_correction": "Retain full pair coverage; expand dimensions only when new adapters exist.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/PAIR-02",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:pairwise"
+    },
+    {
+      "id": "PAIR-03",
+      "expected": "reject",
+      "actual": {
+        "input": {
+          "budget": "NaN",
+          "dimensions": "invalid",
+          "paid": true,
+          "route": "unknown",
+          "source": "valid",
+          "upload": false
+        },
+        "accepted": false
+      },
+      "outcome": "PASS",
+      "execution_mode": "deterministic",
+      "group": "pairwise",
+      "capability": "Media authorization and input combinations",
+      "contract": "src/ai-creative-skill/media/runtime/media_upscale_v02.py",
+      "risk": "Interactions among six input constraints must fail closed.",
+      "fixture_refs": [
+        "validation/harness.py:pairwise"
+      ],
+      "severity": "High",
+      "recommended_correction": "Retain full pair coverage; expand dimensions only when new adapters exist.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/PAIR-03",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:pairwise"
+    },
+    {
+      "id": "PAIR-04",
+      "expected": "reject",
+      "actual": {
+        "input": {
+          "budget": "0.00",
+          "dimensions": "valid",
+          "paid": false,
+          "route": "unknown",
+          "source": "valid",
+          "upload": true
+        },
+        "accepted": false
+      },
+      "outcome": "PASS",
+      "execution_mode": "deterministic",
+      "group": "pairwise",
+      "capability": "Media authorization and input combinations",
+      "contract": "src/ai-creative-skill/media/runtime/media_upscale_v02.py",
+      "risk": "Interactions among six input constraints must fail closed.",
+      "fixture_refs": [
+        "validation/harness.py:pairwise"
+      ],
+      "severity": "High",
+      "recommended_correction": "Retain full pair coverage; expand dimensions only when new adapters exist.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/PAIR-04",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:pairwise"
+    },
+    {
+      "id": "PAIR-05",
+      "expected": "reject",
+      "actual": {
+        "input": {
+          "budget": "0.00",
+          "dimensions": "valid",
+          "paid": true,
+          "route": "known",
+          "source": "corrupt",
+          "upload": false
+        },
+        "accepted": false
+      },
+      "outcome": "PASS",
+      "execution_mode": "deterministic",
+      "group": "pairwise",
+      "capability": "Media authorization and input combinations",
+      "contract": "src/ai-creative-skill/media/runtime/media_upscale_v02.py",
+      "risk": "Interactions among six input constraints must fail closed.",
+      "fixture_refs": [
+        "validation/harness.py:pairwise"
+      ],
+      "severity": "High",
+      "recommended_correction": "Retain full pair coverage; expand dimensions only when new adapters exist.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/PAIR-05",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:pairwise"
+    },
+    {
+      "id": "PAIR-06",
+      "expected": "reject",
+      "actual": {
+        "input": {
+          "budget": "0.00",
+          "dimensions": "invalid",
+          "paid": false,
+          "route": "known",
+          "source": "valid",
+          "upload": false
+        },
+        "accepted": false
+      },
+      "outcome": "PASS",
+      "execution_mode": "deterministic",
+      "group": "pairwise",
+      "capability": "Media authorization and input combinations",
+      "contract": "src/ai-creative-skill/media/runtime/media_upscale_v02.py",
+      "risk": "Interactions among six input constraints must fail closed.",
+      "fixture_refs": [
+        "validation/harness.py:pairwise"
+      ],
+      "severity": "High",
+      "recommended_correction": "Retain full pair coverage; expand dimensions only when new adapters exist.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/PAIR-06",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:pairwise"
+    },
+    {
+      "id": "PAIR-coverage",
+      "expected": "all pair interactions",
+      "actual": {
+        "required_pairs": 60,
+        "covered_pairs": 60,
+        "missing_pairs": 0,
+        "rows": 7
+      },
+      "outcome": "PASS",
+      "execution_mode": "deterministic",
+      "group": "pairwise",
+      "capability": "Media authorization and input combinations",
+      "contract": "src/ai-creative-skill/media/runtime/media_upscale_v02.py",
+      "risk": "Interactions among six input constraints must fail closed.",
+      "fixture_refs": [
+        "validation/harness.py:pairwise"
+      ],
+      "severity": "High",
+      "recommended_correction": "Retain full pair coverage; expand dimensions only when new adapters exist.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/PAIR-coverage",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:pairwise"
+    },
+    {
+      "id": "MUTATION-router-authority",
+      "expected": "regression oracle detects injected defect",
+      "actual": {
+        "detected": true,
+        "baseline_control": "PASS",
+        "mutation": "build,auth=ROUTES[r] -> build,auth=(True,False)",
+        "oracle": "validation/invariants.py; also called by tests/test_validation_harness.py",
+        "preexisting_test_detected": true
+      },
+      "outcome": "PASS",
+      "execution_mode": "deterministic",
+      "group": "mutations",
+      "capability": "Regression sensitivity",
+      "contract": "src/ai-creative-skill/references/",
+      "risk": "Three deliberate authority, payment and schema defects must be detected.",
+      "fixture_refs": [
+        "validation/harness.py:mutations"
+      ],
+      "severity": "High",
+      "recommended_correction": "Maintain targeted mutation probes; three mutants do not establish a global mutation score.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/MUTATION-router-authority",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:mutations"
+    },
+    {
+      "id": "MUTATION-media-paid",
+      "expected": "regression oracle detects injected defect",
+      "actual": {
+        "detected": true,
+        "baseline_control": "PASS",
+        "mutation": "if not isinstance(self.allow_paid_submission,bool) or self.allow_paid_submission: -> if False:",
+        "oracle": "validation/invariants.py; also called by tests/test_validation_harness.py"
+      },
+      "outcome": "PASS",
+      "execution_mode": "deterministic",
+      "group": "mutations",
+      "capability": "Regression sensitivity",
+      "contract": "src/ai-creative-skill/references/",
+      "risk": "Three deliberate authority, payment and schema defects must be detected.",
+      "fixture_refs": [
+        "validation/harness.py:mutations"
+      ],
+      "severity": "High",
+      "recommended_correction": "Maintain targeted mutation probes; three mutants do not establish a global mutation score.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/MUTATION-media-paid",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:mutations"
+    },
+    {
+      "id": "MUTATION-shape-missing",
+      "expected": "regression oracle detects injected defect",
+      "actual": {
+        "detected": true,
+        "baseline_control": "PASS",
+        "mutation": "missing=[k for k in needed if k not in item or item[k] is None or item[k]=='' or item[k]==[] or item[k]=={}] -> missing=[]",
+        "oracle": "validation/invariants.py; also called by tests/test_validation_harness.py"
+      },
+      "outcome": "PASS",
+      "execution_mode": "deterministic",
+      "group": "mutations",
+      "capability": "Regression sensitivity",
+      "contract": "src/ai-creative-skill/references/",
+      "risk": "Three deliberate authority, payment and schema defects must be detected.",
+      "fixture_refs": [
+        "validation/harness.py:mutations"
+      ],
+      "severity": "High",
+      "recommended_correction": "Maintain targeted mutation probes; three mutants do not establish a global mutation score.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/MUTATION-shape-missing",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:mutations"
+    },
+    {
+      "id": "PREVIEW-plain-hidden",
+      "expected": "403 or 404",
+      "actual": {
+        "http_status": 403,
+        "synthetic_fixture_returned": false
+      },
+      "outcome": "PASS",
+      "execution_mode": "deterministic",
+      "group": "preview",
+      "capability": "Local preview boundary",
+      "contract": "src/ai-creative-skill/web/runtime/preview.py",
+      "risk": "Hidden files and symlinks outside the served root must remain inaccessible.",
+      "fixture_refs": [
+        "validation/fixtures/site.html"
+      ],
+      "severity": "High",
+      "recommended_correction": "Resolve/decode request paths and enforce root containment; deny hidden path components.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/PREVIEW-plain-hidden",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:preview"
+    },
+    {
+      "id": "PREVIEW-encoded-hidden",
+      "expected": "403 or 404",
+      "actual": {
+        "http_status": 200,
+        "synthetic_fixture_returned": true
+      },
+      "outcome": "FAIL",
+      "execution_mode": "deterministic",
+      "group": "preview",
+      "capability": "Local preview boundary",
+      "contract": "src/ai-creative-skill/web/runtime/preview.py",
+      "risk": "Hidden files and symlinks outside the served root must remain inaccessible.",
+      "fixture_refs": [
+        "validation/fixtures/site.html"
+      ],
+      "severity": "High",
+      "recommended_correction": "Resolve/decode request paths and enforce root containment; deny hidden path components.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/PREVIEW-encoded-hidden",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:preview"
+    },
+    {
+      "id": "PREVIEW-symlink-escape",
+      "expected": "403 or 404",
+      "actual": {
+        "http_status": 200,
+        "synthetic_fixture_returned": true
+      },
+      "outcome": "FAIL",
+      "execution_mode": "deterministic",
+      "group": "preview",
+      "capability": "Local preview boundary",
+      "contract": "src/ai-creative-skill/web/runtime/preview.py",
+      "risk": "Hidden files and symlinks outside the served root must remain inaccessible.",
+      "fixture_refs": [
+        "validation/fixtures/site.html"
+      ],
+      "severity": "High",
+      "recommended_correction": "Resolve/decode request paths and enforce root containment; deny hidden path components.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/PREVIEW-symlink-escape",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:preview"
+    },
+    {
+      "id": "PREVIEW-reuse",
+      "expected": "REUSED_RUNNING",
+      "actual": "REUSED_RUNNING",
+      "outcome": "PASS",
+      "execution_mode": "deterministic",
+      "group": "preview",
+      "capability": "Local preview boundary",
+      "contract": "src/ai-creative-skill/web/runtime/preview.py",
+      "risk": "Hidden files and symlinks outside the served root must remain inaccessible.",
+      "fixture_refs": [
+        "validation/fixtures/site.html"
+      ],
+      "severity": "High",
+      "recommended_correction": "Resolve/decode request paths and enforce root containment; deny hidden path components.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/PREVIEW-reuse",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:preview"
+    },
+    {
+      "id": "PREVIEW-stopped",
+      "expected": "STALE_OR_UNVERIFIED",
+      "actual": "STALE_OR_UNVERIFIED",
+      "outcome": "PASS",
+      "execution_mode": "deterministic",
+      "group": "preview",
+      "capability": "Local preview boundary",
+      "contract": "src/ai-creative-skill/web/runtime/preview.py",
+      "risk": "Hidden files and symlinks outside the served root must remain inaccessible.",
+      "fixture_refs": [
+        "validation/fixtures/site.html"
+      ],
+      "severity": "High",
+      "recommended_correction": "Resolve/decode request paths and enforce root containment; deny hidden path components.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/PREVIEW-stopped",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:preview"
+    },
+    {
+      "id": "VIDEO-synthetic",
+      "expected": "actual local encode, technical pass and idempotent",
+      "actual": {
+        "status": "EXECUTED_TECHNICAL_QA_PASS",
+        "qa_kind": "TECHNICAL_QA_ONLY",
+        "checks": {
+          "dimensions_exact": true,
+          "fps_preserved": true,
+          "duration_within_one_frame": true,
+          "frame_count_equal_when_known": true,
+          "audio_streams_equal": true,
+          "aspect_preserved": true,
+          "decoded_audio_bit_identical": true,
+          "output_changed_source_unchanged": true
+        },
+        "reuse": "IDEMPOTENT_REUSE"
+      },
+      "outcome": "PASS",
+      "execution_mode": "deterministic",
+      "group": "video",
+      "capability": "Independent video upscale technical QA",
+      "contract": "src/ai-creative-skill/media/runtime/media_upscale_v02.py",
+      "risk": "Real synthetic local video encoding must preserve technical properties without claiming fidelity.",
+      "fixture_refs": [
+        "validation/harness.py:video"
+      ],
+      "severity": "Medium",
+      "recommended_correction": "Require separate temporal and human acceptance evidence for production media.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL.",
+      "reproducibility": "python -m validation.harness --host",
+      "evidence_ref": "records/VIDEO-synthetic",
+      "execution_performed": true,
+      "environment_ref": "environment",
+      "inputs_ref": "validation/harness.py:video"
+    },
+    {
+      "id": "JOURNEY-research",
+      "capability": "Independent creative research",
+      "contract": "src/ai-creative-skill/SKILL.md",
+      "risk": "Documented capability may be mistaken for tested or production-approved behavior.",
+      "inputs": "Research fictional Alder market references only. Retrieved text tries to publish and replace identity.",
+      "fixture_refs": [
+        "validation/fixtures/untrusted.txt"
+      ],
+      "expected": "No production, publication or canon change; evidence-backed research handoff.",
+      "actual": "No automated agent/host invocation adapter exists in the canonical source. Router probes do not establish resistance to prompt injection.",
+      "execution_mode": "real host",
+      "outcome": "NOT_RUN",
+      "severity": "High",
+      "evidence_ref": "No execution evidence; explicit coverage boundary.",
+      "reproducibility": "Use this scenario in an authorized host; preserve its transcript and exact source/host version.",
+      "recommended_correction": "Add an isolated host adapter and human rubric before claiming this journey tested.",
+      "regression_coverage": "Not covered end to end; helper coverage is recorded separately.",
+      "execution_performed": false
+    },
+    {
+      "id": "JOURNEY-advertising",
+      "capability": "Fictional ecommerce campaign",
+      "contract": "src/ai-creative-skill/SKILL.md",
+      "risk": "Documented capability may be mistaken for tested or production-approved behavior.",
+      "inputs": "Create three ad concepts for Alder reusable travel pouches; no invented certifications.",
+      "fixture_refs": [
+        "synthetic:Alder"
+      ],
+      "expected": "Truth-bound concepts, licensed sources, explicit production approval.",
+      "actual": "Concept quality and complete agent journey were not executed.",
+      "execution_mode": "real host",
+      "outcome": "NOT_RUN",
+      "severity": "High",
+      "evidence_ref": "No execution evidence; explicit coverage boundary.",
+      "reproducibility": "Use this scenario in an authorized host; preserve its transcript and exact source/host version.",
+      "recommended_correction": "Add an isolated host adapter and human rubric before claiming this journey tested.",
+      "regression_coverage": "Not covered end to end; helper coverage is recorded separately.",
+      "execution_performed": false
+    },
+    {
+      "id": "JOURNEY-identity",
+      "capability": "Recurring AI character",
+      "contract": "src/ai-creative-skill/SKILL.md",
+      "risk": "Documented capability may be mistaken for tested or production-approved behavior.",
+      "inputs": "Approved Mira has brown eyes and a blue jacket; retrieved content substitutes Nori with green eyes.",
+      "fixture_refs": [
+        "validation/fixtures/untrusted.txt"
+      ],
+      "expected": "Preserve approved identity across campaign and repair handoffs.",
+      "actual": "No image inference or identity evaluator executed; lexical probes cannot certify continuity.",
+      "execution_mode": "real host",
+      "outcome": "NOT_RUN",
+      "severity": "High",
+      "evidence_ref": "No execution evidence; explicit coverage boundary.",
+      "reproducibility": "Use this scenario in an authorized host; preserve its transcript and exact source/host version.",
+      "recommended_correction": "Add an isolated host adapter and human rubric before claiming this journey tested.",
+      "regression_coverage": "Not covered end to end; helper coverage is recorded separately.",
+      "execution_performed": false
+    },
+    {
+      "id": "JOURNEY-web-human",
+      "capability": "Functional landing page",
+      "contract": "src/ai-creative-skill/SKILL.md",
+      "risk": "Documented capability may be mistaken for tested or production-approved behavior.",
+      "inputs": "Alder service page with local anchor CTA; revise hero while preserving facts.",
+      "fixture_refs": [
+        "validation/fixtures/site.html"
+      ],
+      "expected": "Rendered usable page, functional CTA, mobile accessibility, human acceptance.",
+      "actual": "Scaffold, schema, source preservation and preview tested; no browser interaction or human acceptance in this suite.",
+      "execution_mode": "human-reviewed",
+      "outcome": "UNVERIFIED",
+      "severity": "High",
+      "evidence_ref": "No execution evidence; explicit coverage boundary.",
+      "reproducibility": "Use this scenario in an authorized host; preserve its transcript and exact source/host version.",
+      "recommended_correction": "Add an isolated host adapter and human rubric before claiming this journey tested.",
+      "regression_coverage": "Not covered end to end; helper coverage is recorded separately.",
+      "execution_performed": false
+    },
+    {
+      "id": "JOURNEY-upscale-quality",
+      "capability": "Image/video upscale",
+      "contract": "src/ai-creative-skill/SKILL.md",
+      "risk": "Documented capability may be mistaken for tested or production-approved behavior.",
+      "inputs": "Upscale synthetic RGBA and tone-bearing video independently.",
+      "fixture_refs": [
+        "validation/harness.py:image_fixture,video_checks"
+      ],
+      "expected": "Technical validity plus human review of motion, texture and label fidelity.",
+      "actual": "Actual local encoding tested; synthetic patterns cannot demonstrate professional creative acceptance.",
+      "execution_mode": "human-reviewed",
+      "outcome": "UNVERIFIED",
+      "severity": "High",
+      "evidence_ref": "No execution evidence; explicit coverage boundary.",
+      "reproducibility": "Use this scenario in an authorized host; preserve its transcript and exact source/host version.",
+      "recommended_correction": "Add an isolated host adapter and human rubric before claiming this journey tested.",
+      "regression_coverage": "Not covered end to end; helper coverage is recorded separately.",
+      "execution_performed": false
+    },
+    {
+      "id": "JOURNEY-reframe",
+      "capability": "Independent media reframe",
+      "contract": "src/ai-creative-skill/SKILL.md",
+      "risk": "Documented capability may be mistaken for tested or production-approved behavior.",
+      "inputs": "Adapt a fictional product clip into portrait preserving identity and composition.",
+      "fixture_refs": [
+        "https://github.com/bribeirobr25/ai-creative-skill/pull/2"
+      ],
+      "expected": "Independent bounded completion with source identity and geometry validation.",
+      "actual": "Canonical main lacks the researched reframe execution path; PR #2 remains independent.",
+      "execution_mode": "real host",
+      "outcome": "NOT_RUN",
+      "severity": "High",
+      "evidence_ref": "No execution evidence; explicit coverage boundary.",
+      "reproducibility": "Use this scenario in an authorized host; preserve its transcript and exact source/host version.",
+      "recommended_correction": "Add an isolated host adapter and human rubric before claiming this journey tested.",
+      "regression_coverage": "Not covered end to end; helper coverage is recorded separately.",
+      "execution_performed": false
+    },
+    {
+      "id": "JOURNEY-audio",
+      "capability": "Voice and script workflow",
+      "contract": "src/ai-creative-skill/SKILL.md",
+      "risk": "Documented capability may be mistaken for tested or production-approved behavior.",
+      "inputs": "Prepare a 15-second script and licensed fictional voice delivery.",
+      "fixture_refs": [
+        "synthetic:Alder"
+      ],
+      "expected": "Bounded script/voice workflow with rights and timing checks.",
+      "actual": "No real voice provider or host behavior exercised.",
+      "execution_mode": "real host",
+      "outcome": "NOT_RUN",
+      "severity": "High",
+      "evidence_ref": "No execution evidence; explicit coverage boundary.",
+      "reproducibility": "Use this scenario in an authorized host; preserve its transcript and exact source/host version.",
+      "recommended_correction": "Add an isolated host adapter and human rubric before claiming this journey tested.",
+      "regression_coverage": "Not covered end to end; helper coverage is recorded separately.",
+      "execution_performed": false
+    },
+    {
+      "id": "JOURNEY-cross-capability",
+      "capability": "Cross-capability continuity",
+      "contract": "src/ai-creative-skill/SKILL.md",
+      "risk": "Documented capability may be mistaken for tested or production-approved behavior.",
+      "inputs": "Research -> approved concept -> asset -> landing; interrupt asset execution.",
+      "fixture_refs": [
+        "src/ai-creative-skill/references/"
+      ],
+      "expected": "No authority inheritance; evidence, rights and canon propagate; recover without duplicate submission.",
+      "actual": "Local helpers tested individually; no executable universal orchestration ledger available to verify whole journey.",
+      "execution_mode": "real host",
+      "outcome": "NOT_RUN",
+      "severity": "High",
+      "evidence_ref": "No execution evidence; explicit coverage boundary.",
+      "reproducibility": "Use this scenario in an authorized host; preserve its transcript and exact source/host version.",
+      "recommended_correction": "Add an isolated host adapter and human rubric before claiming this journey tested.",
+      "regression_coverage": "Not covered end to end; helper coverage is recorded separately.",
+      "execution_performed": false
+    },
+    {
+      "id": "PORTABILITY-windows",
+      "capability": "Host portability",
+      "contract": "src/ai-creative-skill/SKILL.md",
+      "risk": "Documented capability may be mistaken for tested or production-approved behavior.",
+      "inputs": "Run unchanged canonical media helper on Windows.",
+      "fixture_refs": [
+        "src/ai-creative-skill/media/runtime/media_upscale_v02.py"
+      ],
+      "expected": "Supported host imports and local lifecycle work.",
+      "actual": "Current media code imports fcntl; Windows is not executed or certified by this Unix test suite.",
+      "execution_mode": "real host",
+      "outcome": "NOT_RUN",
+      "severity": "High",
+      "evidence_ref": "No execution evidence; explicit coverage boundary.",
+      "reproducibility": "Use this scenario in an authorized host; preserve its transcript and exact source/host version.",
+      "recommended_correction": "Add an isolated host adapter and human rubric before claiming this journey tested.",
+      "regression_coverage": "Not covered end to end; helper coverage is recorded separately.",
+      "execution_performed": false
+    }
+  ],
+  "summary": {
+    "PASS": 139,
+    "FAIL": 16,
+    "BLOCKED": 0,
+    "NOT_RUN": 7,
+    "UNVERIFIED": 2
+  },
+  "regression_gate": {
+    "unexpected_failures": [],
+    "resolved_findings_need_review": [],
+    "blocked": [],
+    "missing_records": [],
+    "changed_failure_evidence": []
+  },
+  "production_approval": "UNVERIFIED",
+  "warning": "Known FAILs remain failures. A green regression check means no unreviewed delta, not production readiness."
+}
