@@ -53,9 +53,14 @@ def check(record, project_root, package_installed=False):
     for i,item in enumerate(asset['assets_used']):
         path=item['path'];t=contained_path(project_root,path)
         if t is None or not t.is_file():fail('MISSING_ASSET','WEB_ASSET_PLAN/assets_used/'+str(i),'Asset not present or path unsafe')
-        if item['approval']=='APPROVED_FOR_THIS_USE' and item['rights']=='UNKNOWN':
-            # Approval to use != copyright license; not blocker in private preview; disallow final publication.
-            if record['route']=='WEB_PUBLICATION':fail('RIGHTS_GATE','WEB_ASSET_PLAN/assets_used/'+str(i),'Approval is not copyright clearance')
+        if record['route']=='WEB_PUBLICATION':
+            # Publication needs both owner approval and a rights declaration for this
+            # particular destination. Preview permission is not publication permission.
+            publication_scopes={'public_website','commercial_publication','web_publication'}
+            if (item['approval']!='APPROVED_FOR_THIS_USE' or item['rights']=='UNKNOWN'
+                    or item['use_scope'] not in publication_scopes):
+                fail('RIGHTS_GATE','WEB_ASSET_PLAN/assets_used/'+str(i),
+                     'Publication requires approved, rights-declared assets whose scope includes this public use')
     for field in ['product_service_truth_refs','known_unknown_boundary']:
         for s in brief[field]:
             if not s.strip():fail('EMPTY_TRUTH','WEB_BRIEF/'+field,'Empty item')
