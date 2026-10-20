@@ -1,0 +1,92 @@
+{
+  "environment": {
+    "python": "3.11.9",
+    "os": "Darwin",
+    "release": "23.4.0",
+    "machine": "arm64",
+    "packages": {
+      "Pillow": "11.1.0",
+      "numpy": "1.26.4",
+      "jsonschema": "4.23.0",
+      "beautifulsoup4": "4.12.3"
+    },
+    "git_head": "b8bb0521064a1a1726be7441b674e99ad63c7229",
+    "source_commit": "e98aa639604ff654313b8785474a5a37b7b4b1bc",
+    "source_commit_history_complete": true,
+    "dirty": false,
+    "canonical_tree_sha256": "cb8b87a2fd16d11676d874e70455030d2c89b17a4b3cfd6ec941943a38ccd947",
+    "harness_sha256": "2c2828d2315d9dc59995f031cb0be1deb483ec4d482369828c98663bb1a888a0",
+    "executed_at_utc": "2026-10-20T13:37:32.710466+00:00",
+    "tools": {
+      "ffmpeg": "ffmpeg version 9.0.1 Copyright (c) 2000-2026 the FFmpeg developers",
+      "ffprobe": "ffprobe version 9.0.1 Copyright (c) 2007-2026 the FFmpeg developers",
+      "node": "v22.20.0"
+    },
+    "seed": 20261020,
+    "provider_calls": 0,
+    "paid_calls": 0,
+    "private_assets_used": false
+  },
+  "checks": [
+    {
+      "command": [
+        "python",
+        "-m",
+        "validation.candidate_integrity",
+        "--output",
+        "/tmp/2026-10-20-boundary-integrity.json"
+      ],
+      "exit_code": 0,
+      "output": "{\n  \"candidate_id\": \"boundary-hardening-v1\",\n  \"status\": \"CANDIDATE_CONTENT_VERIFIED_NOT_RELEASE_APPROVED\",\n  \"source_files\": 74,\n  \"release_ref\": \"39a0bfa39270ea4b685b0f862e7dbf647cf81d77\",\n  \"release_history_preserved\": true,\n  \"changed_from_release\": [\n    \"scripts/validate_deliverable.py\",\n    \"web/runtime/preview.py\",\n    \"web/runtime/revision.py\",\n    \"web/runtime/router.py\",\n    \"web/runtime/validate.py\",\n    \"web/schemas/web_delivery_v0.2.schema.json\"\n  ],\n  \"candidate_tree_sha256\": \"cb8b87a2fd16d11676d874e70455030d2c89b17a4b3cfd6ec941943a38ccd947\",\n  \"release_approved\": false,\n  \"git_head\": \"b8bb0521064a1a1726be7441b674e99ad63c7229\"\n}"
+    },
+    {
+      "command": [
+        "python",
+        "-m",
+        "validation.candidate_tests"
+      ],
+      "exit_code": 0,
+      "output": "----------------------------------------------------------------------\nRan 59 tests in 3.127s\n\nOK"
+    },
+    {
+      "command": [
+        "python",
+        "-m",
+        "validation.release_integrity",
+        "--output",
+        "/tmp/2026-10-20-boundary-release.json"
+      ],
+      "exit_code": 0,
+      "output": "{\n  \"release_ref\": \"39a0bfa39270ea4b685b0f862e7dbf647cf81d77\",\n  \"historical_bytes_unchanged\": true,\n  \"checks\": [\n    {\n      \"command\": [\n        \"python\",\n        \"-m\",\n        \"unittest\",\n        \"discover\",\n        \"-s\",\n        \"tests\",\n        \"-p\",\n        \"test_*.py\",\n        \"-v\"\n      ],\n      \"exit_code\": 0,\n      \"output\": \"----------------------------------------------------------------------\\nRan 5 tests in 0.285s\\n\\nOK\"\n    },\n    {\n      \"command\": [\n        \"python\",\n        \"-m\",\n        \"unittest\",\n        \"discover\",\n        \"-s\",\n        \"src/ai-creative-skill/web/tests\",\n        \"-p\",\n        \"test_*.py\",\n        \"-v\"\n      ],\n      \"exit_code\": 0,\n      \"output\": \"----------------------------------------------------------------------\\nRan 35 tests in 0.665s\\n\\nOK\"\n    },\n    {\n      \"command\": [\n        \"python\",\n        \"src/ai-creative-skill/scripts/smoke_install.py\"\n      ],\n      \"exit_code\": 0,\n      \"output\": \"{\\n  \\\"release\\\": \\\"2.5.0\\\",\\n  \\\"checks\\\": {\\n    \\\"manifest\\\": true,\\n    \\\"web_route\\\": true,\\n    \\\"media_routes\\\": true,\\n    \\\"image_lanczos\\\": true\\n  },\\n  \\\"all_pass\\\": true,\\n  \\\"not_tested\\\": [\\n    \\\"real browser\\\",\\n    \\\"auto-agent invocation\\\",\\n    \\\"neural fidelity\\\",\\n    \\\"commercial adapters\\\"\\n  ]\\n}\"\n    },\n    {\n      \"command\": [\n        \"python\",\n        \"packaging/build.py\",\n        \"--output-dir\",\n        \"dist\"\n      ],\n      \"exit_code\": 0,\n      \"output\": \"{\\n  \\\"version\\\": \\\"2.5.0\\\",\\n  \\\"plugin_version\\\": \\\"0.3.0\\\",\\n  \\\"status\\\": \\\"REBUILT_CONTENT_VERIFIED_NOT_HOST_CERTIFIED\\\",\\n  \\\"artifacts\\\": {\\n    \\\"agent\\\": {\\n      \\\"filename\\\": \\\"AI_Creative_Skill_V2.5_Agent_Skill.zip\\\",\\n      \\\"files\\\": 74,\\n      \\\"bytes\\\": 538723,\\n      \\\"sha256\\\": \\\"ae9bc5cf63523b5da5fa31ccd0f946687bcadd5e8157eb1f3c8b627325eb46e3\\\"\\n    },\\n    \\\"plugin\\\": {\\n      \\\"filename\\\": \\\"AI_Creative_Skill_V2.5_OpenAI_Portable_Plugin.zip\\\",\\n      \\\"files\\\": 75,\\n      \\\"bytes\\\": 540167,\\n      \\\"sha256\\\": \\\"bf349ccd9ab1624359b2aa993e5dc0e3c00c9bf04d256fc6d5cec4a5f2b267cf\\\"\\n    }\\n  }\\n}\"\n    }\n  ],\n  \"release_promotion\": false,\n  \"status\": \"PASS\",\n  \"verification_checkout\": \"b8bb0521064a1a1726be7441b674e99ad63c7229\"\n}"
+    },
+    {
+      "command": [
+        "python",
+        "-m",
+        "validation.harness",
+        "--profile",
+        "candidate",
+        "--host",
+        "--check",
+        "--output",
+        "/tmp/2026-10-20-boundary-candidate.json"
+      ],
+      "exit_code": 0,
+      "output": "{\n  \"summary\": {\n    \"PASS\": 308,\n    \"FAIL\": 0,\n    \"BLOCKED\": 0,\n    \"NOT_RUN\": 7,\n    \"UNVERIFIED\": 2\n  },\n  \"regression_gate\": {\n    \"unexpected_failures\": [],\n    \"resolved_findings_need_review\": [],\n    \"blocked\": [],\n    \"missing_records\": [],\n    \"changed_failure_evidence\": []\n  },\n  \"report\": \"/tmp/2026-10-20-boundary-candidate.json\"\n}"
+    },
+    {
+      "command": [
+        "python",
+        "-m",
+        "compileall",
+        "-q",
+        "src/ai-creative-skill",
+        "validation",
+        "tests"
+      ],
+      "exit_code": 0,
+      "output": ""
+    }
+  ],
+  "status": "PASS"
+}

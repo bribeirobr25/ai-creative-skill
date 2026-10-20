@@ -1,0 +1,57 @@
+{
+  "release_ref": "39a0bfa39270ea4b685b0f862e7dbf647cf81d77",
+  "historical_bytes_unchanged": true,
+  "checks": [
+    {
+      "command": [
+        "python",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_*.py",
+        "-v"
+      ],
+      "exit_code": 0,
+      "output": "----------------------------------------------------------------------\nRan 5 tests in 0.285s\n\nOK"
+    },
+    {
+      "command": [
+        "python",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "src/ai-creative-skill/web/tests",
+        "-p",
+        "test_*.py",
+        "-v"
+      ],
+      "exit_code": 0,
+      "output": "----------------------------------------------------------------------\nRan 35 tests in 0.665s\n\nOK"
+    },
+    {
+      "command": [
+        "python",
+        "src/ai-creative-skill/scripts/smoke_install.py"
+      ],
+      "exit_code": 0,
+      "output": "{\n  \"release\": \"2.5.0\",\n  \"checks\": {\n    \"manifest\": true,\n    \"web_route\": true,\n    \"media_routes\": true,\n    \"image_lanczos\": true\n  },\n  \"all_pass\": true,\n  \"not_tested\": [\n    \"real browser\",\n    \"auto-agent invocation\",\n    \"neural fidelity\",\n    \"commercial adapters\"\n  ]\n}"
+    },
+    {
+      "command": [
+        "python",
+        "packaging/build.py",
+        "--output-dir",
+        "dist"
+      ],
+      "exit_code": 0,
+      "output": "{\n  \"version\": \"2.5.0\",\n  \"plugin_version\": \"0.3.0\",\n  \"status\": \"REBUILT_CONTENT_VERIFIED_NOT_HOST_CERTIFIED\",\n  \"artifacts\": {\n    \"agent\": {\n      \"filename\": \"AI_Creative_Skill_V2.5_Agent_Skill.zip\",\n      \"files\": 74,\n      \"bytes\": 538723,\n      \"sha256\": \"ae9bc5cf63523b5da5fa31ccd0f946687bcadd5e8157eb1f3c8b627325eb46e3\"\n    },\n    \"plugin\": {\n      \"filename\": \"AI_Creative_Skill_V2.5_OpenAI_Portable_Plugin.zip\",\n      \"files\": 75,\n      \"bytes\": 540167,\n      \"sha256\": \"bf349ccd9ab1624359b2aa993e5dc0e3c00c9bf04d256fc6d5cec4a5f2b267cf\"\n    }\n  }\n}"
+    }
+  ],
+  "release_promotion": false,
+  "status": "PASS",
+  "verification_checkout": "b8bb0521064a1a1726be7441b674e99ad63c7229"
+}
