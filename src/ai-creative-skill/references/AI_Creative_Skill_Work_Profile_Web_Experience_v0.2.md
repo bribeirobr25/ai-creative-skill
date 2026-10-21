@@ -1,5 +1,7 @@
 # WEB_EXPERIENCE · Work Profile v0.2
 
+> **EXPERIMENTAL CANDIDATE (DQB-03, condition B):** FAST 3 asks for contrasting directions before choosing one. Not approved; not a release.
+
 **Task ownership:** landing page/site research, concept, navigable preview, scoped edit, explicitly authorized publication. Default build path **FAST**, not endless benchmark.
 
 ## Host route
@@ -12,7 +14,7 @@
 
 1. Resolve intent and project canon. Create concise `WEB_BRIEF` (product/service truth vs unknown vs inference, audience, single primary action, authority/rights).
 2. Use existing research + a few live niche, visual and funnel examples **only if material**. Reference acceptance is per dimension. Do not imitate trade dress.
-3. Produce one purposeful `WEB_DIRECTION`: value proposition, section purposes, content and CTA, visual language and optional motion. Preserve brand authority; do not require full brand guidelines before draft.
+3. **Diverge, then choose.** When visual presentation matters, first write **two or three genuinely contrasting directions** (three to five lines each). Each must differ from the others in at least two of: hero structure (full-bleed image with overlaid type, split, type-led, product-grid-led, or another structure), type system (families, scale contrast, case), role of photography (protagonist, supporting, texture), colour and surface treatment, density and rhythm. Derive each from something specific in the brief or brand material, never from an industry preset or your usual default. Then choose one against the brief: audience, single primary action, brand authority and the assets actually available. Record in `WEB_DIRECTION.visual_direction` the chosen direction, the alternatives and why they lost; borrow at most one element from a losing direction, only when it serves the brief. No approval pause: keep the alternatives short and proportional to the task. The chosen direction becomes the one purposeful `WEB_DIRECTION`: value proposition, section purposes, content and CTA, visual language and optional motion. Preserve brand authority; do not require full brand guidelines before draft.
 4. Plan/reuse/create minimum assets. Asset existence is not approval, and approval is scoped by use. Never imply rights from an external inspiration site. Paid generation requires authorization.
 5. **Build a working site** using host tools (HTML/CSS/JS or framework as appropriate). Responsive desktop/mobile, working navigation and honest CTAs are minimum. Motion must respect reduced motion and content legibility. A calculated-on-device form is `LOCAL_CALCULATION`, not lead capture or a mock. Avoid fake successful signups/checkout.
 6. Host preview using supported environment (if permitted use `python scripts/creative_web.py preview start <site_dir>`). Do not present a screenshot or code as an interactive preview. Verify exact URL/process and ability to reopen; ephemeral links are not persistent.
