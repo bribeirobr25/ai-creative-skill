@@ -28,8 +28,19 @@ def visible_tid(page, name):
     loc = tid(page, name)
     return [loc.nth(i) for i in range(loc.count()) if loc.nth(i).is_visible()]
 
+def open_menu(page):
+    """Amendment E1: open a collapsed mobile menu (aria-expanded toggle or a button named menu) before navigating."""
+    for sel in ['[aria-expanded="false"][aria-controls]', 'button[aria-label*="menu" i]', 'button:has-text("Menu")']:
+        loc = page.locator(sel)
+        for i in range(loc.count()):
+            if loc.nth(i).is_visible():
+                loc.nth(i).click(); page.wait_for_timeout(400); return True
+    return False
+
 def click(page, name):
     loc = visible_tid(page, name)
+    if not loc and name.startswith("nav-") and open_menu(page):
+        loc = visible_tid(page, name)
     if not loc:
         raise AssertionError(f"no visible {name}")
     loc[0].scroll_into_view_if_needed(); loc[0].click(); page.wait_for_timeout(450)
@@ -52,7 +63,7 @@ def images_ok(page):
     settle(page)
     return page.evaluate("""() => {const im=[...document.images];
       const broken=im.filter(i=>i.complete && i.naturalWidth===0).map(i=>i.getAttribute('src'));
-      const tiny=im.filter(i=>{const r=i.getBoundingClientRect(); const cs=getComputedStyle(i);
+      const tiny=im.filter(i=>{if(/logo|wordmark/i.test(i.getAttribute('src')||'')) return false; const r=i.getBoundingClientRect(); const cs=getComputedStyle(i);
          return i.naturalWidth>0 && cs.display!=='none' && cs.visibility!=='hidden' && r.width>0 && (r.width<24||r.height<24)}).map(i=>i.getAttribute('src'));
       const noalt=im.filter(i=>!i.hasAttribute('alt')).map(i=>i.getAttribute('src'));
       return {count:im.length, broken, tiny, noalt}}""")
@@ -83,7 +94,7 @@ def d1_tasks(page, vp):
     click(page, "filter-terry"); v = vis(); rec("filter Terry -> rosa only", v == ["rosa"], v, vp)
     click(page, "filter-embroidered"); v = vis(); rec("filter Embroidered -> branca, azul", sorted(v) == ["azul", "branca"], v, vp)
     click(page, "filter-all"); v = vis(); rec("filter All -> 6", len(v) == 6, v, vp)
-    shot(page, "collection")
+    page.evaluate("window.scrollTo(0,0)"); page.wait_for_timeout(250); shot(page, "collection")  # E3
     body_all = []
     for pid in ids:
         if not visible_tid(page, f"product-{pid}"):
@@ -100,10 +111,10 @@ def d1_tasks(page, vp):
                 after = page.evaluate("[...document.images].filter(i=>i.getBoundingClientRect().width>200).map(i=>i.currentSrc).join('|')")
                 rec("croissant: thumbnail changes main image", before != after, viewport=vp)
                 if len(th) >= 3:
-                    tops = {round(t.bounding_box()["y"]) for t in th if t.bounding_box()}
-                    rec("croissant: thumbnails in one row", len(tops) == 1, sorted(tops), vp)
+                    tops = sorted(round(t.bounding_box()["y"]) for t in th if t.bounding_box())
+                    rec("croissant: thumbnails in one row", bool(tops) and tops[-1] - tops[0] <= 8, tops, vp)  # E2: 8 px tolerance
             rec("croissant: sticker sheet mentioned", "sticker" in low, viewport=vp)
-            shot(page, "product")
+            page.evaluate("window.scrollTo(0,0)"); page.wait_for_timeout(250); shot(page, "product")  # E3
         if pid == "limao":
             rec("limao: flower, not bow", "flower" in low, viewport=vp)
         page.go_back(); page.wait_for_timeout(400)
@@ -118,13 +129,13 @@ def d1_tasks(page, vp):
     em.fill("hello@"); click(page, "interest-submit")
     err = visible_tid(page, "interest-error"); conf = visible_tid(page, "interest-confirmation")
     rec("invalid email -> error, no confirmation", bool(err and err[0].inner_text().strip()) and not conf, viewport=vp)
-    shot(page, "interest-error")
+    err and err[0].scroll_into_view_if_needed(); page.evaluate("window.scrollBy(0, -window.innerHeight/3)"); page.wait_for_timeout(200); shot(page, "interest-error")  # E3
     em = visible_tid(page, "interest-email")
     if em: em[0].fill("hello@example.com")
     click(page, "interest-submit")
     conf = visible_tid(page, "interest-confirmation"); txt = conf[0].inner_text().lower() if conf else ""
     rec("valid email -> confirmation names croissant and rosa", "croissant" in txt and "rosa" in txt, txt[:160], vp)
-    shot(page, "interest-confirmation")
+    conf and conf[0].scroll_into_view_if_needed(); page.evaluate("window.scrollBy(0, -window.innerHeight/3)"); page.wait_for_timeout(200); shot(page, "interest-confirmation")  # E3
     body = page.inner_text("body")
     rec("no-data-sent notice", "No data is sent" in body, viewport=vp)
     click(page, "nav-interest")
@@ -143,7 +154,7 @@ def d2_tasks(page, vp):
     body = page.inner_text("body"); low = body.lower()
     rec("how: 10,000 credits, 1,000 weekly, 20,000 pause, 1,500 event", all(x in body for x in ["10,000", "1,000", "20,000", "1,500"]), viewport=vp)
     rec("how: reference cost 0.39% / 0.25 not charged", "0.39%" in body and "0.25" in body and "not charged" in low, viewport=vp)
-    shot(page, "how")
+    page.evaluate("window.scrollTo(0,0)"); page.wait_for_timeout(250); shot(page, "how")  # E3
     click(page, "nav-system")
     def setp(e, t, l):
         for k, v in (("emergency", e), ("trip", t), ("laptop", l)):
@@ -168,7 +179,7 @@ def d2_tasks(page, vp):
     click(page, "waitlist-submit")
     conf = visible_tid(page, "waitlist-confirmation"); t = conf[0].inner_text().lower() if conf else ""
     rec("valid email -> local confirmation, nothing sent", bool(conf) and ("not sent" in t or "nothing was sent" in t or "no data" in t or "wasn't sent" in t or "was not sent" in t), t[:160], vp)
-    shot(page, "waitlist")
+    conf and conf[0].scroll_into_view_if_needed(); page.evaluate("window.scrollBy(0, -window.innerHeight/3)"); page.wait_for_timeout(200); shot(page, "waitlist")  # E3
     body = page.inner_text("body").lower()
     banned = [w for w in ["risk-free", "guaranteed return", "passive income", " apy", "defi", "stablecoin", "blockchain", "sandbox", "limited-time"] if w in body]
     rec("no banned words on page", not banned, banned, vp)

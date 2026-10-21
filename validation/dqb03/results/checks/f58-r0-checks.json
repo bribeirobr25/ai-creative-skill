@@ -1,0 +1,334 @@
+{
+ "label": "f58-r0",
+ "brief": "D2",
+ "site": "/tmp/dqb3/frozen/f58-r0",
+ "collected_utc": "2026-10-21T13:30:24Z",
+ "pass": 42,
+ "total": 42,
+ "checks": [
+  {
+   "check": "images decoded, none broken",
+   "viewport": "1440x900",
+   "result": "PASS",
+   "detail": "{'count': 8, 'broken': [], 'tiny': [], 'noalt': []}"
+  },
+  {
+   "check": "no collapsed/tiny visible images",
+   "viewport": "1440x900",
+   "result": "PASS",
+   "detail": "[]"
+  },
+  {
+   "check": "all images have alt attribute",
+   "viewport": "1440x900",
+   "result": "PASS",
+   "detail": "[]"
+  },
+  {
+   "check": "no horizontal overflow (home)",
+   "viewport": "1440x900",
+   "result": "PASS",
+   "detail": "0"
+  },
+  {
+   "check": "hero copy preserved",
+   "viewport": "1440x900",
+   "result": "PASS",
+   "detail": ""
+  },
+  {
+   "check": "footer preview notice",
+   "viewport": "1440x900",
+   "result": "PASS",
+   "detail": ""
+  },
+  {
+   "check": "cta-practice links to app.diboas.com",
+   "viewport": "1440x900",
+   "result": "PASS",
+   "detail": "['https://app.diboas.com', 'https://app.diboas.com', 'https://app.diboas.com', 'https://app.diboas.com', 'https://app.diboas.com', 'https://app.diboas.com']"
+  },
+  {
+   "check": "how it works shows 8 steps",
+   "viewport": "1440x900",
+   "result": "PASS",
+   "detail": "8"
+  },
+  {
+   "check": "how: 10,000 credits, 1,000 weekly, 20,000 pause, 1,500 event",
+   "viewport": "1440x900",
+   "result": "PASS",
+   "detail": ""
+  },
+  {
+   "check": "how: reference cost 0.39% / 0.25 not charged",
+   "viewport": "1440x900",
+   "result": "PASS",
+   "detail": ""
+  },
+  {
+   "check": "system 40/30/0 -> 400/300/0, 300 available",
+   "viewport": "1440x900",
+   "result": "PASS",
+   "detail": "{'emergency': '400', 'trip': '300', 'laptop': '0'} | 300"
+  },
+  {
+   "check": "system 70/50 -> error, no negative/NaN",
+   "viewport": "1440x900",
+   "result": "PASS",
+   "detail": "err=True '– – – –'"
+  },
+  {
+   "check": "invalid email -> error, no confirmation",
+   "viewport": "1440x900",
+   "result": "PASS",
+   "detail": ""
+  },
+  {
+   "check": "valid email -> local confirmation, nothing sent",
+   "viewport": "1440x900",
+   "result": "PASS",
+   "detail": "thank you. this is only a preview.\n\nnothing was sent and your email was not stored. this page is not connected to a real waitlist."
+  },
+  {
+   "check": "no banned words on page",
+   "viewport": "1440x900",
+   "result": "PASS",
+   "detail": "[]"
+  },
+  {
+   "check": "FAQ has >= 4 items",
+   "viewport": "1440x900",
+   "result": "PASS",
+   "detail": "4"
+  },
+  {
+   "check": "FAQ item expands",
+   "viewport": "1440x900",
+   "result": "PASS",
+   "detail": ""
+  },
+  {
+   "check": "no script/console errors",
+   "viewport": "1440x900",
+   "result": "PASS",
+   "detail": "[]"
+  },
+  {
+   "check": "no external network requests",
+   "viewport": "1440x900",
+   "result": "PASS",
+   "detail": "[]"
+  },
+  {
+   "check": "images decoded, none broken",
+   "viewport": "390x844",
+   "result": "PASS",
+   "detail": "{'count': 8, 'broken': [], 'tiny': [], 'noalt': []}"
+  },
+  {
+   "check": "no collapsed/tiny visible images",
+   "viewport": "390x844",
+   "result": "PASS",
+   "detail": "[]"
+  },
+  {
+   "check": "all images have alt attribute",
+   "viewport": "390x844",
+   "result": "PASS",
+   "detail": "[]"
+  },
+  {
+   "check": "no horizontal overflow (home)",
+   "viewport": "390x844",
+   "result": "PASS",
+   "detail": "0"
+  },
+  {
+   "check": "hero copy preserved",
+   "viewport": "390x844",
+   "result": "PASS",
+   "detail": ""
+  },
+  {
+   "check": "footer preview notice",
+   "viewport": "390x844",
+   "result": "PASS",
+   "detail": ""
+  },
+  {
+   "check": "cta-practice links to app.diboas.com",
+   "viewport": "390x844",
+   "result": "PASS",
+   "detail": "['https://app.diboas.com', 'https://app.diboas.com', 'https://app.diboas.com', 'https://app.diboas.com', 'https://app.diboas.com', 'https://app.diboas.com']"
+  },
+  {
+   "check": "how it works shows 8 steps",
+   "viewport": "390x844",
+   "result": "PASS",
+   "detail": "8"
+  },
+  {
+   "check": "how: 10,000 credits, 1,000 weekly, 20,000 pause, 1,500 event",
+   "viewport": "390x844",
+   "result": "PASS",
+   "detail": ""
+  },
+  {
+   "check": "how: reference cost 0.39% / 0.25 not charged",
+   "viewport": "390x844",
+   "result": "PASS",
+   "detail": ""
+  },
+  {
+   "check": "system 40/30/0 -> 400/300/0, 300 available",
+   "viewport": "390x844",
+   "result": "PASS",
+   "detail": "{'emergency': '400', 'trip': '300', 'laptop': '0'} | 300"
+  },
+  {
+   "check": "system 70/50 -> error, no negative/NaN",
+   "viewport": "390x844",
+   "result": "PASS",
+   "detail": "err=True '– – – –'"
+  },
+  {
+   "check": "invalid email -> error, no confirmation",
+   "viewport": "390x844",
+   "result": "PASS",
+   "detail": ""
+  },
+  {
+   "check": "valid email -> local confirmation, nothing sent",
+   "viewport": "390x844",
+   "result": "PASS",
+   "detail": "thank you. this is only a preview.\n\nnothing was sent and your email was not stored. this page is not connected to a real waitlist."
+  },
+  {
+   "check": "no banned words on page",
+   "viewport": "390x844",
+   "result": "PASS",
+   "detail": "[]"
+  },
+  {
+   "check": "FAQ has >= 4 items",
+   "viewport": "390x844",
+   "result": "PASS",
+   "detail": "4"
+  },
+  {
+   "check": "FAQ item expands",
+   "viewport": "390x844",
+   "result": "PASS",
+   "detail": ""
+  },
+  {
+   "check": "no script/console errors",
+   "viewport": "390x844",
+   "result": "PASS",
+   "detail": "[]"
+  },
+  {
+   "check": "no external network requests",
+   "viewport": "390x844",
+   "result": "PASS",
+   "detail": "[]"
+  },
+  {
+   "check": "no horizontal overflow (home)",
+   "viewport": "768x1024",
+   "result": "PASS",
+   "detail": "0"
+  },
+  {
+   "check": "no horizontal overflow (home)",
+   "viewport": "320x740",
+   "result": "PASS",
+   "detail": "0"
+  },
+  {
+   "check": "reduced motion: no running animations",
+   "viewport": "1440x900/reduce",
+   "result": "PASS",
+   "detail": "0"
+  },
+  {
+   "check": "keyboard Tab reaches controls with visible focus",
+   "viewport": "1440x900",
+   "result": "PASS",
+   "detail": "[{'tag': 'A', 'visible': True}, {'tag': 'A', 'visible': True}, {'tag': 'A', 'visible': True}, {'tag': 'A', 'visible': True}, {'tag': 'A', 'visible': True}, {'tag': 'A', 'visible': True}]"
+  }
+ ],
+ "screenshots": [
+  {
+   "state": "1440-home",
+   "file": "f58-r0-1440-home.jpg",
+   "sha256": "c70443b9241de08831f97cf28bc43e7f430d7e184ccb5bc11bfc1a4a6e265fbd"
+  },
+  {
+   "state": "1440-home-full",
+   "file": "f58-r0-1440-home-full.jpg",
+   "sha256": "9e56dd13146444dc00017ffee6ff0b86f3233422261e49dc042714bca869333f"
+  },
+  {
+   "state": "how",
+   "file": "f58-r0-1440-how.jpg",
+   "sha256": "fe35b1d7e172fbd6e69d0c6104a441ffdcb9f59e36ba0f9bb1d6ab78763ce56f"
+  },
+  {
+   "state": "system",
+   "file": "f58-r0-1440-system.jpg",
+   "sha256": "4d986a25af184db4c7617a9cc415ea61022699a2c3a4dd99b5c900c7a3b5d92a"
+  },
+  {
+   "state": "system-error",
+   "file": "f58-r0-1440-system-error.jpg",
+   "sha256": "d37ccca758f1810d463abbaf4807e1c5225cd7a2b7b456c78768ee03bfbc7279"
+  },
+  {
+   "state": "waitlist",
+   "file": "f58-r0-1440-waitlist.jpg",
+   "sha256": "5ef47010919614267e49cfa32a9d6b38a11a9a4ca28f8591cc9867fc65479e9a"
+  },
+  {
+   "state": "390-home",
+   "file": "f58-r0-390-home.jpg",
+   "sha256": "6e64468b07f35b05855161259df883e512984440267e9c0a2609fcfc4422bd82"
+  },
+  {
+   "state": "390-home-full",
+   "file": "f58-r0-390-home-full.jpg",
+   "sha256": "07321352f7bbf911ba78ded7c3a4b9c1b95820b67d7a80abce76882cfbf13bb2"
+  },
+  {
+   "state": "how",
+   "file": "f58-r0-390-how.jpg",
+   "sha256": "fe777cf53c83823c742a387739e124b68ae95a098dab26156cb7964f1098c86c"
+  },
+  {
+   "state": "system",
+   "file": "f58-r0-390-system.jpg",
+   "sha256": "a88af1eb4c154703768653dda8f537fbc5005065c6439e559989a0c48fbb92aa"
+  },
+  {
+   "state": "system-error",
+   "file": "f58-r0-390-system-error.jpg",
+   "sha256": "3e07e2d77cd6b8df6ac05abd1d3915d483fc2c582bd9d8bfd3464b3f22a039b3"
+  },
+  {
+   "state": "waitlist",
+   "file": "f58-r0-390-waitlist.jpg",
+   "sha256": "7ad5275688bba05f8f9aa1caf1e86ba163d15c00b19d46ec14da22b466960268"
+  },
+  {
+   "state": "768-home",
+   "file": "f58-r0-768-home.jpg",
+   "sha256": "03a42cf3d828944389f58678fb68f1cfc59d99a1dc264790fec0e7f6fab6c8d3"
+  },
+  {
+   "state": "320-home",
+   "file": "f58-r0-320-home.jpg",
+   "sha256": "4714d971ac2cf1ad6b3bfdc4c1625b80e2d1b4e429cca5f9ff6ee7b6647d7105"
+  }
+ ]
+}

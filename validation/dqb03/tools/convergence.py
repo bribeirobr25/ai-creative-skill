@@ -45,7 +45,7 @@ with sync_playwright() as p:
 hashes = {r["run"]: dhash(EV / f"{r['run']}-{RND}" / f"{r['run']}-{RND}-1440-home.jpg") for r in runs}
 pairs = []
 for a, c in itertools.combinations(runs, 2):
-    kind = ("same-brief" if a["brief"] == c["brief"] else "cross-brief") + "/" + ("same-condition" if a["condition"] == c["condition"] else "cross-condition")
+    kind = ("same-brief" if a["brief"] == c["brief"] else "cross-brief") + "/" + (("within-" + a["condition"]) if a["condition"] == c["condition"] else "cross-condition")
     pairs.append({"a": a["run"], "b": c["run"], "kind": kind, "home_dhash_distance": round(hamming(hashes[a["run"]], hashes[c["run"]]), 3)})
 summary = {}
 for k in sorted({p["kind"] for p in pairs}):

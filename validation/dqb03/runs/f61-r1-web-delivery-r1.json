@@ -1,0 +1,426 @@
+{
+ "schema_version": "0.2.1-candidate",
+ "route": "WEB_PREVIEW",
+ "mode": "FAST",
+ "project": "diBoaS Practice preview site (DQB-03 run f61)",
+ "build_version": "r1-07148cf956c0",
+ "state": "PREVIEW_DRAFT",
+ "verdict": "PASS",
+ "execution": {
+  "execution_mode": "MANUAL_SPEC_GUIDED",
+  "skill_package_version": "V2.5 (ai-creative-skill in $RUN)",
+  "methods": [
+   {
+    "name": "WEB_EXPERIENCE Work Profile v0.2",
+    "state": "EXECUTED"
+   },
+   {
+    "name": "web_delivery_v0.2 schema + creative_web.py validate",
+    "state": "EXECUTED"
+   },
+   {
+    "name": "Deliverable Completeness Catalog",
+    "state": "DOCUMENTED"
+   }
+  ],
+  "tools": [
+   "shell",
+   "python3",
+   "playwright-chromium",
+   "PIL"
+  ],
+  "paid_authorized": false,
+  "public_deploy_authorized": false,
+  "activation_evidence": "execution.md lists files read; QA script evidence-r1/qa.py"
+ },
+ "WEB_BRIEF": {
+  "deliverable_scope": "Local navigable website presenting diBoaS Practice (home, how it works, Your system preview, waitlist, FAQ)",
+  "business_kind": "DIGITAL_PRODUCT",
+  "user_goal": "Explain Practice plainly, show the practice cycle, let visitors try a local Your system split, send to Practice, offer a local waitlist",
+  "audience_basis": "Brief D2: smart adult failed by the financial system, including older non-technical readers",
+  "product_service_truth_refs": [
+   "brief.md (only product truth)"
+  ],
+  "known_unknown_boundary": [
+   "No app screenshots exist; none faked",
+   "No minimums, fees caps or returns for real money",
+   "Real-money launch timing unknown"
+  ],
+  "brand_authority_state": "EXISTING_APPROVED",
+  "primary_action_intent": "Start practicing -> https://app.diboas.com (same tab)",
+  "task_completion_condition": "r1/ navigable locally with all required experiences and testids; execution.md written",
+  "current_brand_refs": [
+   "assets/logo-*",
+   "brief colour tokens",
+   "Fraunces/Inter/Space Grotesk"
+  ],
+  "regulated_claim_boundary": "Never sell, promise or advise; credits never money; diBoaS not a bank; footer disclosures verbatim",
+  "proposed_function_hypothesis": null
+ },
+ "WEB_DIRECTION": {
+  "value_proposition": "Practice money decisions before they're real.",
+  "primary_cta_intent": "Start practicing (app.diboas.com)",
+  "sections_and_purpose": [
+   {
+    "id": "home-hero",
+    "purpose": "Proposition and two actions"
+   },
+   {
+    "id": "truths",
+    "purpose": "Four plain facts"
+   },
+   {
+    "id": "cycle-rail",
+    "purpose": "Eight-step overview linking to each step"
+   },
+   {
+    "id": "system-teaser",
+    "purpose": "Route to local preview"
+   },
+   {
+    "id": "time-machine",
+    "purpose": "Risk travels with upside"
+   },
+   {
+    "id": "real-money",
+    "purpose": "Not live; waitlist route"
+   },
+   {
+    "id": "faq",
+    "purpose": "Four required answers"
+   },
+   {
+    "id": "how",
+    "purpose": "Eight steps in three image-anchored groups"
+   },
+   {
+    "id": "system",
+    "purpose": "Local percentage split calculator"
+   },
+   {
+    "id": "waitlist",
+    "purpose": "Local email validation, nothing sent"
+   }
+  ],
+  "visual_direction": "The rehearsal ledger: warm paper, Fraunces editorial serif, Inter body, Space Grotesk numerals; copper rules and step numbers; teal only for actions and live numbers; deep ink bands for the time machine, waitlist and footer; Practice coast illustration light by day (hero) and night (waitlist).",
+  "creative_open_zones": [
+   "layout",
+   "image crops",
+   "component styling",
+   "micro-interactions"
+  ],
+  "brand_alignment": "Logos unmodified; brief palette only; no gradients beyond ink overlays on images",
+  "claim_and_offer_boundaries": "Only brief facts and numbers; calculator values are derived from user input",
+  "motion_fallback_and_controls": "Short view fade and hover transitions; disabled under prefers-reduced-motion"
+ },
+ "WEB_ASSET_PLAN": {
+  "assets_used": [
+   {
+    "path": "r1/assets/practice-coast-light.jpg",
+    "origin": "owner brand library",
+    "approval": "APPROVED_FOR_THIS_USE",
+    "rights": "CLEARED",
+    "use_scope": "hero"
+   },
+   {
+    "path": "r1/assets/practice-coast-night.jpg",
+    "origin": "owner brand library",
+    "approval": "APPROVED_FOR_THIS_USE",
+    "rights": "CLEARED",
+    "use_scope": "waitlist header"
+   },
+   {
+    "path": "r1/assets/morning-pause.jpg",
+    "origin": "owner brand library",
+    "approval": "APPROVED_FOR_THIS_USE",
+    "rights": "CLEARED",
+    "use_scope": "home system teaser"
+   },
+   {
+    "path": "r1/assets/veil-of-dawn.jpg",
+    "origin": "owner brand library",
+    "approval": "APPROVED_FOR_THIS_USE",
+    "rights": "CLEARED",
+    "use_scope": "time machine band background"
+   },
+   {
+    "path": "r1/assets/saved-through-time.jpg",
+    "origin": "owner brand library",
+    "approval": "APPROVED_FOR_THIS_USE",
+    "rights": "CLEARED",
+    "use_scope": "real money section"
+   },
+   {
+    "path": "r1/assets/how-it-works-goal.jpg",
+    "origin": "owner brand library",
+    "approval": "APPROVED_FOR_THIS_USE",
+    "rights": "CLEARED",
+    "use_scope": "how steps 1-3"
+   },
+   {
+    "path": "r1/assets/how-it-works-path.jpg",
+    "origin": "owner brand library",
+    "approval": "APPROVED_FOR_THIS_USE",
+    "rights": "CLEARED",
+    "use_scope": "how steps 4-6"
+   },
+   {
+    "path": "r1/assets/how-it-works-move.jpg",
+    "origin": "owner brand library",
+    "approval": "APPROVED_FOR_THIS_USE",
+    "rights": "CLEARED",
+    "use_scope": "how steps 7-8"
+   },
+   {
+    "path": "r1/assets/moment-of-ease.jpg",
+    "origin": "owner brand library",
+    "approval": "APPROVED_FOR_THIS_USE",
+    "rights": "CLEARED",
+    "use_scope": "system page side"
+   },
+   {
+    "path": "r1/assets/logo-wordmark-onlight.webp",
+    "origin": "owner logo",
+    "approval": "APPROVED_FOR_THIS_USE",
+    "rights": "CLEARED",
+    "use_scope": "header"
+   },
+   {
+    "path": "r1/assets/logo-wordmark-ondark.webp",
+    "origin": "owner logo",
+    "approval": "APPROVED_FOR_THIS_USE",
+    "rights": "CLEARED",
+    "use_scope": "footer"
+   },
+   {
+    "path": "r1/assets/logo-mark.avif",
+    "origin": "owner logo",
+    "approval": "APPROVED_FOR_THIS_USE",
+    "rights": "CLEARED",
+    "use_scope": "favicon"
+   }
+  ],
+  "asset_authority_and_rights": "credits.json: owner-supplied brand material for this website test",
+  "generation_required_decision": "No generation; isolation rules forbid it",
+  "product_identity_preservation": "No app screens faked; illustration labelled as from the Practice app per credits.json",
+  "provisional_vs_approved_labels": "Approved for this preview only; no publication clearance"
+ },
+ "WEB_PREVIEW_BUILD": {
+  "preview_status": "AVAILABLE_VERIFIED",
+  "source_files": [
+   "r1/index.html",
+   "r1/styles.css",
+   "r1/app.js"
+  ],
+  "verified_preview_ref_or_local_open_instructions": "Open /tmp/r3/f61/r1/index.html in a browser (file://); routes #/, #/how, #/system, #/waitlist",
+  "responsive_strategy": "Breakpoints 1080/900/600/360; mobile menu button; stacked splits; calculator rows regrid",
+  "working_interactions": [
+   "hash routing with history",
+   "mobile menu with Escape",
+   "FAQ accordion",
+   "Your system calculator",
+   "waitlist local validation",
+   "cycle rail deep links to steps"
+  ],
+  "primary_cta_behavior": "REAL_VERIFIED_LINK",
+  "real_vs_mock_integrations": "No integrations; waitlist is local only and says nothing was sent",
+  "version_id": "r1-07148cf956c0",
+  "form_mode": "LOCAL_CALCULATION",
+  "form_destination": null,
+  "prefers_reduced_motion_fallback": "All animation/transition durations set to ~0 under reduce",
+  "external_link_targets": [
+   "https://app.diboas.com"
+  ]
+ },
+ "WEB_QA": {
+  "checks": [
+   {
+    "check_id": "browser_render",
+    "requirement": "Site opens and renders in Chromium",
+    "criticality": "CRITICAL",
+    "procedure": "Playwright Chromium file:// load of every hash route",
+    "result": "PASS",
+    "evidence_mode": "BROWSER_OBSERVED",
+    "evidence_ref": "evidence-r1/1440-home.png",
+    "build_hash": "07148cf956c0c57169421360a2b9e413d64db2a038972248d31e42c126af94b2",
+    "viewport": "1440x900",
+    "checked_at": "2026-10-21T13:14:00Z"
+   },
+   {
+    "check_id": "desktop_render",
+    "requirement": "All routes render at 1440 without overflow",
+    "criticality": "ESSENTIAL",
+    "procedure": "scrollWidth<=viewport and full-page screenshot per route",
+    "result": "PASS",
+    "evidence_mode": "BROWSER_OBSERVED",
+    "evidence_ref": "evidence-r1/1440-how.png",
+    "build_hash": "07148cf956c0c57169421360a2b9e413d64db2a038972248d31e42c126af94b2",
+    "viewport": "1440x900",
+    "checked_at": "2026-10-21T13:14:00Z"
+   },
+   {
+    "check_id": "mobile_render",
+    "requirement": "All routes render at 390 without overflow",
+    "criticality": "ESSENTIAL",
+    "procedure": "scrollWidth<=viewport and full-page screenshot per route",
+    "result": "PASS",
+    "evidence_mode": "BROWSER_OBSERVED",
+    "evidence_ref": "evidence-r1/390-home.png",
+    "build_hash": "07148cf956c0c57169421360a2b9e413d64db2a038972248d31e42c126af94b2",
+    "viewport": "390x844",
+    "checked_at": "2026-10-21T13:14:00Z"
+   },
+   {
+    "check_id": "narrow_render",
+    "requirement": "All routes at 320 and 768 without overflow",
+    "criticality": "ESSENTIAL",
+    "procedure": "scrollWidth<=viewport at 320x740 and 768x1024",
+    "result": "PASS",
+    "evidence_mode": "BROWSER_OBSERVED",
+    "evidence_ref": "evidence-r1/320-system.png",
+    "build_hash": "07148cf956c0c57169421360a2b9e413d64db2a038972248d31e42c126af94b2",
+    "viewport": "320x740;768x1024",
+    "checked_at": "2026-10-21T13:14:00Z"
+   },
+   {
+    "check_id": "images_rendered",
+    "requirement": "Every visible image decoded after full scroll",
+    "criticality": "ESSENTIAL",
+    "procedure": "Scroll full page, check naturalWidth of visible images",
+    "result": "PASS",
+    "evidence_mode": "BROWSER_OBSERVED",
+    "evidence_ref": "evidence-r1/qa-results.json",
+    "build_hash": "07148cf956c0c57169421360a2b9e413d64db2a038972248d31e42c126af94b2",
+    "viewport": "all four",
+    "checked_at": "2026-10-21T13:14:00Z"
+   },
+   {
+    "check_id": "cta_interaction",
+    "requirement": "Start practicing links to https://app.diboas.com same tab; only external link",
+    "criticality": "CRITICAL",
+    "procedure": "Read href/target of every cta-practice and all http links",
+    "result": "PASS",
+    "evidence_mode": "BROWSER_OBSERVED",
+    "evidence_ref": "evidence-r1/qa-results.json",
+    "build_hash": "07148cf956c0c57169421360a2b9e413d64db2a038972248d31e42c126af94b2",
+    "viewport": "1440x900",
+    "checked_at": "2026-10-21T13:14:00Z"
+   },
+   {
+    "check_id": "keyboard_interaction",
+    "requirement": "FAQ toggles by keyboard; focus visible; mobile menu Escape",
+    "criticality": "ESSENTIAL",
+    "procedure": "Enter/Space on faq-item, Tab outline style, Escape closes menu",
+    "result": "PASS",
+    "evidence_mode": "BROWSER_OBSERVED",
+    "evidence_ref": "evidence-r1/390-menu-open.png",
+    "build_hash": "07148cf956c0c57169421360a2b9e413d64db2a038972248d31e42c126af94b2",
+    "viewport": "1440x900;390x844",
+    "checked_at": "2026-10-21T13:14:00Z"
+   },
+   {
+    "check_id": "responsive",
+    "requirement": "Navigation reachable on desktop and mobile with history back/forward",
+    "criticality": "ESSENTIAL",
+    "procedure": "Click nav-* testids, go_back/go_forward, mobile menu",
+    "result": "PASS",
+    "evidence_mode": "BROWSER_OBSERVED",
+    "evidence_ref": "evidence-r1/390-menu-open.png",
+    "build_hash": "07148cf956c0c57169421360a2b9e413d64db2a038972248d31e42c126af94b2",
+    "viewport": "1440x900;390x844",
+    "checked_at": "2026-10-21T13:14:00Z"
+   },
+   {
+    "check_id": "form_behavior",
+    "requirement": "Your system reference results and waitlist local validation",
+    "criticality": "CRITICAL",
+    "procedure": "40/30/0 -> 400/300/0/300; 70/50/0 -> error, no amounts; invalid email -> error; valid -> local confirmation",
+    "result": "PASS",
+    "evidence_mode": "BROWSER_OBSERVED",
+    "evidence_ref": "evidence-r1/1440-system-error.png",
+    "build_hash": "07148cf956c0c57169421360a2b9e413d64db2a038972248d31e42c126af94b2",
+    "viewport": "1440x900;390x844",
+    "checked_at": "2026-10-21T13:14:00Z"
+   },
+   {
+    "check_id": "reduced_motion",
+    "requirement": "prefers-reduced-motion disables animation/transition",
+    "criticality": "ADVISORY",
+    "procedure": "Context reduced_motion=reduce, computed animationDuration",
+    "result": "PASS",
+    "evidence_mode": "BROWSER_OBSERVED",
+    "evidence_ref": "evidence-r1/qa-results.json",
+    "build_hash": "07148cf956c0c57169421360a2b9e413d64db2a038972248d31e42c126af94b2",
+    "viewport": "1440x900",
+    "checked_at": "2026-10-21T13:14:00Z"
+   },
+   {
+    "check_id": "no_network",
+    "requirement": "No external requests on load",
+    "criticality": "CRITICAL",
+    "procedure": "Record non-file requests across all routes/viewports",
+    "result": "PASS",
+    "evidence_mode": "BROWSER_OBSERVED",
+    "evidence_ref": "evidence-r1/qa-results.json",
+    "build_hash": "07148cf956c0c57169421360a2b9e413d64db2a038972248d31e42c126af94b2",
+    "viewport": "all four",
+    "checked_at": "2026-10-21T13:14:00Z"
+   },
+   {
+    "check_id": "how_steps",
+    "requirement": "Eight how-step elements on how view",
+    "criticality": "ESSENTIAL",
+    "procedure": "Count data-testid=how-step",
+    "result": "PASS",
+    "evidence_mode": "BROWSER_OBSERVED",
+    "evidence_ref": "evidence-r1/1440-how.png",
+    "build_hash": "07148cf956c0c57169421360a2b9e413d64db2a038972248d31e42c126af94b2",
+    "viewport": "1440x900",
+    "checked_at": "2026-10-21T13:14:00Z"
+   },
+   {
+    "check_id": "content_truth",
+    "requirement": "Required copy verbatim; banned terms absent; no invented figures",
+    "criticality": "CRITICAL",
+    "procedure": "Static grep of index.html for banned terms/em-dashes and manual comparison with brief",
+    "result": "PASS",
+    "evidence_mode": "STATIC_INSPECTED",
+    "evidence_ref": "r1/index.html",
+    "build_hash": "07148cf956c0c57169421360a2b9e413d64db2a038972248d31e42c126af94b2",
+    "viewport": null,
+    "checked_at": "2026-10-21T13:14:00Z"
+   },
+   {
+    "check_id": "assets_available",
+    "requirement": "All referenced assets and fonts are local in r0",
+    "criticality": "ESSENTIAL",
+    "procedure": "Browser image decode check plus no external requests",
+    "result": "PASS",
+    "evidence_mode": "BROWSER_OBSERVED",
+    "evidence_ref": "evidence-r1/qa-results.json",
+    "build_hash": "07148cf956c0c57169421360a2b9e413d64db2a038972248d31e42c126af94b2",
+    "viewport": "1440x900",
+    "checked_at": "2026-10-21T13:14:00Z"
+   },
+   {
+    "check_id": "human_visual_review",
+    "requirement": "Human aesthetic acceptance",
+    "criticality": "ADVISORY",
+    "procedure": "Not performed; only executor screenshot review",
+    "result": "NOT_TESTED",
+    "evidence_mode": "NONE",
+    "evidence_ref": null,
+    "build_hash": "07148cf956c0c57169421360a2b9e413d64db2a038972248d31e42c126af94b2",
+    "viewport": null,
+    "checked_at": "2026-10-21T13:14:00Z",
+    "reason": "No human reviewer in this isolated run"
+   }
+  ],
+  "known_limitations": [
+   "No human visual review",
+   "Not tested in Safari/Firefox or with a real screen reader",
+   "Fraunces is a serif from the shared pool; brand pairing is a choice"
+  ],
+  "verdict": "PASS"
+ }
+}
