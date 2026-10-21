@@ -1,0 +1,153 @@
+{
+ "note": "Wall-clock from agent notifications (includes model latency and shared-CPU contention; both conditions ran concurrently in each batch). Tokens are per-run context totals, not billing.",
+ "runs": [
+  {
+   "run": "m58",
+   "brief": "B1",
+   "condition": "A",
+   "repetition": 1,
+   "r0_wall_min": 10.3,
+   "r0_tool_calls": 43,
+   "r0_tokens_k": 197,
+   "r1_wall_min": 3.2,
+   "r1_tool_calls": 14,
+   "common_checks_r0": "48/48",
+   "common_checks_r1": "48/48",
+   "fails_r0": [],
+   "fails_r1": []
+  },
+  {
+   "run": "m50",
+   "brief": "B1",
+   "condition": "A",
+   "repetition": 2,
+   "r0_wall_min": 9.4,
+   "r0_tool_calls": 34,
+   "r0_tokens_k": 170,
+   "r1_wall_min": 2.6,
+   "r1_tool_calls": 16,
+   "common_checks_r0": "47/48",
+   "common_checks_r1": "47/48",
+   "fails_r0": [
+    "no horizontal overflow (home) @320x740 (20px)"
+   ],
+   "fails_r1": [
+    "no horizontal overflow (home) @320x740 (20px)"
+   ]
+  },
+  {
+   "run": "m13",
+   "brief": "B1",
+   "condition": "B",
+   "repetition": 1,
+   "r0_wall_min": 17.8,
+   "r0_tool_calls": 54,
+   "r0_tokens_k": 208,
+   "r1_wall_min": 6.0,
+   "r1_tool_calls": 11,
+   "common_checks_r0": "47/48",
+   "common_checks_r1": "47/48",
+   "fails_r0": [
+    "no horizontal overflow (home) @320x740 (21px)"
+   ],
+   "fails_r1": [
+    "no horizontal overflow (home) @320x740 (21px)"
+   ]
+  },
+  {
+   "run": "m31",
+   "brief": "B1",
+   "condition": "B",
+   "repetition": 2,
+   "r0_wall_min": 11.3,
+   "r0_tool_calls": 43,
+   "r0_tokens_k": 185,
+   "r1_wall_min": 1.9,
+   "r1_tool_calls": 10,
+   "common_checks_r0": "48/48",
+   "common_checks_r1": "48/48",
+   "fails_r0": [],
+   "fails_r1": []
+  },
+  {
+   "run": "t48",
+   "brief": "B2",
+   "condition": "A",
+   "repetition": 1,
+   "r0_wall_min": 12.9,
+   "r0_tool_calls": 43,
+   "r0_tokens_k": 175,
+   "r1_wall_min": 3.3,
+   "r1_tool_calls": 17,
+   "common_checks_r0": "42/42",
+   "common_checks_r1": "42/42",
+   "fails_r0": [],
+   "fails_r1": []
+  },
+  {
+   "run": "t94",
+   "brief": "B2",
+   "condition": "A",
+   "repetition": 2,
+   "r0_wall_min": 10.5,
+   "r0_tool_calls": 40,
+   "r0_tokens_k": 179,
+   "r1_wall_min": 3.5,
+   "r1_tool_calls": 21,
+   "common_checks_r0": "42/42",
+   "common_checks_r1": "42/42",
+   "fails_r0": [],
+   "fails_r1": []
+  },
+  {
+   "run": "t19",
+   "brief": "B2",
+   "condition": "B",
+   "repetition": 1,
+   "r0_wall_min": 16.0,
+   "r0_tool_calls": 43,
+   "r0_tokens_k": 201,
+   "r1_wall_min": 2.6,
+   "r1_tool_calls": 10,
+   "common_checks_r0": "42/42",
+   "common_checks_r1": "42/42",
+   "fails_r0": [],
+   "fails_r1": []
+  },
+  {
+   "run": "t92",
+   "brief": "B2",
+   "condition": "B",
+   "repetition": 2,
+   "r0_wall_min": 12.5,
+   "r0_tool_calls": 43,
+   "r0_tokens_k": 184,
+   "r1_wall_min": 3.8,
+   "r1_tool_calls": 14,
+   "common_checks_r0": "41/42",
+   "common_checks_r1": "41/42",
+   "fails_r0": [
+    "no horizontal overflow (home) @320x740 (4px)"
+   ],
+   "fails_r1": [
+    "no horizontal overflow (home) @320x740 (41px)"
+   ]
+  }
+ ],
+ "means": {
+  "A": {
+   "r0_wall_min": 10.8,
+   "r0_tool_calls": 40,
+   "r0_tokens_k": 180.2,
+   "r1_wall_min": 3.1,
+   "r1_tool_calls": 17
+  },
+  "B": {
+   "r0_wall_min": 14.4,
+   "r0_tool_calls": 45.8,
+   "r0_tokens_k": 194.5,
+   "r1_wall_min": 3.6,
+   "r1_tool_calls": 11.2
+  }
+ }
+}

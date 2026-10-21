@@ -1,0 +1,416 @@
+{
+ "schema_version": "0.2.0",
+ "route": "WEB_EDIT",
+ "mode": "FAST",
+ "project": "Miolo (fictícia) · DQB-02 m13",
+ "build_version": "r1",
+ "state": "PREVIEW_REVIEWED",
+ "verdict": "PARTIAL",
+ "execution": {
+  "execution_mode": "MANUAL_SPEC_GUIDED",
+  "skill_package_version": "2.5.0",
+  "methods": [
+   {
+    "name": "AI_Creative_Skill_Work_Profile_Web_Experience_v0.2",
+    "state": "EXECUTED"
+   },
+   {
+    "name": "AI_Creative_Skill_Deliverable_Completeness_Catalog_Pre-v0.1-V2.4-CANDIDATE",
+    "state": "DOCUMENTED"
+   }
+  ],
+  "tools": [
+   "file write/edit",
+   "bash",
+   "python3 Playwright Chromium",
+   "scripts/creative_web.py route/audit/validate"
+  ],
+  "paid_authorized": false,
+  "public_deploy_authorized": false,
+  "activation_evidence": "Agente leu SKILL.md e o Work Profile Web v0.2 e seguiu manualmente; route --intent WEB_PREVIEW retornou FAST/build_required"
+ },
+ "WEB_BRIEF": {
+  "deliverable_scope": "Site navegável local com home, fornada filtrável, detalhe por produto, encomenda demonstrativa com horário e resumo, créditos",
+  "business_kind": "PHYSICAL_PRODUCT",
+  "user_goal": "Vizinhos sabem o que haverá na fornada de sábado e montam uma encomenda demonstrativa",
+  "audience_basis": "briefing.md: vizinhos de 25–55 anos no bairro fictício Vale",
+  "product_service_truth_refs": [
+   "briefing.md tabela de produtos",
+   "assets/credits.json"
+  ],
+  "known_unknown_boundary": [
+   "Ingredientes além da descrição: UNKNOWN, não alegados",
+   "Alérgenos: indisponíveis (aviso)",
+   "Endereço exato: UNKNOWN; só 'Vale'"
+  ],
+  "brand_authority_state": "PROVISIONAL",
+  "primary_action_intent": "Ver a fornada → montar encomenda demonstrativa",
+  "task_completion_condition": "Preview local navegável em r0/index.html com QA desktop/mobile",
+  "product_material_scale_truth_state": "Nomes, categorias, preços, unidades e descrições exatamente do briefing; nenhuma outra alegação. Fotos de terceiros ilustrativas."
+ },
+ "WEB_DIRECTION": {
+  "value_proposition": "O pão de sábado começa na sexta: encomende até sexta 18h, retire sábado 8h–12h",
+  "primary_cta_intent": "Ver a fornada",
+  "sections_and_purpose": [
+   {
+    "id": "hero",
+    "purpose": "proposta + CTA"
+   },
+   {
+    "id": "como-funciona",
+    "purpose": "régua temporal sexta→sábado em 3 passos"
+   },
+   {
+    "id": "destaque",
+    "purpose": "três itens da fornada + link para os cinco"
+   },
+   {
+    "id": "a-padaria",
+    "purpose": "funcionamento"
+   },
+   {
+    "id": "fornada",
+    "purpose": "catálogo filtrável"
+   },
+   {
+    "id": "produto",
+    "purpose": "detalhe e adicionar"
+   },
+   {
+    "id": "encomenda",
+    "purpose": "ficha, horário, revisão"
+   },
+   {
+    "id": "creditos",
+    "purpose": "autoria e licenças"
+   }
+  ],
+  "visual_direction": "'Ficha de fornada': papel creme, tinta marrom-casca, acento vermelho de toalha xadrez das próprias fotos; Fraunces (títulos, itálico de forno) + Instrument Sans + IBM Plex Mono para horários/preços; recorte em arco (boca de forno) como enquadramento recorrente das fotos; régua temporal como motivo de processo.",
+  "creative_open_zones": [
+   "paleta",
+   "tipografia",
+   "wordmark",
+   "composição"
+  ],
+  "brand_alignment": "Nome Miolo e assinatura fixos preservados; wordmark tipográfico provisório",
+  "claim_and_offer_boundaries": "Sem escassez, depoimentos, prêmios, ingredientes extras, orgânico/artesanal; sorvete do bolo explicitamente não incluso",
+  "motion_fallback_and_controls": "Transições curtas; prefers-reduced-motion zera animações/transições",
+  "approved_reference_scope": [
+   "references/warm-organic e editorial-brand-led observadas só por dimensão (calor de fundo creme; serifa grande); nada de layout, logo ou ilustração herdado"
+  ]
+ },
+ "WEB_ASSET_PLAN": {
+  "assets_used": [
+   {
+    "path": "r1/assets/apple-cake-with-vanilla-ice-cream-1.jpg",
+    "origin": "Wikimedia Commons, W.carter",
+    "approval": "PROVISIONAL",
+    "rights": "CLEARED",
+    "use_scope": "ilustração demonstrativa com créditos"
+   },
+   {
+    "path": "r1/assets/apple-cake-with-vanilla-ice-cream-2.jpg",
+    "origin": "Wikimedia Commons, W.carter",
+    "approval": "PROVISIONAL",
+    "rights": "CLEARED",
+    "use_scope": "ilustração demonstrativa com créditos"
+   },
+   {
+    "path": "r1/assets/cardamom-buns-on-grate-under-towel.jpg",
+    "origin": "Wikimedia Commons, W.carter",
+    "approval": "PROVISIONAL",
+    "rights": "CLEARED",
+    "use_scope": "ilustração demonstrativa com créditos"
+   },
+   {
+    "path": "r1/assets/cardamom-buns.jpg",
+    "origin": "Wikimedia Commons, W.carter",
+    "approval": "PROVISIONAL",
+    "rights": "CLEARED",
+    "use_scope": "ilustração demonstrativa com créditos"
+   },
+   {
+    "path": "r1/assets/one-layer-of-cardamom-buns-on-grate.jpg",
+    "origin": "Wikimedia Commons, W.carter",
+    "approval": "PROVISIONAL",
+    "rights": "CLEARED",
+    "use_scope": "ilustração demonstrativa com créditos"
+   },
+   {
+    "path": "r1/assets/plain-vanilla-muffin.jpg",
+    "origin": "Wikimedia Commons, W.carter",
+    "approval": "PROVISIONAL",
+    "rights": "CLEARED",
+    "use_scope": "ilustração demonstrativa com créditos"
+   },
+   {
+    "path": "r1/assets/plain-vanilla-muffins-1.jpg",
+    "origin": "Wikimedia Commons, W.carter",
+    "approval": "PROVISIONAL",
+    "rights": "CLEARED",
+    "use_scope": "ilustração demonstrativa com créditos"
+   },
+   {
+    "path": "r1/assets/plain-vanilla-muffins-2.jpg",
+    "origin": "Wikimedia Commons, W.carter",
+    "approval": "PROVISIONAL",
+    "rights": "CLEARED",
+    "use_scope": "ilustração demonstrativa com créditos"
+   },
+   {
+    "path": "r1/assets/plain-vanilla-muffins-3.jpg",
+    "origin": "Wikimedia Commons, W.carter",
+    "approval": "PROVISIONAL",
+    "rights": "CLEARED",
+    "use_scope": "ilustração demonstrativa com créditos"
+   },
+   {
+    "path": "r1/assets/strawberry-pie-in-springform-pan-with-drip-tray-1.jpg",
+    "origin": "Wikimedia Commons, W.carter",
+    "approval": "PROVISIONAL",
+    "rights": "CLEARED",
+    "use_scope": "ilustração demonstrativa com créditos"
+   },
+   {
+    "path": "r1/assets/strawberry-pie-in-springform-pan-with-drip-tray-2.jpg",
+    "origin": "Wikimedia Commons, W.carter",
+    "approval": "PROVISIONAL",
+    "rights": "CLEARED",
+    "use_scope": "ilustração demonstrativa com créditos"
+   },
+   {
+    "path": "r1/assets/strawberry-pie-in-springform-pan-with-drip-tray-3.jpg",
+    "origin": "Wikimedia Commons, W.carter",
+    "approval": "PROVISIONAL",
+    "rights": "CLEARED",
+    "use_scope": "ilustração demonstrativa com créditos"
+   },
+   {
+    "path": "r1/assets/swedish-cheese-scones.jpg",
+    "origin": "Wikimedia Commons, W.carter",
+    "approval": "PROVISIONAL",
+    "rights": "CLEARED",
+    "use_scope": "ilustração demonstrativa com créditos"
+   },
+   {
+    "path": "r1/assets/two-layers-of-cardamom-buns-on-grate.jpg",
+    "origin": "Wikimedia Commons, W.carter",
+    "approval": "PROVISIONAL",
+    "rights": "CLEARED",
+    "use_scope": "ilustração demonstrativa com créditos"
+   }
+  ],
+  "asset_authority_and_rights": "CC0/CC BY 4.0/CC BY-SA 4.0 conforme credits.json; créditos completos em #/creditos",
+  "generation_required_decision": "Nenhuma geração; fotos sem alteração de pixels, recorte via object-fit",
+  "product_identity_preservation": "Cada produto usa somente as fotos do seu tipo",
+  "provisional_vs_approved_labels": "Wordmark e paleta provisórios",
+  "observed_vs_unknown_photo_claims": "Bolo de maçã: sorvete visível, sinalizado como não incluso no card, detalhe, encomenda e resumo"
+ },
+ "WEB_PREVIEW_BUILD": {
+  "preview_status": "AVAILABLE_VERIFIED",
+  "source_files": [
+   "r1/index.html",
+   "r1/styles.css",
+   "r1/app.js",
+   "r1/credits-data.js",
+   "r1/fonts/fonts.css"
+  ],
+  "verified_preview_ref_or_local_open_instructions": "Abrir file:///tmp/dqb/runs/m13/r1/index.html diretamente no navegador",
+  "responsive_strategy": "Grade 3→2→1 colunas; hero com foto acima do texto <860px; régua horizontal→vertical <720px; destaque em carrossel com scroll-snap <560px; encomenda em coluna única <1024px",
+  "working_interactions": [
+   "filtros",
+   "galeria de miniaturas",
+   "seletor de quantidade",
+   "adicionar",
+   "editar/remover linha",
+   "horário obrigatório",
+   "revisar/editar resumo",
+   "rotas por hash com voltar/avançar"
+  ],
+  "primary_cta_behavior": "SAFE_LOCAL_DEMO",
+  "real_vs_mock_integrations": "Nenhuma integração; estado em memória + localStorage opcional",
+  "version_id": "r1",
+  "form_mode": "LOCAL_CALCULATION",
+  "form_destination": null,
+  "prefers_reduced_motion_fallback": "animation/transition 0.001ms",
+  "external_link_targets": [
+   "creativecommons.org (licenças)",
+   "commons.wikimedia.org (fontes), só na página de créditos"
+  ]
+ },
+ "WEB_QA": {
+  "checks": [
+   {
+    "check_id": "assets_available",
+    "requirement": "Assets locais existem e carregam",
+    "criticality": "ESSENTIAL",
+    "procedure": "Playwright: imagens decodificadas, 0 requisições não-file",
+    "result": "PASS",
+    "evidence_mode": "BROWSER_OBSERVED",
+    "evidence_ref": "evidence-r1/functional-results.json",
+    "build_hash": "83dfcde47251198b015f7be960d68abb09268455261f8a720bd4e00bf72430ea",
+    "viewport": "1440x900, 390x844, 768x1024",
+    "checked_at": "2026-10-21T00:21:20.322712+00:00"
+   },
+   {
+    "check_id": "browser_render",
+    "requirement": "Todas as rotas renderizam sem erro de console",
+    "criticality": "CRITICAL",
+    "procedure": "Playwright Chromium: 6 rotas × 3 viewports, sem pageerror/console error",
+    "result": "PASS",
+    "evidence_mode": "BROWSER_OBSERVED",
+    "evidence_ref": "evidence-r1/functional-results.json",
+    "build_hash": "83dfcde47251198b015f7be960d68abb09268455261f8a720bd4e00bf72430ea",
+    "viewport": "1440x900, 390x844, 768x1024",
+    "checked_at": "2026-10-21T00:21:20.322712+00:00"
+   },
+   {
+    "check_id": "desktop_render",
+    "requirement": "Home/fornada/detalhe/encomenda legíveis em desktop, sem overflow",
+    "criticality": "ESSENTIAL",
+    "procedure": "Capturas + scrollWidth",
+    "result": "PASS",
+    "evidence_mode": "BROWSER_OBSERVED",
+    "evidence_ref": "evidence-r1/desktop-home-fold.png",
+    "build_hash": "83dfcde47251198b015f7be960d68abb09268455261f8a720bd4e00bf72430ea",
+    "viewport": "1440x900",
+    "checked_at": "2026-10-21T00:21:20.322712+00:00"
+   },
+   {
+    "check_id": "mobile_render",
+    "requirement": "Home/fornada/detalhe/encomenda legíveis em mobile, sem overflow",
+    "criticality": "ESSENTIAL",
+    "procedure": "Capturas + scrollWidth",
+    "result": "PASS",
+    "evidence_mode": "BROWSER_OBSERVED",
+    "evidence_ref": "evidence-r1/mobile-home.png",
+    "build_hash": "83dfcde47251198b015f7be960d68abb09268455261f8a720bd4e00bf72430ea",
+    "viewport": "390x844",
+    "checked_at": "2026-10-21T00:21:20.322712+00:00"
+   },
+   {
+    "check_id": "responsive",
+    "requirement": "Verificação adicional em tablet",
+    "criticality": "ADVISORY",
+    "procedure": "scrollWidth e captura da home",
+    "result": "PASS",
+    "evidence_mode": "BROWSER_OBSERVED",
+    "evidence_ref": "evidence-r1/tablet-home.png",
+    "build_hash": "83dfcde47251198b015f7be960d68abb09268455261f8a720bd4e00bf72430ea",
+    "viewport": "768x1024",
+    "checked_at": "2026-10-21T00:21:20.322712+00:00"
+   },
+   {
+    "check_id": "cta_interaction",
+    "requirement": "Ver a fornada → filtro → detalhe → adicionar → encomenda → horário → revisar; 2 nós = €5,60; clamp 1–12; sem NaN; remover/vazio; voltar/avançar",
+    "criticality": "CRITICAL",
+    "procedure": "Playwright, 84 asserções",
+    "result": "PASS",
+    "evidence_mode": "BROWSER_OBSERVED",
+    "evidence_ref": "evidence-r1/functional-results.json",
+    "build_hash": "83dfcde47251198b015f7be960d68abb09268455261f8a720bd4e00bf72430ea",
+    "viewport": "1440x900, 390x844, 768x1024",
+    "checked_at": "2026-10-21T00:21:20.322712+00:00"
+   },
+   {
+    "check_id": "keyboard_interaction",
+    "requirement": "Foco visível e caminho por teclado",
+    "criticality": "ESSENTIAL",
+    "procedure": "Tab sequencial (outline 3px) + Enter em add-order",
+    "result": "PASS",
+    "evidence_mode": "BROWSER_OBSERVED",
+    "evidence_ref": "evidence-r1/functional-results.json",
+    "build_hash": "83dfcde47251198b015f7be960d68abb09268455261f8a720bd4e00bf72430ea",
+    "viewport": "1440x900",
+    "checked_at": "2026-10-21T00:21:20.322712+00:00"
+   },
+   {
+    "check_id": "reduced_motion",
+    "requirement": "prefers-reduced-motion",
+    "criticality": "ESSENTIAL",
+    "procedure": "contexto reduced_motion=reduce; animationDuration computada ≈0",
+    "result": "PASS",
+    "evidence_mode": "BROWSER_OBSERVED",
+    "evidence_ref": "evidence-r1/functional-results.json",
+    "build_hash": "83dfcde47251198b015f7be960d68abb09268455261f8a720bd4e00bf72430ea",
+    "viewport": "1440x900",
+    "checked_at": "2026-10-21T00:21:20.322712+00:00"
+   },
+   {
+    "check_id": "form_behavior",
+    "requirement": "Encomenda é cálculo local, sem envio",
+    "criticality": "ESSENTIAL",
+    "procedure": "Sem form/fetch; zero requisições externas observadas",
+    "result": "PASS",
+    "evidence_mode": "BROWSER_OBSERVED",
+    "evidence_ref": "evidence-r1/functional-results.json",
+    "build_hash": "83dfcde47251198b015f7be960d68abb09268455261f8a720bd4e00bf72430ea",
+    "viewport": "1440x900, 390x844, 768x1024",
+    "checked_at": "2026-10-21T00:21:20.322712+00:00"
+   },
+   {
+    "check_id": "visual_review",
+    "requirement": "Foco, hierarquia, crops e CTA nas telas principais",
+    "criticality": "ADVISORY",
+    "procedure": "Inspeção das capturas pelo próprio agente; não é aprovação humana",
+    "result": "PASS",
+    "evidence_mode": "BROWSER_OBSERVED",
+    "evidence_ref": "evidence-r1/desktop-catalog.png",
+    "build_hash": "83dfcde47251198b015f7be960d68abb09268455261f8a720bd4e00bf72430ea",
+    "viewport": "1440x900, 390x844",
+    "checked_at": "2026-10-21T00:21:20.322712+00:00"
+   },
+   {
+    "check_id": "content_truth",
+    "requirement": "Fatos de produto, avisos e direitos conforme briefing e credits.json",
+    "criticality": "CRITICAL",
+    "procedure": "Comparação manual dos textos; créditos com 14 entradas verificados no navegador",
+    "result": "PASS",
+    "evidence_mode": "STATIC_INSPECTED",
+    "evidence_ref": "briefing.md",
+    "build_hash": "83dfcde47251198b015f7be960d68abb09268455261f8a720bd4e00bf72430ea",
+    "viewport": null,
+    "checked_at": "2026-10-21T00:21:20.322712+00:00"
+   },
+   {
+    "check_id": "anchors_static",
+    "requirement": "Âncoras locais (helper do método)",
+    "criticality": "ADVISORY",
+    "procedure": "creative_web.py audit sobre cópia de r0: rotas por hash marcadas como quebradas (falso positivo; navegação observada no browser)",
+    "result": "FAIL",
+    "evidence_mode": "STATIC_INSPECTED",
+    "evidence_ref": "evidence-r1/static-audit-on-copy/static_audit.json",
+    "build_hash": "83dfcde47251198b015f7be960d68abb09268455261f8a720bd4e00bf72430ea",
+    "viewport": null,
+    "checked_at": "2026-10-21T00:21:20.322712+00:00"
+   }
+  ],
+  "known_limitations": [
+   "Sem revisão humana nem leitor de tela real",
+   "Teste só em Chromium headless",
+   "anchors_static do helper é falso positivo para rotas por hash",
+   "Preview via file://; o helper preview start não foi usado"
+  ],
+  "verdict": "PARTIAL"
+ },
+ "WEB_REVISION": {
+  "parent_version_ref": "r0",
+  "requested_change": "Autorrevisão R1 (sem feedback externo): defeitos pequenos de acabamento e acessibilidade",
+  "preserve_regions": [],
+  "vary_regions": [
+   "detalhe .buy (.added)",
+   "hero figcaption mobile",
+   "nav contador de encomenda (nome acessível)",
+   "CSS órfão .toast"
+  ],
+  "implemented_delta": "(1) .added sem altura reservada quando vazio, com divisória quando preenchido; (2) figcaption do hero quebra em linhas sem 'Foto ilustrativa' partida; (3) contador do nav: span visual aria-hidden + texto visually-hidden atualizado; (4) remoção de CSS .toast sem uso",
+  "affected_qa_checks": [
+   "mobile_render",
+   "desktop_render",
+   "keyboard_interaction",
+   "cta_interaction"
+  ],
+  "new_preview_ref_or_partial_status": "r1/index.html; QA completa repetida 3× (84/84)",
+  "approval_reference": null
+ }
+}

@@ -1,0 +1,1038 @@
+{
+ "schema_version": "0.2.0",
+ "route": "WEB_PREVIEW",
+ "mode": "FAST",
+ "project": "Miolo (fictícia) — DQB-02 m31",
+ "build_version": "r0-8d0a15f3c033eb27",
+ "state": "PREVIEW_REVIEWED",
+ "verdict": "PASS",
+ "execution": {
+  "execution_mode": "MANUAL_SPEC_GUIDED",
+  "skill_package_version": "V2.5 / Web Experience v0.2",
+  "methods": [
+   {
+    "name": "WEB_EXPERIENCE Work Profile v0.2",
+    "state": "EXECUTED"
+   }
+  ],
+  "tools": [
+   "file edit",
+   "bash",
+   "python3 Playwright Chromium"
+  ],
+  "paid_authorized": false,
+  "public_deploy_authorized": false,
+  "activation_evidence": "Agente leu SKILL.md e o Work Profile e aplicou o fluxo FAST manualmente; módulo não executado automaticamente."
+ },
+ "WEB_BRIEF": {
+  "deliverable_scope": "Site navegável local (R0) da micro-padaria fictícia Miolo",
+  "business_kind": "PHYSICAL_PRODUCT",
+  "user_goal": "Vizinhos veem a fornada de sábado e montam encomenda demonstrativa com horário de retirada",
+  "audience_basis": "briefing.md: vizinhos de 25–55 anos no bairro Vale",
+  "product_service_truth_refs": [
+   "briefing.md tabela de produtos",
+   "assets/credits.json"
+  ],
+  "known_unknown_boundary": [
+   "Ingredientes além da descrição: UNKNOWN",
+   "Alérgenos: não disponíveis",
+   "Endereço exato: UNKNOWN (somente bairro Vale)"
+  ],
+  "brand_authority_state": "PROVISIONAL",
+  "primary_action_intent": "Ver a fornada → adicionar → revisar encomenda",
+  "task_completion_condition": "Preview local navegável com todos os requisitos do briefing verificados",
+  "product_material_scale_truth_state": "Fatos: nome, categoria, preço demonstrativo, unidade e descrição do briefing. UNKNOWN: ingredientes completos, alérgenos, peso/tamanho. Fotos de terceiros ilustrativas; sorvete não incluso."
+ },
+ "WEB_DIRECTION": {
+  "value_proposition": "O pão de sábado começa na sexta: uma fornada por semana, encomendada antes.",
+  "primary_cta_intent": "Ver a fornada",
+  "sections_and_purpose": [
+   {
+    "id": "hero",
+    "purpose": "Proposta + prazo + CTA"
+   },
+   {
+    "id": "como-funciona",
+    "purpose": "Régua sexta→sábado em três tempos"
+   },
+   {
+    "id": "destaque",
+    "purpose": "Nó de cardamomo + lista de preços da fornada"
+   },
+   {
+    "id": "fornada",
+    "purpose": "Catálogo filtrável"
+   },
+   {
+    "id": "produto",
+    "purpose": "Detalhe e adição"
+   },
+   {
+    "id": "encomenda",
+    "purpose": "Linhas, horário, subtotal, resumo"
+   },
+   {
+    "id": "creditos",
+    "purpose": "Créditos das fotos"
+   }
+  ],
+  "visual_direction": "Ficha de fornada: farinha/creme, crosta, brasa; Fraunces (serif com itálico quente) para títulos, Instrument Sans para texto, IBM Plex Mono para horas e preços. Decisão de composição: a régua temporal sexta→sábado (pontos que vão de massa crua a brasa) é o fio que reaparece no seletor de horário 8h–12h como régua de quatro faixas. Consequência: no desktop a régua fica horizontal, no mobile vira linha do tempo vertical. Tradeoff: menos fotografia na dobra do desktop em favor da tipografia do título.",
+  "creative_open_zones": [
+   "paleta",
+   "tipografia",
+   "wordmark",
+   "composição"
+  ],
+  "brand_alignment": "Nome e assinatura fixos preservados; wordmark tipográfico minúsculo provisório",
+  "claim_and_offer_boundaries": "Sem escassez, depoimentos, prêmios, artesanal/orgânico, nutrição ou validade; sorvete da foto declarado como não incluso",
+  "approved_reference_scope": [
+   "references/ não usadas como modelo; nenhuma trade dress herdada"
+  ]
+ },
+ "WEB_ASSET_PLAN": {
+  "assets_used": [
+   {
+    "path": "r0/assets/apple-cake-with-vanilla-ice-cream-1.jpg",
+    "origin": "Wikimedia Commons, W.carter (ver credits.json)",
+    "approval": "APPROVED_FOR_THIS_USE",
+    "rights": "CLEARED",
+    "use_scope": "Ilustração de produto em protótipo demonstrativo, com créditos"
+   },
+   {
+    "path": "r0/assets/apple-cake-with-vanilla-ice-cream-2.jpg",
+    "origin": "Wikimedia Commons, W.carter (ver credits.json)",
+    "approval": "APPROVED_FOR_THIS_USE",
+    "rights": "CLEARED",
+    "use_scope": "Ilustração de produto em protótipo demonstrativo, com créditos"
+   },
+   {
+    "path": "r0/assets/cardamom-buns-on-grate-under-towel.jpg",
+    "origin": "Wikimedia Commons, W.carter (ver credits.json)",
+    "approval": "APPROVED_FOR_THIS_USE",
+    "rights": "CLEARED",
+    "use_scope": "Ilustração de produto em protótipo demonstrativo, com créditos"
+   },
+   {
+    "path": "r0/assets/cardamom-buns.jpg",
+    "origin": "Wikimedia Commons, W.carter (ver credits.json)",
+    "approval": "APPROVED_FOR_THIS_USE",
+    "rights": "CLEARED",
+    "use_scope": "Ilustração de produto em protótipo demonstrativo, com créditos"
+   },
+   {
+    "path": "r0/assets/one-layer-of-cardamom-buns-on-grate.jpg",
+    "origin": "Wikimedia Commons, W.carter (ver credits.json)",
+    "approval": "APPROVED_FOR_THIS_USE",
+    "rights": "CLEARED",
+    "use_scope": "Ilustração de produto em protótipo demonstrativo, com créditos"
+   },
+   {
+    "path": "r0/assets/plain-vanilla-muffin.jpg",
+    "origin": "Wikimedia Commons, W.carter (ver credits.json)",
+    "approval": "APPROVED_FOR_THIS_USE",
+    "rights": "CLEARED",
+    "use_scope": "Ilustração de produto em protótipo demonstrativo, com créditos"
+   },
+   {
+    "path": "r0/assets/plain-vanilla-muffins-1.jpg",
+    "origin": "Wikimedia Commons, W.carter (ver credits.json)",
+    "approval": "APPROVED_FOR_THIS_USE",
+    "rights": "CLEARED",
+    "use_scope": "Ilustração de produto em protótipo demonstrativo, com créditos"
+   },
+   {
+    "path": "r0/assets/plain-vanilla-muffins-2.jpg",
+    "origin": "Wikimedia Commons, W.carter (ver credits.json)",
+    "approval": "APPROVED_FOR_THIS_USE",
+    "rights": "CLEARED",
+    "use_scope": "Ilustração de produto em protótipo demonstrativo, com créditos"
+   },
+   {
+    "path": "r0/assets/plain-vanilla-muffins-3.jpg",
+    "origin": "Wikimedia Commons, W.carter (ver credits.json)",
+    "approval": "APPROVED_FOR_THIS_USE",
+    "rights": "CLEARED",
+    "use_scope": "Ilustração de produto em protótipo demonstrativo, com créditos"
+   },
+   {
+    "path": "r0/assets/strawberry-pie-in-springform-pan-with-drip-tray-1.jpg",
+    "origin": "Wikimedia Commons, W.carter (ver credits.json)",
+    "approval": "APPROVED_FOR_THIS_USE",
+    "rights": "CLEARED",
+    "use_scope": "Ilustração de produto em protótipo demonstrativo, com créditos"
+   },
+   {
+    "path": "r0/assets/strawberry-pie-in-springform-pan-with-drip-tray-2.jpg",
+    "origin": "Wikimedia Commons, W.carter (ver credits.json)",
+    "approval": "APPROVED_FOR_THIS_USE",
+    "rights": "CLEARED",
+    "use_scope": "Ilustração de produto em protótipo demonstrativo, com créditos"
+   },
+   {
+    "path": "r0/assets/strawberry-pie-in-springform-pan-with-drip-tray-3.jpg",
+    "origin": "Wikimedia Commons, W.carter (ver credits.json)",
+    "approval": "APPROVED_FOR_THIS_USE",
+    "rights": "CLEARED",
+    "use_scope": "Ilustração de produto em protótipo demonstrativo, com créditos"
+   },
+   {
+    "path": "r0/assets/swedish-cheese-scones.jpg",
+    "origin": "Wikimedia Commons, W.carter (ver credits.json)",
+    "approval": "APPROVED_FOR_THIS_USE",
+    "rights": "CLEARED",
+    "use_scope": "Ilustração de produto em protótipo demonstrativo, com créditos"
+   },
+   {
+    "path": "r0/assets/two-layers-of-cardamom-buns-on-grate.jpg",
+    "origin": "Wikimedia Commons, W.carter (ver credits.json)",
+    "approval": "APPROVED_FOR_THIS_USE",
+    "rights": "CLEARED",
+    "use_scope": "Ilustração de produto em protótipo demonstrativo, com créditos"
+   }
+  ],
+  "asset_authority_and_rights": "CC0 / CC BY 4.0 / CC BY-SA 4.0 com créditos completos em #/creditos",
+  "generation_required_decision": "Nenhuma geração; fotos sem edição de pixels, enquadradas por CSS object-fit",
+  "product_identity_preservation": "Cada foto atribuída somente ao produto correspondente",
+  "provisional_vs_approved_labels": "Fotos marcadas como ilustrativas",
+  "observed_vs_unknown_photo_claims": "Bolo de maçã com sorvete: aviso visível no cartão e no detalhe"
+ },
+ "WEB_PREVIEW_BUILD": {
+  "preview_status": "AVAILABLE_VERIFIED",
+  "source_files": [
+   "r0/index.html",
+   "r0/style.css",
+   "r0/app.js",
+   "r0/data.js"
+  ],
+  "verified_preview_ref_or_local_open_instructions": "Abrir file:///tmp/dqb/runs/m31/r0/index.html (sem servidor)",
+  "responsive_strategy": "Grade 12 col no desktop; 1 coluna ≤720px; régua vertical no mobile; slots 2×2",
+  "working_interactions": [
+   "rotas hash",
+   "filtros",
+   "galeria",
+   "quantidade 1–12",
+   "remover",
+   "horário obrigatório",
+   "resumo local"
+  ],
+  "primary_cta_behavior": "SAFE_LOCAL_DEMO",
+  "real_vs_mock_integrations": "Nenhuma integração; encomenda apenas local (sessionStorage)",
+  "version_id": "r0-8d0a15f3c033eb27",
+  "form_mode": "LOCAL_CALCULATION",
+  "prefers_reduced_motion_fallback": "Animações e transições desativadas; rolagem instantânea"
+ },
+ "WEB_QA": {
+  "checks": [
+   {
+    "check_id": "browser_render",
+    "requirement": "Página renderiza sem erros de console nem requisições externas",
+    "criticality": "CRITICAL",
+    "procedure": "Playwright Chromium headless via file://",
+    "result": "PASS",
+    "evidence_mode": "BROWSER_OBSERVED",
+    "evidence_ref": "evidence-r0/qa-results.json",
+    "build_hash": "8d0a15f3c033eb27e7a2a5048fe481f54d908ad9ee2150c0241c9e031308bfdd",
+    "viewport": "1440x900;390x844;768x1024",
+    "checked_at": "2026-10-21T00:04:51Z"
+   },
+   {
+    "check_id": "desktop_render",
+    "requirement": "Home/fornada/detalhe/encomenda em 1440×900 sem overflow, revisadas visualmente",
+    "criticality": "CRITICAL",
+    "procedure": "Playwright Chromium headless via file://",
+    "result": "PASS",
+    "evidence_mode": "BROWSER_OBSERVED",
+    "evidence_ref": "evidence-r0/desktop-home.png",
+    "build_hash": "8d0a15f3c033eb27e7a2a5048fe481f54d908ad9ee2150c0241c9e031308bfdd",
+    "viewport": "1440x900",
+    "checked_at": "2026-10-21T00:04:51Z"
+   },
+   {
+    "check_id": "mobile_render",
+    "requirement": "Home/fornada/encomenda em 390×844 sem overflow, revisadas visualmente",
+    "criticality": "CRITICAL",
+    "procedure": "Playwright Chromium headless via file://",
+    "result": "PASS",
+    "evidence_mode": "BROWSER_OBSERVED",
+    "evidence_ref": "evidence-r0/mobile-home.png",
+    "build_hash": "8d0a15f3c033eb27e7a2a5048fe481f54d908ad9ee2150c0241c9e031308bfdd",
+    "viewport": "390x844",
+    "checked_at": "2026-10-21T00:04:51Z"
+   },
+   {
+    "check_id": "cta_interaction",
+    "requirement": "\"Ver a fornada\" → #/fornada; 2 nós = €5,60; horário obrigatório; resumo exibido",
+    "criticality": "CRITICAL",
+    "procedure": "Playwright Chromium headless via file://",
+    "result": "PASS",
+    "evidence_mode": "BROWSER_OBSERVED",
+    "evidence_ref": "evidence-r0/desktop-order-summary.png",
+    "build_hash": "8d0a15f3c033eb27e7a2a5048fe481f54d908ad9ee2150c0241c9e031308bfdd",
+    "viewport": "1440x900",
+    "checked_at": "2026-10-21T00:04:51Z"
+   },
+   {
+    "check_id": "keyboard_interaction",
+    "requirement": "Skip link no primeiro Tab, foco visível com outline",
+    "criticality": "CRITICAL",
+    "procedure": "Playwright Chromium headless via file://",
+    "result": "PASS",
+    "evidence_mode": "BROWSER_OBSERVED",
+    "evidence_ref": "evidence-r0/qa-results.json",
+    "build_hash": "8d0a15f3c033eb27e7a2a5048fe481f54d908ad9ee2150c0241c9e031308bfdd",
+    "viewport": "1440x900",
+    "checked_at": "2026-10-21T00:04:51Z"
+   },
+   {
+    "check_id": "content_truth",
+    "requirement": "Textos obrigatórios, aviso de sorvete, aviso de alérgenos, aviso de protótipo",
+    "criticality": "CRITICAL",
+    "procedure": "Playwright Chromium headless via file://",
+    "result": "PASS",
+    "evidence_mode": "BROWSER_OBSERVED",
+    "evidence_ref": "evidence-r0/qa-results.json",
+    "build_hash": "8d0a15f3c033eb27e7a2a5048fe481f54d908ad9ee2150c0241c9e031308bfdd",
+    "viewport": "1440x900",
+    "checked_at": "2026-10-21T00:04:51Z"
+   },
+   {
+    "check_id": "assets_available",
+    "requirement": "14 fotos locais com créditos em #/creditos; sem recursos remotos",
+    "criticality": "CRITICAL",
+    "procedure": "Playwright Chromium headless via file://",
+    "result": "PASS",
+    "evidence_mode": "BROWSER_OBSERVED",
+    "evidence_ref": "evidence-r0/qa-results.json",
+    "build_hash": "8d0a15f3c033eb27e7a2a5048fe481f54d908ad9ee2150c0241c9e031308bfdd",
+    "viewport": "1440x900",
+    "checked_at": "2026-10-21T00:04:51Z"
+   },
+   {
+    "check_id": "reduced_motion",
+    "requirement": "prefers-reduced-motion: animação de view = none",
+    "criticality": "CRITICAL",
+    "procedure": "Playwright Chromium headless via file://",
+    "result": "PASS",
+    "evidence_mode": "BROWSER_OBSERVED",
+    "evidence_ref": "evidence-r0/qa-results.json",
+    "build_hash": "8d0a15f3c033eb27e7a2a5048fe481f54d908ad9ee2150c0241c9e031308bfdd",
+    "viewport": "390x844",
+    "checked_at": "2026-10-21T00:04:51Z"
+   },
+   {
+    "check_id": "QA-01",
+    "requirement": "desktop no h-overflow home",
+    "criticality": "ESSENTIAL",
+    "procedure": "Playwright Chromium headless via file:// (qa.py)",
+    "result": "PASS",
+    "evidence_mode": "BROWSER_OBSERVED",
+    "evidence_ref": "evidence-r0/qa-results.json",
+    "build_hash": "8d0a15f3c033eb27e7a2a5048fe481f54d908ad9ee2150c0241c9e031308bfdd",
+    "viewport": "1440x900",
+    "checked_at": "2026-10-21T00:04:51Z"
+   },
+   {
+    "check_id": "QA-02",
+    "requirement": "desktop no h-overflow catalog",
+    "criticality": "ESSENTIAL",
+    "procedure": "Playwright Chromium headless via file:// (qa.py)",
+    "result": "PASS",
+    "evidence_mode": "BROWSER_OBSERVED",
+    "evidence_ref": "evidence-r0/qa-results.json",
+    "build_hash": "8d0a15f3c033eb27e7a2a5048fe481f54d908ad9ee2150c0241c9e031308bfdd",
+    "viewport": "1440x900",
+    "checked_at": "2026-10-21T00:04:51Z"
+   },
+   {
+    "check_id": "QA-03",
+    "requirement": "desktop no h-overflow order",
+    "criticality": "ESSENTIAL",
+    "procedure": "Playwright Chromium headless via file:// (qa.py)",
+    "result": "PASS",
+    "evidence_mode": "BROWSER_OBSERVED",
+    "evidence_ref": "evidence-r0/qa-results.json",
+    "build_hash": "8d0a15f3c033eb27e7a2a5048fe481f54d908ad9ee2150c0241c9e031308bfdd",
+    "viewport": "1440x900",
+    "checked_at": "2026-10-21T00:04:51Z"
+   },
+   {
+    "check_id": "QA-04",
+    "requirement": "mobile no h-overflow home",
+    "criticality": "ESSENTIAL",
+    "procedure": "Playwright Chromium headless via file:// (qa.py)",
+    "result": "PASS",
+    "evidence_mode": "BROWSER_OBSERVED",
+    "evidence_ref": "evidence-r0/qa-results.json",
+    "build_hash": "8d0a15f3c033eb27e7a2a5048fe481f54d908ad9ee2150c0241c9e031308bfdd",
+    "viewport": "390x844",
+    "checked_at": "2026-10-21T00:04:51Z"
+   },
+   {
+    "check_id": "QA-05",
+    "requirement": "mobile no h-overflow catalog",
+    "criticality": "ESSENTIAL",
+    "procedure": "Playwright Chromium headless via file:// (qa.py)",
+    "result": "PASS",
+    "evidence_mode": "BROWSER_OBSERVED",
+    "evidence_ref": "evidence-r0/qa-results.json",
+    "build_hash": "8d0a15f3c033eb27e7a2a5048fe481f54d908ad9ee2150c0241c9e031308bfdd",
+    "viewport": "390x844",
+    "checked_at": "2026-10-21T00:04:51Z"
+   },
+   {
+    "check_id": "QA-06",
+    "requirement": "mobile no h-overflow order",
+    "criticality": "ESSENTIAL",
+    "procedure": "Playwright Chromium headless via file:// (qa.py)",
+    "result": "PASS",
+    "evidence_mode": "BROWSER_OBSERVED",
+    "evidence_ref": "evidence-r0/qa-results.json",
+    "build_hash": "8d0a15f3c033eb27e7a2a5048fe481f54d908ad9ee2150c0241c9e031308bfdd",
+    "viewport": "390x844",
+    "checked_at": "2026-10-21T00:04:51Z"
+   },
+   {
+    "check_id": "QA-07",
+    "requirement": "tablet no h-overflow home",
+    "criticality": "ESSENTIAL",
+    "procedure": "Playwright Chromium headless via file:// (qa.py)",
+    "result": "PASS",
+    "evidence_mode": "BROWSER_OBSERVED",
+    "evidence_ref": "evidence-r0/qa-results.json",
+    "build_hash": "8d0a15f3c033eb27e7a2a5048fe481f54d908ad9ee2150c0241c9e031308bfdd",
+    "viewport": "768x1024",
+    "checked_at": "2026-10-21T00:04:51Z"
+   },
+   {
+    "check_id": "QA-08",
+    "requirement": "tablet no h-overflow catalog",
+    "criticality": "ESSENTIAL",
+    "procedure": "Playwright Chromium headless via file:// (qa.py)",
+    "result": "PASS",
+    "evidence_mode": "BROWSER_OBSERVED",
+    "evidence_ref": "evidence-r0/qa-results.json",
+    "build_hash": "8d0a15f3c033eb27e7a2a5048fe481f54d908ad9ee2150c0241c9e031308bfdd",
+    "viewport": "768x1024",
+    "checked_at": "2026-10-21T00:04:51Z"
+   },
+   {
+    "check_id": "QA-09",
+    "requirement": "tablet no h-overflow order",
+    "criticality": "ESSENTIAL",
+    "procedure": "Playwright Chromium headless via file:// (qa.py)",
+    "result": "PASS",
+    "evidence_mode": "BROWSER_OBSERVED",
+    "evidence_ref": "evidence-r0/qa-results.json",
+    "build_hash": "8d0a15f3c033eb27e7a2a5048fe481f54d908ad9ee2150c0241c9e031308bfdd",
+    "viewport": "768x1024",
+    "checked_at": "2026-10-21T00:04:51Z"
+   },
+   {
+    "check_id": "QA-10",
+    "requirement": "testid nav-home",
+    "criticality": "ESSENTIAL",
+    "procedure": "Playwright Chromium headless via file:// (qa.py)",
+    "result": "PASS",
+    "evidence_mode": "BROWSER_OBSERVED",
+    "evidence_ref": "evidence-r0/qa-results.json",
+    "build_hash": "8d0a15f3c033eb27e7a2a5048fe481f54d908ad9ee2150c0241c9e031308bfdd",
+    "viewport": "1440x900",
+    "checked_at": "2026-10-21T00:04:51Z"
+   },
+   {
+    "check_id": "QA-11",
+    "requirement": "testid nav-catalog",
+    "criticality": "ESSENTIAL",
+    "procedure": "Playwright Chromium headless via file:// (qa.py)",
+    "result": "PASS",
+    "evidence_mode": "BROWSER_OBSERVED",
+    "evidence_ref": "evidence-r0/qa-results.json",
+    "build_hash": "8d0a15f3c033eb27e7a2a5048fe481f54d908ad9ee2150c0241c9e031308bfdd",
+    "viewport": "1440x900",
+    "checked_at": "2026-10-21T00:04:51Z"
+   },
+   {
+    "check_id": "QA-12",
+    "requirement": "testid nav-order",
+    "criticality": "ESSENTIAL",
+    "procedure": "Playwright Chromium headless via file:// (qa.py)",
+    "result": "PASS",
+    "evidence_mode": "BROWSER_OBSERVED",
+    "evidence_ref": "evidence-r0/qa-results.json",
+    "build_hash": "8d0a15f3c033eb27e7a2a5048fe481f54d908ad9ee2150c0241c9e031308bfdd",
+    "viewport": "1440x900",
+    "checked_at": "2026-10-21T00:04:51Z"
+   },
+   {
+    "check_id": "QA-13",
+    "requirement": "hero title",
+    "criticality": "ESSENTIAL",
+    "procedure": "Playwright Chromium headless via file:// (qa.py)",
+    "result": "PASS",
+    "evidence_mode": "BROWSER_OBSERVED",
+    "evidence_ref": "evidence-r0/qa-results.json",
+    "build_hash": "8d0a15f3c033eb27e7a2a5048fe481f54d908ad9ee2150c0241c9e031308bfdd",
+    "viewport": "1440x900",
+    "checked_at": "2026-10-21T00:04:51Z"
+   },
+   {
+    "check_id": "QA-14",
+    "requirement": "text: Encomende até sexta, 18h. Retire no sába",
+    "criticality": "ESSENTIAL",
+    "procedure": "Playwright Chromium headless via file:// (qa.py)",
+    "result": "PASS",
+    "evidence_mode": "BROWSER_OBSERVED",
+    "evidence_ref": "evidence-r0/qa-results.json",
+    "build_hash": "8d0a15f3c033eb27e7a2a5048fe481f54d908ad9ee2150c0241c9e031308bfdd",
+    "viewport": "1440x900",
+    "checked_at": "2026-10-21T00:04:51Z"
+   },
+   {
+    "check_id": "QA-15",
+    "requirement": "text: Ver a fornada",
+    "criticality": "ESSENTIAL",
+    "procedure": "Playwright Chromium headless via file:// (qa.py)",
+    "result": "PASS",
+    "evidence_mode": "BROWSER_OBSERVED",
+    "evidence_ref": "evidence-r0/qa-results.json",
+    "build_hash": "8d0a15f3c033eb27e7a2a5048fe481f54d908ad9ee2150c0241c9e031308bfdd",
+    "viewport": "1440x900",
+    "checked_at": "2026-10-21T00:04:51Z"
+   },
+   {
+    "check_id": "QA-16",
+    "requirement": "text: Escolha até sexta, 18h",
+    "criticality": "ESSENTIAL",
+    "procedure": "Playwright Chromium headless via file:// (qa.py)",
+    "result": "PASS",
+    "evidence_mode": "BROWSER_OBSERVED",
+    "evidence_ref": "evidence-r0/qa-results.json",
+    "build_hash": "8d0a15f3c033eb27e7a2a5048fe481f54d908ad9ee2150c0241c9e031308bfdd",
+    "viewport": "1440x900",
+    "checked_at": "2026-10-21T00:04:51Z"
+   },
+   {
+    "check_id": "QA-17",
+    "requirement": "text: Assamos na madrugada de sábado",
+    "criticality": "ESSENTIAL",
+    "procedure": "Playwright Chromium headless via file:// (qa.py)",
+    "result": "PASS",
+    "evidence_mode": "BROWSER_OBSERVED",
+    "evidence_ref": "evidence-r0/qa-results.json",
+    "build_hash": "8d0a15f3c033eb27e7a2a5048fe481f54d908ad9ee2150c0241c9e031308bfdd",
+    "viewport": "1440x900",
+    "checked_at": "2026-10-21T00:04:51Z"
+   },
+   {
+    "check_id": "QA-18",
+    "requirement": "text: Retire entre 8h e 12h",
+    "criticality": "ESSENTIAL",
+    "procedure": "Playwright Chromium headless via file:// (qa.py)",
+    "result": "PASS",
+    "evidence_mode": "BROWSER_OBSERVED",
+    "evidence_ref": "evidence-r0/qa-results.json",
+    "build_hash": "8d0a15f3c033eb27e7a2a5048fe481f54d908ad9ee2150c0241c9e031308bfdd",
+    "viewport": "1440x900",
+    "checked_at": "2026-10-21T00:04:51Z"
+   },
+   {
+    "check_id": "QA-19",
+    "requirement": "text: Fornada de sábado, encomendada na sexta.",
+    "criticality": "ESSENTIAL",
+    "procedure": "Playwright Chromium headless via file:// (qa.py)",
+    "result": "PASS",
+    "evidence_mode": "BROWSER_OBSERVED",
+    "evidence_ref": "evidence-r0/qa-results.json",
+    "build_hash": "8d0a15f3c033eb27e7a2a5048fe481f54d908ad9ee2150c0241c9e031308bfdd",
+    "viewport": "1440x900",
+    "checked_at": "2026-10-21T00:04:51Z"
+   },
+   {
+    "check_id": "QA-20",
+    "requirement": "text: Protótipo demonstrativo. Marca, produtos",
+    "criticality": "ESSENTIAL",
+    "procedure": "Playwright Chromium headless via file:// (qa.py)",
+    "result": "PASS",
+    "evidence_mode": "BROWSER_OBSERVED",
+    "evidence_ref": "evidence-r0/qa-results.json",
+    "build_hash": "8d0a15f3c033eb27e7a2a5048fe481f54d908ad9ee2150c0241c9e031308bfdd",
+    "viewport": "1440x900",
+    "checked_at": "2026-10-21T00:04:51Z"
+   },
+   {
+    "check_id": "QA-21",
+    "requirement": "text: Fotografias ilustrativas de terceiros, s",
+    "criticality": "ESSENTIAL",
+    "procedure": "Playwright Chromium headless via file:// (qa.py)",
+    "result": "PASS",
+    "evidence_mode": "BROWSER_OBSERVED",
+    "evidence_ref": "evidence-r0/qa-results.json",
+    "build_hash": "8d0a15f3c033eb27e7a2a5048fe481f54d908ad9ee2150c0241c9e031308bfdd",
+    "viewport": "1440x900",
+    "checked_at": "2026-10-21T00:04:51Z"
+   },
+   {
+    "check_id": "QA-22",
+    "requirement": "CTA -> catalog",
+    "criticality": "ESSENTIAL",
+    "procedure": "Playwright Chromium headless via file:// (qa.py)",
+    "result": "PASS",
+    "evidence_mode": "BROWSER_OBSERVED",
+    "evidence_ref": "evidence-r0/qa-results.json",
+    "build_hash": "8d0a15f3c033eb27e7a2a5048fe481f54d908ad9ee2150c0241c9e031308bfdd",
+    "viewport": "1440x900",
+    "checked_at": "2026-10-21T00:04:51Z"
+   },
+   {
+    "check_id": "QA-23",
+    "requirement": "testid filter-all",
+    "criticality": "ESSENTIAL",
+    "procedure": "Playwright Chromium headless via file:// (qa.py)",
+    "result": "PASS",
+    "evidence_mode": "BROWSER_OBSERVED",
+    "evidence_ref": "evidence-r0/qa-results.json",
+    "build_hash": "8d0a15f3c033eb27e7a2a5048fe481f54d908ad9ee2150c0241c9e031308bfdd",
+    "viewport": "1440x900",
+    "checked_at": "2026-10-21T00:04:51Z"
+   },
+   {
+    "check_id": "QA-24",
+    "requirement": "testid filter-sweet",
+    "criticality": "ESSENTIAL",
+    "procedure": "Playwright Chromium headless via file:// (qa.py)",
+    "result": "PASS",
+    "evidence_mode": "BROWSER_OBSERVED",
+    "evidence_ref": "evidence-r0/qa-results.json",
+    "build_hash": "8d0a15f3c033eb27e7a2a5048fe481f54d908ad9ee2150c0241c9e031308bfdd",
+    "viewport": "1440x900",
+    "checked_at": "2026-10-21T00:04:51Z"
+   },
+   {
+    "check_id": "QA-25",
+    "requirement": "testid filter-savory",
+    "criticality": "ESSENTIAL",
+    "procedure": "Playwright Chromium headless via file:// (qa.py)",
+    "result": "PASS",
+    "evidence_mode": "BROWSER_OBSERVED",
+    "evidence_ref": "evidence-r0/qa-results.json",
+    "build_hash": "8d0a15f3c033eb27e7a2a5048fe481f54d908ad9ee2150c0241c9e031308bfdd",
+    "viewport": "1440x900",
+    "checked_at": "2026-10-21T00:04:51Z"
+   },
+   {
+    "check_id": "QA-26",
+    "requirement": "testid product-no-cardamomo",
+    "criticality": "ESSENTIAL",
+    "procedure": "Playwright Chromium headless via file:// (qa.py)",
+    "result": "PASS",
+    "evidence_mode": "BROWSER_OBSERVED",
+    "evidence_ref": "evidence-r0/qa-results.json",
+    "build_hash": "8d0a15f3c033eb27e7a2a5048fe481f54d908ad9ee2150c0241c9e031308bfdd",
+    "viewport": "1440x900",
+    "checked_at": "2026-10-21T00:04:51Z"
+   },
+   {
+    "check_id": "QA-27",
+    "requirement": "testid product-muffin-baunilha",
+    "criticality": "ESSENTIAL",
+    "procedure": "Playwright Chromium headless via file:// (qa.py)",
+    "result": "PASS",
+    "evidence_mode": "BROWSER_OBSERVED",
+    "evidence_ref": "evidence-r0/qa-results.json",
+    "build_hash": "8d0a15f3c033eb27e7a2a5048fe481f54d908ad9ee2150c0241c9e031308bfdd",
+    "viewport": "1440x900",
+    "checked_at": "2026-10-21T00:04:51Z"
+   },
+   {
+    "check_id": "QA-28",
+    "requirement": "testid product-torta-morango",
+    "criticality": "ESSENTIAL",
+    "procedure": "Playwright Chromium headless via file:// (qa.py)",
+    "result": "PASS",
+    "evidence_mode": "BROWSER_OBSERVED",
+    "evidence_ref": "evidence-r0/qa-results.json",
+    "build_hash": "8d0a15f3c033eb27e7a2a5048fe481f54d908ad9ee2150c0241c9e031308bfdd",
+    "viewport": "1440x900",
+    "checked_at": "2026-10-21T00:04:51Z"
+   },
+   {
+    "check_id": "QA-29",
+    "requirement": "testid product-bolo-maca",
+    "criticality": "ESSENTIAL",
+    "procedure": "Playwright Chromium headless via file:// (qa.py)",
+    "result": "PASS",
+    "evidence_mode": "BROWSER_OBSERVED",
+    "evidence_ref": "evidence-r0/qa-results.json",
+    "build_hash": "8d0a15f3c033eb27e7a2a5048fe481f54d908ad9ee2150c0241c9e031308bfdd",
+    "viewport": "1440x900",
+    "checked_at": "2026-10-21T00:04:51Z"
+   },
+   {
+    "check_id": "QA-30",
+    "requirement": "testid product-scone-queijo",
+    "criticality": "ESSENTIAL",
+    "procedure": "Playwright Chromium headless via file:// (qa.py)",
+    "result": "PASS",
+    "evidence_mode": "BROWSER_OBSERVED",
+    "evidence_ref": "evidence-r0/qa-results.json",
+    "build_hash": "8d0a15f3c033eb27e7a2a5048fe481f54d908ad9ee2150c0241c9e031308bfdd",
+    "viewport": "1440x900",
+    "checked_at": "2026-10-21T00:04:51Z"
+   },
+   {
+    "check_id": "QA-31",
+    "requirement": "Salgados only scone",
+    "criticality": "ESSENTIAL",
+    "procedure": "Playwright Chromium headless via file:// (qa.py)",
+    "result": "PASS",
+    "evidence_mode": "BROWSER_OBSERVED",
+    "evidence_ref": "evidence-r0/qa-results.json",
+    "build_hash": "8d0a15f3c033eb27e7a2a5048fe481f54d908ad9ee2150c0241c9e031308bfdd",
+    "viewport": "1440x900",
+    "checked_at": "2026-10-21T00:04:51Z"
+   },
+   {
+    "check_id": "QA-32",
+    "requirement": "Doces 4",
+    "criticality": "ESSENTIAL",
+    "procedure": "Playwright Chromium headless via file:// (qa.py)",
+    "result": "PASS",
+    "evidence_mode": "BROWSER_OBSERVED",
+    "evidence_ref": "evidence-r0/qa-results.json",
+    "build_hash": "8d0a15f3c033eb27e7a2a5048fe481f54d908ad9ee2150c0241c9e031308bfdd",
+    "viewport": "1440x900",
+    "checked_at": "2026-10-21T00:04:51Z"
+   },
+   {
+    "check_id": "QA-33",
+    "requirement": "Todos 5",
+    "criticality": "ESSENTIAL",
+    "procedure": "Playwright Chromium headless via file:// (qa.py)",
+    "result": "PASS",
+    "evidence_mode": "BROWSER_OBSERVED",
+    "evidence_ref": "evidence-r0/qa-results.json",
+    "build_hash": "8d0a15f3c033eb27e7a2a5048fe481f54d908ad9ee2150c0241c9e031308bfdd",
+    "viewport": "1440x900",
+    "checked_at": "2026-10-21T00:04:51Z"
+   },
+   {
+    "check_id": "QA-34",
+    "requirement": "detail no-cardamomo",
+    "criticality": "ESSENTIAL",
+    "procedure": "Playwright Chromium headless via file:// (qa.py)",
+    "result": "PASS",
+    "evidence_mode": "BROWSER_OBSERVED",
+    "evidence_ref": "evidence-r0/qa-results.json",
+    "build_hash": "8d0a15f3c033eb27e7a2a5048fe481f54d908ad9ee2150c0241c9e031308bfdd",
+    "viewport": "1440x900",
+    "checked_at": "2026-10-21T00:04:51Z"
+   },
+   {
+    "check_id": "QA-35",
+    "requirement": "detail muffin-baunilha",
+    "criticality": "ESSENTIAL",
+    "procedure": "Playwright Chromium headless via file:// (qa.py)",
+    "result": "PASS",
+    "evidence_mode": "BROWSER_OBSERVED",
+    "evidence_ref": "evidence-r0/qa-results.json",
+    "build_hash": "8d0a15f3c033eb27e7a2a5048fe481f54d908ad9ee2150c0241c9e031308bfdd",
+    "viewport": "1440x900",
+    "checked_at": "2026-10-21T00:04:51Z"
+   },
+   {
+    "check_id": "QA-36",
+    "requirement": "detail torta-morango",
+    "criticality": "ESSENTIAL",
+    "procedure": "Playwright Chromium headless via file:// (qa.py)",
+    "result": "PASS",
+    "evidence_mode": "BROWSER_OBSERVED",
+    "evidence_ref": "evidence-r0/qa-results.json",
+    "build_hash": "8d0a15f3c033eb27e7a2a5048fe481f54d908ad9ee2150c0241c9e031308bfdd",
+    "viewport": "1440x900",
+    "checked_at": "2026-10-21T00:04:51Z"
+   },
+   {
+    "check_id": "QA-37",
+    "requirement": "detail bolo-maca",
+    "criticality": "ESSENTIAL",
+    "procedure": "Playwright Chromium headless via file:// (qa.py)",
+    "result": "PASS",
+    "evidence_mode": "BROWSER_OBSERVED",
+    "evidence_ref": "evidence-r0/qa-results.json",
+    "build_hash": "8d0a15f3c033eb27e7a2a5048fe481f54d908ad9ee2150c0241c9e031308bfdd",
+    "viewport": "1440x900",
+    "checked_at": "2026-10-21T00:04:51Z"
+   },
+   {
+    "check_id": "QA-38",
+    "requirement": "detail scone-queijo",
+    "criticality": "ESSENTIAL",
+    "procedure": "Playwright Chromium headless via file:// (qa.py)",
+    "result": "PASS",
+    "evidence_mode": "BROWSER_OBSERVED",
+    "evidence_ref": "evidence-r0/qa-results.json",
+    "build_hash": "8d0a15f3c033eb27e7a2a5048fe481f54d908ad9ee2150c0241c9e031308bfdd",
+    "viewport": "1440x900",
+    "checked_at": "2026-10-21T00:04:51Z"
+   },
+   {
+    "check_id": "QA-39",
+    "requirement": "sorvete note",
+    "criticality": "ESSENTIAL",
+    "procedure": "Playwright Chromium headless via file:// (qa.py)",
+    "result": "PASS",
+    "evidence_mode": "BROWSER_OBSERVED",
+    "evidence_ref": "evidence-r0/qa-results.json",
+    "build_hash": "8d0a15f3c033eb27e7a2a5048fe481f54d908ad9ee2150c0241c9e031308bfdd",
+    "viewport": "1440x900",
+    "checked_at": "2026-10-21T00:04:51Z"
+   },
+   {
+    "check_id": "QA-40",
+    "requirement": "empty state",
+    "criticality": "ESSENTIAL",
+    "procedure": "Playwright Chromium headless via file:// (qa.py)",
+    "result": "PASS",
+    "evidence_mode": "BROWSER_OBSERVED",
+    "evidence_ref": "evidence-r0/qa-results.json",
+    "build_hash": "8d0a15f3c033eb27e7a2a5048fe481f54d908ad9ee2150c0241c9e031308bfdd",
+    "viewport": "1440x900",
+    "checked_at": "2026-10-21T00:04:51Z"
+   },
+   {
+    "check_id": "QA-41",
+    "requirement": "2 nós = €5,60",
+    "criticality": "ESSENTIAL",
+    "procedure": "Playwright Chromium headless via file:// (qa.py)",
+    "result": "PASS",
+    "evidence_mode": "BROWSER_OBSERVED",
+    "evidence_ref": "evidence-r0/qa-results.json",
+    "build_hash": "8d0a15f3c033eb27e7a2a5048fe481f54d908ad9ee2150c0241c9e031308bfdd",
+    "viewport": "1440x900",
+    "checked_at": "2026-10-21T00:04:51Z"
+   },
+   {
+    "check_id": "QA-42",
+    "requirement": "review blocked without slot",
+    "criticality": "ESSENTIAL",
+    "procedure": "Playwright Chromium headless via file:// (qa.py)",
+    "result": "PASS",
+    "evidence_mode": "BROWSER_OBSERVED",
+    "evidence_ref": "evidence-r0/qa-results.json",
+    "build_hash": "8d0a15f3c033eb27e7a2a5048fe481f54d908ad9ee2150c0241c9e031308bfdd",
+    "viewport": "1440x900",
+    "checked_at": "2026-10-21T00:04:51Z"
+   },
+   {
+    "check_id": "QA-43",
+    "requirement": "4 slots",
+    "criticality": "ESSENTIAL",
+    "procedure": "Playwright Chromium headless via file:// (qa.py)",
+    "result": "PASS",
+    "evidence_mode": "BROWSER_OBSERVED",
+    "evidence_ref": "evidence-r0/qa-results.json",
+    "build_hash": "8d0a15f3c033eb27e7a2a5048fe481f54d908ad9ee2150c0241c9e031308bfdd",
+    "viewport": "1440x900",
+    "checked_at": "2026-10-21T00:04:51Z"
+   },
+   {
+    "check_id": "QA-44",
+    "requirement": "qty 0 -> 1",
+    "criticality": "ESSENTIAL",
+    "procedure": "Playwright Chromium headless via file:// (qa.py)",
+    "result": "PASS",
+    "evidence_mode": "BROWSER_OBSERVED",
+    "evidence_ref": "evidence-r0/qa-results.json",
+    "build_hash": "8d0a15f3c033eb27e7a2a5048fe481f54d908ad9ee2150c0241c9e031308bfdd",
+    "viewport": "1440x900",
+    "checked_at": "2026-10-21T00:04:51Z"
+   },
+   {
+    "check_id": "QA-45",
+    "requirement": "qty -5 -> 1",
+    "criticality": "ESSENTIAL",
+    "procedure": "Playwright Chromium headless via file:// (qa.py)",
+    "result": "PASS",
+    "evidence_mode": "BROWSER_OBSERVED",
+    "evidence_ref": "evidence-r0/qa-results.json",
+    "build_hash": "8d0a15f3c033eb27e7a2a5048fe481f54d908ad9ee2150c0241c9e031308bfdd",
+    "viewport": "1440x900",
+    "checked_at": "2026-10-21T00:04:51Z"
+   },
+   {
+    "check_id": "QA-46",
+    "requirement": "qty 99 -> 12",
+    "criticality": "ESSENTIAL",
+    "procedure": "Playwright Chromium headless via file:// (qa.py)",
+    "result": "PASS",
+    "evidence_mode": "BROWSER_OBSERVED",
+    "evidence_ref": "evidence-r0/qa-results.json",
+    "build_hash": "8d0a15f3c033eb27e7a2a5048fe481f54d908ad9ee2150c0241c9e031308bfdd",
+    "viewport": "1440x900",
+    "checked_at": "2026-10-21T00:04:51Z"
+   },
+   {
+    "check_id": "QA-47",
+    "requirement": "qty abc -> 1",
+    "criticality": "ESSENTIAL",
+    "procedure": "Playwright Chromium headless via file:// (qa.py)",
+    "result": "PASS",
+    "evidence_mode": "BROWSER_OBSERVED",
+    "evidence_ref": "evidence-r0/qa-results.json",
+    "build_hash": "8d0a15f3c033eb27e7a2a5048fe481f54d908ad9ee2150c0241c9e031308bfdd",
+    "viewport": "1440x900",
+    "checked_at": "2026-10-21T00:04:51Z"
+   },
+   {
+    "check_id": "QA-48",
+    "requirement": "qty 3.7 -> 3",
+    "criticality": "ESSENTIAL",
+    "procedure": "Playwright Chromium headless via file:// (qa.py)",
+    "result": "PASS",
+    "evidence_mode": "BROWSER_OBSERVED",
+    "evidence_ref": "evidence-r0/qa-results.json",
+    "build_hash": "8d0a15f3c033eb27e7a2a5048fe481f54d908ad9ee2150c0241c9e031308bfdd",
+    "viewport": "1440x900",
+    "checked_at": "2026-10-21T00:04:51Z"
+   },
+   {
+    "check_id": "QA-49",
+    "requirement": "summary shown",
+    "criticality": "ESSENTIAL",
+    "procedure": "Playwright Chromium headless via file:// (qa.py)",
+    "result": "PASS",
+    "evidence_mode": "BROWSER_OBSERVED",
+    "evidence_ref": "evidence-r0/qa-results.json",
+    "build_hash": "8d0a15f3c033eb27e7a2a5048fe481f54d908ad9ee2150c0241c9e031308bfdd",
+    "viewport": "1440x900",
+    "checked_at": "2026-10-21T00:04:51Z"
+   },
+   {
+    "check_id": "QA-50",
+    "requirement": "back/forward hash",
+    "criticality": "ESSENTIAL",
+    "procedure": "Playwright Chromium headless via file:// (qa.py)",
+    "result": "PASS",
+    "evidence_mode": "BROWSER_OBSERVED",
+    "evidence_ref": "evidence-r0/qa-results.json",
+    "build_hash": "8d0a15f3c033eb27e7a2a5048fe481f54d908ad9ee2150c0241c9e031308bfdd",
+    "viewport": "1440x900",
+    "checked_at": "2026-10-21T00:04:51Z"
+   },
+   {
+    "check_id": "QA-51",
+    "requirement": "remove -> empty",
+    "criticality": "ESSENTIAL",
+    "procedure": "Playwright Chromium headless via file:// (qa.py)",
+    "result": "PASS",
+    "evidence_mode": "BROWSER_OBSERVED",
+    "evidence_ref": "evidence-r0/qa-results.json",
+    "build_hash": "8d0a15f3c033eb27e7a2a5048fe481f54d908ad9ee2150c0241c9e031308bfdd",
+    "viewport": "1440x900",
+    "checked_at": "2026-10-21T00:04:51Z"
+   },
+   {
+    "check_id": "QA-52",
+    "requirement": "credits 14",
+    "criticality": "ESSENTIAL",
+    "procedure": "Playwright Chromium headless via file:// (qa.py)",
+    "result": "PASS",
+    "evidence_mode": "BROWSER_OBSERVED",
+    "evidence_ref": "evidence-r0/qa-results.json",
+    "build_hash": "8d0a15f3c033eb27e7a2a5048fe481f54d908ad9ee2150c0241c9e031308bfdd",
+    "viewport": "1440x900",
+    "checked_at": "2026-10-21T00:04:51Z"
+   },
+   {
+    "check_id": "QA-53",
+    "requirement": "first tab skip link",
+    "criticality": "ESSENTIAL",
+    "procedure": "Playwright Chromium headless via file:// (qa.py)",
+    "result": "PASS",
+    "evidence_mode": "BROWSER_OBSERVED",
+    "evidence_ref": "evidence-r0/qa-results.json",
+    "build_hash": "8d0a15f3c033eb27e7a2a5048fe481f54d908ad9ee2150c0241c9e031308bfdd",
+    "viewport": "1440x900",
+    "checked_at": "2026-10-21T00:04:51Z"
+   },
+   {
+    "check_id": "QA-54",
+    "requirement": "focus-visible outline",
+    "criticality": "ESSENTIAL",
+    "procedure": "Playwright Chromium headless via file:// (qa.py)",
+    "result": "PASS",
+    "evidence_mode": "BROWSER_OBSERVED",
+    "evidence_ref": "evidence-r0/qa-results.json",
+    "build_hash": "8d0a15f3c033eb27e7a2a5048fe481f54d908ad9ee2150c0241c9e031308bfdd",
+    "viewport": "1440x900",
+    "checked_at": "2026-10-21T00:04:51Z"
+   },
+   {
+    "check_id": "QA-55",
+    "requirement": "imgs have alt attr",
+    "criticality": "ESSENTIAL",
+    "procedure": "Playwright Chromium headless via file:// (qa.py)",
+    "result": "PASS",
+    "evidence_mode": "BROWSER_OBSERVED",
+    "evidence_ref": "evidence-r0/qa-results.json",
+    "build_hash": "8d0a15f3c033eb27e7a2a5048fe481f54d908ad9ee2150c0241c9e031308bfdd",
+    "viewport": "1440x900",
+    "checked_at": "2026-10-21T00:04:51Z"
+   },
+   {
+    "check_id": "QA-56",
+    "requirement": "reduced motion: no animation",
+    "criticality": "ESSENTIAL",
+    "procedure": "Playwright Chromium headless via file:// (qa.py)",
+    "result": "PASS",
+    "evidence_mode": "BROWSER_OBSERVED",
+    "evidence_ref": "evidence-r0/qa-results.json",
+    "build_hash": "8d0a15f3c033eb27e7a2a5048fe481f54d908ad9ee2150c0241c9e031308bfdd",
+    "viewport": "390x844",
+    "checked_at": "2026-10-21T00:04:51Z"
+   },
+   {
+    "check_id": "QA-57",
+    "requirement": "no external requests",
+    "criticality": "ESSENTIAL",
+    "procedure": "Playwright Chromium headless via file:// (qa.py)",
+    "result": "PASS",
+    "evidence_mode": "BROWSER_OBSERVED",
+    "evidence_ref": "evidence-r0/qa-results.json",
+    "build_hash": "8d0a15f3c033eb27e7a2a5048fe481f54d908ad9ee2150c0241c9e031308bfdd",
+    "viewport": "1440x900",
+    "checked_at": "2026-10-21T00:04:51Z"
+   },
+   {
+    "check_id": "QA-58",
+    "requirement": "no console errors",
+    "criticality": "ESSENTIAL",
+    "procedure": "Playwright Chromium headless via file:// (qa.py)",
+    "result": "PASS",
+    "evidence_mode": "BROWSER_OBSERVED",
+    "evidence_ref": "evidence-r0/qa-results.json",
+    "build_hash": "8d0a15f3c033eb27e7a2a5048fe481f54d908ad9ee2150c0241c9e031308bfdd",
+    "viewport": "1440x900",
+    "checked_at": "2026-10-21T00:04:51Z"
+   },
+   {
+    "check_id": "VIS-01",
+    "requirement": "Revisão visual pelo agente de home/fornada/detalhe/encomenda em 1440 e 390",
+    "criticality": "ADVISORY",
+    "procedure": "Leitura das capturas full-page em evidence-r0/",
+    "result": "PASS",
+    "evidence_mode": "BROWSER_OBSERVED",
+    "evidence_ref": "evidence-r0/desktop-catalog.png",
+    "build_hash": "8d0a15f3c033eb27e7a2a5048fe481f54d908ad9ee2150c0241c9e031308bfdd",
+    "viewport": "1440x900;390x844;768x1024",
+    "checked_at": "2026-10-21T00:04:51Z",
+    "reason": "Crítica do agente, não aprovação humana independente. Corrigidos: foto do hero alta demais; vão vazio no 1º cartão; resumo sob cabeçalho fixo."
+   }
+  ],
+  "known_limitations": [
+   "QA por agente; sem avaliação humana nem leitor de tela real",
+   "Navegador headless via file://; preview HTTP do método não usado"
+  ],
+  "verdict": "PASS"
+ }
+}
