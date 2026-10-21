@@ -1,0 +1,365 @@
+{
+ "label": "m13-r0",
+ "brief": "B1",
+ "site": "/tmp/dqb/frozen/m13-r0",
+ "collected_utc": "2026-10-21T00:13:23Z",
+ "pass": 47,
+ "total": 48,
+ "checks": [
+  {
+   "check": "images decoded, none broken",
+   "viewport": "1440x900",
+   "result": "PASS",
+   "detail": "{'count': 5, 'broken': [], 'tiny': [], 'noalt': []}"
+  },
+  {
+   "check": "no collapsed/tiny visible images",
+   "viewport": "1440x900",
+   "result": "PASS",
+   "detail": "[]"
+  },
+  {
+   "check": "all images have alt attribute",
+   "viewport": "1440x900",
+   "result": "PASS",
+   "detail": "[]"
+  },
+  {
+   "check": "no horizontal overflow (home)",
+   "viewport": "1440x900",
+   "result": "PASS",
+   "detail": "0"
+  },
+  {
+   "check": "hero copy preserved",
+   "viewport": "1440x900",
+   "result": "PASS",
+   "detail": ""
+  },
+  {
+   "check": "footer prototype disclaimer",
+   "viewport": "1440x900",
+   "result": "PASS",
+   "detail": ""
+  },
+  {
+   "check": "nav-catalog opens catalog",
+   "viewport": "1440x900",
+   "result": "PASS",
+   "detail": ""
+  },
+  {
+   "check": "filter Salgados -> only scone",
+   "viewport": "1440x900",
+   "result": "PASS",
+   "detail": "['scone-queijo']"
+  },
+  {
+   "check": "filter Doces -> 4 sweet",
+   "viewport": "1440x900",
+   "result": "PASS",
+   "detail": "['no-cardamomo', 'muffin-baunilha', 'torta-morango', 'bolo-maca']"
+  },
+  {
+   "check": "filter Todos -> 5",
+   "viewport": "1440x900",
+   "result": "PASS",
+   "detail": "['no-cardamomo', 'muffin-baunilha', 'torta-morango', 'bolo-maca', 'scone-queijo']"
+  },
+  {
+   "check": "bolo-maca states ice cream not included",
+   "viewport": "1440x900",
+   "result": "PASS",
+   "detail": ""
+  },
+  {
+   "check": "allergen notice on detail",
+   "viewport": "1440x900",
+   "result": "PASS",
+   "detail": ""
+  },
+  {
+   "check": "browser back returns from detail",
+   "viewport": "1440x900",
+   "result": "PASS",
+   "detail": ""
+  },
+  {
+   "check": "order line has quantity control",
+   "viewport": "1440x900",
+   "result": "PASS",
+   "detail": "1"
+  },
+  {
+   "check": "2 x Nó de cardamomo = 5,60",
+   "viewport": "1440x900",
+   "result": "PASS",
+   "detail": "€5,60"
+  },
+  {
+   "check": "invalid quantity never negative/NaN",
+   "viewport": "1440x900",
+   "result": "PASS",
+   "detail": "€2,80"
+  },
+  {
+   "check": "pickup slot control present",
+   "viewport": "1440x900",
+   "result": "PASS",
+   "detail": "4"
+  },
+  {
+   "check": "review shows local summary",
+   "viewport": "1440x900",
+   "result": "PASS",
+   "detail": "RESUMO LOCAL · NÃO ENVIADO\n\nRetirada no sábado\n\n08:00 – 09:00 · Vale\n\nITEM\tQTD.\tUNIT.\tTOTAL\nNó de cardamomo\t2\t€2,80\t€5,6"
+  },
+  {
+   "check": "prototype disclaimer in order",
+   "viewport": "1440x900",
+   "result": "PASS",
+   "detail": ""
+  },
+  {
+   "check": "remove -> empty state",
+   "viewport": "1440x900",
+   "result": "PASS",
+   "detail": ""
+  },
+  {
+   "check": "no script/console errors",
+   "viewport": "1440x900",
+   "result": "PASS",
+   "detail": "[]"
+  },
+  {
+   "check": "no external network requests",
+   "viewport": "1440x900",
+   "result": "PASS",
+   "detail": "[]"
+  },
+  {
+   "check": "images decoded, none broken",
+   "viewport": "390x844",
+   "result": "PASS",
+   "detail": "{'count': 5, 'broken': [], 'tiny': [], 'noalt': []}"
+  },
+  {
+   "check": "no collapsed/tiny visible images",
+   "viewport": "390x844",
+   "result": "PASS",
+   "detail": "[]"
+  },
+  {
+   "check": "all images have alt attribute",
+   "viewport": "390x844",
+   "result": "PASS",
+   "detail": "[]"
+  },
+  {
+   "check": "no horizontal overflow (home)",
+   "viewport": "390x844",
+   "result": "PASS",
+   "detail": "0"
+  },
+  {
+   "check": "hero copy preserved",
+   "viewport": "390x844",
+   "result": "PASS",
+   "detail": ""
+  },
+  {
+   "check": "footer prototype disclaimer",
+   "viewport": "390x844",
+   "result": "PASS",
+   "detail": ""
+  },
+  {
+   "check": "nav-catalog opens catalog",
+   "viewport": "390x844",
+   "result": "PASS",
+   "detail": ""
+  },
+  {
+   "check": "filter Salgados -> only scone",
+   "viewport": "390x844",
+   "result": "PASS",
+   "detail": "['scone-queijo']"
+  },
+  {
+   "check": "filter Doces -> 4 sweet",
+   "viewport": "390x844",
+   "result": "PASS",
+   "detail": "['no-cardamomo', 'muffin-baunilha', 'torta-morango', 'bolo-maca']"
+  },
+  {
+   "check": "filter Todos -> 5",
+   "viewport": "390x844",
+   "result": "PASS",
+   "detail": "['no-cardamomo', 'muffin-baunilha', 'torta-morango', 'bolo-maca', 'scone-queijo']"
+  },
+  {
+   "check": "bolo-maca states ice cream not included",
+   "viewport": "390x844",
+   "result": "PASS",
+   "detail": ""
+  },
+  {
+   "check": "allergen notice on detail",
+   "viewport": "390x844",
+   "result": "PASS",
+   "detail": ""
+  },
+  {
+   "check": "browser back returns from detail",
+   "viewport": "390x844",
+   "result": "PASS",
+   "detail": ""
+  },
+  {
+   "check": "order line has quantity control",
+   "viewport": "390x844",
+   "result": "PASS",
+   "detail": "1"
+  },
+  {
+   "check": "2 x Nó de cardamomo = 5,60",
+   "viewport": "390x844",
+   "result": "PASS",
+   "detail": "€5,60"
+  },
+  {
+   "check": "invalid quantity never negative/NaN",
+   "viewport": "390x844",
+   "result": "PASS",
+   "detail": "€2,80"
+  },
+  {
+   "check": "pickup slot control present",
+   "viewport": "390x844",
+   "result": "PASS",
+   "detail": "4"
+  },
+  {
+   "check": "review shows local summary",
+   "viewport": "390x844",
+   "result": "PASS",
+   "detail": "RESUMO LOCAL · NÃO ENVIADO\n\nRetirada no sábado\n\n08:00 – 09:00 · Vale\n\nITEM\tQTD.\tUNIT.\tTOTAL\nNó de cardamomo\t2\t€2,80\t€5,6"
+  },
+  {
+   "check": "prototype disclaimer in order",
+   "viewport": "390x844",
+   "result": "PASS",
+   "detail": ""
+  },
+  {
+   "check": "remove -> empty state",
+   "viewport": "390x844",
+   "result": "PASS",
+   "detail": ""
+  },
+  {
+   "check": "no script/console errors",
+   "viewport": "390x844",
+   "result": "PASS",
+   "detail": "[]"
+  },
+  {
+   "check": "no external network requests",
+   "viewport": "390x844",
+   "result": "PASS",
+   "detail": "[]"
+  },
+  {
+   "check": "no horizontal overflow (home)",
+   "viewport": "768x1024",
+   "result": "PASS",
+   "detail": "0"
+  },
+  {
+   "check": "no horizontal overflow (home)",
+   "viewport": "320x740",
+   "result": "FAIL",
+   "detail": "21"
+  },
+  {
+   "check": "reduced motion: no running animations",
+   "viewport": "1440x900/reduce",
+   "result": "PASS",
+   "detail": "0"
+  },
+  {
+   "check": "keyboard Tab reaches controls with visible focus",
+   "viewport": "1440x900",
+   "result": "PASS",
+   "detail": "[{'tag': 'A', 'visible': True}, {'tag': 'A', 'visible': True}, {'tag': 'A', 'visible': True}, {'tag': 'A', 'visible': True}, {'tag': 'A', 'visible': True}, {'tag': 'A', 'visible': True}]"
+  }
+ ],
+ "screenshots": [
+  {
+   "state": "1440-home",
+   "file": "m13-r0-1440-home.jpg",
+   "sha256": "4df2a5e18951bd7bf11e00f0d54074d71cd78c1ffc15081e85fd385c2003ff1c"
+  },
+  {
+   "state": "1440-home-full",
+   "file": "m13-r0-1440-home-full.jpg",
+   "sha256": "e775c767a6d4dc1b1acfd3764bcf1c0ecb6d5f2ad0a21073b794d371a6a3d1a8"
+  },
+  {
+   "state": "catalog",
+   "file": "m13-r0-1440-catalog.jpg",
+   "sha256": "28f39e8fde621184892323028e571eb0be15472de61b8c9b504e0171966f749f"
+  },
+  {
+   "state": "product",
+   "file": "m13-r0-1440-product.jpg",
+   "sha256": "8bb4a2d76571ac684cfa7ce9624bb2e541ff3caf58546ef19789a7f34b8368a0"
+  },
+  {
+   "state": "order-filled",
+   "file": "m13-r0-1440-order-filled.jpg",
+   "sha256": "c93ec021f12a5035df72b427aa9f6e31be7dd32d5d596b87f3911d2246868e5e"
+  },
+  {
+   "state": "order-review",
+   "file": "m13-r0-1440-order-review.jpg",
+   "sha256": "a05d46a0e16b69591bd4fcbc7f5888a6a3c447576c4b5652805b49a1dc03fbbc"
+  },
+  {
+   "state": "390-home",
+   "file": "m13-r0-390-home.jpg",
+   "sha256": "0d55179ebcde20333fdbf4b36ce2555799cff0b82c3ff55559004bac0d1f1f11"
+  },
+  {
+   "state": "390-home-full",
+   "file": "m13-r0-390-home-full.jpg",
+   "sha256": "cf12005def87d520d7a77d247dbae72a77afcf15e30548670333b04fb449312b"
+  },
+  {
+   "state": "catalog",
+   "file": "m13-r0-390-catalog.jpg",
+   "sha256": "e779d7347164047ab27d0c952635afb2b7f1fdbd6ebae9adaf4e648700e7d6bb"
+  },
+  {
+   "state": "product",
+   "file": "m13-r0-390-product.jpg",
+   "sha256": "f976fea5f92cbd92d9cf52a1fe0eb06ac1d5f425308af1fa1485b27bde04b60f"
+  },
+  {
+   "state": "order-filled",
+   "file": "m13-r0-390-order-filled.jpg",
+   "sha256": "1fd31028085edfc590acd4a3901cd0181d92442bfbe792be5f72e0513058fbf2"
+  },
+  {
+   "state": "order-review",
+   "file": "m13-r0-390-order-review.jpg",
+   "sha256": "27576ad7eef52e0e4a91e7ba557e68568d57a8c860de8cfb211aef3dc2e24f91"
+  },
+  {
+   "state": "768-home",
+   "file": "m13-r0-768-home.jpg",
+   "sha256": "e5eb76b7b588ba51c504391228d606f2a632d25309bbd35070d6f64f8203967b"
+  }
+ ]
+}

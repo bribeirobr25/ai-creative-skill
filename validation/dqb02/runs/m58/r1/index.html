@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Miolo · Fornada de sábado</title>
+<meta name="description" content="Miolo, micro-padaria do Vale. Fornada de sábado, encomendada na sexta. Protótipo demonstrativo.">
+<link rel="stylesheet" href="fonts/fonts.css">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<a class="skip" href="#main">Pular para o conteúdo</a>
+
+<header class="top">
+  <div class="top__inner">
+    <a class="wordmark" href="#/" data-testid="nav-home" aria-label="Miolo, início">
+      <span class="wordmark__name">Miolo</span>
+      <span class="wordmark__tag">Vale · sábado</span>
+    </a>
+    <nav class="nav" aria-label="Principal">
+      <a href="#/" class="nav__link" data-route="home">Início</a>
+      <a href="#/fornada" class="nav__link" data-route="catalog" data-testid="nav-catalog">Fornada</a>
+      <a href="#/encomenda" class="nav__link nav__link--order" data-route="order" data-testid="nav-order">
+        Encomenda <span class="nav__count" id="navCount" aria-label="itens na encomenda">0</span>
+      </a>
+    </nav>
+  </div>
+</header>
+
+<main id="main" tabindex="-1"></main>
+
+<footer class="foot">
+  <div class="foot__inner">
+    <div class="foot__brand">
+      <p class="foot__name">Miolo</p>
+      <p class="foot__sig">Fornada de sábado, encomendada na sexta.</p>
+    </div>
+    <div class="foot__notes">
+      <p class="notice"><strong>Protótipo demonstrativo.</strong> Marca, produtos e preços fictícios. Nenhuma encomenda é enviada.</p>
+      <p>Fotografias ilustrativas de terceiros, sob licenças CC0, CC BY 4.0 e CC BY-SA 4.0 (<a href="#/creditos">créditos</a>).</p>
+    </div>
+    <nav class="foot__nav" aria-label="Rodapé">
+      <a href="#/">Início</a>
+      <a href="#/fornada">Fornada</a>
+      <a href="#/encomenda">Encomenda</a>
+      <a href="#/creditos">Créditos das fotos</a>
+    </nav>
+  </div>
+</footer>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script src="app.js"></script>
+</body>
+</html>

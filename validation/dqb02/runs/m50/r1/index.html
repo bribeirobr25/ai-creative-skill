@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Miolo · Fornada de sábado</title>
+<meta name="description" content="Miolo, micro-padaria fictícia do Vale. Fornada de sábado, encomendada na sexta. Protótipo demonstrativo.">
+<link rel="stylesheet" href="fonts/fonts.css">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<a class="skip" href="#main">Pular para o conteúdo</a>
+<header class="masthead">
+  <div class="masthead__in">
+    <a class="wordmark" href="#/" data-testid="nav-home" aria-label="Miolo, página inicial">
+      <span class="wordmark__name">miolo</span><span class="wordmark__crumb" aria-hidden="true"></span>
+    </a>
+    <nav class="nav" aria-label="Principal">
+      <a href="#/fornada" data-testid="nav-catalog" data-nav="fornada">Fornada</a>
+      <a href="#/encomenda" data-testid="nav-order" data-nav="encomenda" class="nav__order">Encomenda <span class="nav__count" id="navCount" aria-label="itens">0</span></a>
+    </nav>
+  </div>
+</header>
+
+<main id="main" tabindex="-1"></main>
+
+<footer class="footer">
+  <div class="footer__in">
+    <div class="footer__brand">
+      <p class="footer__mark">miolo</p>
+      <p class="footer__sig">Fornada de sábado, encomendada na sexta.</p>
+    </div>
+    <div class="footer__notes">
+      <p class="notice"><strong>Protótipo demonstrativo.</strong> Marca, produtos e preços fictícios. Nenhuma encomenda é enviada.</p>
+      <p>Fotografias ilustrativas de terceiros, sob licenças CC0, CC BY 4.0 e CC BY-SA 4.0 (<a href="#/creditos">créditos</a>).</p>
+    </div>
+    <nav class="footer__nav" aria-label="Rodapé">
+      <a href="#/">Início</a>
+      <a href="#/fornada">Fornada</a>
+      <a href="#/encomenda">Encomenda</a>
+      <a href="#/creditos">Créditos das fotos</a>
+    </nav>
+  </div>
+</footer>
+
+<div class="sr-only" aria-live="polite" id="live"></div>
+<script src="credits-data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

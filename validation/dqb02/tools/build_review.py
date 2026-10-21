@@ -60,13 +60,15 @@ def build_gallery():
 def build_packets():
     rng = random.Random(SEED); key = []
     root = OUT / f"packets-{RND}"; root.mkdir(parents=True, exist_ok=True)
+    # Counterbalance: exactly half of the four pairs show A as X; which ones is random.
+    x_is_a = [True, True, False, False]; rng.shuffle(x_is_a); slot = 0
     for brief in ["B1", "B2"]:
         for rep in [1, 2]:
             pr = {r["condition"]: r for r in runs if r["brief"] == brief and r["repetition"] == rep}
             if not all((EV / f"{pr[c]['run']}-{RND}").exists() for c in "AB"):
                 continue
             pid = f"{brief}-par{rep}"
-            order = ["A", "B"]; rng.shuffle(order)  # order[0] -> X (shown left)
+            order = ["A", "B"] if x_is_a[slot] else ["B", "A"]; slot += 1  # order[0] -> X (shown left)
             key.append({"packet": pid, "round": RND, "X": order[0], "Y": order[1], "X_run": pr[order[0]]["run"], "Y_run": pr[order[1]]["run"]})
             d = root / pid; d.mkdir(exist_ok=True)
             for lbl, cond in zip("XY", order):

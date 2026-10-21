@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Miolo · Fornada de sábado</title>
+<meta name="description" content="Miolo, micro-padaria fictícia: fornada de sábado, encomendada na sexta. Protótipo demonstrativo.">
+<link rel="stylesheet" href="fonts/fonts.css">
+<link rel="stylesheet" href="styles.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cellipse cx='16' cy='17' rx='13' ry='10' fill='%23B9692F'/%3E%3Cpath d='M9 14c3 2 5 2 7 0M15 12c3 2 5 2 7 0' stroke='%23F6EFE3' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E">
+</head>
+<body>
+<a class="skip" href="#conteudo">Pular para o conteúdo</a>
+<header class="site-header">
+  <div class="wrap header-inner">
+    <a class="wordmark" href="#/" data-testid="nav-home" aria-label="Miolo, início">
+      <span class="wm-word">miolo</span><span class="wm-crumb" aria-hidden="true"></span>
+    </a>
+    <nav class="main-nav" aria-label="Principal">
+      <a href="#/" class="nav-link nav-home-text" data-route="home">Início</a>
+      <a href="#/fornada" class="nav-link" data-testid="nav-catalog" data-route="fornada">Fornada</a>
+      <a href="#/encomenda" class="nav-link nav-order" data-testid="nav-order" data-route="encomenda">Encomenda<span class="count" id="nav-count" aria-label="0 itens">0</span></a>
+    </nav>
+  </div>
+</header>
+
+<main id="conteudo" tabindex="-1">
+  <noscript><p class="wrap">Este protótipo precisa de JavaScript para mostrar a fornada e a encomenda.</p></noscript>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap footer-grid">
+    <div class="footer-brand">
+      <p class="footer-wm">miolo</p>
+      <p class="sig">Fornada de sábado, encomendada na sexta.</p>
+      <p class="footer-hours"><span class="mono">Encomendas até sexta, 18h · Retirada no sábado, 8h–12h · Vale</span></p>
+    </div>
+    <div class="footer-notes">
+      <p class="notice" data-notice>Protótipo demonstrativo. Marca, produtos e preços fictícios. Nenhuma encomenda é enviada.</p>
+      <p class="photo-info">Fotografias ilustrativas de terceiros, sob licenças CC0, CC BY 4.0 e CC BY-SA 4.0 (<a href="#/creditos">créditos</a>).</p>
+      <nav class="footer-nav" aria-label="Rodapé">
+        <a href="#/">Início</a><a href="#/fornada">Fornada</a><a href="#/encomenda">Encomenda</a><a href="#/creditos">Créditos</a>
+      </nav>
+    </div>
+  </div>
+</footer>
+
+<script src="credits-data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Miolo · Fornada de sábado</title>
+<meta name="description" content="Miolo, micro-padaria fictícia do bairro Vale. Fornada de sábado, encomendada na sexta.">
+<link rel="stylesheet" href="fonts/fonts.css">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<a class="skip" href="#conteudo">Pular para o conteúdo</a>
+
+<header class="site-header">
+  <div class="wrap header-inner">
+    <a class="wordmark" href="#/" data-testid="nav-home" aria-label="Miolo, página inicial">
+      <span class="wm-word">miolo</span>
+      <span class="wm-sig">Fornada de sábado, encomendada na sexta.</span>
+    </a>
+    <nav class="main-nav" aria-label="Principal">
+      <a href="#/" data-nav="home">Início</a>
+      <a href="#/fornada" data-testid="nav-catalog" data-nav="fornada">Fornada</a>
+      <a href="#/encomenda" data-testid="nav-order" data-nav="encomenda" class="nav-order">Encomenda <span class="badge" id="order-count" aria-label="itens">0</span></a>
+    </nav>
+  </div>
+</header>
+
+<main id="conteudo" tabindex="-1">
+  <div id="view" class="view"></div>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap footer-inner">
+    <div class="foot-brand">
+      <span class="wm-word">miolo</span>
+      <p>Fornada de sábado, encomendada na sexta.</p>
+      <p class="foot-hours"><span class="mono">Encomendas até sexta, 18h</span><span class="mono">Retirada no sábado, 8h–12h · Vale</span></p>
+    </div>
+    <div class="foot-legal">
+      <p class="notice"><strong>Protótipo demonstrativo.</strong> Marca, produtos e preços fictícios. Nenhuma encomenda é enviada.</p>
+      <p>Fotografias ilustrativas de terceiros, sob licenças CC0, CC BY 4.0 e CC BY-SA 4.0 (<a href="#/creditos">créditos</a>).</p>
+      <p>Fontes Fraunces, Instrument Sans e IBM Plex Mono, sob SIL Open Font License 1.1.</p>
+    </div>
+  </div>
+</footer>
+
+<div class="sr-only" aria-live="polite" id="route-announcer"></div>
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

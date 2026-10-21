@@ -1,0 +1,329 @@
+{
+ "label": "t48-r0",
+ "brief": "B2",
+ "site": "/tmp/dqb/frozen/t48-r0",
+ "collected_utc": "2026-10-21T00:29:38Z",
+ "pass": 42,
+ "total": 42,
+ "checks": [
+  {
+   "check": "images decoded, none broken",
+   "viewport": "1440x900",
+   "result": "PASS",
+   "detail": "{'count': 8, 'broken': [], 'tiny': [], 'noalt': []}"
+  },
+  {
+   "check": "no collapsed/tiny visible images",
+   "viewport": "1440x900",
+   "result": "PASS",
+   "detail": "[]"
+  },
+  {
+   "check": "all images have alt attribute",
+   "viewport": "1440x900",
+   "result": "PASS",
+   "detail": "[]"
+  },
+  {
+   "check": "no horizontal overflow (home)",
+   "viewport": "1440x900",
+   "result": "PASS",
+   "detail": "0"
+  },
+  {
+   "check": "hero copy preserved",
+   "viewport": "1440x900",
+   "result": "PASS",
+   "detail": ""
+  },
+  {
+   "check": "footer prototype disclaimer",
+   "viewport": "1440x900",
+   "result": "PASS",
+   "detail": ""
+  },
+  {
+   "check": "schedule Todas shows 16 slots",
+   "viewport": "1440x900",
+   "result": "PASS",
+   "detail": "16 ['aberta', 'nascer-sol', 'privativa']"
+  },
+  {
+   "check": "filter Nascer do sol -> 2 sunrise only",
+   "viewport": "1440x900",
+   "result": "PASS",
+   "detail": "['nascer-sol', 'nascer-sol']"
+  },
+  {
+   "check": "session aberta detail shows price",
+   "viewport": "1440x900",
+   "result": "PASS",
+   "detail": ""
+  },
+  {
+   "check": "session nascer-sol detail shows price",
+   "viewport": "1440x900",
+   "result": "PASS",
+   "detail": ""
+  },
+  {
+   "check": "session privativa detail shows price",
+   "viewport": "1440x900",
+   "result": "PASS",
+   "detail": ""
+  },
+  {
+   "check": "plan aberta x3 = 54",
+   "viewport": "1440x900",
+   "result": "PASS",
+   "detail": "€54"
+  },
+  {
+   "check": "plan nascer-sol x2 = 44",
+   "viewport": "1440x900",
+   "result": "PASS",
+   "detail": "€44"
+  },
+  {
+   "check": "plan privativa x4 = 120",
+   "viewport": "1440x900",
+   "result": "PASS",
+   "detail": "€120"
+  },
+  {
+   "check": "plan aberta x9 -> error, no misleading total",
+   "viewport": "1440x900",
+   "result": "PASS",
+   "detail": "err=True total='Sem estimativa'"
+  },
+  {
+   "check": "plan privativa x7 -> error, no misleading total",
+   "viewport": "1440x900",
+   "result": "PASS",
+   "detail": "err=True total='Sem estimativa'"
+  },
+  {
+   "check": "prototype disclaimer in planner",
+   "viewport": "1440x900",
+   "result": "PASS",
+   "detail": ""
+  },
+  {
+   "check": "no script/console errors",
+   "viewport": "1440x900",
+   "result": "PASS",
+   "detail": "[]"
+  },
+  {
+   "check": "no external network requests",
+   "viewport": "1440x900",
+   "result": "PASS",
+   "detail": "[]"
+  },
+  {
+   "check": "images decoded, none broken",
+   "viewport": "390x844",
+   "result": "PASS",
+   "detail": "{'count': 8, 'broken': [], 'tiny': [], 'noalt': []}"
+  },
+  {
+   "check": "no collapsed/tiny visible images",
+   "viewport": "390x844",
+   "result": "PASS",
+   "detail": "[]"
+  },
+  {
+   "check": "all images have alt attribute",
+   "viewport": "390x844",
+   "result": "PASS",
+   "detail": "[]"
+  },
+  {
+   "check": "no horizontal overflow (home)",
+   "viewport": "390x844",
+   "result": "PASS",
+   "detail": "0"
+  },
+  {
+   "check": "hero copy preserved",
+   "viewport": "390x844",
+   "result": "PASS",
+   "detail": ""
+  },
+  {
+   "check": "footer prototype disclaimer",
+   "viewport": "390x844",
+   "result": "PASS",
+   "detail": ""
+  },
+  {
+   "check": "schedule Todas shows 16 slots",
+   "viewport": "390x844",
+   "result": "PASS",
+   "detail": "16 ['aberta', 'nascer-sol', 'privativa']"
+  },
+  {
+   "check": "filter Nascer do sol -> 2 sunrise only",
+   "viewport": "390x844",
+   "result": "PASS",
+   "detail": "['nascer-sol', 'nascer-sol']"
+  },
+  {
+   "check": "session aberta detail shows price",
+   "viewport": "390x844",
+   "result": "PASS",
+   "detail": ""
+  },
+  {
+   "check": "session nascer-sol detail shows price",
+   "viewport": "390x844",
+   "result": "PASS",
+   "detail": ""
+  },
+  {
+   "check": "session privativa detail shows price",
+   "viewport": "390x844",
+   "result": "PASS",
+   "detail": ""
+  },
+  {
+   "check": "plan aberta x3 = 54",
+   "viewport": "390x844",
+   "result": "PASS",
+   "detail": "€54"
+  },
+  {
+   "check": "plan nascer-sol x2 = 44",
+   "viewport": "390x844",
+   "result": "PASS",
+   "detail": "€44"
+  },
+  {
+   "check": "plan privativa x4 = 120",
+   "viewport": "390x844",
+   "result": "PASS",
+   "detail": "€120"
+  },
+  {
+   "check": "plan aberta x9 -> error, no misleading total",
+   "viewport": "390x844",
+   "result": "PASS",
+   "detail": "err=True total='Sem estimativa'"
+  },
+  {
+   "check": "plan privativa x7 -> error, no misleading total",
+   "viewport": "390x844",
+   "result": "PASS",
+   "detail": "err=True total='Sem estimativa'"
+  },
+  {
+   "check": "prototype disclaimer in planner",
+   "viewport": "390x844",
+   "result": "PASS",
+   "detail": ""
+  },
+  {
+   "check": "no script/console errors",
+   "viewport": "390x844",
+   "result": "PASS",
+   "detail": "[]"
+  },
+  {
+   "check": "no external network requests",
+   "viewport": "390x844",
+   "result": "PASS",
+   "detail": "[]"
+  },
+  {
+   "check": "no horizontal overflow (home)",
+   "viewport": "768x1024",
+   "result": "PASS",
+   "detail": "0"
+  },
+  {
+   "check": "no horizontal overflow (home)",
+   "viewport": "320x740",
+   "result": "PASS",
+   "detail": "0"
+  },
+  {
+   "check": "reduced motion: no running animations",
+   "viewport": "1440x900/reduce",
+   "result": "PASS",
+   "detail": "0"
+  },
+  {
+   "check": "keyboard Tab reaches controls with visible focus",
+   "viewport": "1440x900",
+   "result": "PASS",
+   "detail": "[{'tag': 'A', 'visible': True}, {'tag': 'A', 'visible': True}, {'tag': 'A', 'visible': True}, {'tag': 'A', 'visible': True}, {'tag': 'A', 'visible': True}, {'tag': 'A', 'visible': True}]"
+  }
+ ],
+ "screenshots": [
+  {
+   "state": "1440-home",
+   "file": "t48-r0-1440-home.jpg",
+   "sha256": "fb62c993c2f83db69768e54fe569cbac866d8ee04cc3f2ce9537bd65df57f9fa"
+  },
+  {
+   "state": "1440-home-full",
+   "file": "t48-r0-1440-home-full.jpg",
+   "sha256": "c65d20e400baa4ed50d6374bb4059b7a3cc4c9a4b4161cc8fd6aa2f63e8bb2a8"
+  },
+  {
+   "state": "schedule",
+   "file": "t48-r0-1440-schedule.jpg",
+   "sha256": "23d7eec59692aca0708796c4ea34adf3c33324ade2d8667545a6cddf5a1574f0"
+  },
+  {
+   "state": "session",
+   "file": "t48-r0-1440-session.jpg",
+   "sha256": "d7e4d673304b5130296aa37beb2d780cbf1a653c526c4c65f8836eb419918402"
+  },
+  {
+   "state": "plan",
+   "file": "t48-r0-1440-plan.jpg",
+   "sha256": "e46f71c839d1f43a98dce3c06ce8a503f778ca9600366610063fe67ca96c3dcf"
+  },
+  {
+   "state": "plan-error",
+   "file": "t48-r0-1440-plan-error.jpg",
+   "sha256": "0a5162f9117b850a172116c7f75729e0df55c5f8949c29a7b3cdff357d1fdaad"
+  },
+  {
+   "state": "390-home",
+   "file": "t48-r0-390-home.jpg",
+   "sha256": "01bd305091183ea9ac8eeb910bf75aee03580ed254809025aedf4f361f5cab97"
+  },
+  {
+   "state": "390-home-full",
+   "file": "t48-r0-390-home-full.jpg",
+   "sha256": "21dcfd7e163a7d5ba710b470ca8dcb8ca77fc5cbf36f325960cc33342fe3a171"
+  },
+  {
+   "state": "schedule",
+   "file": "t48-r0-390-schedule.jpg",
+   "sha256": "b222b9c934653561cf55ba9f6673bc640f510d3518ee4f549d4ec268d8da7f4a"
+  },
+  {
+   "state": "session",
+   "file": "t48-r0-390-session.jpg",
+   "sha256": "584fe6658be3acfc2feb7f8f6d3798e56825158530828eced89e29f7670c7953"
+  },
+  {
+   "state": "plan",
+   "file": "t48-r0-390-plan.jpg",
+   "sha256": "5048d68f90366328b088907dafda4aecdb015f7b276cf9ba7d90c6ece0e89481"
+  },
+  {
+   "state": "plan-error",
+   "file": "t48-r0-390-plan-error.jpg",
+   "sha256": "8c7754bf90ff9befd3dbb604b2581116f5f6a3ef9cabe513af10437702e70b41"
+  },
+  {
+   "state": "768-home",
+   "file": "t48-r0-768-home.jpg",
+   "sha256": "7a821f9175855d805ca3861ef8155ed530db3aeb56b55a05b8bdddcfef65c1ec"
+  }
+ ]
+}
