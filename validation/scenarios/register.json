@@ -110,6 +110,50 @@
       "severity": "Medium",
       "recommended_correction": "Require separate temporal and human acceptance evidence for production media.",
       "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL."
+    },
+    "boundaries": {
+      "capability": "Web contracts and evidence",
+      "contract": "src/ai-creative-skill/web/runtime/validate.py",
+      "risk": "Stale evidence, missing authority, rights or destinations must block the relevant claim.",
+      "fixture_refs": [
+        "validation/boundary_checks.py"
+      ],
+      "severity": "High",
+      "recommended_correction": "Strengthen publication rights/use-scope checks; retain internal-anchor compatibility.",
+      "regression_coverage": "Candidate positive, negative and adjacent boundary controls; historical records unchanged."
+    },
+    "boundary_http": {
+      "capability": "Local preview boundary",
+      "contract": "src/ai-creative-skill/web/runtime/preview.py",
+      "risk": "Hidden files and symlinks outside the served root must remain inaccessible.",
+      "fixture_refs": [
+        "validation/boundary_checks.py"
+      ],
+      "severity": "High",
+      "recommended_correction": "Resolve/decode request paths and enforce root containment; deny hidden path components.",
+      "regression_coverage": "Candidate positive, negative and adjacent boundary controls; historical records unchanged."
+    },
+    "boundary_mutations": {
+      "capability": "Regression sensitivity",
+      "contract": "src/ai-creative-skill/references/",
+      "risk": "Three deliberate authority, payment and schema defects must be detected.",
+      "fixture_refs": [
+        "validation/boundary_checks.py"
+      ],
+      "severity": "High",
+      "recommended_correction": "Maintain targeted mutation probes; three mutants do not establish a global mutation score.",
+      "regression_coverage": "Candidate positive, negative and adjacent boundary controls; historical records unchanged."
+    },
+    "boundary_http_mutations": {
+      "capability": "Regression sensitivity",
+      "contract": "src/ai-creative-skill/references/",
+      "risk": "Three deliberate authority, payment and schema defects must be detected.",
+      "fixture_refs": [
+        "validation/boundary_checks.py"
+      ],
+      "severity": "High",
+      "recommended_correction": "Maintain targeted mutation probes; three mutants do not establish a global mutation score.",
+      "regression_coverage": "Candidate positive, negative and adjacent boundary controls; historical records unchanged."
     }
   },
   "unexecuted": [

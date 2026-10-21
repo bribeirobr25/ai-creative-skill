@@ -1,5 +1,6 @@
 """Bounded local preview lifecycle. No public deployment, no killing unrelated processes."""
-import argparse,functools,hashlib,http.server,json,os,pathlib,signal,socket,subprocess,sys,time,urllib.request,uuid
+import argparse,hmac,http.server,io,json,os,pathlib,signal,socket,stat,subprocess,sys,time,urllib.request,uuid
+from urllib.parse import urlsplit, unquote, quote
 
 META='.web-preview-owner.json'
 _HANDLES={}
@@ -11,23 +12,88 @@ def owned_process(pid, token):
         return ('preview.py serve' in out or 'preview.py' in out and 'serve' in out) and token in out
     except (OSError,subprocess.CalledProcessError):return False
 
+def request_parts(target):
+    """Decode once for both validation and serving; reject ambiguous encodings."""
+    parsed=urlsplit(target)
+    if parsed.scheme or parsed.netloc:raise ValueError('Absolute request target')
+    decoded=unquote(parsed.path,errors='strict')
+    if '%' in decoded or '\\' in decoded or any(ord(c)<32 or ord(c)==127 for c in decoded):
+        raise ValueError('Ambiguous or invalid path')
+    parts=tuple(p for p in decoded.split('/') if p)
+    if any(p.startswith('.') for p in parts):raise ValueError('Hidden or dot path')
+    return parts,decoded.endswith('/')
+
+
+def open_bounded(root_fd,parts):
+    """Walk directory descriptors, never symlinks; avoid check/open races."""
+    fd=os.dup(root_fd)
+    try:
+        for part in parts:
+            child=os.open(part,os.O_RDONLY|os.O_NOFOLLOW|os.O_NONBLOCK,dir_fd=fd)
+            os.close(fd);fd=child
+        return fd
+    except Exception:
+        os.close(fd);raise
+
+
 def server(root,port,token):
     root=pathlib.Path(root).resolve()
+    # The preview lifecycle already requires Unix. Fail explicitly on unsupported hosts.
+    if not hasattr(os,'O_NOFOLLOW') or os.open not in os.supports_dir_fd:
+        raise RuntimeError('Bounded preview requires no-follow directory descriptors')
+    root_fd=os.open(root,os.O_RDONLY|os.O_DIRECTORY|os.O_NOFOLLOW)
     class H(http.server.SimpleHTTPRequestHandler):
         def __init__(self,*a,**k):super().__init__(*a,directory=str(root),**k)
-        def do_GET(self):
-            if self.path=='/__web_preview_health__':
+        def send_head(self):
+            try:parts,trailing=request_parts(self.path)
+            except (ValueError,UnicodeError):
+                self.send_error(403,'Path outside preview scope');return None
+            # GET and HEAD share this path. Encoded aliases cannot bypass authentication
+            # or fall through to a file with the reserved health endpoint's name.
+            if parts==('__web_preview_health__',):
+                supplied=self.headers.get('X-Web-Preview-Token','').encode('utf-8')
+                if not hmac.compare_digest(supplied,token.encode('ascii')):
+                    self.send_error(404);return None
                 payload=json.dumps({'token':token,'root':str(root),'pid':os.getpid()}).encode()
-                self.send_response(200);self.send_header('Content-Type','application/json');self.send_header('Content-Length',str(len(payload)));self.end_headers();self.wfile.write(payload)
-            elif any(part.startswith('.') for part in self.path.split('?',1)[0].split('/') if part):
-                self.send_error(403,'Hidden files are not served')
-            else:super().do_GET()
+                self.send_response(200);self.send_header('Content-Type','application/json')
+                self.send_header('Content-Length',str(len(payload)));self.send_header('Cache-Control','no-store')
+                self.end_headers();return io.BytesIO(payload)
+            fd=None
+            try:
+                fd=open_bounded(root_fd,parts)
+                if stat.S_ISDIR(os.fstat(fd).st_mode):
+                    if not trailing:
+                        self.send_response(301)
+                        self.send_header('Location','/'+ '/'.join(quote(p,safe='') for p in parts)+'/')
+                        self.send_header('Content-Length','0');self.end_headers();return None
+                    index_fd=None
+                    for index in ('index.html','index.htm'):
+                        try:index_fd=os.open(index,os.O_RDONLY|os.O_NOFOLLOW|os.O_NONBLOCK,dir_fd=fd);break
+                        except FileNotFoundError:continue
+                    if index_fd is None:
+                        self.send_error(403,'Directory listing disabled');return None
+                    os.close(fd);fd=index_fd;parts=parts+(index,)
+                info=os.fstat(fd)
+                if not stat.S_ISREG(info.st_mode):
+                    self.send_error(403,'Only regular preview files are served');return None
+                file=os.fdopen(fd,'rb');fd=None
+                self.send_response(200);self.send_header('Content-Type',self.guess_type(parts[-1]))
+                self.send_header('Content-Length',str(info.st_size));self.send_header('X-Content-Type-Options','nosniff')
+                self.end_headers();return file
+            except FileNotFoundError:self.send_error(404)
+            except OSError:self.send_error(403,'Path outside preview scope')
+            finally:
+                if fd is not None:os.close(fd)
+            return None
         def log_message(self,*a):pass
-    with http.server.ThreadingHTTPServer(('127.0.0.1',port),H) as httpd:httpd.serve_forever()
+    try:
+        with http.server.ThreadingHTTPServer(('127.0.0.1',port),H) as httpd:httpd.serve_forever()
+    finally:os.close(root_fd)
 
 def health(meta):
     try:
-        with urllib.request.urlopen(meta['url']+'__web_preview_health__',timeout=1.0) as r:
+        request=urllib.request.Request(meta['url']+'__web_preview_health__',headers={'X-Web-Preview-Token':meta['token']})
+        with urllib.request.urlopen(request,timeout=1.0) as r:
             obj=json.loads(r.read());return r.status==200 and obj.get('token')==meta['token'] and obj.get('root')==meta['root']
     except Exception:return False
 

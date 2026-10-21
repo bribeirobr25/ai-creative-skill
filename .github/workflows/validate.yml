@@ -3,49 +3,62 @@ on:
   push:
     branches: [main, 'feature/**']
   pull_request:
-    branches: [main]
+    branches: [main, 'feature/validation-harness']
   workflow_dispatch:
 permissions:
   contents: read
 jobs:
-  validation:
+  release-integrity:
+    name: Immutable V2.5 integrity
     runs-on: ubuntu-latest
     timeout-minutes: 12
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
         with:
           persist-credentials: false
           fetch-depth: 0
-      - name: Python
-        uses: actions/setup-python@v5
+      - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      - name: Install optional offline QA packages
-        run: python -m pip install -r validation/requirements.txt
+      - run: python -m pip install -r validation/requirements.txt
+      - name: Verify preserved history and run original release tests, smoke and builders
+        run: python -m validation.release_integrity --output build/validation/release-integrity.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: release-integrity-${{ github.sha }}
+          path: build/validation/release-integrity.json
+          retention-days: 30
+  candidate-validation:
+    name: Boundary hardening candidate
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install -r validation/requirements.txt
       - name: Ensure local video tools
         run: |
           if ! command -v ffmpeg || ! command -v ffprobe; then
             sudo apt-get update
             sudo apt-get install -y ffmpeg
           fi
-      - name: Packaging, registry and harness regression tests
-        run: python -m unittest discover -s tests -p 'test_*.py' -v
-      - name: Web Experience unit tests
-        run: python -m unittest discover -s src/ai-creative-skill/web/tests -p 'test_*.py' -v
-      - name: Install smoke
-        run: python src/ai-creative-skill/scripts/smoke_install.py
-      - name: Compile Python
-        run: python -m compileall -q src/ai-creative-skill
-      - name: Rebuild both distributions offline
-        run: python packaging/build.py --output-dir dist
-      - name: Run validation probes and illustrative simulations
-        run: python -m validation.harness --host --check --output build/validation/current.json
-      - name: Upload validation evidence
+      - name: Verify candidate inventory and unchanged historical evidence
+        run: python -m validation.candidate_integrity --output build/validation/candidate-integrity.json
+      - name: Candidate regression and unchanged Web tests
+        run: python -m validation.candidate_tests
+      - name: Compile candidate
+        run: python -m compileall -q src/ai-creative-skill validation tests
+      - name: Full candidate harness, real HTTP, sabotage and simulation
+        run: python -m validation.harness --profile candidate --host --check --output build/validation/candidate.json
+      - uses: actions/upload-artifact@v4
         if: always()
-        uses: actions/upload-artifact@v4
         with:
-          name: validation-${{ github.sha }}
+          name: boundary-candidate-${{ github.sha }}
           path: build/validation/*.json
-          if-no-files-found: warn
           retention-days: 30

@@ -10,12 +10,12 @@ from validation.simulations.economics import Assumptions, simulate, STRATEGIES
 
 class HarnessTests(unittest.TestCase):
     def test_canonical_helper_regression_baseline(self):
-        known=json.loads((h.ROOT/'validation/known_findings.json').read_text())
+        known=h.expectations('candidate')
         records=h.run()
-        expected=[id for id,g in known['expected_record_groups'].items() if g not in ('preview','video','journey')]
+        expected=[id for id,g in known['expected_record_groups'].items() if g not in (*h.HOST_GROUPS,'journey')]
         review=h.expectation_errors(records,known['expected_failures'],known['actual_signatures'],expected)
         self.assertFalse(any(review.values()),review)
-        self.assertTrue(any(r['outcome']=='FAIL' for r in records),'Known defects must not be hidden as PASS')
+        self.assertTrue(all(r['outcome']=='PASS' for r in records),'Candidate regressions must pass; historical FAILs remain in immutable reports')
 
     def test_publication_oracle(self):
         invariants.publication_requires_authority(h.router)

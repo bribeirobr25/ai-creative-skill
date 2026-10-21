@@ -1,0 +1,404 @@
+{
+  "schema_version": "1.0",
+  "candidate_id": "boundary-hardening-v1",
+  "original_harness_commit": "a148e0ff4a7c4bc15fddca859c3c31116a4f40ab",
+  "historical_fail_count": 16,
+  "entries": [
+    {
+      "original_id": "ROUTE-research_negated_publish",
+      "family": "F05",
+      "historical_outcome": "FAIL",
+      "historical_evidence": "validation/reports/2026-10-20-baseline.json",
+      "historical_actual": {
+        "request": "pesquise refer\u00eancias de sites; n\u00e3o publique",
+        "route": "WEB_PUBLICATION"
+      },
+      "source": "src/ai-creative-skill/web/runtime/router.py",
+      "preliminary_commits": [
+        "96f853d1e11816a6527c557819eed1bb82bf8d23"
+      ],
+      "verified_implementation_commit": "e98aa639604ff654313b8785474a5a37b7b4b1bc",
+      "correction": "Negation/conflict handling and bounded informational requests",
+      "original_regression_test": "ROUTE-research_negated_publish",
+      "adjacent_test_prefixes": [
+        "BOUNDARY-route-",
+        "BOUNDARY-MUTATION-negation"
+      ],
+      "candidate_expected_outcome": "PASS",
+      "current_result_ref": "validation/reports/2026-10-20-boundary-candidate.json:remediation_results/ROUTE-research_negated_publish"
+    },
+    {
+      "original_id": "ROUTE-research_negated_publish_en",
+      "family": "F05",
+      "historical_outcome": "FAIL",
+      "historical_evidence": "validation/reports/2026-10-20-baseline.json",
+      "historical_actual": {
+        "request": "research website examples; do not deploy",
+        "route": "WEB_PUBLICATION"
+      },
+      "source": "src/ai-creative-skill/web/runtime/router.py",
+      "preliminary_commits": [
+        "96f853d1e11816a6527c557819eed1bb82bf8d23"
+      ],
+      "verified_implementation_commit": "e98aa639604ff654313b8785474a5a37b7b4b1bc",
+      "correction": "Negation/conflict handling and bounded informational requests",
+      "original_regression_test": "ROUTE-research_negated_publish_en",
+      "adjacent_test_prefixes": [
+        "BOUNDARY-route-",
+        "BOUNDARY-MUTATION-negation"
+      ],
+      "candidate_expected_outcome": "PASS",
+      "current_result_ref": "validation/reports/2026-10-20-boundary-candidate.json:remediation_results/ROUTE-research_negated_publish_en"
+    },
+    {
+      "original_id": "ROUTE-research_domain",
+      "family": "F05",
+      "historical_outcome": "FAIL",
+      "historical_evidence": "validation/reports/2026-10-20-baseline.json",
+      "historical_actual": {
+        "request": "pesquise sites e op\u00e7\u00f5es de dom\u00ednio",
+        "route": "WEB_PUBLICATION"
+      },
+      "source": "src/ai-creative-skill/web/runtime/router.py",
+      "preliminary_commits": [
+        "96f853d1e11816a6527c557819eed1bb82bf8d23"
+      ],
+      "verified_implementation_commit": "e98aa639604ff654313b8785474a5a37b7b4b1bc",
+      "correction": "Negation/conflict handling and bounded informational requests",
+      "original_regression_test": "ROUTE-research_domain",
+      "adjacent_test_prefixes": [
+        "BOUNDARY-route-",
+        "BOUNDARY-MUTATION-negation"
+      ],
+      "candidate_expected_outcome": "PASS",
+      "current_result_ref": "validation/reports/2026-10-20-boundary-candidate.json:remediation_results/ROUTE-research_domain"
+    },
+    {
+      "original_id": "ROUTE-preview_negated_publish",
+      "family": "F05",
+      "historical_outcome": "FAIL",
+      "historical_evidence": "validation/reports/2026-10-20-baseline.json",
+      "historical_actual": {
+        "request": "crie uma landing; n\u00e3o publique",
+        "route": "WEB_PUBLICATION"
+      },
+      "source": "src/ai-creative-skill/web/runtime/router.py",
+      "preliminary_commits": [
+        "96f853d1e11816a6527c557819eed1bb82bf8d23"
+      ],
+      "verified_implementation_commit": "e98aa639604ff654313b8785474a5a37b7b4b1bc",
+      "correction": "Negation/conflict handling and bounded informational requests",
+      "original_regression_test": "ROUTE-preview_negated_publish",
+      "adjacent_test_prefixes": [
+        "BOUNDARY-route-",
+        "BOUNDARY-MUTATION-negation"
+      ],
+      "candidate_expected_outcome": "PASS",
+      "current_result_ref": "validation/reports/2026-10-20-boundary-candidate.json:remediation_results/ROUTE-preview_negated_publish"
+    },
+    {
+      "original_id": "WEB-rights-UNKNOWN-PROVISIONAL",
+      "family": "F02",
+      "historical_outcome": "FAIL",
+      "historical_evidence": "validation/reports/2026-10-20-baseline.json",
+      "historical_actual": [],
+      "source": "src/ai-creative-skill/web/runtime/validate.py",
+      "preliminary_commits": [
+        "261e98f91d79be66f285fa83672491a1c0196a62"
+      ],
+      "verified_implementation_commit": "e98aa639604ff654313b8785474a5a37b7b4b1bc",
+      "correction": "Versioned candidate evidence, scope compatibility and asset/evidence hashes",
+      "original_regression_test": "WEB-rights-UNKNOWN-PROVISIONAL",
+      "adjacent_test_prefixes": [
+        "BOUNDARY-rights-",
+        "BOUNDARY-MUTATION-rights-proof"
+      ],
+      "candidate_expected_outcome": "PASS",
+      "current_result_ref": "validation/reports/2026-10-20-boundary-candidate.json:remediation_results/WEB-rights-UNKNOWN-PROVISIONAL"
+    },
+    {
+      "original_id": "WEB-rights-RESTRICTED-APPROVED_FOR_THIS_USE",
+      "family": "F02",
+      "historical_outcome": "FAIL",
+      "historical_evidence": "validation/reports/2026-10-20-baseline.json",
+      "historical_actual": [],
+      "source": "src/ai-creative-skill/web/runtime/validate.py",
+      "preliminary_commits": [
+        "261e98f91d79be66f285fa83672491a1c0196a62"
+      ],
+      "verified_implementation_commit": "e98aa639604ff654313b8785474a5a37b7b4b1bc",
+      "correction": "Versioned candidate evidence, scope compatibility and asset/evidence hashes",
+      "original_regression_test": "WEB-rights-RESTRICTED-APPROVED_FOR_THIS_USE",
+      "adjacent_test_prefixes": [
+        "BOUNDARY-rights-",
+        "BOUNDARY-MUTATION-rights-proof"
+      ],
+      "candidate_expected_outcome": "PASS",
+      "current_result_ref": "validation/reports/2026-10-20-boundary-candidate.json:remediation_results/WEB-rights-RESTRICTED-APPROVED_FOR_THIS_USE"
+    },
+    {
+      "original_id": "PRESERVE-protected-plus-css",
+      "family": "F03",
+      "historical_outcome": "FAIL",
+      "historical_evidence": "validation/reports/2026-10-20-baseline.json",
+      "historical_actual": {
+        "protected_regions_unchanged": false,
+        "preservation_failures": [
+          "facts"
+        ],
+        "target_regions_unchanged": [],
+        "shared_css_js_changed": [
+          "styles.css"
+        ],
+        "browser_retest_required": true,
+        "human_approval_not_inferred": true,
+        "status": "PARTIAL"
+      },
+      "source": "src/ai-creative-skill/web/runtime/revision.py",
+      "preliminary_commits": [
+        "14882644f1731ab3ea9a93d91a6160ea8d12dc71"
+      ],
+      "verified_implementation_commit": "e98aa639604ff654313b8785474a5a37b7b4b1bc",
+      "correction": "Protected failures and missing regions dominate aggregate status",
+      "original_regression_test": "PRESERVE-protected-plus-css",
+      "adjacent_test_prefixes": [
+        "BOUNDARY-revision-protected-",
+        "BOUNDARY-MUTATION-preserve-verdict"
+      ],
+      "candidate_expected_outcome": "PASS",
+      "current_result_ref": "validation/reports/2026-10-20-boundary-candidate.json:remediation_results/PRESERVE-protected-plus-css"
+    },
+    {
+      "original_id": "PRESERVE-new-script",
+      "family": "F04",
+      "historical_outcome": "FAIL",
+      "historical_evidence": "validation/reports/2026-10-20-baseline.json",
+      "historical_actual": {
+        "protected_regions_unchanged": true,
+        "preservation_failures": [],
+        "target_regions_unchanged": [],
+        "shared_css_js_changed": [],
+        "browser_retest_required": false,
+        "human_approval_not_inferred": true,
+        "status": "SOURCE_PRESERVATION_PASS"
+      },
+      "source": "src/ai-creative-skill/web/runtime/revision.py",
+      "preliminary_commits": [
+        "14882644f1731ab3ea9a93d91a6160ea8d12dc71",
+        "362d89a838bb8f394a6d74bf2499b8467f8b511a"
+      ],
+      "verified_implementation_commit": "e98aa639604ff654313b8785474a5a37b7b4b1bc",
+      "correction": "Referenced dependency graph and document-shell invalidation; unrelated files ignored",
+      "original_regression_test": "PRESERVE-new-script",
+      "adjacent_test_prefixes": [
+        "BOUNDARY-revision-",
+        "BOUNDARY-MUTATION-dependencies"
+      ],
+      "candidate_expected_outcome": "PASS",
+      "current_result_ref": "validation/reports/2026-10-20-boundary-candidate.json:remediation_results/PRESERVE-new-script"
+    },
+    {
+      "original_id": "SHAPE-whitespace-CHARACTER_BIBLE",
+      "family": "F06",
+      "historical_outcome": "FAIL",
+      "historical_evidence": "validation/reports/2026-10-20-baseline.json",
+      "historical_actual": {
+        "result": "PASS_STRUCTURAL",
+        "missing": [],
+        "checked": 8,
+        "semantic_verified": false
+      },
+      "source": "src/ai-creative-skill/scripts/validate_deliverable.py",
+      "preliminary_commits": [
+        "62c432620a4b7fe019363f1887456008cc2f5075"
+      ],
+      "verified_implementation_commit": "e98aa639604ff654313b8785474a5a37b7b4b1bc",
+      "correction": "Whitespace rejected without rejecting zero/false; semantic status remains unverified",
+      "original_regression_test": "SHAPE-whitespace-CHARACTER_BIBLE",
+      "adjacent_test_prefixes": [
+        "BOUNDARY-shape-",
+        "BOUNDARY-MUTATION-blank-fields"
+      ],
+      "candidate_expected_outcome": "PASS",
+      "current_result_ref": "validation/reports/2026-10-20-boundary-candidate.json:remediation_results/SHAPE-whitespace-CHARACTER_BIBLE"
+    },
+    {
+      "original_id": "SHAPE-whitespace-CONTENT_IDEA",
+      "family": "F06",
+      "historical_outcome": "FAIL",
+      "historical_evidence": "validation/reports/2026-10-20-baseline.json",
+      "historical_actual": {
+        "result": "PASS_STRUCTURAL",
+        "missing": [],
+        "checked": 5,
+        "semantic_verified": false
+      },
+      "source": "src/ai-creative-skill/scripts/validate_deliverable.py",
+      "preliminary_commits": [
+        "62c432620a4b7fe019363f1887456008cc2f5075"
+      ],
+      "verified_implementation_commit": "e98aa639604ff654313b8785474a5a37b7b4b1bc",
+      "correction": "Whitespace rejected without rejecting zero/false; semantic status remains unverified",
+      "original_regression_test": "SHAPE-whitespace-CONTENT_IDEA",
+      "adjacent_test_prefixes": [
+        "BOUNDARY-shape-",
+        "BOUNDARY-MUTATION-blank-fields"
+      ],
+      "candidate_expected_outcome": "PASS",
+      "current_result_ref": "validation/reports/2026-10-20-boundary-candidate.json:remediation_results/SHAPE-whitespace-CONTENT_IDEA"
+    },
+    {
+      "original_id": "SHAPE-whitespace-STORYBOARD_PLAN",
+      "family": "F06",
+      "historical_outcome": "FAIL",
+      "historical_evidence": "validation/reports/2026-10-20-baseline.json",
+      "historical_actual": {
+        "result": "PASS_STRUCTURAL",
+        "missing": [],
+        "checked": 7,
+        "semantic_verified": false
+      },
+      "source": "src/ai-creative-skill/scripts/validate_deliverable.py",
+      "preliminary_commits": [
+        "62c432620a4b7fe019363f1887456008cc2f5075"
+      ],
+      "verified_implementation_commit": "e98aa639604ff654313b8785474a5a37b7b4b1bc",
+      "correction": "Whitespace rejected without rejecting zero/false; semantic status remains unverified",
+      "original_regression_test": "SHAPE-whitespace-STORYBOARD_PLAN",
+      "adjacent_test_prefixes": [
+        "BOUNDARY-shape-",
+        "BOUNDARY-MUTATION-blank-fields"
+      ],
+      "candidate_expected_outcome": "PASS",
+      "current_result_ref": "validation/reports/2026-10-20-boundary-candidate.json:remediation_results/SHAPE-whitespace-STORYBOARD_PLAN"
+    },
+    {
+      "original_id": "SHAPE-whitespace-VIDEO_CREATIVE_DIRECTION",
+      "family": "F06",
+      "historical_outcome": "FAIL",
+      "historical_evidence": "validation/reports/2026-10-20-baseline.json",
+      "historical_actual": {
+        "result": "PASS_STRUCTURAL",
+        "missing": [],
+        "checked": 6,
+        "semantic_verified": false
+      },
+      "source": "src/ai-creative-skill/scripts/validate_deliverable.py",
+      "preliminary_commits": [
+        "62c432620a4b7fe019363f1887456008cc2f5075"
+      ],
+      "verified_implementation_commit": "e98aa639604ff654313b8785474a5a37b7b4b1bc",
+      "correction": "Whitespace rejected without rejecting zero/false; semantic status remains unverified",
+      "original_regression_test": "SHAPE-whitespace-VIDEO_CREATIVE_DIRECTION",
+      "adjacent_test_prefixes": [
+        "BOUNDARY-shape-",
+        "BOUNDARY-MUTATION-blank-fields"
+      ],
+      "candidate_expected_outcome": "PASS",
+      "current_result_ref": "validation/reports/2026-10-20-boundary-candidate.json:remediation_results/SHAPE-whitespace-VIDEO_CREATIVE_DIRECTION"
+    },
+    {
+      "original_id": "SHAPE-whitespace-REFERENCE_MANIFEST",
+      "family": "F06",
+      "historical_outcome": "FAIL",
+      "historical_evidence": "validation/reports/2026-10-20-baseline.json",
+      "historical_actual": {
+        "result": "PASS_STRUCTURAL",
+        "missing": [],
+        "checked": 5,
+        "semantic_verified": false
+      },
+      "source": "src/ai-creative-skill/scripts/validate_deliverable.py",
+      "preliminary_commits": [
+        "62c432620a4b7fe019363f1887456008cc2f5075"
+      ],
+      "verified_implementation_commit": "e98aa639604ff654313b8785474a5a37b7b4b1bc",
+      "correction": "Whitespace rejected without rejecting zero/false; semantic status remains unverified",
+      "original_regression_test": "SHAPE-whitespace-REFERENCE_MANIFEST",
+      "adjacent_test_prefixes": [
+        "BOUNDARY-shape-",
+        "BOUNDARY-MUTATION-blank-fields"
+      ],
+      "candidate_expected_outcome": "PASS",
+      "current_result_ref": "validation/reports/2026-10-20-boundary-candidate.json:remediation_results/SHAPE-whitespace-REFERENCE_MANIFEST"
+    },
+    {
+      "original_id": "SHAPE-whitespace-PROJECT_NEXT_ACTION",
+      "family": "F06",
+      "historical_outcome": "FAIL",
+      "historical_evidence": "validation/reports/2026-10-20-baseline.json",
+      "historical_actual": {
+        "result": "PASS_STRUCTURAL",
+        "missing": [],
+        "checked": 5,
+        "semantic_verified": false
+      },
+      "source": "src/ai-creative-skill/scripts/validate_deliverable.py",
+      "preliminary_commits": [
+        "62c432620a4b7fe019363f1887456008cc2f5075"
+      ],
+      "verified_implementation_commit": "e98aa639604ff654313b8785474a5a37b7b4b1bc",
+      "correction": "Whitespace rejected without rejecting zero/false; semantic status remains unverified",
+      "original_regression_test": "SHAPE-whitespace-PROJECT_NEXT_ACTION",
+      "adjacent_test_prefixes": [
+        "BOUNDARY-shape-",
+        "BOUNDARY-MUTATION-blank-fields"
+      ],
+      "candidate_expected_outcome": "PASS",
+      "current_result_ref": "validation/reports/2026-10-20-boundary-candidate.json:remediation_results/SHAPE-whitespace-PROJECT_NEXT_ACTION"
+    },
+    {
+      "original_id": "PREVIEW-encoded-hidden",
+      "family": "F01",
+      "historical_outcome": "FAIL",
+      "historical_evidence": "validation/reports/2026-10-20-baseline.json",
+      "historical_actual": {
+        "http_status": 200,
+        "synthetic_fixture_returned": true
+      },
+      "source": "src/ai-creative-skill/web/runtime/preview.py",
+      "preliminary_commits": [
+        "5bc5a2419220b1355e5456e5994e4dad4a6d4d7e",
+        "ce74ffa19e852ebf61ecf96fc6afe785f1c6ce0e"
+      ],
+      "verified_implementation_commit": "e98aa639604ff654313b8785474a5a37b7b4b1bc",
+      "correction": "Unified GET/HEAD decoding, descriptor containment and authenticated health aliases",
+      "original_regression_test": "PREVIEW-encoded-hidden",
+      "adjacent_test_prefixes": [
+        "BOUNDARY-http-",
+        "BOUNDARY-health-",
+        "BOUNDARY-MUTATION-nofollow",
+        "BOUNDARY-MUTATION-health-auth"
+      ],
+      "candidate_expected_outcome": "PASS",
+      "current_result_ref": "validation/reports/2026-10-20-boundary-candidate.json:remediation_results/PREVIEW-encoded-hidden"
+    },
+    {
+      "original_id": "PREVIEW-symlink-escape",
+      "family": "F01",
+      "historical_outcome": "FAIL",
+      "historical_evidence": "validation/reports/2026-10-20-baseline.json",
+      "historical_actual": {
+        "http_status": 200,
+        "synthetic_fixture_returned": true
+      },
+      "source": "src/ai-creative-skill/web/runtime/preview.py",
+      "preliminary_commits": [
+        "5bc5a2419220b1355e5456e5994e4dad4a6d4d7e",
+        "ce74ffa19e852ebf61ecf96fc6afe785f1c6ce0e"
+      ],
+      "verified_implementation_commit": "e98aa639604ff654313b8785474a5a37b7b4b1bc",
+      "correction": "Unified GET/HEAD decoding, descriptor containment and authenticated health aliases",
+      "original_regression_test": "PREVIEW-symlink-escape",
+      "adjacent_test_prefixes": [
+        "BOUNDARY-http-",
+        "BOUNDARY-health-",
+        "BOUNDARY-MUTATION-nofollow",
+        "BOUNDARY-MUTATION-health-auth"
+      ],
+      "candidate_expected_outcome": "PASS",
+      "current_result_ref": "validation/reports/2026-10-20-boundary-candidate.json:remediation_results/PREVIEW-symlink-escape"
+    }
+  ],
+  "production_approval": "UNVERIFIED"
+}

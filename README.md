@@ -1,3 +1,5 @@
+> **Boundary-hardening candidate branch:** source changes here are not the installed V2.5 release. Use the [candidate two-gate workflow](validation/candidates/boundary-hardening-v1/README.md). The original V2.5 builder intentionally refuses candidate source; historical hashes remain unchanged.
+
 # AI Creative Skill
 
 **Status:** V2.5.0 integrated installable baseline, **not** production-quality or clean-host certified. Plugin metadata version \`0.3.0\`.
