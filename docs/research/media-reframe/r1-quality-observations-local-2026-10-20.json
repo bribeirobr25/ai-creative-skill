@@ -1,0 +1,84 @@
+{
+  "report_id": "r1-spatial-video-integrity-2026-10-20-local",
+  "status": "TESTED_SYNTHETIC_TECHNICAL_ONLY",
+  "production_quality": "UNVERIFIED_REQUIRE_REAL_MEDIA_AND_HUMAN_REVIEW",
+  "environment": {
+    "pillow": "12.3.0",
+    "numpy": "2.3.5",
+    "ffmpeg": "7.1.5"
+  },
+  "benchmark_script": "docs/research/media-reframe/r1_quality_benchmark.py",
+  "reference_description": "artificial 3840x2160 scene downsampled to source resolutions; high-resolution reference is same-scene 4K crop, not separately shot master",
+  "target_dimensions": [
+    1080,
+    1920
+  ],
+  "comparisons": [
+    {
+      "source": "3840x2160",
+      "crop": [
+        1215,
+        2160
+      ],
+      "linear_upscale": 0.889,
+      "psnr_db": null,
+      "roi_product_psnr_db": null,
+      "roi_microtext_psnr_db": null
+    },
+    {
+      "source": "1920x1080",
+      "crop": [
+        608,
+        1080
+      ],
+      "linear_upscale": 1.778,
+      "psnr_db": 33.018,
+      "roi_product_psnr_db": 28.033,
+      "roi_microtext_psnr_db": 24.043
+    },
+    {
+      "source": "1280x720",
+      "crop": [
+        405,
+        720
+      ],
+      "linear_upscale": 2.667,
+      "psnr_db": 29.556,
+      "roi_product_psnr_db": 24.617,
+      "roi_microtext_psnr_db": 21.18
+    },
+    {
+      "source": "854x480",
+      "crop": [
+        270,
+        480
+      ],
+      "linear_upscale": 4,
+      "psnr_db": 27.614,
+      "roi_product_psnr_db": 22.707,
+      "roi_microtext_psnr_db": 20.246
+    }
+  ],
+  "video": {
+    "duration_s": 2,
+    "fps": 24,
+    "frames": 48,
+    "hard_cuts": 1,
+    "dimensions_output": [
+      360,
+      640
+    ],
+    "video_geometry_pass": true,
+    "audio_pcm_decoded_sha256_equal": true,
+    "source_sha256": "c5b7e559e0d68271c148cc572a176cfacaf0a27816c1a2d91a33d871cd20295c",
+    "output_sha256": "7dddb6732376fef56ffe88634795b6a363ed1b91106943613c935240dfc504a1",
+    "decoded_audio_pcm_sha256": "b50d67180f14a0fc4c8cf9f79210076afef66fdf6ea0e29e0575276834f84da2"
+  },
+  "limits": [
+    "PSNR is specific to this synthetic same-scene aligned reference",
+    "720p/480p text fidelity is visibly poorer but not an external perceptual certification",
+    "global SSIM-like metric intentionally not used as standard SSIM or production threshold",
+    "scene path manually defined; automatic tracking/jitter/identity not tested",
+    "no paid provider or external asset upload"
+  ]
+}
