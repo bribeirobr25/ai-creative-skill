@@ -1,0 +1,53 @@
+/* Research treatment B: editorial image-led hierarchy.
+ * Original CSS, no third-party imagery or brand constants. Applied only to
+ * an isolated compatible pilot; not a global recipe or production default.
+ * Keep source text, identity, asset bytes and interaction code unchanged.
+ */
+@media (min-width:761px) {
+  .hero {position:relative;isolation:isolate;display:flex;align-items:center;
+    min-height:720px;height:calc(100vh - 104px);max-height:860px;
+    padding:64px var(--gutter);overflow:hidden;}
+  .hero-visual {position:absolute;inset:0;z-index:-1;width:100%;height:100%;
+    margin:0;padding:0;}
+  .hero-visual>img {width:100%;height:100%;object-fit:cover;object-position:center;}
+  .hero-visual::after {content:"";position:absolute;inset:0;pointer-events:none;
+    background:linear-gradient(90deg,var(--paper) 0%,color-mix(in srgb,var(--paper) 96%,transparent) 22%,
+      color-mix(in srgb,var(--paper) 82%,transparent) 37%,transparent 59%);}
+  .hero-copy {width:44%;padding:0;position:relative;z-index:2;}
+  .hero h1 {font-size:clamp(64px,6.1vw,94px);line-height:.98;letter-spacing:-3.5px;margin:27px 0;}
+  .hero-description {max-width:300px;font-size:15px;line-height:1.8;}
+  .hero-note {margin-top:38px;}
+  .hero-image-label {left:auto;right:var(--gutter);top:32px;gap:18px;z-index:2;}
+  .hero-visual figcaption {left:auto;right:var(--gutter);bottom:20px;z-index:2;
+    gap:24px;width:auto;background:var(--paper);padding:9px 12px;}
+}
+.chapter-strip {padding-block:26px;}
+.collection {padding-top:104px;padding-bottom:104px;}
+.section-heading h2 {font-size:clamp(46px,4.7vw,72px);}
+.product-grid {gap:48px 24px;}
+.product-image {aspect-ratio:3/4;}
+.product-meta {display:block;}
+.product-meta h3 {font-size:28px;}
+.product-meta>span {display:block;margin-top:6px;font-size:12px;line-height:1.5;}
+.croissant-edit {margin:0 var(--gutter);grid-template-columns:1.1fr 1fr;}
+.edit-image img {object-fit:contain;}
+.details-section {padding-top:128px;padding-bottom:128px;}
+@media (max-width:760px) {
+  .hero {padding:0;display:flex;flex-direction:column;}
+  .hero-visual {order:-1;height:auto;width:100%;padding:0;margin:0;}
+  .hero-visual>img {width:100%;height:auto;aspect-ratio:16/10;object-fit:cover;}
+  .hero-visual figcaption {position:static;padding:12px var(--gutter);background:var(--paper);}
+  .hero-image-label {left:var(--gutter);right:var(--gutter);top:16px;}
+  .hero-copy {padding:36px var(--gutter) 42px;}
+  .hero h1 {font-size:55px;line-height:1.02;letter-spacing:-2px;}
+  .hero-description {font-size:14px;max-width:340px;}
+  .chapter-strip {padding-block:20px;}
+  .collection {padding:64px var(--gutter);}
+  .section-heading h2 {font-size:47px;}
+  .product-grid {gap:30px 16px;}
+  .product-image {aspect-ratio:3/4;}
+  .product-meta h3 {font-size:25px;}
+  .product-meta>span {font-size:11px;}
+  .croissant-edit {margin:0;grid-template-columns:1fr;}
+  .details-section {padding-top:72px;padding-bottom:72px;}
+}

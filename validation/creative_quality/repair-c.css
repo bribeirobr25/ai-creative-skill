@@ -1,0 +1,21 @@
+/* Single review pass C. Browser B showed a 6.6px mobile hero caused by
+ * inherited absolute positioning/max-height. Restore image flow locally.
+ * Also keep the desktop text/gradient away from the product's main surface.
+ */
+@media (min-width:761px) {
+  .hero-visual {left:28%;width:72%;}
+  .hero-visual>img {max-height:none;object-position:58% center;}
+  .hero-visual::after {
+    background:linear-gradient(90deg,var(--paper),transparent 23%);
+  }
+  .hero-copy {width:40%;}
+  .hero h1 {font-size:clamp(62px,5.6vw,86px);}
+}
+@media (max-width:760px) {
+  .hero-visual>img {position:relative;inset:auto;max-height:none;height:auto;
+    aspect-ratio:auto;object-fit:contain;object-position:center;}
+  .hero-copy {padding-top:24px;padding-bottom:32px;}
+  .hero h1 {font-size:52px;margin:16px 0;}
+  .hero-image-label>span {font-size:9px;}
+  .hero-visual figcaption {font-size:10px;line-height:1.5;}
+}

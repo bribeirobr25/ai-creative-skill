@@ -1,0 +1,1056 @@
+{
+  "schema": "creative-quality-research/1",
+  "baseline_commit": "39a0bfa39270ea4b685b0f862e7dbf647cf81d77",
+  "harness_commit": "b83b331f552baa22e14f2cf760dcd396b65a5537",
+  "browser": "153.0.8010.12",
+  "playwright": "1.62.1",
+  "captured_at": "2026-10-20T17:09:33.750Z",
+  "results": [
+    {
+      "id": "CQ-web-a-1440-horizontal-overflow",
+      "expected": 1440,
+      "actual": 1440,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 1440,
+      "build_sha256": "0380b182373ae6fa9d244355ebf68ea9f00187ed94096ee85d5407e91436de4c"
+    },
+    {
+      "id": "CQ-web-a-1440-images-loaded",
+      "expected": 0,
+      "actual": 0,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 1440,
+      "build_sha256": "0380b182373ae6fa9d244355ebf68ea9f00187ed94096ee85d5407e91436de4c"
+    },
+    {
+      "id": "CQ-web-a-1440-hero-not-collapsed",
+      "expected": "height >= 160px (case-specific)",
+      "actual": 530,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 1440,
+      "build_sha256": "0380b182373ae6fa9d244355ebf68ea9f00187ed94096ee85d5407e91436de4c"
+    },
+    {
+      "id": "CQ-web-a-1440-filter-count",
+      "expected": 3,
+      "actual": 3,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 1440,
+      "build_sha256": "0380b182373ae6fa9d244355ebf68ea9f00187ed94096ee85d5407e91436de4c"
+    },
+    {
+      "id": "CQ-web-a-1440-dialog-open",
+      "expected": true,
+      "actual": true,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 1440,
+      "build_sha256": "0380b182373ae6fa9d244355ebf68ea9f00187ed94096ee85d5407e91436de4c"
+    },
+    {
+      "id": "CQ-web-a-1440-gallery-next",
+      "expected": "different photo",
+      "actual": "different photo",
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 1440,
+      "build_sha256": "0380b182373ae6fa9d244355ebf68ea9f00187ed94096ee85d5407e91436de4c"
+    },
+    {
+      "id": "CQ-web-a-1440-dialog-focus-wrap",
+      "expected": true,
+      "actual": true,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 1440,
+      "build_sha256": "0380b182373ae6fa9d244355ebf68ea9f00187ed94096ee85d5407e91436de4c"
+    },
+    {
+      "id": "CQ-web-a-1440-dialog-escape-restores-focus",
+      "expected": true,
+      "actual": true,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 1440,
+      "build_sha256": "0380b182373ae6fa9d244355ebf68ea9f00187ed94096ee85d5407e91436de4c"
+    },
+    {
+      "id": "CQ-web-a-1440-reduced-motion",
+      "expected": {
+        "scroll": "auto",
+        "active": 0
+      },
+      "actual": {
+        "scroll": "auto",
+        "active": 0
+      },
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 1440,
+      "build_sha256": "0380b182373ae6fa9d244355ebf68ea9f00187ed94096ee85d5407e91436de4c"
+    },
+    {
+      "id": "CQ-web-a-1440-script-errors",
+      "expected": 0,
+      "actual": 0,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 1440,
+      "build_sha256": "0380b182373ae6fa9d244355ebf68ea9f00187ed94096ee85d5407e91436de4c"
+    },
+    {
+      "id": "CQ-web-a-1440-resource-errors",
+      "expected": 0,
+      "actual": 0,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 1440,
+      "build_sha256": "0380b182373ae6fa9d244355ebf68ea9f00187ed94096ee85d5407e91436de4c"
+    },
+    {
+      "id": "CQ-web-a-1440-external-network",
+      "expected": 0,
+      "actual": 0,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 1440,
+      "build_sha256": "0380b182373ae6fa9d244355ebf68ea9f00187ed94096ee85d5407e91436de4c"
+    },
+    {
+      "id": "CQ-web-a-390-horizontal-overflow",
+      "expected": 390,
+      "actual": 390,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 390,
+      "build_sha256": "0380b182373ae6fa9d244355ebf68ea9f00187ed94096ee85d5407e91436de4c"
+    },
+    {
+      "id": "CQ-web-a-390-images-loaded",
+      "expected": 0,
+      "actual": 0,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 390,
+      "build_sha256": "0380b182373ae6fa9d244355ebf68ea9f00187ed94096ee85d5407e91436de4c"
+    },
+    {
+      "id": "CQ-web-a-390-hero-not-collapsed",
+      "expected": "height >= 160px (case-specific)",
+      "actual": 340,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 390,
+      "build_sha256": "0380b182373ae6fa9d244355ebf68ea9f00187ed94096ee85d5407e91436de4c"
+    },
+    {
+      "id": "CQ-web-a-390-filter-count",
+      "expected": 3,
+      "actual": 3,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 390,
+      "build_sha256": "0380b182373ae6fa9d244355ebf68ea9f00187ed94096ee85d5407e91436de4c"
+    },
+    {
+      "id": "CQ-web-a-390-dialog-open",
+      "expected": true,
+      "actual": true,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 390,
+      "build_sha256": "0380b182373ae6fa9d244355ebf68ea9f00187ed94096ee85d5407e91436de4c"
+    },
+    {
+      "id": "CQ-web-a-390-gallery-next",
+      "expected": "different photo",
+      "actual": "different photo",
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 390,
+      "build_sha256": "0380b182373ae6fa9d244355ebf68ea9f00187ed94096ee85d5407e91436de4c"
+    },
+    {
+      "id": "CQ-web-a-390-dialog-focus-wrap",
+      "expected": true,
+      "actual": true,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 390,
+      "build_sha256": "0380b182373ae6fa9d244355ebf68ea9f00187ed94096ee85d5407e91436de4c"
+    },
+    {
+      "id": "CQ-web-a-390-dialog-escape-restores-focus",
+      "expected": true,
+      "actual": true,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 390,
+      "build_sha256": "0380b182373ae6fa9d244355ebf68ea9f00187ed94096ee85d5407e91436de4c"
+    },
+    {
+      "id": "CQ-web-a-390-mobile-menu",
+      "expected": "true",
+      "actual": "true",
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 390,
+      "build_sha256": "0380b182373ae6fa9d244355ebf68ea9f00187ed94096ee85d5407e91436de4c"
+    },
+    {
+      "id": "CQ-web-a-390-mobile-menu-escape",
+      "expected": "false",
+      "actual": "false",
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 390,
+      "build_sha256": "0380b182373ae6fa9d244355ebf68ea9f00187ed94096ee85d5407e91436de4c"
+    },
+    {
+      "id": "CQ-web-a-390-reduced-motion",
+      "expected": {
+        "scroll": "auto",
+        "active": 0
+      },
+      "actual": {
+        "scroll": "auto",
+        "active": 0
+      },
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 390,
+      "build_sha256": "0380b182373ae6fa9d244355ebf68ea9f00187ed94096ee85d5407e91436de4c"
+    },
+    {
+      "id": "CQ-web-a-390-script-errors",
+      "expected": 0,
+      "actual": 0,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 390,
+      "build_sha256": "0380b182373ae6fa9d244355ebf68ea9f00187ed94096ee85d5407e91436de4c"
+    },
+    {
+      "id": "CQ-web-a-390-resource-errors",
+      "expected": 0,
+      "actual": 0,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 390,
+      "build_sha256": "0380b182373ae6fa9d244355ebf68ea9f00187ed94096ee85d5407e91436de4c"
+    },
+    {
+      "id": "CQ-web-a-390-external-network",
+      "expected": 0,
+      "actual": 0,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 390,
+      "build_sha256": "0380b182373ae6fa9d244355ebf68ea9f00187ed94096ee85d5407e91436de4c"
+    },
+    {
+      "id": "CQ-web-d-1440-horizontal-overflow",
+      "expected": 1440,
+      "actual": 1440,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 1440,
+      "build_sha256": "74aeb105054b0176c06a5634dc268ff2519c6b93ed043f3ee4a83cb8b4c81fb5"
+    },
+    {
+      "id": "CQ-web-d-1440-images-loaded",
+      "expected": 0,
+      "actual": 0,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 1440,
+      "build_sha256": "74aeb105054b0176c06a5634dc268ff2519c6b93ed043f3ee4a83cb8b4c81fb5"
+    },
+    {
+      "id": "CQ-web-d-1440-hero-not-collapsed",
+      "expected": "height >= 160px (case-specific)",
+      "actual": 493,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 1440,
+      "build_sha256": "74aeb105054b0176c06a5634dc268ff2519c6b93ed043f3ee4a83cb8b4c81fb5"
+    },
+    {
+      "id": "CQ-web-d-1440-calculation",
+      "expected": "\u2248 R$ 33,33",
+      "actual": "\u2248 R$\u00a033,33",
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 1440,
+      "build_sha256": "74aeb105054b0176c06a5634dc268ff2519c6b93ed043f3ee4a83cb8b4c81fb5"
+    },
+    {
+      "id": "CQ-web-d-1440-invalid-term",
+      "expected": true,
+      "actual": true,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 1440,
+      "build_sha256": "74aeb105054b0176c06a5634dc268ff2519c6b93ed043f3ee4a83cb8b4c81fb5"
+    },
+    {
+      "id": "CQ-web-d-1440-tabs-keyboard",
+      "expected": "true",
+      "actual": "true",
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 1440,
+      "build_sha256": "74aeb105054b0176c06a5634dc268ff2519c6b93ed043f3ee4a83cb8b4c81fb5"
+    },
+    {
+      "id": "CQ-web-d-1440-reduced-motion",
+      "expected": {
+        "scroll": "auto",
+        "active": 0
+      },
+      "actual": {
+        "scroll": "auto",
+        "active": 0
+      },
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 1440,
+      "build_sha256": "74aeb105054b0176c06a5634dc268ff2519c6b93ed043f3ee4a83cb8b4c81fb5"
+    },
+    {
+      "id": "CQ-web-d-1440-script-errors",
+      "expected": 0,
+      "actual": 0,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 1440,
+      "build_sha256": "74aeb105054b0176c06a5634dc268ff2519c6b93ed043f3ee4a83cb8b4c81fb5"
+    },
+    {
+      "id": "CQ-web-d-1440-resource-errors",
+      "expected": 0,
+      "actual": 0,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 1440,
+      "build_sha256": "74aeb105054b0176c06a5634dc268ff2519c6b93ed043f3ee4a83cb8b4c81fb5"
+    },
+    {
+      "id": "CQ-web-d-1440-external-network",
+      "expected": 0,
+      "actual": 0,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 1440,
+      "build_sha256": "74aeb105054b0176c06a5634dc268ff2519c6b93ed043f3ee4a83cb8b4c81fb5"
+    },
+    {
+      "id": "CQ-web-d-390-horizontal-overflow",
+      "expected": 390,
+      "actual": 390,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 390,
+      "build_sha256": "74aeb105054b0176c06a5634dc268ff2519c6b93ed043f3ee4a83cb8b4c81fb5"
+    },
+    {
+      "id": "CQ-web-d-390-images-loaded",
+      "expected": 0,
+      "actual": 0,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 390,
+      "build_sha256": "74aeb105054b0176c06a5634dc268ff2519c6b93ed043f3ee4a83cb8b4c81fb5"
+    },
+    {
+      "id": "CQ-web-d-390-hero-not-collapsed",
+      "expected": "height >= 160px (case-specific)",
+      "actual": 350,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 390,
+      "build_sha256": "74aeb105054b0176c06a5634dc268ff2519c6b93ed043f3ee4a83cb8b4c81fb5"
+    },
+    {
+      "id": "CQ-web-d-390-calculation",
+      "expected": "\u2248 R$ 33,33",
+      "actual": "\u2248 R$\u00a033,33",
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 390,
+      "build_sha256": "74aeb105054b0176c06a5634dc268ff2519c6b93ed043f3ee4a83cb8b4c81fb5"
+    },
+    {
+      "id": "CQ-web-d-390-invalid-term",
+      "expected": true,
+      "actual": true,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 390,
+      "build_sha256": "74aeb105054b0176c06a5634dc268ff2519c6b93ed043f3ee4a83cb8b4c81fb5"
+    },
+    {
+      "id": "CQ-web-d-390-tabs-keyboard",
+      "expected": "true",
+      "actual": "true",
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 390,
+      "build_sha256": "74aeb105054b0176c06a5634dc268ff2519c6b93ed043f3ee4a83cb8b4c81fb5"
+    },
+    {
+      "id": "CQ-web-d-390-mobile-menu",
+      "expected": "true",
+      "actual": "true",
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 390,
+      "build_sha256": "74aeb105054b0176c06a5634dc268ff2519c6b93ed043f3ee4a83cb8b4c81fb5"
+    },
+    {
+      "id": "CQ-web-d-390-mobile-menu-escape",
+      "expected": "false",
+      "actual": "false",
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 390,
+      "build_sha256": "74aeb105054b0176c06a5634dc268ff2519c6b93ed043f3ee4a83cb8b4c81fb5"
+    },
+    {
+      "id": "CQ-web-d-390-reduced-motion",
+      "expected": {
+        "scroll": "auto",
+        "active": 0
+      },
+      "actual": {
+        "scroll": "auto",
+        "active": 0
+      },
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 390,
+      "build_sha256": "74aeb105054b0176c06a5634dc268ff2519c6b93ed043f3ee4a83cb8b4c81fb5"
+    },
+    {
+      "id": "CQ-web-d-390-script-errors",
+      "expected": 0,
+      "actual": 0,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 390,
+      "build_sha256": "74aeb105054b0176c06a5634dc268ff2519c6b93ed043f3ee4a83cb8b4c81fb5"
+    },
+    {
+      "id": "CQ-web-d-390-resource-errors",
+      "expected": 0,
+      "actual": 0,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 390,
+      "build_sha256": "74aeb105054b0176c06a5634dc268ff2519c6b93ed043f3ee4a83cb8b4c81fb5"
+    },
+    {
+      "id": "CQ-web-d-390-external-network",
+      "expected": 0,
+      "actual": 0,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 390,
+      "build_sha256": "74aeb105054b0176c06a5634dc268ff2519c6b93ed043f3ee4a83cb8b4c81fb5"
+    },
+    {
+      "id": "CQ-web-b-1440-horizontal-overflow",
+      "expected": 1440,
+      "actual": 1440,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 1440,
+      "build_sha256": "8968e4a3b847423512c87c57febd49501cafe6c59cf49a41672b5bb763cb2e12"
+    },
+    {
+      "id": "CQ-web-b-1440-images-loaded",
+      "expected": 0,
+      "actual": 0,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 1440,
+      "build_sha256": "8968e4a3b847423512c87c57febd49501cafe6c59cf49a41672b5bb763cb2e12"
+    },
+    {
+      "id": "CQ-web-b-1440-hero-not-collapsed",
+      "expected": "height >= 160px (case-specific)",
+      "actual": 766,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 1440,
+      "build_sha256": "8968e4a3b847423512c87c57febd49501cafe6c59cf49a41672b5bb763cb2e12"
+    },
+    {
+      "id": "CQ-web-b-1440-filter-count",
+      "expected": 3,
+      "actual": 3,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 1440,
+      "build_sha256": "8968e4a3b847423512c87c57febd49501cafe6c59cf49a41672b5bb763cb2e12"
+    },
+    {
+      "id": "CQ-web-b-1440-dialog-open",
+      "expected": true,
+      "actual": true,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 1440,
+      "build_sha256": "8968e4a3b847423512c87c57febd49501cafe6c59cf49a41672b5bb763cb2e12"
+    },
+    {
+      "id": "CQ-web-b-1440-gallery-next",
+      "expected": "different photo",
+      "actual": "different photo",
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 1440,
+      "build_sha256": "8968e4a3b847423512c87c57febd49501cafe6c59cf49a41672b5bb763cb2e12"
+    },
+    {
+      "id": "CQ-web-b-1440-dialog-focus-wrap",
+      "expected": true,
+      "actual": true,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 1440,
+      "build_sha256": "8968e4a3b847423512c87c57febd49501cafe6c59cf49a41672b5bb763cb2e12"
+    },
+    {
+      "id": "CQ-web-b-1440-dialog-escape-restores-focus",
+      "expected": true,
+      "actual": true,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 1440,
+      "build_sha256": "8968e4a3b847423512c87c57febd49501cafe6c59cf49a41672b5bb763cb2e12"
+    },
+    {
+      "id": "CQ-web-b-1440-reduced-motion",
+      "expected": {
+        "scroll": "auto",
+        "active": 0
+      },
+      "actual": {
+        "scroll": "auto",
+        "active": 0
+      },
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 1440,
+      "build_sha256": "8968e4a3b847423512c87c57febd49501cafe6c59cf49a41672b5bb763cb2e12"
+    },
+    {
+      "id": "CQ-web-b-1440-script-errors",
+      "expected": 0,
+      "actual": 0,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 1440,
+      "build_sha256": "8968e4a3b847423512c87c57febd49501cafe6c59cf49a41672b5bb763cb2e12"
+    },
+    {
+      "id": "CQ-web-b-1440-resource-errors",
+      "expected": 0,
+      "actual": 0,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 1440,
+      "build_sha256": "8968e4a3b847423512c87c57febd49501cafe6c59cf49a41672b5bb763cb2e12"
+    },
+    {
+      "id": "CQ-web-b-1440-external-network",
+      "expected": 0,
+      "actual": 0,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 1440,
+      "build_sha256": "8968e4a3b847423512c87c57febd49501cafe6c59cf49a41672b5bb763cb2e12"
+    },
+    {
+      "id": "CQ-web-b-390-horizontal-overflow",
+      "expected": 390,
+      "actual": 390,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 390,
+      "build_sha256": "8968e4a3b847423512c87c57febd49501cafe6c59cf49a41672b5bb763cb2e12"
+    },
+    {
+      "id": "CQ-web-b-390-images-loaded",
+      "expected": 0,
+      "actual": 0,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 390,
+      "build_sha256": "8968e4a3b847423512c87c57febd49501cafe6c59cf49a41672b5bb763cb2e12"
+    },
+    {
+      "id": "CQ-web-b-390-hero-not-collapsed",
+      "expected": "height >= 160px (case-specific)",
+      "actual": 6.59375,
+      "outcome": "FAIL",
+      "execution_mode": "browser_observed",
+      "viewport_width": 390,
+      "build_sha256": "8968e4a3b847423512c87c57febd49501cafe6c59cf49a41672b5bb763cb2e12"
+    },
+    {
+      "id": "CQ-web-b-390-filter-count",
+      "expected": 3,
+      "actual": 3,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 390,
+      "build_sha256": "8968e4a3b847423512c87c57febd49501cafe6c59cf49a41672b5bb763cb2e12"
+    },
+    {
+      "id": "CQ-web-b-390-dialog-open",
+      "expected": true,
+      "actual": true,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 390,
+      "build_sha256": "8968e4a3b847423512c87c57febd49501cafe6c59cf49a41672b5bb763cb2e12"
+    },
+    {
+      "id": "CQ-web-b-390-gallery-next",
+      "expected": "different photo",
+      "actual": "different photo",
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 390,
+      "build_sha256": "8968e4a3b847423512c87c57febd49501cafe6c59cf49a41672b5bb763cb2e12"
+    },
+    {
+      "id": "CQ-web-b-390-dialog-focus-wrap",
+      "expected": true,
+      "actual": true,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 390,
+      "build_sha256": "8968e4a3b847423512c87c57febd49501cafe6c59cf49a41672b5bb763cb2e12"
+    },
+    {
+      "id": "CQ-web-b-390-dialog-escape-restores-focus",
+      "expected": true,
+      "actual": true,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 390,
+      "build_sha256": "8968e4a3b847423512c87c57febd49501cafe6c59cf49a41672b5bb763cb2e12"
+    },
+    {
+      "id": "CQ-web-b-390-mobile-menu",
+      "expected": "true",
+      "actual": "true",
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 390,
+      "build_sha256": "8968e4a3b847423512c87c57febd49501cafe6c59cf49a41672b5bb763cb2e12"
+    },
+    {
+      "id": "CQ-web-b-390-mobile-menu-escape",
+      "expected": "false",
+      "actual": "false",
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 390,
+      "build_sha256": "8968e4a3b847423512c87c57febd49501cafe6c59cf49a41672b5bb763cb2e12"
+    },
+    {
+      "id": "CQ-web-b-390-reduced-motion",
+      "expected": {
+        "scroll": "auto",
+        "active": 0
+      },
+      "actual": {
+        "scroll": "auto",
+        "active": 0
+      },
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 390,
+      "build_sha256": "8968e4a3b847423512c87c57febd49501cafe6c59cf49a41672b5bb763cb2e12"
+    },
+    {
+      "id": "CQ-web-b-390-script-errors",
+      "expected": 0,
+      "actual": 0,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 390,
+      "build_sha256": "8968e4a3b847423512c87c57febd49501cafe6c59cf49a41672b5bb763cb2e12"
+    },
+    {
+      "id": "CQ-web-b-390-resource-errors",
+      "expected": 0,
+      "actual": 0,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 390,
+      "build_sha256": "8968e4a3b847423512c87c57febd49501cafe6c59cf49a41672b5bb763cb2e12"
+    },
+    {
+      "id": "CQ-web-b-390-external-network",
+      "expected": 0,
+      "actual": 0,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 390,
+      "build_sha256": "8968e4a3b847423512c87c57febd49501cafe6c59cf49a41672b5bb763cb2e12"
+    },
+    {
+      "id": "CQ-web-c-1440-horizontal-overflow",
+      "expected": 1440,
+      "actual": 1440,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 1440,
+      "build_sha256": "8e95cd89b7858a769455f23c56934bc0fc7a5035a52e36bb77fdfd47b9d016df"
+    },
+    {
+      "id": "CQ-web-c-1440-images-loaded",
+      "expected": 0,
+      "actual": 0,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 1440,
+      "build_sha256": "8e95cd89b7858a769455f23c56934bc0fc7a5035a52e36bb77fdfd47b9d016df"
+    },
+    {
+      "id": "CQ-web-c-1440-hero-not-collapsed",
+      "expected": "height >= 160px (case-specific)",
+      "actual": 796,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 1440,
+      "build_sha256": "8e95cd89b7858a769455f23c56934bc0fc7a5035a52e36bb77fdfd47b9d016df"
+    },
+    {
+      "id": "CQ-web-c-1440-filter-count",
+      "expected": 3,
+      "actual": 3,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 1440,
+      "build_sha256": "8e95cd89b7858a769455f23c56934bc0fc7a5035a52e36bb77fdfd47b9d016df"
+    },
+    {
+      "id": "CQ-web-c-1440-dialog-open",
+      "expected": true,
+      "actual": true,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 1440,
+      "build_sha256": "8e95cd89b7858a769455f23c56934bc0fc7a5035a52e36bb77fdfd47b9d016df"
+    },
+    {
+      "id": "CQ-web-c-1440-gallery-next",
+      "expected": "different photo",
+      "actual": "different photo",
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 1440,
+      "build_sha256": "8e95cd89b7858a769455f23c56934bc0fc7a5035a52e36bb77fdfd47b9d016df"
+    },
+    {
+      "id": "CQ-web-c-1440-dialog-focus-wrap",
+      "expected": true,
+      "actual": true,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 1440,
+      "build_sha256": "8e95cd89b7858a769455f23c56934bc0fc7a5035a52e36bb77fdfd47b9d016df"
+    },
+    {
+      "id": "CQ-web-c-1440-dialog-escape-restores-focus",
+      "expected": true,
+      "actual": true,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 1440,
+      "build_sha256": "8e95cd89b7858a769455f23c56934bc0fc7a5035a52e36bb77fdfd47b9d016df"
+    },
+    {
+      "id": "CQ-web-c-1440-reduced-motion",
+      "expected": {
+        "scroll": "auto",
+        "active": 0
+      },
+      "actual": {
+        "scroll": "auto",
+        "active": 0
+      },
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 1440,
+      "build_sha256": "8e95cd89b7858a769455f23c56934bc0fc7a5035a52e36bb77fdfd47b9d016df"
+    },
+    {
+      "id": "CQ-web-c-1440-script-errors",
+      "expected": 0,
+      "actual": 0,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 1440,
+      "build_sha256": "8e95cd89b7858a769455f23c56934bc0fc7a5035a52e36bb77fdfd47b9d016df"
+    },
+    {
+      "id": "CQ-web-c-1440-resource-errors",
+      "expected": 0,
+      "actual": 0,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 1440,
+      "build_sha256": "8e95cd89b7858a769455f23c56934bc0fc7a5035a52e36bb77fdfd47b9d016df"
+    },
+    {
+      "id": "CQ-web-c-1440-external-network",
+      "expected": 0,
+      "actual": 0,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 1440,
+      "build_sha256": "8e95cd89b7858a769455f23c56934bc0fc7a5035a52e36bb77fdfd47b9d016df"
+    },
+    {
+      "id": "CQ-web-c-390-horizontal-overflow",
+      "expected": 390,
+      "actual": 390,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 390,
+      "build_sha256": "8e95cd89b7858a769455f23c56934bc0fc7a5035a52e36bb77fdfd47b9d016df"
+    },
+    {
+      "id": "CQ-web-c-390-images-loaded",
+      "expected": 0,
+      "actual": 0,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 390,
+      "build_sha256": "8e95cd89b7858a769455f23c56934bc0fc7a5035a52e36bb77fdfd47b9d016df"
+    },
+    {
+      "id": "CQ-web-c-390-hero-not-collapsed",
+      "expected": "height >= 160px (case-specific)",
+      "actual": 219.125,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 390,
+      "build_sha256": "8e95cd89b7858a769455f23c56934bc0fc7a5035a52e36bb77fdfd47b9d016df"
+    },
+    {
+      "id": "CQ-web-c-390-filter-count",
+      "expected": 3,
+      "actual": 3,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 390,
+      "build_sha256": "8e95cd89b7858a769455f23c56934bc0fc7a5035a52e36bb77fdfd47b9d016df"
+    },
+    {
+      "id": "CQ-web-c-390-dialog-open",
+      "expected": true,
+      "actual": true,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 390,
+      "build_sha256": "8e95cd89b7858a769455f23c56934bc0fc7a5035a52e36bb77fdfd47b9d016df"
+    },
+    {
+      "id": "CQ-web-c-390-gallery-next",
+      "expected": "different photo",
+      "actual": "different photo",
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 390,
+      "build_sha256": "8e95cd89b7858a769455f23c56934bc0fc7a5035a52e36bb77fdfd47b9d016df"
+    },
+    {
+      "id": "CQ-web-c-390-dialog-focus-wrap",
+      "expected": true,
+      "actual": true,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 390,
+      "build_sha256": "8e95cd89b7858a769455f23c56934bc0fc7a5035a52e36bb77fdfd47b9d016df"
+    },
+    {
+      "id": "CQ-web-c-390-dialog-escape-restores-focus",
+      "expected": true,
+      "actual": true,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 390,
+      "build_sha256": "8e95cd89b7858a769455f23c56934bc0fc7a5035a52e36bb77fdfd47b9d016df"
+    },
+    {
+      "id": "CQ-web-c-390-mobile-menu",
+      "expected": "true",
+      "actual": "true",
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 390,
+      "build_sha256": "8e95cd89b7858a769455f23c56934bc0fc7a5035a52e36bb77fdfd47b9d016df"
+    },
+    {
+      "id": "CQ-web-c-390-mobile-menu-escape",
+      "expected": "false",
+      "actual": "false",
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 390,
+      "build_sha256": "8e95cd89b7858a769455f23c56934bc0fc7a5035a52e36bb77fdfd47b9d016df"
+    },
+    {
+      "id": "CQ-web-c-390-reduced-motion",
+      "expected": {
+        "scroll": "auto",
+        "active": 0
+      },
+      "actual": {
+        "scroll": "auto",
+        "active": 0
+      },
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 390,
+      "build_sha256": "8e95cd89b7858a769455f23c56934bc0fc7a5035a52e36bb77fdfd47b9d016df"
+    },
+    {
+      "id": "CQ-web-c-390-script-errors",
+      "expected": 0,
+      "actual": 0,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 390,
+      "build_sha256": "8e95cd89b7858a769455f23c56934bc0fc7a5035a52e36bb77fdfd47b9d016df"
+    },
+    {
+      "id": "CQ-web-c-390-resource-errors",
+      "expected": 0,
+      "actual": 0,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 390,
+      "build_sha256": "8e95cd89b7858a769455f23c56934bc0fc7a5035a52e36bb77fdfd47b9d016df"
+    },
+    {
+      "id": "CQ-web-c-390-external-network",
+      "expected": 0,
+      "actual": 0,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 390,
+      "build_sha256": "8e95cd89b7858a769455f23c56934bc0fc7a5035a52e36bb77fdfd47b9d016df"
+    }
+  ],
+  "evidence": [
+    {
+      "id": "web-a-1440-hero.png",
+      "sha256": "f2ab19af45deca7f335b1b4353cc27b57440f76b1abf6fb3ae5e1347d2eafbac"
+    },
+    {
+      "id": "web-a-1440-full.png",
+      "sha256": "33738d85db153e2c3d2b1238686eb69f8122ce4988393ce1cd71cd5504de768a"
+    },
+    {
+      "id": "web-a-1440-dialog.png",
+      "sha256": "7f47c38f94f47e8791d96cfea1f6698682621525cd5862bbb7ca92bd2703b9ca"
+    },
+    {
+      "id": "web-a-390-hero.png",
+      "sha256": "630b080dc739c49264e6698b9e47fd37de93f29d08bd17b1b468fe5622c2c178"
+    },
+    {
+      "id": "web-a-390-full.png",
+      "sha256": "30ebd1f676ccfb9230d34b9fe4e77046cf6c92970b96b9dfae0ccc950f5d96c8"
+    },
+    {
+      "id": "web-a-390-dialog.png",
+      "sha256": "0a5d751de0fb4c733c04a5c475cd4983a0438d2e57d90b889c0a63a6d1aadd1e"
+    },
+    {
+      "id": "web-d-1440-hero.png",
+      "sha256": "3f2de18ecb7b5e26268c8a7772214469804d85eb8b67ccea6215557b4831c22e"
+    },
+    {
+      "id": "web-d-1440-full.png",
+      "sha256": "c79f88670adf63aaf869e636fa7b2d39e0389ef8ba9dd29c5692a37de82cbf16"
+    },
+    {
+      "id": "web-d-390-hero.png",
+      "sha256": "895d9a30e5ade575b892fec456e52412a38d7dd836d6da3d9bf16ad8ef8e307b"
+    },
+    {
+      "id": "web-d-390-full.png",
+      "sha256": "8d90fe425d694705efb7e205d8e41811858e178e9c3fd69a4a3798ddf86e7791"
+    },
+    {
+      "id": "web-b-1440-hero.png",
+      "sha256": "856c8bf15747a57518e66b4420397217191ace08b9728958da36cffecea9d4c1"
+    },
+    {
+      "id": "web-b-1440-full.png",
+      "sha256": "6e904b78f24ce442c452d9982f1a12a1cbd19b2b9357595e0a5edf9ecc4126ef"
+    },
+    {
+      "id": "web-b-1440-dialog.png",
+      "sha256": "ade7a4ec5a2b29c2864b44a8d46b9c916a59c15bff98da85b5af80997107c52e"
+    },
+    {
+      "id": "web-b-390-hero.png",
+      "sha256": "fb3080d5eba064d5ae8d0c1d0c49347fc9b99b75df74f08b04bc87f998f4837f"
+    },
+    {
+      "id": "web-b-390-full.png",
+      "sha256": "02e7425bfcd574cdec77f7f0ee594b2fd604f6102e177cdea26239db6dbc4d88"
+    },
+    {
+      "id": "web-b-390-dialog.png",
+      "sha256": "0a5d751de0fb4c733c04a5c475cd4983a0438d2e57d90b889c0a63a6d1aadd1e"
+    },
+    {
+      "id": "web-c-1440-hero.png",
+      "sha256": "6086996b80864b5630a2171f3eda116c7537c167da02e02fb833bd39007764ab"
+    },
+    {
+      "id": "web-c-1440-full.png",
+      "sha256": "8bed24111375748b77d88f6457eb316b67658ce12aa3c2a4809c5edfe343faf7"
+    },
+    {
+      "id": "web-c-1440-dialog.png",
+      "sha256": "ade7a4ec5a2b29c2864b44a8d46b9c916a59c15bff98da85b5af80997107c52e"
+    },
+    {
+      "id": "web-c-390-hero.png",
+      "sha256": "3471ac0be13ea44addc8af3afa97c144adfeb13e6e60d222dc867fbcc05b61e9"
+    },
+    {
+      "id": "web-c-390-full.png",
+      "sha256": "118a24c3dd803af2ac68198966edb53f005ae49e72076df48586829786a8b4da"
+    },
+    {
+      "id": "web-c-390-dialog.png",
+      "sha256": "0a5d751de0fb4c733c04a5c475cd4983a0438d2e57d90b889c0a63a6d1aadd1e"
+    }
+  ],
+  "counts": {
+    "PASS": 99,
+    "FAIL": 1
+  },
+  "expected_research_failure": "CQ-web-b-390-hero-not-collapsed",
+  "provider_generation_calls": 0,
+  "human_quality_approval": "UNVERIFIED",
+  "limitation": "One automated reviewer; Chromium emulation; no randomized generation experiment or professional certification."
+}

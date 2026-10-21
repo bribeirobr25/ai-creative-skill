@@ -1,0 +1,23 @@
+{
+  "quoted_at": "2026-10-20",
+  "provider": "Higgsfield",
+  "operation": "estimate_video_cost",
+  "parameters": {
+    "model": "seedance_2_5",
+    "mode": "omni_reference",
+    "duration": 6,
+    "resolution": "1080p",
+    "generate_audio": true,
+    "aspect_ratio": "16:9",
+    "count": 1
+  },
+  "returned": {
+    "credits": 96,
+    "credits_exact": 96
+  },
+  "proposed_two_output_pilot_credits": 192,
+  "job_submitted": false,
+  "private_media_uploaded": false,
+  "generation_readiness": "UNVERIFIED",
+  "currency_conversion": "UNVERIFIED"
+}
