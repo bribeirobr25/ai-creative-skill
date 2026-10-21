@@ -1,0 +1,15 @@
+{
+  "created_utc": "2026-10-20T19:13:43.416227+00:00",
+  "baseline": "39a0bfa39270ea4b685b0f862e7dbf647cf81d77",
+  "files": {
+    "shared/assets/arco.jpg": "d74bd50d0d0c6df78159b41a0db4e420206a8b5d684fb0ef7c0848ac61dbb448",
+    "shared/assets/credits.json": "12cb359c86012bc01d7fd4edc8ae590add804cee4521d092c77375e00477b4fe",
+    "shared/assets/editorial.jpg": "a8abd9a64d1896cb9188870bed34ca52e2522939d1b072c895b5078852fb6c96",
+    "shared/assets/trama.jpg": "7cc39d70adb94990c08254c14c71a12e345622c716c21ff56578d772b811b8d7",
+    "shared/briefing.md": "d1c58e0a8f7b4f9902b560c429b7cff481703fa69d4c34a74934b4a42b2869b3",
+    "shared/executor-common.md": "1c81275ccc7e85e38d75925df928d4f2150807aac133a01e252074f751d9b1b6",
+    "shared/protocolo.md": "a86b2d5da48dec349e30b5736b3cc90ca7f5cdc731ccb6c98116d0aeb16a24f5"
+  },
+  "paid_generation_submissions": 0,
+  "native_C_executed": false
+}

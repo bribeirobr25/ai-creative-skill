@@ -1,0 +1,85 @@
+{
+  "run_at": "2026-10-20T19:15:23.071234+00:00",
+  "phase": "INPUT_PREFLIGHT_ONLY",
+  "checks": [
+    {
+      "id": "input:shared/assets/arco.jpg",
+      "pass": true
+    },
+    {
+      "id": "input:shared/assets/credits.json",
+      "pass": true
+    },
+    {
+      "id": "input:shared/assets/editorial.jpg",
+      "pass": true
+    },
+    {
+      "id": "input:shared/assets/trama.jpg",
+      "pass": true
+    },
+    {
+      "id": "input:shared/briefing.md",
+      "pass": true
+    },
+    {
+      "id": "input:shared/executor-common.md",
+      "pass": true
+    },
+    {
+      "id": "input:shared/protocolo.md",
+      "pass": true
+    },
+    {
+      "id": "image:arco.jpg",
+      "pass": true,
+      "size": [
+        1600,
+        1067
+      ],
+      "mode": "RGB"
+    },
+    {
+      "id": "image:trama.jpg",
+      "pass": true,
+      "size": [
+        1600,
+        2263
+      ],
+      "mode": "RGB"
+    },
+    {
+      "id": "image:editorial.jpg",
+      "pass": true,
+      "size": [
+        1600,
+        1067
+      ],
+      "mode": "RGB"
+    },
+    {
+      "id": "shared-document:briefing.md",
+      "pass": true
+    },
+    {
+      "id": "shared-document:protocolo.md",
+      "pass": true
+    },
+    {
+      "id": "research-only-change",
+      "pass": true
+    },
+    {
+      "id": "independent-main-base",
+      "pass": true
+    }
+  ],
+  "passed": 14,
+  "failed": 0,
+  "does_not_establish": [
+    "website implementation",
+    "professional design quality",
+    "human review",
+    "C execution"
+  ]
+}

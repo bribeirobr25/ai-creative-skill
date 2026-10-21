@@ -1,0 +1,18 @@
+{
+  "package_version": "2.2.1",
+  "files_inspected": {
+    "SKILL.md": "65e4d748c2256a74d4d1344bee706a3369abd68c6d92dcae63b8efb16250a747",
+    "references/website-flow.md": "a9a0917fc110b447681e1ed80afdbeb455b57c8ea6ff56b9207d9ed3c4a02383",
+    "references/review-rubric.md": "98b302c7b80feede17b4664117a0e1d6ad8e666f39a16cbd78657a4b352be86e"
+  },
+  "cost_only_quote": {
+    "model": "gpt_image_2_5",
+    "count": 1,
+    "aspect_ratio": "3:2",
+    "credits": 0.25,
+    "job_submitted": false,
+    "medias_supplied": false
+  },
+  "website_total_cost": "UNKNOWN",
+  "native_execution": "NOT_RUN"
+}

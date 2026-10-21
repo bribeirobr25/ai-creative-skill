@@ -1,0 +1,15 @@
+{
+  "received": "2026-10-20",
+  "user_reply": "Sim, usar dois agentes isolados",
+  "recorded_at": "2026-10-20T21:00:40.986992+00:00",
+  "agents": {
+    "A": "/root/dqb_a",
+    "B": "/root/dqb_b"
+  },
+  "fork_turns": "none",
+  "model_override": null,
+  "reasoning_override": null,
+  "model_identity": "inherited host configuration; backend version not independently exposed",
+  "isolation": "separate context, scoped instructions, shared filesystem (not a security sandbox)",
+  "paid_media_generation_authorized": false
+}
