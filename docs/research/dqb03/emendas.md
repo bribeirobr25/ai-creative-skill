@@ -11,3 +11,7 @@
   como funciona, confirmações) saíam no meio ou no rodapé. As capturas passaram a rolar para o topo (páginas) ou para o
   elemento do estado (erro/confirmação) antes de fotografar. Não muda nenhuma verificação funcional; aplicado a todas as
   entregas na mesma rodada final.
+- **Erro da coordenação (registrado depois):** em `assets/credits.json` da Della, `limao-open-flower.jpg` foi descrito
+  como "open with applied flower clip". O objeto verde é um prendedor de cabelo (adereço), não a flor aplicada do Limão.
+  A descrição chegou às 4 execuções da Della; d79 legendou o prendedor como "flor aplicada" no R0 e corrigiu no R1.
+  O erro vale igualmente para A e B e não muda a comparação, mas é um defeito de material de entrada.
