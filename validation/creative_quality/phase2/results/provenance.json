@@ -1,0 +1,72 @@
+{
+  "parent_pr9_commit": "e35b6f5015aa072cd76ceb91fca7d8e1f25d630d",
+  "canonical_main": "39a0bfa39270ea4b685b0f862e7dbf647cf81d77",
+  "harness_commit": "b83b331f552baa22e14f2cf760dcd396b65a5537",
+  "variants": {
+    "A": {
+      "index.html": "2f98fbd2200920f509341e8bf781e50f12b4450792b26118c362fd4611a3e31d",
+      "styles.css": "2e56df15b9a563577f1f67e0a9a2fb6d7fd8863145fbcb6f950399abfff14f19",
+      "app.js": "0acb837de127518de1c69ed8bf0e0de372e5b1ef50d839e5b9b0a779f02ffe7f",
+      "path.svg": "0f006f50b8fb7e2ed37f4ec483c6ce6b03ccf62da6de703b1b162edfa3fcc456"
+    },
+    "B": {
+      "index.html": "2f98fbd2200920f509341e8bf781e50f12b4450792b26118c362fd4611a3e31d",
+      "styles.css": "876442d991286619328fc942682eeb63247c89c6eb87aa1abc08512b7d274cf0",
+      "app.js": "0acb837de127518de1c69ed8bf0e0de372e5b1ef50d839e5b9b0a779f02ffe7f",
+      "path.svg": "0f006f50b8fb7e2ed37f4ec483c6ce6b03ccf62da6de703b1b162edfa3fcc456"
+    },
+    "S": {
+      "index.html": "2f98fbd2200920f509341e8bf781e50f12b4450792b26118c362fd4611a3e31d",
+      "styles.css": "366f27a3aefdba4eaf99bd23502e66533e34456c2be648f753befceb1068bb60",
+      "app.js": "0acb837de127518de1c69ed8bf0e0de372e5b1ef50d839e5b9b0a779f02ffe7f",
+      "path.svg": "0f006f50b8fb7e2ed37f4ec483c6ce6b03ccf62da6de703b1b162edfa3fcc456"
+    },
+    "R": {
+      "index.html": "2f98fbd2200920f509341e8bf781e50f12b4450792b26118c362fd4611a3e31d",
+      "styles.css": "876442d991286619328fc942682eeb63247c89c6eb87aa1abc08512b7d274cf0",
+      "app.js": "0acb837de127518de1c69ed8bf0e0de372e5b1ef50d839e5b9b0a779f02ffe7f",
+      "path.svg": "0f006f50b8fb7e2ed37f4ec483c6ce6b03ccf62da6de703b1b162edfa3fcc456"
+    }
+  },
+  "capture_windows": [
+    {
+      "session": "transfer-evidence",
+      "first_screenshot_time_utc": "2026-10-20T18:24:31.255258+00:00",
+      "last_screenshot_time_utc": "2026-10-20T18:24:50.298203+00:00",
+      "scope": "Screenshot file window only; not total browser execution or labor time"
+    },
+    {
+      "session": "repair-evidence",
+      "first_screenshot_time_utc": "2026-10-20T18:26:04.683201+00:00",
+      "last_screenshot_time_utc": "2026-10-20T18:26:09.292030+00:00",
+      "scope": "Screenshot file window only; not total browser execution or labor time"
+    }
+  ],
+  "independent_human_reviews_verified": 0,
+  "human_gate": "AWAITING_HUMAN_REVIEW",
+  "creative_C": "NOT_NEEDED",
+  "provider_calls": 0,
+  "source_files": {
+    "validation/creative_quality/phase2/README.md": "d244bc45ce58769d2698d89827f8129e2768a678b574de265fe43f2a6faf4381",
+    "validation/creative_quality/phase2/bind_web_record.py": "9f5c5f125da7f793edcb8816a48587f41fa6cb8cb5d53a1a6a51603afaf81ee6",
+    "validation/creative_quality/phase2/check_review_ui.cjs": "dccc77884cc85788e505123aaf05e9c75973590e07864b5661a463d98ec3d8f5",
+    "validation/creative_quality/phase2/direction-b.css": "46faa49a147fd4891fd835f6d9db91a51f15a55d71ac9873dc3353387f8d6361",
+    "validation/creative_quality/phase2/fixture/app.js": "0acb837de127518de1c69ed8bf0e0de372e5b1ef50d839e5b9b0a779f02ffe7f",
+    "validation/creative_quality/phase2/fixture/index.html": "2f98fbd2200920f509341e8bf781e50f12b4450792b26118c362fd4611a3e31d",
+    "validation/creative_quality/phase2/fixture/path.svg": "0f006f50b8fb7e2ed37f4ec483c6ce6b03ccf62da6de703b1b162edfa3fcc456",
+    "validation/creative_quality/phase2/fixture/styles.css": "2e56df15b9a563577f1f67e0a9a2fb6d7fd8863145fbcb6f950399abfff14f19",
+    "validation/creative_quality/phase2/prepare_review.py": "9c18d1f08219652c7ad895daaa7c8590ffbc79748872f4e1e0841ef8e0829694",
+    "validation/creative_quality/phase2/prepare_transfer.py": "9321a33cb9d1f2b167ef7bdfb37773b79bcd7b712b459cc1c198ec4763fcce37",
+    "validation/creative_quality/phase2/record_walkthroughs.cjs": "b284c269170850210cf17050ef30f9fe9feaf0021f0096b5a38a00ad5ef5fd5c",
+    "validation/creative_quality/phase2/repair_mutation.py": "7387c6458f4b7036017b699c9d0845c3e358ee73a3f496f376a71a64d3d91eb1",
+    "validation/creative_quality/phase2/review-template.html": "5784ff630b1dd1b788e1241aab38105ac055488e518258579cbe6e9fe0f65da0",
+    "validation/creative_quality/phase2/review_gate.py": "5eb5a2d942f888a96721d1c717f7cad32585ab0a19ed23f3a42e4ee8a41f9381",
+    "validation/creative_quality/phase2/sabotage.css": "2f79b2c159e79d24295581db768d0c48a2cce06a0db744496c724f12c5fe698e",
+    "validation/creative_quality/phase2/test_review_gate.py": "48c7f17698e6da2b860b8c2110c995e5b242fe45e735f075b019afc3038dabca",
+    "validation/creative_quality/phase2/workshop_checks.cjs": "e110ef0b3068a3099a8dcda748f49b33c5f3fd02b7636bc916a3ada36d2afd73"
+  },
+  "shared_adapter_files": {
+    "validation/creative_quality/browser_evidence.cjs": "60cd8aab67ba59c3c176eb65d286fed20abdb00ade37e08b42f3f7d61eed31b9",
+    "validation/creative_quality/report.py": "262d1a99674f81d495a54c97a638f671668c7c6659e38e7ba9bdb970ed6f8f7a"
+  }
+}

@@ -1,0 +1,134 @@
+{
+  "kind": "UI_SMOKE_NOT_HUMAN_EVIDENCE",
+  "human_responses": 0,
+  "rows": [
+    {
+      "packet": "R1",
+      "width": 1440,
+      "overflow": false,
+      "images": 4,
+      "videos": [
+        {
+          "width": 1440,
+          "height": 900,
+          "duration": 15.64
+        },
+        {
+          "width": 1440,
+          "height": 900,
+          "duration": 17.44
+        },
+        {
+          "width": 390,
+          "height": 844,
+          "duration": 16.84
+        },
+        {
+          "width": 390,
+          "height": 844,
+          "duration": 17.76
+        }
+      ],
+      "requiredFields": 34,
+      "initiallyValid": false,
+      "external_requests": 0,
+      "synthetic_export_discarded": true
+    },
+    {
+      "packet": "R1",
+      "width": 390,
+      "overflow": false,
+      "images": 4,
+      "videos": [
+        {
+          "width": 1440,
+          "height": 900,
+          "duration": 15.64
+        },
+        {
+          "width": 1440,
+          "height": 900,
+          "duration": 17.44
+        },
+        {
+          "width": 390,
+          "height": 844,
+          "duration": 16.84
+        },
+        {
+          "width": 390,
+          "height": 844,
+          "duration": 17.76
+        }
+      ],
+      "requiredFields": 34,
+      "initiallyValid": false,
+      "external_requests": 0,
+      "synthetic_export_discarded": false
+    },
+    {
+      "packet": "R2",
+      "width": 1440,
+      "overflow": false,
+      "images": 4,
+      "videos": [
+        {
+          "width": 1440,
+          "height": 900,
+          "duration": 17.44
+        },
+        {
+          "width": 1440,
+          "height": 900,
+          "duration": 15.64
+        },
+        {
+          "width": 390,
+          "height": 844,
+          "duration": 17.76
+        },
+        {
+          "width": 390,
+          "height": 844,
+          "duration": 16.84
+        }
+      ],
+      "requiredFields": 34,
+      "initiallyValid": false,
+      "external_requests": 0,
+      "synthetic_export_discarded": false
+    },
+    {
+      "packet": "R2",
+      "width": 390,
+      "overflow": false,
+      "images": 4,
+      "videos": [
+        {
+          "width": 1440,
+          "height": 900,
+          "duration": 17.44
+        },
+        {
+          "width": 1440,
+          "height": 900,
+          "duration": 15.64
+        },
+        {
+          "width": 390,
+          "height": 844,
+          "duration": 17.76
+        },
+        {
+          "width": 390,
+          "height": 844,
+          "duration": 16.84
+        }
+      ],
+      "requiredFields": 34,
+      "initiallyValid": false,
+      "external_requests": 0,
+      "synthetic_export_discarded": false
+    }
+  ]
+}

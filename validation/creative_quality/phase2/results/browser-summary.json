@@ -1,0 +1,1684 @@
+{
+  "schema": "creative-quality-research/1",
+  "baseline_commit": "e35b6f5015aa072cd76ceb91fca7d8e1f25d630d",
+  "harness_commit": "b83b331f552baa22e14f2cf760dcd396b65a5537",
+  "browser": "153.0.8010.12",
+  "playwright": "1.62.1",
+  "captured_at": "2026-10-20T18:24:50.700Z",
+  "capture_sessions": [
+    "2026-10-20T18:24:50.700Z",
+    "2026-10-20T18:26:09.333Z"
+  ],
+  "results": [
+    {
+      "id": "CQ-transfer-a-1440-horizontal-overflow",
+      "expected": 1440,
+      "actual": 1440,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 1440,
+      "build_sha256": "2e56df15b9a563577f1f67e0a9a2fb6d7fd8863145fbcb6f950399abfff14f19"
+    },
+    {
+      "id": "CQ-transfer-a-1440-images-loaded",
+      "expected": 0,
+      "actual": 0,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 1440,
+      "build_sha256": "2e56df15b9a563577f1f67e0a9a2fb6d7fd8863145fbcb6f950399abfff14f19"
+    },
+    {
+      "id": "CQ-transfer-a-1440-learning-path-visible",
+      "expected": "effective opacity > 0",
+      "actual": 1,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 1440,
+      "build_sha256": "2e56df15b9a563577f1f67e0a9a2fb6d7fd8863145fbcb6f950399abfff14f19"
+    },
+    {
+      "id": "CQ-transfer-a-1440-learning-path-content-fits",
+      "expected": true,
+      "actual": true,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 1440,
+      "build_sha256": "2e56df15b9a563577f1f67e0a9a2fb6d7fd8863145fbcb6f950399abfff14f19"
+    },
+    {
+      "id": "CQ-transfer-a-1440-headline-fits",
+      "expected": true,
+      "actual": true,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 1440,
+      "build_sha256": "2e56df15b9a563577f1f67e0a9a2fb6d7fd8863145fbcb6f950399abfff14f19"
+    },
+    {
+      "id": "CQ-transfer-a-1440-primary-action-in-initial-viewport",
+      "expected": true,
+      "actual": true,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 1440,
+      "build_sha256": "2e56df15b9a563577f1f67e0a9a2fb6d7fd8863145fbcb6f950399abfff14f19"
+    },
+    {
+      "id": "CQ-transfer-a-1440-sampled-text-contrast",
+      "expected": ">= 4.5 selected solid-color pairs",
+      "actual": 6.741,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 1440,
+      "build_sha256": "2e56df15b9a563577f1f67e0a9a2fb6d7fd8863145fbcb6f950399abfff14f19"
+    },
+    {
+      "id": "CQ-transfer-a-1440-no-external-actions",
+      "expected": 0,
+      "actual": 0,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 1440,
+      "build_sha256": "2e56df15b9a563577f1f67e0a9a2fb6d7fd8863145fbcb6f950399abfff14f19"
+    },
+    {
+      "id": "CQ-transfer-a-1440-keyboard-focus-visible",
+      "expected": true,
+      "actual": true,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 1440,
+      "build_sha256": "2e56df15b9a563577f1f67e0a9a2fb6d7fd8863145fbcb6f950399abfff14f19"
+    },
+    {
+      "id": "CQ-transfer-a-1440-primary-navigation",
+      "expected": "#oficinas",
+      "actual": "#oficinas",
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 1440,
+      "build_sha256": "2e56df15b9a563577f1f67e0a9a2fb6d7fd8863145fbcb6f950399abfff14f19"
+    },
+    {
+      "id": "CQ-transfer-a-1440-filter",
+      "expected": 1,
+      "actual": 1,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 1440,
+      "build_sha256": "2e56df15b9a563577f1f67e0a9a2fb6d7fd8863145fbcb6f950399abfff14f19"
+    },
+    {
+      "id": "CQ-transfer-a-1440-dialog-open",
+      "expected": true,
+      "actual": true,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 1440,
+      "build_sha256": "2e56df15b9a563577f1f67e0a9a2fb6d7fd8863145fbcb6f950399abfff14f19"
+    },
+    {
+      "id": "CQ-transfer-a-1440-dialog-initial-focus",
+      "expected": true,
+      "actual": true,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 1440,
+      "build_sha256": "2e56df15b9a563577f1f67e0a9a2fb6d7fd8863145fbcb6f950399abfff14f19"
+    },
+    {
+      "id": "CQ-transfer-a-1440-local-calculation",
+      "expected": "Seu plano: 3 semanas, com at\u00e9 2 horas por semana.",
+      "actual": "Seu plano: 3 semanas, com at\u00e9 2 horas por semana.",
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 1440,
+      "build_sha256": "2e56df15b9a563577f1f67e0a9a2fb6d7fd8863145fbcb6f950399abfff14f19"
+    },
+    {
+      "id": "CQ-transfer-a-1440-invalid-input",
+      "expected": true,
+      "actual": true,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 1440,
+      "build_sha256": "2e56df15b9a563577f1f67e0a9a2fb6d7fd8863145fbcb6f950399abfff14f19"
+    },
+    {
+      "id": "CQ-transfer-a-1440-dialog-focus-wrap",
+      "expected": true,
+      "actual": true,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 1440,
+      "build_sha256": "2e56df15b9a563577f1f67e0a9a2fb6d7fd8863145fbcb6f950399abfff14f19"
+    },
+    {
+      "id": "CQ-transfer-a-1440-escape-restores-focus",
+      "expected": true,
+      "actual": true,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 1440,
+      "build_sha256": "2e56df15b9a563577f1f67e0a9a2fb6d7fd8863145fbcb6f950399abfff14f19"
+    },
+    {
+      "id": "CQ-transfer-a-1440-reduced-motion",
+      "expected": {
+        "scroll": "auto",
+        "active": 0
+      },
+      "actual": {
+        "scroll": "auto",
+        "active": 0
+      },
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 1440,
+      "build_sha256": "2e56df15b9a563577f1f67e0a9a2fb6d7fd8863145fbcb6f950399abfff14f19"
+    },
+    {
+      "id": "CQ-transfer-a-1440-script-errors",
+      "expected": 0,
+      "actual": 0,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 1440,
+      "build_sha256": "2e56df15b9a563577f1f67e0a9a2fb6d7fd8863145fbcb6f950399abfff14f19"
+    },
+    {
+      "id": "CQ-transfer-a-1440-resource-errors",
+      "expected": 0,
+      "actual": 0,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 1440,
+      "build_sha256": "2e56df15b9a563577f1f67e0a9a2fb6d7fd8863145fbcb6f950399abfff14f19"
+    },
+    {
+      "id": "CQ-transfer-a-1440-external-network",
+      "expected": 0,
+      "actual": 0,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 1440,
+      "build_sha256": "2e56df15b9a563577f1f67e0a9a2fb6d7fd8863145fbcb6f950399abfff14f19"
+    },
+    {
+      "id": "CQ-transfer-a-390-horizontal-overflow",
+      "expected": 390,
+      "actual": 390,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 390,
+      "build_sha256": "2e56df15b9a563577f1f67e0a9a2fb6d7fd8863145fbcb6f950399abfff14f19"
+    },
+    {
+      "id": "CQ-transfer-a-390-images-loaded",
+      "expected": 0,
+      "actual": 0,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 390,
+      "build_sha256": "2e56df15b9a563577f1f67e0a9a2fb6d7fd8863145fbcb6f950399abfff14f19"
+    },
+    {
+      "id": "CQ-transfer-a-390-learning-path-visible",
+      "expected": "effective opacity > 0",
+      "actual": 1,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 390,
+      "build_sha256": "2e56df15b9a563577f1f67e0a9a2fb6d7fd8863145fbcb6f950399abfff14f19"
+    },
+    {
+      "id": "CQ-transfer-a-390-learning-path-content-fits",
+      "expected": true,
+      "actual": true,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 390,
+      "build_sha256": "2e56df15b9a563577f1f67e0a9a2fb6d7fd8863145fbcb6f950399abfff14f19"
+    },
+    {
+      "id": "CQ-transfer-a-390-headline-fits",
+      "expected": true,
+      "actual": true,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 390,
+      "build_sha256": "2e56df15b9a563577f1f67e0a9a2fb6d7fd8863145fbcb6f950399abfff14f19"
+    },
+    {
+      "id": "CQ-transfer-a-390-primary-action-in-initial-viewport",
+      "expected": true,
+      "actual": true,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 390,
+      "build_sha256": "2e56df15b9a563577f1f67e0a9a2fb6d7fd8863145fbcb6f950399abfff14f19"
+    },
+    {
+      "id": "CQ-transfer-a-390-sampled-text-contrast",
+      "expected": ">= 4.5 selected solid-color pairs",
+      "actual": 6.741,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 390,
+      "build_sha256": "2e56df15b9a563577f1f67e0a9a2fb6d7fd8863145fbcb6f950399abfff14f19"
+    },
+    {
+      "id": "CQ-transfer-a-390-no-external-actions",
+      "expected": 0,
+      "actual": 0,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 390,
+      "build_sha256": "2e56df15b9a563577f1f67e0a9a2fb6d7fd8863145fbcb6f950399abfff14f19"
+    },
+    {
+      "id": "CQ-transfer-a-390-keyboard-focus-visible",
+      "expected": true,
+      "actual": true,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 390,
+      "build_sha256": "2e56df15b9a563577f1f67e0a9a2fb6d7fd8863145fbcb6f950399abfff14f19"
+    },
+    {
+      "id": "CQ-transfer-a-390-primary-navigation",
+      "expected": "#oficinas",
+      "actual": "#oficinas",
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 390,
+      "build_sha256": "2e56df15b9a563577f1f67e0a9a2fb6d7fd8863145fbcb6f950399abfff14f19"
+    },
+    {
+      "id": "CQ-transfer-a-390-filter",
+      "expected": 1,
+      "actual": 1,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 390,
+      "build_sha256": "2e56df15b9a563577f1f67e0a9a2fb6d7fd8863145fbcb6f950399abfff14f19"
+    },
+    {
+      "id": "CQ-transfer-a-390-dialog-open",
+      "expected": true,
+      "actual": true,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 390,
+      "build_sha256": "2e56df15b9a563577f1f67e0a9a2fb6d7fd8863145fbcb6f950399abfff14f19"
+    },
+    {
+      "id": "CQ-transfer-a-390-dialog-initial-focus",
+      "expected": true,
+      "actual": true,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 390,
+      "build_sha256": "2e56df15b9a563577f1f67e0a9a2fb6d7fd8863145fbcb6f950399abfff14f19"
+    },
+    {
+      "id": "CQ-transfer-a-390-local-calculation",
+      "expected": "Seu plano: 3 semanas, com at\u00e9 2 horas por semana.",
+      "actual": "Seu plano: 3 semanas, com at\u00e9 2 horas por semana.",
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 390,
+      "build_sha256": "2e56df15b9a563577f1f67e0a9a2fb6d7fd8863145fbcb6f950399abfff14f19"
+    },
+    {
+      "id": "CQ-transfer-a-390-invalid-input",
+      "expected": true,
+      "actual": true,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 390,
+      "build_sha256": "2e56df15b9a563577f1f67e0a9a2fb6d7fd8863145fbcb6f950399abfff14f19"
+    },
+    {
+      "id": "CQ-transfer-a-390-dialog-focus-wrap",
+      "expected": true,
+      "actual": true,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 390,
+      "build_sha256": "2e56df15b9a563577f1f67e0a9a2fb6d7fd8863145fbcb6f950399abfff14f19"
+    },
+    {
+      "id": "CQ-transfer-a-390-escape-restores-focus",
+      "expected": true,
+      "actual": true,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 390,
+      "build_sha256": "2e56df15b9a563577f1f67e0a9a2fb6d7fd8863145fbcb6f950399abfff14f19"
+    },
+    {
+      "id": "CQ-transfer-a-390-reduced-motion",
+      "expected": {
+        "scroll": "auto",
+        "active": 0
+      },
+      "actual": {
+        "scroll": "auto",
+        "active": 0
+      },
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 390,
+      "build_sha256": "2e56df15b9a563577f1f67e0a9a2fb6d7fd8863145fbcb6f950399abfff14f19"
+    },
+    {
+      "id": "CQ-transfer-a-390-script-errors",
+      "expected": 0,
+      "actual": 0,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 390,
+      "build_sha256": "2e56df15b9a563577f1f67e0a9a2fb6d7fd8863145fbcb6f950399abfff14f19"
+    },
+    {
+      "id": "CQ-transfer-a-390-resource-errors",
+      "expected": 0,
+      "actual": 0,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 390,
+      "build_sha256": "2e56df15b9a563577f1f67e0a9a2fb6d7fd8863145fbcb6f950399abfff14f19"
+    },
+    {
+      "id": "CQ-transfer-a-390-external-network",
+      "expected": 0,
+      "actual": 0,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 390,
+      "build_sha256": "2e56df15b9a563577f1f67e0a9a2fb6d7fd8863145fbcb6f950399abfff14f19"
+    },
+    {
+      "id": "CQ-transfer-b-1440-horizontal-overflow",
+      "expected": 1440,
+      "actual": 1440,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 1440,
+      "build_sha256": "876442d991286619328fc942682eeb63247c89c6eb87aa1abc08512b7d274cf0"
+    },
+    {
+      "id": "CQ-transfer-b-1440-images-loaded",
+      "expected": 0,
+      "actual": 0,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 1440,
+      "build_sha256": "876442d991286619328fc942682eeb63247c89c6eb87aa1abc08512b7d274cf0"
+    },
+    {
+      "id": "CQ-transfer-b-1440-learning-path-visible",
+      "expected": "effective opacity > 0",
+      "actual": 1,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 1440,
+      "build_sha256": "876442d991286619328fc942682eeb63247c89c6eb87aa1abc08512b7d274cf0"
+    },
+    {
+      "id": "CQ-transfer-b-1440-learning-path-content-fits",
+      "expected": true,
+      "actual": true,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 1440,
+      "build_sha256": "876442d991286619328fc942682eeb63247c89c6eb87aa1abc08512b7d274cf0"
+    },
+    {
+      "id": "CQ-transfer-b-1440-headline-fits",
+      "expected": true,
+      "actual": true,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 1440,
+      "build_sha256": "876442d991286619328fc942682eeb63247c89c6eb87aa1abc08512b7d274cf0"
+    },
+    {
+      "id": "CQ-transfer-b-1440-primary-action-in-initial-viewport",
+      "expected": true,
+      "actual": true,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 1440,
+      "build_sha256": "876442d991286619328fc942682eeb63247c89c6eb87aa1abc08512b7d274cf0"
+    },
+    {
+      "id": "CQ-transfer-b-1440-sampled-text-contrast",
+      "expected": ">= 4.5 selected solid-color pairs",
+      "actual": 6.741,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 1440,
+      "build_sha256": "876442d991286619328fc942682eeb63247c89c6eb87aa1abc08512b7d274cf0"
+    },
+    {
+      "id": "CQ-transfer-b-1440-no-external-actions",
+      "expected": 0,
+      "actual": 0,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 1440,
+      "build_sha256": "876442d991286619328fc942682eeb63247c89c6eb87aa1abc08512b7d274cf0"
+    },
+    {
+      "id": "CQ-transfer-b-1440-keyboard-focus-visible",
+      "expected": true,
+      "actual": true,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 1440,
+      "build_sha256": "876442d991286619328fc942682eeb63247c89c6eb87aa1abc08512b7d274cf0"
+    },
+    {
+      "id": "CQ-transfer-b-1440-primary-navigation",
+      "expected": "#oficinas",
+      "actual": "#oficinas",
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 1440,
+      "build_sha256": "876442d991286619328fc942682eeb63247c89c6eb87aa1abc08512b7d274cf0"
+    },
+    {
+      "id": "CQ-transfer-b-1440-filter",
+      "expected": 1,
+      "actual": 1,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 1440,
+      "build_sha256": "876442d991286619328fc942682eeb63247c89c6eb87aa1abc08512b7d274cf0"
+    },
+    {
+      "id": "CQ-transfer-b-1440-dialog-open",
+      "expected": true,
+      "actual": true,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 1440,
+      "build_sha256": "876442d991286619328fc942682eeb63247c89c6eb87aa1abc08512b7d274cf0"
+    },
+    {
+      "id": "CQ-transfer-b-1440-dialog-initial-focus",
+      "expected": true,
+      "actual": true,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 1440,
+      "build_sha256": "876442d991286619328fc942682eeb63247c89c6eb87aa1abc08512b7d274cf0"
+    },
+    {
+      "id": "CQ-transfer-b-1440-local-calculation",
+      "expected": "Seu plano: 3 semanas, com at\u00e9 2 horas por semana.",
+      "actual": "Seu plano: 3 semanas, com at\u00e9 2 horas por semana.",
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 1440,
+      "build_sha256": "876442d991286619328fc942682eeb63247c89c6eb87aa1abc08512b7d274cf0"
+    },
+    {
+      "id": "CQ-transfer-b-1440-invalid-input",
+      "expected": true,
+      "actual": true,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 1440,
+      "build_sha256": "876442d991286619328fc942682eeb63247c89c6eb87aa1abc08512b7d274cf0"
+    },
+    {
+      "id": "CQ-transfer-b-1440-dialog-focus-wrap",
+      "expected": true,
+      "actual": true,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 1440,
+      "build_sha256": "876442d991286619328fc942682eeb63247c89c6eb87aa1abc08512b7d274cf0"
+    },
+    {
+      "id": "CQ-transfer-b-1440-escape-restores-focus",
+      "expected": true,
+      "actual": true,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 1440,
+      "build_sha256": "876442d991286619328fc942682eeb63247c89c6eb87aa1abc08512b7d274cf0"
+    },
+    {
+      "id": "CQ-transfer-b-1440-reduced-motion",
+      "expected": {
+        "scroll": "auto",
+        "active": 0
+      },
+      "actual": {
+        "scroll": "auto",
+        "active": 0
+      },
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 1440,
+      "build_sha256": "876442d991286619328fc942682eeb63247c89c6eb87aa1abc08512b7d274cf0"
+    },
+    {
+      "id": "CQ-transfer-b-1440-script-errors",
+      "expected": 0,
+      "actual": 0,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 1440,
+      "build_sha256": "876442d991286619328fc942682eeb63247c89c6eb87aa1abc08512b7d274cf0"
+    },
+    {
+      "id": "CQ-transfer-b-1440-resource-errors",
+      "expected": 0,
+      "actual": 0,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 1440,
+      "build_sha256": "876442d991286619328fc942682eeb63247c89c6eb87aa1abc08512b7d274cf0"
+    },
+    {
+      "id": "CQ-transfer-b-1440-external-network",
+      "expected": 0,
+      "actual": 0,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 1440,
+      "build_sha256": "876442d991286619328fc942682eeb63247c89c6eb87aa1abc08512b7d274cf0"
+    },
+    {
+      "id": "CQ-transfer-b-390-horizontal-overflow",
+      "expected": 390,
+      "actual": 390,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 390,
+      "build_sha256": "876442d991286619328fc942682eeb63247c89c6eb87aa1abc08512b7d274cf0"
+    },
+    {
+      "id": "CQ-transfer-b-390-images-loaded",
+      "expected": 0,
+      "actual": 0,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 390,
+      "build_sha256": "876442d991286619328fc942682eeb63247c89c6eb87aa1abc08512b7d274cf0"
+    },
+    {
+      "id": "CQ-transfer-b-390-learning-path-visible",
+      "expected": "effective opacity > 0",
+      "actual": 1,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 390,
+      "build_sha256": "876442d991286619328fc942682eeb63247c89c6eb87aa1abc08512b7d274cf0"
+    },
+    {
+      "id": "CQ-transfer-b-390-learning-path-content-fits",
+      "expected": true,
+      "actual": true,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 390,
+      "build_sha256": "876442d991286619328fc942682eeb63247c89c6eb87aa1abc08512b7d274cf0"
+    },
+    {
+      "id": "CQ-transfer-b-390-headline-fits",
+      "expected": true,
+      "actual": true,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 390,
+      "build_sha256": "876442d991286619328fc942682eeb63247c89c6eb87aa1abc08512b7d274cf0"
+    },
+    {
+      "id": "CQ-transfer-b-390-primary-action-in-initial-viewport",
+      "expected": true,
+      "actual": true,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 390,
+      "build_sha256": "876442d991286619328fc942682eeb63247c89c6eb87aa1abc08512b7d274cf0"
+    },
+    {
+      "id": "CQ-transfer-b-390-sampled-text-contrast",
+      "expected": ">= 4.5 selected solid-color pairs",
+      "actual": 6.741,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 390,
+      "build_sha256": "876442d991286619328fc942682eeb63247c89c6eb87aa1abc08512b7d274cf0"
+    },
+    {
+      "id": "CQ-transfer-b-390-no-external-actions",
+      "expected": 0,
+      "actual": 0,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 390,
+      "build_sha256": "876442d991286619328fc942682eeb63247c89c6eb87aa1abc08512b7d274cf0"
+    },
+    {
+      "id": "CQ-transfer-b-390-keyboard-focus-visible",
+      "expected": true,
+      "actual": true,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 390,
+      "build_sha256": "876442d991286619328fc942682eeb63247c89c6eb87aa1abc08512b7d274cf0"
+    },
+    {
+      "id": "CQ-transfer-b-390-primary-navigation",
+      "expected": "#oficinas",
+      "actual": "#oficinas",
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 390,
+      "build_sha256": "876442d991286619328fc942682eeb63247c89c6eb87aa1abc08512b7d274cf0"
+    },
+    {
+      "id": "CQ-transfer-b-390-filter",
+      "expected": 1,
+      "actual": 1,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 390,
+      "build_sha256": "876442d991286619328fc942682eeb63247c89c6eb87aa1abc08512b7d274cf0"
+    },
+    {
+      "id": "CQ-transfer-b-390-dialog-open",
+      "expected": true,
+      "actual": true,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 390,
+      "build_sha256": "876442d991286619328fc942682eeb63247c89c6eb87aa1abc08512b7d274cf0"
+    },
+    {
+      "id": "CQ-transfer-b-390-dialog-initial-focus",
+      "expected": true,
+      "actual": true,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 390,
+      "build_sha256": "876442d991286619328fc942682eeb63247c89c6eb87aa1abc08512b7d274cf0"
+    },
+    {
+      "id": "CQ-transfer-b-390-local-calculation",
+      "expected": "Seu plano: 3 semanas, com at\u00e9 2 horas por semana.",
+      "actual": "Seu plano: 3 semanas, com at\u00e9 2 horas por semana.",
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 390,
+      "build_sha256": "876442d991286619328fc942682eeb63247c89c6eb87aa1abc08512b7d274cf0"
+    },
+    {
+      "id": "CQ-transfer-b-390-invalid-input",
+      "expected": true,
+      "actual": true,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 390,
+      "build_sha256": "876442d991286619328fc942682eeb63247c89c6eb87aa1abc08512b7d274cf0"
+    },
+    {
+      "id": "CQ-transfer-b-390-dialog-focus-wrap",
+      "expected": true,
+      "actual": true,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 390,
+      "build_sha256": "876442d991286619328fc942682eeb63247c89c6eb87aa1abc08512b7d274cf0"
+    },
+    {
+      "id": "CQ-transfer-b-390-escape-restores-focus",
+      "expected": true,
+      "actual": true,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 390,
+      "build_sha256": "876442d991286619328fc942682eeb63247c89c6eb87aa1abc08512b7d274cf0"
+    },
+    {
+      "id": "CQ-transfer-b-390-reduced-motion",
+      "expected": {
+        "scroll": "auto",
+        "active": 0
+      },
+      "actual": {
+        "scroll": "auto",
+        "active": 0
+      },
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 390,
+      "build_sha256": "876442d991286619328fc942682eeb63247c89c6eb87aa1abc08512b7d274cf0"
+    },
+    {
+      "id": "CQ-transfer-b-390-script-errors",
+      "expected": 0,
+      "actual": 0,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 390,
+      "build_sha256": "876442d991286619328fc942682eeb63247c89c6eb87aa1abc08512b7d274cf0"
+    },
+    {
+      "id": "CQ-transfer-b-390-resource-errors",
+      "expected": 0,
+      "actual": 0,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 390,
+      "build_sha256": "876442d991286619328fc942682eeb63247c89c6eb87aa1abc08512b7d274cf0"
+    },
+    {
+      "id": "CQ-transfer-b-390-external-network",
+      "expected": 0,
+      "actual": 0,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 390,
+      "build_sha256": "876442d991286619328fc942682eeb63247c89c6eb87aa1abc08512b7d274cf0"
+    },
+    {
+      "id": "CQ-transfer-s-1440-horizontal-overflow",
+      "expected": 1440,
+      "actual": 1440,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 1440,
+      "build_sha256": "366f27a3aefdba4eaf99bd23502e66533e34456c2be648f753befceb1068bb60"
+    },
+    {
+      "id": "CQ-transfer-s-1440-images-loaded",
+      "expected": 0,
+      "actual": 0,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 1440,
+      "build_sha256": "366f27a3aefdba4eaf99bd23502e66533e34456c2be648f753befceb1068bb60"
+    },
+    {
+      "id": "CQ-transfer-s-1440-learning-path-visible",
+      "expected": "effective opacity > 0",
+      "actual": 0,
+      "outcome": "FAIL",
+      "execution_mode": "browser_observed",
+      "viewport_width": 1440,
+      "build_sha256": "366f27a3aefdba4eaf99bd23502e66533e34456c2be648f753befceb1068bb60"
+    },
+    {
+      "id": "CQ-transfer-s-1440-learning-path-content-fits",
+      "expected": true,
+      "actual": true,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 1440,
+      "build_sha256": "366f27a3aefdba4eaf99bd23502e66533e34456c2be648f753befceb1068bb60"
+    },
+    {
+      "id": "CQ-transfer-s-1440-headline-fits",
+      "expected": true,
+      "actual": true,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 1440,
+      "build_sha256": "366f27a3aefdba4eaf99bd23502e66533e34456c2be648f753befceb1068bb60"
+    },
+    {
+      "id": "CQ-transfer-s-1440-primary-action-in-initial-viewport",
+      "expected": true,
+      "actual": true,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 1440,
+      "build_sha256": "366f27a3aefdba4eaf99bd23502e66533e34456c2be648f753befceb1068bb60"
+    },
+    {
+      "id": "CQ-transfer-s-1440-sampled-text-contrast",
+      "expected": ">= 4.5 selected solid-color pairs",
+      "actual": 6.741,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 1440,
+      "build_sha256": "366f27a3aefdba4eaf99bd23502e66533e34456c2be648f753befceb1068bb60"
+    },
+    {
+      "id": "CQ-transfer-s-1440-no-external-actions",
+      "expected": 0,
+      "actual": 0,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 1440,
+      "build_sha256": "366f27a3aefdba4eaf99bd23502e66533e34456c2be648f753befceb1068bb60"
+    },
+    {
+      "id": "CQ-transfer-s-1440-keyboard-focus-visible",
+      "expected": true,
+      "actual": true,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 1440,
+      "build_sha256": "366f27a3aefdba4eaf99bd23502e66533e34456c2be648f753befceb1068bb60"
+    },
+    {
+      "id": "CQ-transfer-s-1440-primary-navigation",
+      "expected": "#oficinas",
+      "actual": "#oficinas",
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 1440,
+      "build_sha256": "366f27a3aefdba4eaf99bd23502e66533e34456c2be648f753befceb1068bb60"
+    },
+    {
+      "id": "CQ-transfer-s-1440-filter",
+      "expected": 1,
+      "actual": 1,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 1440,
+      "build_sha256": "366f27a3aefdba4eaf99bd23502e66533e34456c2be648f753befceb1068bb60"
+    },
+    {
+      "id": "CQ-transfer-s-1440-dialog-open",
+      "expected": true,
+      "actual": true,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 1440,
+      "build_sha256": "366f27a3aefdba4eaf99bd23502e66533e34456c2be648f753befceb1068bb60"
+    },
+    {
+      "id": "CQ-transfer-s-1440-dialog-initial-focus",
+      "expected": true,
+      "actual": true,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 1440,
+      "build_sha256": "366f27a3aefdba4eaf99bd23502e66533e34456c2be648f753befceb1068bb60"
+    },
+    {
+      "id": "CQ-transfer-s-1440-local-calculation",
+      "expected": "Seu plano: 3 semanas, com at\u00e9 2 horas por semana.",
+      "actual": "Seu plano: 3 semanas, com at\u00e9 2 horas por semana.",
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 1440,
+      "build_sha256": "366f27a3aefdba4eaf99bd23502e66533e34456c2be648f753befceb1068bb60"
+    },
+    {
+      "id": "CQ-transfer-s-1440-invalid-input",
+      "expected": true,
+      "actual": true,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 1440,
+      "build_sha256": "366f27a3aefdba4eaf99bd23502e66533e34456c2be648f753befceb1068bb60"
+    },
+    {
+      "id": "CQ-transfer-s-1440-dialog-focus-wrap",
+      "expected": true,
+      "actual": true,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 1440,
+      "build_sha256": "366f27a3aefdba4eaf99bd23502e66533e34456c2be648f753befceb1068bb60"
+    },
+    {
+      "id": "CQ-transfer-s-1440-escape-restores-focus",
+      "expected": true,
+      "actual": true,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 1440,
+      "build_sha256": "366f27a3aefdba4eaf99bd23502e66533e34456c2be648f753befceb1068bb60"
+    },
+    {
+      "id": "CQ-transfer-s-1440-reduced-motion",
+      "expected": {
+        "scroll": "auto",
+        "active": 0
+      },
+      "actual": {
+        "scroll": "auto",
+        "active": 0
+      },
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 1440,
+      "build_sha256": "366f27a3aefdba4eaf99bd23502e66533e34456c2be648f753befceb1068bb60"
+    },
+    {
+      "id": "CQ-transfer-s-1440-script-errors",
+      "expected": 0,
+      "actual": 0,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 1440,
+      "build_sha256": "366f27a3aefdba4eaf99bd23502e66533e34456c2be648f753befceb1068bb60"
+    },
+    {
+      "id": "CQ-transfer-s-1440-resource-errors",
+      "expected": 0,
+      "actual": 0,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 1440,
+      "build_sha256": "366f27a3aefdba4eaf99bd23502e66533e34456c2be648f753befceb1068bb60"
+    },
+    {
+      "id": "CQ-transfer-s-1440-external-network",
+      "expected": 0,
+      "actual": 0,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 1440,
+      "build_sha256": "366f27a3aefdba4eaf99bd23502e66533e34456c2be648f753befceb1068bb60"
+    },
+    {
+      "id": "CQ-transfer-s-390-horizontal-overflow",
+      "expected": 390,
+      "actual": 390,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 390,
+      "build_sha256": "366f27a3aefdba4eaf99bd23502e66533e34456c2be648f753befceb1068bb60"
+    },
+    {
+      "id": "CQ-transfer-s-390-images-loaded",
+      "expected": 0,
+      "actual": 0,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 390,
+      "build_sha256": "366f27a3aefdba4eaf99bd23502e66533e34456c2be648f753befceb1068bb60"
+    },
+    {
+      "id": "CQ-transfer-s-390-learning-path-visible",
+      "expected": "effective opacity > 0",
+      "actual": 0,
+      "outcome": "FAIL",
+      "execution_mode": "browser_observed",
+      "viewport_width": 390,
+      "build_sha256": "366f27a3aefdba4eaf99bd23502e66533e34456c2be648f753befceb1068bb60"
+    },
+    {
+      "id": "CQ-transfer-s-390-learning-path-content-fits",
+      "expected": true,
+      "actual": true,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 390,
+      "build_sha256": "366f27a3aefdba4eaf99bd23502e66533e34456c2be648f753befceb1068bb60"
+    },
+    {
+      "id": "CQ-transfer-s-390-headline-fits",
+      "expected": true,
+      "actual": true,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 390,
+      "build_sha256": "366f27a3aefdba4eaf99bd23502e66533e34456c2be648f753befceb1068bb60"
+    },
+    {
+      "id": "CQ-transfer-s-390-primary-action-in-initial-viewport",
+      "expected": true,
+      "actual": true,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 390,
+      "build_sha256": "366f27a3aefdba4eaf99bd23502e66533e34456c2be648f753befceb1068bb60"
+    },
+    {
+      "id": "CQ-transfer-s-390-sampled-text-contrast",
+      "expected": ">= 4.5 selected solid-color pairs",
+      "actual": 6.741,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 390,
+      "build_sha256": "366f27a3aefdba4eaf99bd23502e66533e34456c2be648f753befceb1068bb60"
+    },
+    {
+      "id": "CQ-transfer-s-390-no-external-actions",
+      "expected": 0,
+      "actual": 0,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 390,
+      "build_sha256": "366f27a3aefdba4eaf99bd23502e66533e34456c2be648f753befceb1068bb60"
+    },
+    {
+      "id": "CQ-transfer-s-390-keyboard-focus-visible",
+      "expected": true,
+      "actual": true,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 390,
+      "build_sha256": "366f27a3aefdba4eaf99bd23502e66533e34456c2be648f753befceb1068bb60"
+    },
+    {
+      "id": "CQ-transfer-s-390-primary-navigation",
+      "expected": "#oficinas",
+      "actual": "#oficinas",
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 390,
+      "build_sha256": "366f27a3aefdba4eaf99bd23502e66533e34456c2be648f753befceb1068bb60"
+    },
+    {
+      "id": "CQ-transfer-s-390-filter",
+      "expected": 1,
+      "actual": 1,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 390,
+      "build_sha256": "366f27a3aefdba4eaf99bd23502e66533e34456c2be648f753befceb1068bb60"
+    },
+    {
+      "id": "CQ-transfer-s-390-dialog-open",
+      "expected": true,
+      "actual": true,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 390,
+      "build_sha256": "366f27a3aefdba4eaf99bd23502e66533e34456c2be648f753befceb1068bb60"
+    },
+    {
+      "id": "CQ-transfer-s-390-dialog-initial-focus",
+      "expected": true,
+      "actual": true,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 390,
+      "build_sha256": "366f27a3aefdba4eaf99bd23502e66533e34456c2be648f753befceb1068bb60"
+    },
+    {
+      "id": "CQ-transfer-s-390-local-calculation",
+      "expected": "Seu plano: 3 semanas, com at\u00e9 2 horas por semana.",
+      "actual": "Seu plano: 3 semanas, com at\u00e9 2 horas por semana.",
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 390,
+      "build_sha256": "366f27a3aefdba4eaf99bd23502e66533e34456c2be648f753befceb1068bb60"
+    },
+    {
+      "id": "CQ-transfer-s-390-invalid-input",
+      "expected": true,
+      "actual": true,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 390,
+      "build_sha256": "366f27a3aefdba4eaf99bd23502e66533e34456c2be648f753befceb1068bb60"
+    },
+    {
+      "id": "CQ-transfer-s-390-dialog-focus-wrap",
+      "expected": true,
+      "actual": true,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 390,
+      "build_sha256": "366f27a3aefdba4eaf99bd23502e66533e34456c2be648f753befceb1068bb60"
+    },
+    {
+      "id": "CQ-transfer-s-390-escape-restores-focus",
+      "expected": true,
+      "actual": true,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 390,
+      "build_sha256": "366f27a3aefdba4eaf99bd23502e66533e34456c2be648f753befceb1068bb60"
+    },
+    {
+      "id": "CQ-transfer-s-390-reduced-motion",
+      "expected": {
+        "scroll": "auto",
+        "active": 0
+      },
+      "actual": {
+        "scroll": "auto",
+        "active": 0
+      },
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 390,
+      "build_sha256": "366f27a3aefdba4eaf99bd23502e66533e34456c2be648f753befceb1068bb60"
+    },
+    {
+      "id": "CQ-transfer-s-390-script-errors",
+      "expected": 0,
+      "actual": 0,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 390,
+      "build_sha256": "366f27a3aefdba4eaf99bd23502e66533e34456c2be648f753befceb1068bb60"
+    },
+    {
+      "id": "CQ-transfer-s-390-resource-errors",
+      "expected": 0,
+      "actual": 0,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 390,
+      "build_sha256": "366f27a3aefdba4eaf99bd23502e66533e34456c2be648f753befceb1068bb60"
+    },
+    {
+      "id": "CQ-transfer-s-390-external-network",
+      "expected": 0,
+      "actual": 0,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 390,
+      "build_sha256": "366f27a3aefdba4eaf99bd23502e66533e34456c2be648f753befceb1068bb60"
+    },
+    {
+      "id": "CQ-transfer-r-1440-horizontal-overflow",
+      "expected": 1440,
+      "actual": 1440,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 1440,
+      "build_sha256": "876442d991286619328fc942682eeb63247c89c6eb87aa1abc08512b7d274cf0"
+    },
+    {
+      "id": "CQ-transfer-r-1440-images-loaded",
+      "expected": 0,
+      "actual": 0,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 1440,
+      "build_sha256": "876442d991286619328fc942682eeb63247c89c6eb87aa1abc08512b7d274cf0"
+    },
+    {
+      "id": "CQ-transfer-r-1440-learning-path-visible",
+      "expected": "effective opacity > 0",
+      "actual": 1,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 1440,
+      "build_sha256": "876442d991286619328fc942682eeb63247c89c6eb87aa1abc08512b7d274cf0"
+    },
+    {
+      "id": "CQ-transfer-r-1440-learning-path-content-fits",
+      "expected": true,
+      "actual": true,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 1440,
+      "build_sha256": "876442d991286619328fc942682eeb63247c89c6eb87aa1abc08512b7d274cf0"
+    },
+    {
+      "id": "CQ-transfer-r-1440-headline-fits",
+      "expected": true,
+      "actual": true,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 1440,
+      "build_sha256": "876442d991286619328fc942682eeb63247c89c6eb87aa1abc08512b7d274cf0"
+    },
+    {
+      "id": "CQ-transfer-r-1440-primary-action-in-initial-viewport",
+      "expected": true,
+      "actual": true,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 1440,
+      "build_sha256": "876442d991286619328fc942682eeb63247c89c6eb87aa1abc08512b7d274cf0"
+    },
+    {
+      "id": "CQ-transfer-r-1440-sampled-text-contrast",
+      "expected": ">= 4.5 selected solid-color pairs",
+      "actual": 6.741,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 1440,
+      "build_sha256": "876442d991286619328fc942682eeb63247c89c6eb87aa1abc08512b7d274cf0"
+    },
+    {
+      "id": "CQ-transfer-r-1440-no-external-actions",
+      "expected": 0,
+      "actual": 0,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 1440,
+      "build_sha256": "876442d991286619328fc942682eeb63247c89c6eb87aa1abc08512b7d274cf0"
+    },
+    {
+      "id": "CQ-transfer-r-1440-keyboard-focus-visible",
+      "expected": true,
+      "actual": true,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 1440,
+      "build_sha256": "876442d991286619328fc942682eeb63247c89c6eb87aa1abc08512b7d274cf0"
+    },
+    {
+      "id": "CQ-transfer-r-1440-primary-navigation",
+      "expected": "#oficinas",
+      "actual": "#oficinas",
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 1440,
+      "build_sha256": "876442d991286619328fc942682eeb63247c89c6eb87aa1abc08512b7d274cf0"
+    },
+    {
+      "id": "CQ-transfer-r-1440-filter",
+      "expected": 1,
+      "actual": 1,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 1440,
+      "build_sha256": "876442d991286619328fc942682eeb63247c89c6eb87aa1abc08512b7d274cf0"
+    },
+    {
+      "id": "CQ-transfer-r-1440-dialog-open",
+      "expected": true,
+      "actual": true,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 1440,
+      "build_sha256": "876442d991286619328fc942682eeb63247c89c6eb87aa1abc08512b7d274cf0"
+    },
+    {
+      "id": "CQ-transfer-r-1440-dialog-initial-focus",
+      "expected": true,
+      "actual": true,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 1440,
+      "build_sha256": "876442d991286619328fc942682eeb63247c89c6eb87aa1abc08512b7d274cf0"
+    },
+    {
+      "id": "CQ-transfer-r-1440-local-calculation",
+      "expected": "Seu plano: 3 semanas, com at\u00e9 2 horas por semana.",
+      "actual": "Seu plano: 3 semanas, com at\u00e9 2 horas por semana.",
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 1440,
+      "build_sha256": "876442d991286619328fc942682eeb63247c89c6eb87aa1abc08512b7d274cf0"
+    },
+    {
+      "id": "CQ-transfer-r-1440-invalid-input",
+      "expected": true,
+      "actual": true,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 1440,
+      "build_sha256": "876442d991286619328fc942682eeb63247c89c6eb87aa1abc08512b7d274cf0"
+    },
+    {
+      "id": "CQ-transfer-r-1440-dialog-focus-wrap",
+      "expected": true,
+      "actual": true,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 1440,
+      "build_sha256": "876442d991286619328fc942682eeb63247c89c6eb87aa1abc08512b7d274cf0"
+    },
+    {
+      "id": "CQ-transfer-r-1440-escape-restores-focus",
+      "expected": true,
+      "actual": true,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 1440,
+      "build_sha256": "876442d991286619328fc942682eeb63247c89c6eb87aa1abc08512b7d274cf0"
+    },
+    {
+      "id": "CQ-transfer-r-1440-reduced-motion",
+      "expected": {
+        "scroll": "auto",
+        "active": 0
+      },
+      "actual": {
+        "scroll": "auto",
+        "active": 0
+      },
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 1440,
+      "build_sha256": "876442d991286619328fc942682eeb63247c89c6eb87aa1abc08512b7d274cf0"
+    },
+    {
+      "id": "CQ-transfer-r-1440-script-errors",
+      "expected": 0,
+      "actual": 0,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 1440,
+      "build_sha256": "876442d991286619328fc942682eeb63247c89c6eb87aa1abc08512b7d274cf0"
+    },
+    {
+      "id": "CQ-transfer-r-1440-resource-errors",
+      "expected": 0,
+      "actual": 0,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 1440,
+      "build_sha256": "876442d991286619328fc942682eeb63247c89c6eb87aa1abc08512b7d274cf0"
+    },
+    {
+      "id": "CQ-transfer-r-1440-external-network",
+      "expected": 0,
+      "actual": 0,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 1440,
+      "build_sha256": "876442d991286619328fc942682eeb63247c89c6eb87aa1abc08512b7d274cf0"
+    },
+    {
+      "id": "CQ-transfer-r-390-horizontal-overflow",
+      "expected": 390,
+      "actual": 390,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 390,
+      "build_sha256": "876442d991286619328fc942682eeb63247c89c6eb87aa1abc08512b7d274cf0"
+    },
+    {
+      "id": "CQ-transfer-r-390-images-loaded",
+      "expected": 0,
+      "actual": 0,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 390,
+      "build_sha256": "876442d991286619328fc942682eeb63247c89c6eb87aa1abc08512b7d274cf0"
+    },
+    {
+      "id": "CQ-transfer-r-390-learning-path-visible",
+      "expected": "effective opacity > 0",
+      "actual": 1,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 390,
+      "build_sha256": "876442d991286619328fc942682eeb63247c89c6eb87aa1abc08512b7d274cf0"
+    },
+    {
+      "id": "CQ-transfer-r-390-learning-path-content-fits",
+      "expected": true,
+      "actual": true,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 390,
+      "build_sha256": "876442d991286619328fc942682eeb63247c89c6eb87aa1abc08512b7d274cf0"
+    },
+    {
+      "id": "CQ-transfer-r-390-headline-fits",
+      "expected": true,
+      "actual": true,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 390,
+      "build_sha256": "876442d991286619328fc942682eeb63247c89c6eb87aa1abc08512b7d274cf0"
+    },
+    {
+      "id": "CQ-transfer-r-390-primary-action-in-initial-viewport",
+      "expected": true,
+      "actual": true,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 390,
+      "build_sha256": "876442d991286619328fc942682eeb63247c89c6eb87aa1abc08512b7d274cf0"
+    },
+    {
+      "id": "CQ-transfer-r-390-sampled-text-contrast",
+      "expected": ">= 4.5 selected solid-color pairs",
+      "actual": 6.741,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 390,
+      "build_sha256": "876442d991286619328fc942682eeb63247c89c6eb87aa1abc08512b7d274cf0"
+    },
+    {
+      "id": "CQ-transfer-r-390-no-external-actions",
+      "expected": 0,
+      "actual": 0,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 390,
+      "build_sha256": "876442d991286619328fc942682eeb63247c89c6eb87aa1abc08512b7d274cf0"
+    },
+    {
+      "id": "CQ-transfer-r-390-keyboard-focus-visible",
+      "expected": true,
+      "actual": true,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 390,
+      "build_sha256": "876442d991286619328fc942682eeb63247c89c6eb87aa1abc08512b7d274cf0"
+    },
+    {
+      "id": "CQ-transfer-r-390-primary-navigation",
+      "expected": "#oficinas",
+      "actual": "#oficinas",
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 390,
+      "build_sha256": "876442d991286619328fc942682eeb63247c89c6eb87aa1abc08512b7d274cf0"
+    },
+    {
+      "id": "CQ-transfer-r-390-filter",
+      "expected": 1,
+      "actual": 1,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 390,
+      "build_sha256": "876442d991286619328fc942682eeb63247c89c6eb87aa1abc08512b7d274cf0"
+    },
+    {
+      "id": "CQ-transfer-r-390-dialog-open",
+      "expected": true,
+      "actual": true,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 390,
+      "build_sha256": "876442d991286619328fc942682eeb63247c89c6eb87aa1abc08512b7d274cf0"
+    },
+    {
+      "id": "CQ-transfer-r-390-dialog-initial-focus",
+      "expected": true,
+      "actual": true,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 390,
+      "build_sha256": "876442d991286619328fc942682eeb63247c89c6eb87aa1abc08512b7d274cf0"
+    },
+    {
+      "id": "CQ-transfer-r-390-local-calculation",
+      "expected": "Seu plano: 3 semanas, com at\u00e9 2 horas por semana.",
+      "actual": "Seu plano: 3 semanas, com at\u00e9 2 horas por semana.",
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 390,
+      "build_sha256": "876442d991286619328fc942682eeb63247c89c6eb87aa1abc08512b7d274cf0"
+    },
+    {
+      "id": "CQ-transfer-r-390-invalid-input",
+      "expected": true,
+      "actual": true,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 390,
+      "build_sha256": "876442d991286619328fc942682eeb63247c89c6eb87aa1abc08512b7d274cf0"
+    },
+    {
+      "id": "CQ-transfer-r-390-dialog-focus-wrap",
+      "expected": true,
+      "actual": true,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 390,
+      "build_sha256": "876442d991286619328fc942682eeb63247c89c6eb87aa1abc08512b7d274cf0"
+    },
+    {
+      "id": "CQ-transfer-r-390-escape-restores-focus",
+      "expected": true,
+      "actual": true,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 390,
+      "build_sha256": "876442d991286619328fc942682eeb63247c89c6eb87aa1abc08512b7d274cf0"
+    },
+    {
+      "id": "CQ-transfer-r-390-reduced-motion",
+      "expected": {
+        "scroll": "auto",
+        "active": 0
+      },
+      "actual": {
+        "scroll": "auto",
+        "active": 0
+      },
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 390,
+      "build_sha256": "876442d991286619328fc942682eeb63247c89c6eb87aa1abc08512b7d274cf0"
+    },
+    {
+      "id": "CQ-transfer-r-390-script-errors",
+      "expected": 0,
+      "actual": 0,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 390,
+      "build_sha256": "876442d991286619328fc942682eeb63247c89c6eb87aa1abc08512b7d274cf0"
+    },
+    {
+      "id": "CQ-transfer-r-390-resource-errors",
+      "expected": 0,
+      "actual": 0,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 390,
+      "build_sha256": "876442d991286619328fc942682eeb63247c89c6eb87aa1abc08512b7d274cf0"
+    },
+    {
+      "id": "CQ-transfer-r-390-external-network",
+      "expected": 0,
+      "actual": 0,
+      "outcome": "PASS",
+      "execution_mode": "browser_observed",
+      "viewport_width": 390,
+      "build_sha256": "876442d991286619328fc942682eeb63247c89c6eb87aa1abc08512b7d274cf0"
+    }
+  ],
+  "evidence": [
+    {
+      "id": "transfer-a-1440-hero.png",
+      "sha256": "de9e81b3852eb9890e5ce9296cd2770b8ed4267ba4960249d8151277be324234"
+    },
+    {
+      "id": "transfer-a-1440-full.png",
+      "sha256": "9d8f9f891a95072e4d068765570eaa19541de7727bea55083600ddd74d051571"
+    },
+    {
+      "id": "transfer-a-1440-interaction.png",
+      "sha256": "27bcc7c56c3da6ca923df202cdbfb9c185d7b33c3009f93be03028922a239f06"
+    },
+    {
+      "id": "transfer-a-390-hero.png",
+      "sha256": "5236e1257b734e7860628d3fa133cdfda99a9291ccac2699062d3918b2990d5a"
+    },
+    {
+      "id": "transfer-a-390-full.png",
+      "sha256": "f883e4e5e0503108905ddcbd128b970f08219165f98cd70a75272188358da986"
+    },
+    {
+      "id": "transfer-a-390-interaction.png",
+      "sha256": "b745afcd373771ddeae6ce6b6a4ad6da8223fd58b040f994c7cf4f430f54e8e5"
+    },
+    {
+      "id": "transfer-b-1440-hero.png",
+      "sha256": "263ac668bbf66477931ccc29918e49937c16bd0fe1a188a1bb02e0c88ef8e5ae"
+    },
+    {
+      "id": "transfer-b-1440-full.png",
+      "sha256": "4d2202bc71afff532a46c9c9418addd5250e20bf5c9b9707da2b7b7309aae71a"
+    },
+    {
+      "id": "transfer-b-1440-interaction.png",
+      "sha256": "90c61a3aede909d0a53ab7f28e2915b56a27f80646944f6529218370870c665f"
+    },
+    {
+      "id": "transfer-b-390-hero.png",
+      "sha256": "267a9a0e791ed1ef48723e5e014c5dfe3aca009d71d323dd27906d3e6f8fb8c5"
+    },
+    {
+      "id": "transfer-b-390-full.png",
+      "sha256": "889901b469d24e0064292484890a590bc2746eedaceccf13cd043dc6d137156f"
+    },
+    {
+      "id": "transfer-b-390-interaction.png",
+      "sha256": "54d046721887f186919d001964cd23c7f299c67af9e84f7304d17be0c2a4a283"
+    },
+    {
+      "id": "transfer-s-1440-hero.png",
+      "sha256": "e416aa9a9097f1208310aa99d87f81090234fe623e5f010afcfb5dc84ea0beef"
+    },
+    {
+      "id": "transfer-s-1440-full.png",
+      "sha256": "58b49f883f4d556b17365bc6cbd0630b0928d3e533dea44e4210f4468156969b"
+    },
+    {
+      "id": "transfer-s-1440-interaction.png",
+      "sha256": "90c61a3aede909d0a53ab7f28e2915b56a27f80646944f6529218370870c665f"
+    },
+    {
+      "id": "transfer-s-390-hero.png",
+      "sha256": "3c25ee2cae0aa8693bfd95a4d126650f3d445ef4ec9eb46b2f6cdc726f8652b4"
+    },
+    {
+      "id": "transfer-s-390-full.png",
+      "sha256": "f20645f4dc8698fd8239acc59c15b79c47cf164deedc0e50c5936f769ffcce8b"
+    },
+    {
+      "id": "transfer-s-390-interaction.png",
+      "sha256": "54d046721887f186919d001964cd23c7f299c67af9e84f7304d17be0c2a4a283"
+    },
+    {
+      "id": "transfer-r-1440-hero.png",
+      "sha256": "263ac668bbf66477931ccc29918e49937c16bd0fe1a188a1bb02e0c88ef8e5ae"
+    },
+    {
+      "id": "transfer-r-1440-full.png",
+      "sha256": "4d2202bc71afff532a46c9c9418addd5250e20bf5c9b9707da2b7b7309aae71a"
+    },
+    {
+      "id": "transfer-r-1440-interaction.png",
+      "sha256": "1d1911e36dd8b6d658c7f83fdcd346a9073c7589ef0221ee4fa291f6aa6386c7"
+    },
+    {
+      "id": "transfer-r-390-hero.png",
+      "sha256": "267a9a0e791ed1ef48723e5e014c5dfe3aca009d71d323dd27906d3e6f8fb8c5"
+    },
+    {
+      "id": "transfer-r-390-full.png",
+      "sha256": "889901b469d24e0064292484890a590bc2746eedaceccf13cd043dc6d137156f"
+    },
+    {
+      "id": "transfer-r-390-interaction.png",
+      "sha256": "54d046721887f186919d001964cd23c7f299c67af9e84f7304d17be0c2a4a283"
+    }
+  ],
+  "counts": {
+    "PASS": 166,
+    "FAIL": 2
+  },
+  "expected_research_failures": [
+    "CQ-transfer-s-1440-learning-path-visible",
+    "CQ-transfer-s-390-learning-path-visible"
+  ],
+  "expected_research_failure": null,
+  "provider_generation_calls": 0,
+  "human_quality_approval": "UNVERIFIED",
+  "limitation": "One automated reviewer; Chromium emulation; no randomized generation experiment or professional certification."
+}

@@ -1,0 +1,764 @@
+{
+  "schema_version": "0.2.0",
+  "route": "WEB_PREVIEW",
+  "mode": "FAST",
+  "project": "Oficina Aurora — fictional research fixture",
+  "build_version": "CQ2-B",
+  "state": "PREVIEW_REVIEWED",
+  "verdict": "PARTIAL",
+  "execution": {
+    "execution_mode": "MANUAL_SPEC_GUIDED",
+    "skill_package_version": "2.5.0",
+    "methods": [
+      {
+        "name": "Web Experience",
+        "state": "EXECUTED"
+      },
+      {
+        "name": "Typography & Layout",
+        "state": "EXECUTED"
+      }
+    ],
+    "tools": [
+      "local HTML/CSS/JS",
+      "Chromium 153.0.8010.12",
+      "Playwright 1.62.1"
+    ],
+    "paid_authorized": false,
+    "public_deploy_authorized": false
+  },
+  "WEB_BRIEF": {
+    "deliverable_scope": "Free isolated fictional preview and comparison",
+    "business_kind": "SERVICE",
+    "user_goal": "Find a workshop and estimate weekly learning time locally",
+    "audience_basis": "Fictional adult beginners with limited weekly time",
+    "product_service_truth_refs": [
+      "phase2/fixture/index.html"
+    ],
+    "known_unknown_boundary": [
+      "All organization, workshop and offer content is fictional. No real enrollment, prices or certification."
+    ],
+    "brand_authority_state": "PROVISIONAL",
+    "primary_action_intent": "Explore workshops, then calculate a local plan",
+    "task_completion_condition": "Filter a topic, open a workshop plan and calculate weeks; reject invalid weekly hours"
+  },
+  "WEB_DIRECTION": {
+    "value_proposition": "Practical learning in a manageable weekly plan",
+    "primary_cta_intent": "Reach workshop choices without suggesting enrollment",
+    "sections_and_purpose": [
+      {
+        "id": "main",
+        "purpose": "Message, CTA and meaningful learning path"
+      },
+      {
+        "id": "oficinas",
+        "purpose": "Compare topic, hours, level and planning action"
+      },
+      {
+        "id": "como",
+        "purpose": "Explain the local calculation and fictional scope"
+      }
+    ],
+    "visual_direction": "Focus on the message/action and ordered learning path. On mobile keep message and CTA before the visual. Emphasize workshop planning buttons and grouped stage labels. Hidden stages, clipped truth text, unusable action or changed course facts are unacceptable; increased whitespace alone is not a defect.",
+    "creative_open_zones": [
+      "CSS typography, spacing, borders and emphasis; no copy, facts, SVG or JavaScript changes"
+    ],
+    "brand_alignment": "Preserve navy, green, warm paper, amber geometric original asset and approachable tone",
+    "claim_and_offer_boundaries": "No real courses, available slots, testimonials, certificates or claims of conversion gains",
+    "motion_fallback_and_controls": "No required animation; smooth navigation becomes instant with reduced motion"
+  },
+  "WEB_ASSET_PLAN": {
+    "assets_used": [
+      {
+        "path": "path.svg",
+        "origin": "Original geometric SVG authored for this fictional experiment",
+        "approval": "APPROVED_FOR_THIS_USE",
+        "rights": "CLEARED",
+        "use_scope": "Research fixture"
+      }
+    ],
+    "asset_authority_and_rights": "Original code/SVG, no third-party media or fonts",
+    "generation_required_decision": "No image/video generation required",
+    "product_identity_preservation": "Same HTML, app.js and SVG bytes across variants; inspect final visibility separately",
+    "provisional_vs_approved_labels": "Fictional identity, no customer canon"
+  },
+  "WEB_PREVIEW_BUILD": {
+    "preview_status": "AVAILABLE_VERIFIED",
+    "source_files": [
+      "index.html",
+      "styles.css",
+      "app.js",
+      "path.svg"
+    ],
+    "verified_preview_ref_or_local_open_instructions": "Reproduce with prepare_transfer.py and loopback static server; no public deployment",
+    "responsive_strategy": "Two columns desktop; message/CTA then learning path and single-column workshop cards at mobile",
+    "working_interactions": [
+      "topic filter",
+      "local weeks calculation",
+      "invalid-input feedback",
+      "dialog keyboard/focus/Escape",
+      "anchor navigation"
+    ],
+    "primary_cta_behavior": "SAFE_LOCAL_DEMO",
+    "real_vs_mock_integrations": "Actual on-device calculation; no backend, registration or submission",
+    "version_id": "CQ2-B",
+    "form_mode": "LOCAL_CALCULATION",
+    "form_destination": null,
+    "prefers_reduced_motion_fallback": "scroll-behavior:auto; no animation or transition",
+    "external_link_targets": []
+  },
+  "WEB_QA": {
+    "checks": [
+      {
+        "check_id": "horizontal-overflow-1440",
+        "requirement": "1440",
+        "criticality": "ESSENTIAL",
+        "procedure": "Real Chromium observation via the existing collector and workshop driver",
+        "result": "PASS",
+        "evidence_mode": "BROWSER_OBSERVED",
+        "evidence_ref": "research-evidence/browser.json",
+        "build_hash": "712fca80909275687a0c6aa6d31cc1e75abdccd15c4ee6368f0bcf6898f762c0",
+        "viewport": "1440",
+        "checked_at": "2026-10-20T18:24:50.700Z"
+      },
+      {
+        "check_id": "images-loaded-1440",
+        "requirement": "[]",
+        "criticality": "ESSENTIAL",
+        "procedure": "Real Chromium observation via the existing collector and workshop driver",
+        "result": "PASS",
+        "evidence_mode": "BROWSER_OBSERVED",
+        "evidence_ref": "research-evidence/browser.json",
+        "build_hash": "712fca80909275687a0c6aa6d31cc1e75abdccd15c4ee6368f0bcf6898f762c0",
+        "viewport": "1440",
+        "checked_at": "2026-10-20T18:24:50.700Z"
+      },
+      {
+        "check_id": "learning-path-visible-1440",
+        "requirement": "effective opacity > 0",
+        "criticality": "ESSENTIAL",
+        "procedure": "Real Chromium observation via the existing collector and workshop driver",
+        "result": "PASS",
+        "evidence_mode": "BROWSER_OBSERVED",
+        "evidence_ref": "research-evidence/browser.json",
+        "build_hash": "712fca80909275687a0c6aa6d31cc1e75abdccd15c4ee6368f0bcf6898f762c0",
+        "viewport": "1440",
+        "checked_at": "2026-10-20T18:24:50.700Z"
+      },
+      {
+        "check_id": "learning-path-content-fits-1440",
+        "requirement": "True",
+        "criticality": "ESSENTIAL",
+        "procedure": "Real Chromium observation via the existing collector and workshop driver",
+        "result": "PASS",
+        "evidence_mode": "BROWSER_OBSERVED",
+        "evidence_ref": "research-evidence/browser.json",
+        "build_hash": "712fca80909275687a0c6aa6d31cc1e75abdccd15c4ee6368f0bcf6898f762c0",
+        "viewport": "1440",
+        "checked_at": "2026-10-20T18:24:50.700Z"
+      },
+      {
+        "check_id": "headline-fits-1440",
+        "requirement": "True",
+        "criticality": "ESSENTIAL",
+        "procedure": "Real Chromium observation via the existing collector and workshop driver",
+        "result": "PASS",
+        "evidence_mode": "BROWSER_OBSERVED",
+        "evidence_ref": "research-evidence/browser.json",
+        "build_hash": "712fca80909275687a0c6aa6d31cc1e75abdccd15c4ee6368f0bcf6898f762c0",
+        "viewport": "1440",
+        "checked_at": "2026-10-20T18:24:50.700Z"
+      },
+      {
+        "check_id": "primary-action-in-initial-viewport-1440",
+        "requirement": "True",
+        "criticality": "ESSENTIAL",
+        "procedure": "Real Chromium observation via the existing collector and workshop driver",
+        "result": "PASS",
+        "evidence_mode": "BROWSER_OBSERVED",
+        "evidence_ref": "research-evidence/browser.json",
+        "build_hash": "712fca80909275687a0c6aa6d31cc1e75abdccd15c4ee6368f0bcf6898f762c0",
+        "viewport": "1440",
+        "checked_at": "2026-10-20T18:24:50.700Z"
+      },
+      {
+        "check_id": "sampled-text-contrast-1440",
+        "requirement": ">= 4.5 selected solid-color pairs",
+        "criticality": "ESSENTIAL",
+        "procedure": "Real Chromium observation via the existing collector and workshop driver",
+        "result": "PASS",
+        "evidence_mode": "BROWSER_OBSERVED",
+        "evidence_ref": "research-evidence/browser.json",
+        "build_hash": "712fca80909275687a0c6aa6d31cc1e75abdccd15c4ee6368f0bcf6898f762c0",
+        "viewport": "1440",
+        "checked_at": "2026-10-20T18:24:50.700Z"
+      },
+      {
+        "check_id": "no-external-actions-1440",
+        "requirement": "0",
+        "criticality": "ESSENTIAL",
+        "procedure": "Real Chromium observation via the existing collector and workshop driver",
+        "result": "PASS",
+        "evidence_mode": "BROWSER_OBSERVED",
+        "evidence_ref": "research-evidence/browser.json",
+        "build_hash": "712fca80909275687a0c6aa6d31cc1e75abdccd15c4ee6368f0bcf6898f762c0",
+        "viewport": "1440",
+        "checked_at": "2026-10-20T18:24:50.700Z"
+      },
+      {
+        "check_id": "keyboard-focus-visible-1440",
+        "requirement": "True",
+        "criticality": "ESSENTIAL",
+        "procedure": "Real Chromium observation via the existing collector and workshop driver",
+        "result": "PASS",
+        "evidence_mode": "BROWSER_OBSERVED",
+        "evidence_ref": "research-evidence/browser.json",
+        "build_hash": "712fca80909275687a0c6aa6d31cc1e75abdccd15c4ee6368f0bcf6898f762c0",
+        "viewport": "1440",
+        "checked_at": "2026-10-20T18:24:50.700Z"
+      },
+      {
+        "check_id": "primary-navigation-1440",
+        "requirement": "#oficinas",
+        "criticality": "ESSENTIAL",
+        "procedure": "Real Chromium observation via the existing collector and workshop driver",
+        "result": "PASS",
+        "evidence_mode": "BROWSER_OBSERVED",
+        "evidence_ref": "research-evidence/browser.json",
+        "build_hash": "712fca80909275687a0c6aa6d31cc1e75abdccd15c4ee6368f0bcf6898f762c0",
+        "viewport": "1440",
+        "checked_at": "2026-10-20T18:24:50.700Z"
+      },
+      {
+        "check_id": "filter-1440",
+        "requirement": "1",
+        "criticality": "ESSENTIAL",
+        "procedure": "Real Chromium observation via the existing collector and workshop driver",
+        "result": "PASS",
+        "evidence_mode": "BROWSER_OBSERVED",
+        "evidence_ref": "research-evidence/browser.json",
+        "build_hash": "712fca80909275687a0c6aa6d31cc1e75abdccd15c4ee6368f0bcf6898f762c0",
+        "viewport": "1440",
+        "checked_at": "2026-10-20T18:24:50.700Z"
+      },
+      {
+        "check_id": "dialog-open-1440",
+        "requirement": "True",
+        "criticality": "ESSENTIAL",
+        "procedure": "Real Chromium observation via the existing collector and workshop driver",
+        "result": "PASS",
+        "evidence_mode": "BROWSER_OBSERVED",
+        "evidence_ref": "research-evidence/browser.json",
+        "build_hash": "712fca80909275687a0c6aa6d31cc1e75abdccd15c4ee6368f0bcf6898f762c0",
+        "viewport": "1440",
+        "checked_at": "2026-10-20T18:24:50.700Z"
+      },
+      {
+        "check_id": "dialog-initial-focus-1440",
+        "requirement": "True",
+        "criticality": "ESSENTIAL",
+        "procedure": "Real Chromium observation via the existing collector and workshop driver",
+        "result": "PASS",
+        "evidence_mode": "BROWSER_OBSERVED",
+        "evidence_ref": "research-evidence/browser.json",
+        "build_hash": "712fca80909275687a0c6aa6d31cc1e75abdccd15c4ee6368f0bcf6898f762c0",
+        "viewport": "1440",
+        "checked_at": "2026-10-20T18:24:50.700Z"
+      },
+      {
+        "check_id": "local-calculation-1440",
+        "requirement": "Seu plano: 3 semanas, com até 2 horas por semana.",
+        "criticality": "ESSENTIAL",
+        "procedure": "Real Chromium observation via the existing collector and workshop driver",
+        "result": "PASS",
+        "evidence_mode": "BROWSER_OBSERVED",
+        "evidence_ref": "research-evidence/browser.json",
+        "build_hash": "712fca80909275687a0c6aa6d31cc1e75abdccd15c4ee6368f0bcf6898f762c0",
+        "viewport": "1440",
+        "checked_at": "2026-10-20T18:24:50.700Z"
+      },
+      {
+        "check_id": "invalid-input-1440",
+        "requirement": "True",
+        "criticality": "ESSENTIAL",
+        "procedure": "Real Chromium observation via the existing collector and workshop driver",
+        "result": "PASS",
+        "evidence_mode": "BROWSER_OBSERVED",
+        "evidence_ref": "research-evidence/browser.json",
+        "build_hash": "712fca80909275687a0c6aa6d31cc1e75abdccd15c4ee6368f0bcf6898f762c0",
+        "viewport": "1440",
+        "checked_at": "2026-10-20T18:24:50.700Z"
+      },
+      {
+        "check_id": "dialog-focus-wrap-1440",
+        "requirement": "True",
+        "criticality": "ESSENTIAL",
+        "procedure": "Real Chromium observation via the existing collector and workshop driver",
+        "result": "PASS",
+        "evidence_mode": "BROWSER_OBSERVED",
+        "evidence_ref": "research-evidence/browser.json",
+        "build_hash": "712fca80909275687a0c6aa6d31cc1e75abdccd15c4ee6368f0bcf6898f762c0",
+        "viewport": "1440",
+        "checked_at": "2026-10-20T18:24:50.700Z"
+      },
+      {
+        "check_id": "escape-restores-focus-1440",
+        "requirement": "True",
+        "criticality": "ESSENTIAL",
+        "procedure": "Real Chromium observation via the existing collector and workshop driver",
+        "result": "PASS",
+        "evidence_mode": "BROWSER_OBSERVED",
+        "evidence_ref": "research-evidence/browser.json",
+        "build_hash": "712fca80909275687a0c6aa6d31cc1e75abdccd15c4ee6368f0bcf6898f762c0",
+        "viewport": "1440",
+        "checked_at": "2026-10-20T18:24:50.700Z"
+      },
+      {
+        "check_id": "reduced-motion-1440",
+        "requirement": "{'scroll': 'auto', 'active': 0}",
+        "criticality": "ESSENTIAL",
+        "procedure": "Real Chromium observation via the existing collector and workshop driver",
+        "result": "PASS",
+        "evidence_mode": "BROWSER_OBSERVED",
+        "evidence_ref": "research-evidence/browser.json",
+        "build_hash": "712fca80909275687a0c6aa6d31cc1e75abdccd15c4ee6368f0bcf6898f762c0",
+        "viewport": "1440",
+        "checked_at": "2026-10-20T18:24:50.700Z"
+      },
+      {
+        "check_id": "script-errors-1440",
+        "requirement": "[]",
+        "criticality": "ESSENTIAL",
+        "procedure": "Real Chromium observation via the existing collector and workshop driver",
+        "result": "PASS",
+        "evidence_mode": "BROWSER_OBSERVED",
+        "evidence_ref": "research-evidence/browser.json",
+        "build_hash": "712fca80909275687a0c6aa6d31cc1e75abdccd15c4ee6368f0bcf6898f762c0",
+        "viewport": "1440",
+        "checked_at": "2026-10-20T18:24:50.700Z"
+      },
+      {
+        "check_id": "resource-errors-1440",
+        "requirement": "[]",
+        "criticality": "ESSENTIAL",
+        "procedure": "Real Chromium observation via the existing collector and workshop driver",
+        "result": "PASS",
+        "evidence_mode": "BROWSER_OBSERVED",
+        "evidence_ref": "research-evidence/browser.json",
+        "build_hash": "712fca80909275687a0c6aa6d31cc1e75abdccd15c4ee6368f0bcf6898f762c0",
+        "viewport": "1440",
+        "checked_at": "2026-10-20T18:24:50.700Z"
+      },
+      {
+        "check_id": "external-network-1440",
+        "requirement": "[]",
+        "criticality": "ESSENTIAL",
+        "procedure": "Real Chromium observation via the existing collector and workshop driver",
+        "result": "PASS",
+        "evidence_mode": "BROWSER_OBSERVED",
+        "evidence_ref": "research-evidence/browser.json",
+        "build_hash": "712fca80909275687a0c6aa6d31cc1e75abdccd15c4ee6368f0bcf6898f762c0",
+        "viewport": "1440",
+        "checked_at": "2026-10-20T18:24:50.700Z"
+      },
+      {
+        "check_id": "horizontal-overflow-390",
+        "requirement": "390",
+        "criticality": "ESSENTIAL",
+        "procedure": "Real Chromium observation via the existing collector and workshop driver",
+        "result": "PASS",
+        "evidence_mode": "BROWSER_OBSERVED",
+        "evidence_ref": "research-evidence/browser.json",
+        "build_hash": "712fca80909275687a0c6aa6d31cc1e75abdccd15c4ee6368f0bcf6898f762c0",
+        "viewport": "390",
+        "checked_at": "2026-10-20T18:24:50.700Z"
+      },
+      {
+        "check_id": "images-loaded-390",
+        "requirement": "[]",
+        "criticality": "ESSENTIAL",
+        "procedure": "Real Chromium observation via the existing collector and workshop driver",
+        "result": "PASS",
+        "evidence_mode": "BROWSER_OBSERVED",
+        "evidence_ref": "research-evidence/browser.json",
+        "build_hash": "712fca80909275687a0c6aa6d31cc1e75abdccd15c4ee6368f0bcf6898f762c0",
+        "viewport": "390",
+        "checked_at": "2026-10-20T18:24:50.700Z"
+      },
+      {
+        "check_id": "learning-path-visible-390",
+        "requirement": "effective opacity > 0",
+        "criticality": "ESSENTIAL",
+        "procedure": "Real Chromium observation via the existing collector and workshop driver",
+        "result": "PASS",
+        "evidence_mode": "BROWSER_OBSERVED",
+        "evidence_ref": "research-evidence/browser.json",
+        "build_hash": "712fca80909275687a0c6aa6d31cc1e75abdccd15c4ee6368f0bcf6898f762c0",
+        "viewport": "390",
+        "checked_at": "2026-10-20T18:24:50.700Z"
+      },
+      {
+        "check_id": "learning-path-content-fits-390",
+        "requirement": "True",
+        "criticality": "ESSENTIAL",
+        "procedure": "Real Chromium observation via the existing collector and workshop driver",
+        "result": "PASS",
+        "evidence_mode": "BROWSER_OBSERVED",
+        "evidence_ref": "research-evidence/browser.json",
+        "build_hash": "712fca80909275687a0c6aa6d31cc1e75abdccd15c4ee6368f0bcf6898f762c0",
+        "viewport": "390",
+        "checked_at": "2026-10-20T18:24:50.700Z"
+      },
+      {
+        "check_id": "headline-fits-390",
+        "requirement": "True",
+        "criticality": "ESSENTIAL",
+        "procedure": "Real Chromium observation via the existing collector and workshop driver",
+        "result": "PASS",
+        "evidence_mode": "BROWSER_OBSERVED",
+        "evidence_ref": "research-evidence/browser.json",
+        "build_hash": "712fca80909275687a0c6aa6d31cc1e75abdccd15c4ee6368f0bcf6898f762c0",
+        "viewport": "390",
+        "checked_at": "2026-10-20T18:24:50.700Z"
+      },
+      {
+        "check_id": "primary-action-in-initial-viewport-390",
+        "requirement": "True",
+        "criticality": "ESSENTIAL",
+        "procedure": "Real Chromium observation via the existing collector and workshop driver",
+        "result": "PASS",
+        "evidence_mode": "BROWSER_OBSERVED",
+        "evidence_ref": "research-evidence/browser.json",
+        "build_hash": "712fca80909275687a0c6aa6d31cc1e75abdccd15c4ee6368f0bcf6898f762c0",
+        "viewport": "390",
+        "checked_at": "2026-10-20T18:24:50.700Z"
+      },
+      {
+        "check_id": "sampled-text-contrast-390",
+        "requirement": ">= 4.5 selected solid-color pairs",
+        "criticality": "ESSENTIAL",
+        "procedure": "Real Chromium observation via the existing collector and workshop driver",
+        "result": "PASS",
+        "evidence_mode": "BROWSER_OBSERVED",
+        "evidence_ref": "research-evidence/browser.json",
+        "build_hash": "712fca80909275687a0c6aa6d31cc1e75abdccd15c4ee6368f0bcf6898f762c0",
+        "viewport": "390",
+        "checked_at": "2026-10-20T18:24:50.700Z"
+      },
+      {
+        "check_id": "no-external-actions-390",
+        "requirement": "0",
+        "criticality": "ESSENTIAL",
+        "procedure": "Real Chromium observation via the existing collector and workshop driver",
+        "result": "PASS",
+        "evidence_mode": "BROWSER_OBSERVED",
+        "evidence_ref": "research-evidence/browser.json",
+        "build_hash": "712fca80909275687a0c6aa6d31cc1e75abdccd15c4ee6368f0bcf6898f762c0",
+        "viewport": "390",
+        "checked_at": "2026-10-20T18:24:50.700Z"
+      },
+      {
+        "check_id": "keyboard-focus-visible-390",
+        "requirement": "True",
+        "criticality": "ESSENTIAL",
+        "procedure": "Real Chromium observation via the existing collector and workshop driver",
+        "result": "PASS",
+        "evidence_mode": "BROWSER_OBSERVED",
+        "evidence_ref": "research-evidence/browser.json",
+        "build_hash": "712fca80909275687a0c6aa6d31cc1e75abdccd15c4ee6368f0bcf6898f762c0",
+        "viewport": "390",
+        "checked_at": "2026-10-20T18:24:50.700Z"
+      },
+      {
+        "check_id": "primary-navigation-390",
+        "requirement": "#oficinas",
+        "criticality": "ESSENTIAL",
+        "procedure": "Real Chromium observation via the existing collector and workshop driver",
+        "result": "PASS",
+        "evidence_mode": "BROWSER_OBSERVED",
+        "evidence_ref": "research-evidence/browser.json",
+        "build_hash": "712fca80909275687a0c6aa6d31cc1e75abdccd15c4ee6368f0bcf6898f762c0",
+        "viewport": "390",
+        "checked_at": "2026-10-20T18:24:50.700Z"
+      },
+      {
+        "check_id": "filter-390",
+        "requirement": "1",
+        "criticality": "ESSENTIAL",
+        "procedure": "Real Chromium observation via the existing collector and workshop driver",
+        "result": "PASS",
+        "evidence_mode": "BROWSER_OBSERVED",
+        "evidence_ref": "research-evidence/browser.json",
+        "build_hash": "712fca80909275687a0c6aa6d31cc1e75abdccd15c4ee6368f0bcf6898f762c0",
+        "viewport": "390",
+        "checked_at": "2026-10-20T18:24:50.700Z"
+      },
+      {
+        "check_id": "dialog-open-390",
+        "requirement": "True",
+        "criticality": "ESSENTIAL",
+        "procedure": "Real Chromium observation via the existing collector and workshop driver",
+        "result": "PASS",
+        "evidence_mode": "BROWSER_OBSERVED",
+        "evidence_ref": "research-evidence/browser.json",
+        "build_hash": "712fca80909275687a0c6aa6d31cc1e75abdccd15c4ee6368f0bcf6898f762c0",
+        "viewport": "390",
+        "checked_at": "2026-10-20T18:24:50.700Z"
+      },
+      {
+        "check_id": "dialog-initial-focus-390",
+        "requirement": "True",
+        "criticality": "ESSENTIAL",
+        "procedure": "Real Chromium observation via the existing collector and workshop driver",
+        "result": "PASS",
+        "evidence_mode": "BROWSER_OBSERVED",
+        "evidence_ref": "research-evidence/browser.json",
+        "build_hash": "712fca80909275687a0c6aa6d31cc1e75abdccd15c4ee6368f0bcf6898f762c0",
+        "viewport": "390",
+        "checked_at": "2026-10-20T18:24:50.700Z"
+      },
+      {
+        "check_id": "local-calculation-390",
+        "requirement": "Seu plano: 3 semanas, com até 2 horas por semana.",
+        "criticality": "ESSENTIAL",
+        "procedure": "Real Chromium observation via the existing collector and workshop driver",
+        "result": "PASS",
+        "evidence_mode": "BROWSER_OBSERVED",
+        "evidence_ref": "research-evidence/browser.json",
+        "build_hash": "712fca80909275687a0c6aa6d31cc1e75abdccd15c4ee6368f0bcf6898f762c0",
+        "viewport": "390",
+        "checked_at": "2026-10-20T18:24:50.700Z"
+      },
+      {
+        "check_id": "invalid-input-390",
+        "requirement": "True",
+        "criticality": "ESSENTIAL",
+        "procedure": "Real Chromium observation via the existing collector and workshop driver",
+        "result": "PASS",
+        "evidence_mode": "BROWSER_OBSERVED",
+        "evidence_ref": "research-evidence/browser.json",
+        "build_hash": "712fca80909275687a0c6aa6d31cc1e75abdccd15c4ee6368f0bcf6898f762c0",
+        "viewport": "390",
+        "checked_at": "2026-10-20T18:24:50.700Z"
+      },
+      {
+        "check_id": "dialog-focus-wrap-390",
+        "requirement": "True",
+        "criticality": "ESSENTIAL",
+        "procedure": "Real Chromium observation via the existing collector and workshop driver",
+        "result": "PASS",
+        "evidence_mode": "BROWSER_OBSERVED",
+        "evidence_ref": "research-evidence/browser.json",
+        "build_hash": "712fca80909275687a0c6aa6d31cc1e75abdccd15c4ee6368f0bcf6898f762c0",
+        "viewport": "390",
+        "checked_at": "2026-10-20T18:24:50.700Z"
+      },
+      {
+        "check_id": "escape-restores-focus-390",
+        "requirement": "True",
+        "criticality": "ESSENTIAL",
+        "procedure": "Real Chromium observation via the existing collector and workshop driver",
+        "result": "PASS",
+        "evidence_mode": "BROWSER_OBSERVED",
+        "evidence_ref": "research-evidence/browser.json",
+        "build_hash": "712fca80909275687a0c6aa6d31cc1e75abdccd15c4ee6368f0bcf6898f762c0",
+        "viewport": "390",
+        "checked_at": "2026-10-20T18:24:50.700Z"
+      },
+      {
+        "check_id": "reduced-motion-390",
+        "requirement": "{'scroll': 'auto', 'active': 0}",
+        "criticality": "ESSENTIAL",
+        "procedure": "Real Chromium observation via the existing collector and workshop driver",
+        "result": "PASS",
+        "evidence_mode": "BROWSER_OBSERVED",
+        "evidence_ref": "research-evidence/browser.json",
+        "build_hash": "712fca80909275687a0c6aa6d31cc1e75abdccd15c4ee6368f0bcf6898f762c0",
+        "viewport": "390",
+        "checked_at": "2026-10-20T18:24:50.700Z"
+      },
+      {
+        "check_id": "script-errors-390",
+        "requirement": "[]",
+        "criticality": "ESSENTIAL",
+        "procedure": "Real Chromium observation via the existing collector and workshop driver",
+        "result": "PASS",
+        "evidence_mode": "BROWSER_OBSERVED",
+        "evidence_ref": "research-evidence/browser.json",
+        "build_hash": "712fca80909275687a0c6aa6d31cc1e75abdccd15c4ee6368f0bcf6898f762c0",
+        "viewport": "390",
+        "checked_at": "2026-10-20T18:24:50.700Z"
+      },
+      {
+        "check_id": "resource-errors-390",
+        "requirement": "[]",
+        "criticality": "ESSENTIAL",
+        "procedure": "Real Chromium observation via the existing collector and workshop driver",
+        "result": "PASS",
+        "evidence_mode": "BROWSER_OBSERVED",
+        "evidence_ref": "research-evidence/browser.json",
+        "build_hash": "712fca80909275687a0c6aa6d31cc1e75abdccd15c4ee6368f0bcf6898f762c0",
+        "viewport": "390",
+        "checked_at": "2026-10-20T18:24:50.700Z"
+      },
+      {
+        "check_id": "external-network-390",
+        "requirement": "[]",
+        "criticality": "ESSENTIAL",
+        "procedure": "Real Chromium observation via the existing collector and workshop driver",
+        "result": "PASS",
+        "evidence_mode": "BROWSER_OBSERVED",
+        "evidence_ref": "research-evidence/browser.json",
+        "build_hash": "712fca80909275687a0c6aa6d31cc1e75abdccd15c4ee6368f0bcf6898f762c0",
+        "viewport": "390",
+        "checked_at": "2026-10-20T18:24:50.700Z"
+      },
+      {
+        "check_id": "browser_render",
+        "requirement": "Map existing observations to canonical FAST check IDs",
+        "criticality": "ESSENTIAL",
+        "procedure": "See source observations and fictional brief; no new test implied by this alias",
+        "result": "PASS",
+        "evidence_mode": "BROWSER_OBSERVED",
+        "evidence_ref": "research-evidence/transfer-b-1440-hero.png",
+        "build_hash": "712fca80909275687a0c6aa6d31cc1e75abdccd15c4ee6368f0bcf6898f762c0",
+        "viewport": "1440",
+        "checked_at": "2026-10-20T18:24:50.700Z"
+      },
+      {
+        "check_id": "desktop_render",
+        "requirement": "Map existing observations to canonical FAST check IDs",
+        "criticality": "ESSENTIAL",
+        "procedure": "See source observations and fictional brief; no new test implied by this alias",
+        "result": "PASS",
+        "evidence_mode": "BROWSER_OBSERVED",
+        "evidence_ref": "research-evidence/transfer-b-1440-full.png",
+        "build_hash": "712fca80909275687a0c6aa6d31cc1e75abdccd15c4ee6368f0bcf6898f762c0",
+        "viewport": "1440",
+        "checked_at": "2026-10-20T18:24:50.700Z"
+      },
+      {
+        "check_id": "mobile_render",
+        "requirement": "Map existing observations to canonical FAST check IDs",
+        "criticality": "ESSENTIAL",
+        "procedure": "See source observations and fictional brief; no new test implied by this alias",
+        "result": "PASS",
+        "evidence_mode": "BROWSER_OBSERVED",
+        "evidence_ref": "research-evidence/transfer-b-390-full.png",
+        "build_hash": "712fca80909275687a0c6aa6d31cc1e75abdccd15c4ee6368f0bcf6898f762c0",
+        "viewport": "390",
+        "checked_at": "2026-10-20T18:24:50.700Z"
+      },
+      {
+        "check_id": "cta_interaction",
+        "requirement": "Map existing observations to canonical FAST check IDs",
+        "criticality": "ESSENTIAL",
+        "procedure": "See source observations and fictional brief; no new test implied by this alias",
+        "result": "PASS",
+        "evidence_mode": "BROWSER_OBSERVED",
+        "evidence_ref": "research-evidence/browser.json",
+        "build_hash": "712fca80909275687a0c6aa6d31cc1e75abdccd15c4ee6368f0bcf6898f762c0",
+        "viewport": "1440,390",
+        "checked_at": "2026-10-20T18:24:50.700Z"
+      },
+      {
+        "check_id": "keyboard_interaction",
+        "requirement": "Map existing observations to canonical FAST check IDs",
+        "criticality": "ESSENTIAL",
+        "procedure": "See source observations and fictional brief; no new test implied by this alias",
+        "result": "PASS",
+        "evidence_mode": "BROWSER_OBSERVED",
+        "evidence_ref": "research-evidence/browser.json",
+        "build_hash": "712fca80909275687a0c6aa6d31cc1e75abdccd15c4ee6368f0bcf6898f762c0",
+        "viewport": "1440,390",
+        "checked_at": "2026-10-20T18:24:50.700Z"
+      },
+      {
+        "check_id": "content_truth",
+        "requirement": "Map existing observations to canonical FAST check IDs",
+        "criticality": "ESSENTIAL",
+        "procedure": "See source observations and fictional brief; no new test implied by this alias",
+        "result": "PASS",
+        "evidence_mode": "STATIC_INSPECTED",
+        "evidence_ref": "research-evidence/fictional-source.json",
+        "build_hash": "712fca80909275687a0c6aa6d31cc1e75abdccd15c4ee6368f0bcf6898f762c0",
+        "viewport": null,
+        "checked_at": "2026-10-20T18:24:50.700Z"
+      },
+      {
+        "check_id": "assets_available",
+        "requirement": "Map existing observations to canonical FAST check IDs",
+        "criticality": "ESSENTIAL",
+        "procedure": "See source observations and fictional brief; no new test implied by this alias",
+        "result": "PASS",
+        "evidence_mode": "STATIC_INSPECTED",
+        "evidence_ref": "research-evidence/fictional-source.json",
+        "build_hash": "712fca80909275687a0c6aa6d31cc1e75abdccd15c4ee6368f0bcf6898f762c0",
+        "viewport": null,
+        "checked_at": "2026-10-20T18:24:50.700Z"
+      }
+    ],
+    "known_limitations": [
+      "No independent human preference or owner acceptance",
+      "Selected solid-color contrast samples only; no full accessibility certification",
+      "One fictional transfer category; synthetic defect detection is not natural incidence evidence"
+    ],
+    "verdict": "PARTIAL"
+  },
+  "WEB_REVISION": {
+    "parent_version_ref": "CQ2-A",
+    "requested_change": "Make stage order and workshop planning more scannable while retaining message-first mobile action",
+    "preserve_regions": [
+      "all copy, workshop facts, truth statements, SVG, links and JavaScript"
+    ],
+    "vary_regions": [
+      "CSS hierarchy, spacing, borders and emphasis"
+    ],
+    "implemented_delta": "Append direction-b.css only",
+    "affected_qa_checks": [
+      "horizontal-overflow-1440",
+      "images-loaded-1440",
+      "learning-path-visible-1440",
+      "learning-path-content-fits-1440",
+      "headline-fits-1440",
+      "primary-action-in-initial-viewport-1440",
+      "sampled-text-contrast-1440",
+      "no-external-actions-1440",
+      "keyboard-focus-visible-1440",
+      "primary-navigation-1440",
+      "filter-1440",
+      "dialog-open-1440",
+      "dialog-initial-focus-1440",
+      "local-calculation-1440",
+      "invalid-input-1440",
+      "dialog-focus-wrap-1440",
+      "escape-restores-focus-1440",
+      "reduced-motion-1440",
+      "script-errors-1440",
+      "resource-errors-1440",
+      "external-network-1440",
+      "horizontal-overflow-390",
+      "images-loaded-390",
+      "learning-path-visible-390",
+      "learning-path-content-fits-390",
+      "headline-fits-390",
+      "primary-action-in-initial-viewport-390",
+      "sampled-text-contrast-390",
+      "no-external-actions-390",
+      "keyboard-focus-visible-390",
+      "primary-navigation-390",
+      "filter-390",
+      "dialog-open-390",
+      "dialog-initial-focus-390",
+      "local-calculation-390",
+      "invalid-input-390",
+      "dialog-focus-wrap-390",
+      "escape-restores-focus-390",
+      "reduced-motion-390",
+      "script-errors-390",
+      "resource-errors-390",
+      "external-network-390"
+    ],
+    "new_preview_ref_or_partial_status": "CQ2-B local preview verified; preference and production acceptance remain open"
+  }
+}
