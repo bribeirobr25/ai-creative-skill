@@ -5,7 +5,7 @@ SCHEMA=pathlib.Path(__file__).resolve().parents[1]/'schemas/web_delivery_v0.2.sc
 CANONICAL=json.loads(SCHEMA.read_text())
 VALIDATOR=Draft202012Validator(CANONICAL)
 VALID_RESULTS={'PASS','FAIL','NOT_TESTED','NOT_APPLICABLE'}
-BROWSER_NEEDED={'browser_render','desktop_render','mobile_render','cta_interaction','keyboard_interaction','responsive','reduced_motion','form_behavior'}
+BROWSER_NEEDED={'browser_render','desktop_render','mobile_render','narrow_render','images_rendered','cta_interaction','keyboard_interaction','responsive','reduced_motion','form_behavior'}
 REQUIRED_FAST_CHECKS={'browser_render','desktop_render','mobile_render','cta_interaction','keyboard_interaction','content_truth','assets_available'}
 
 def sha256(path):

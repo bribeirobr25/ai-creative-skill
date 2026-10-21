@@ -25,7 +25,7 @@
 - A deterministic route checker is a helper, **not** a semantic agent. Host skill must still infer user intent and select method stack. `scripts/creative_web.py route` supports explicit --intent when necessary.
 - Owner-only preview lifecycle: `preview start/status/restart/stop`. Do not kill unrelated processes or expose local files/secrets.
 - `WEB_EDIT`: register approved region/attributes and snapshot, modify only permissible surface, compare shared CSS/JS dependencies, invalidate affected QA, present diff. Code/hash-only evidence does not certify pixels or behavior.
-- Evaluate differences at 1440 and 390px when possible; test 768px if useful. Keyboard dialog focus/Shift+Tab/Escape, image crop, no overflow, form truth and CTA are specific risks from Della/diBoaS pilots. Motion/reduced motion require observed testing to claim PASS.
+- Evaluate differences at 1440 and 390px when possible, and check 320px for horizontal overflow; test 768px if useful. Scroll the full page before judging images, so lazy-loaded media is actually rendered. Keyboard dialog focus/Shift+Tab/Escape, image crop, no overflow, form truth and CTA are specific risks from Della/diBoaS pilots. Motion/reduced motion require observed testing to claim PASS.
 - Respect provider, spending, privacy and publication gates in the inherited Execution Contracts. Tool availability never grants spend or deploy authority.
 
 ## Validated evidence / what remains open

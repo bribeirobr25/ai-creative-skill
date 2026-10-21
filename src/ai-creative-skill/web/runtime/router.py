@@ -23,6 +23,14 @@ ACTIONS={
  'WEB_CONCEPT_ONLY':r'\b(?:wireframe|roteiro de site|conceito visual|estrutura de landing|sitemap)\b',
  'WEB_PREVIEW':r'\b(?:crie uma landing|crie um site|criar um website|construa um site|monte um website|build a website|create a landing)\b'
 }
+# Natural build requests ("crie o website descrito", "faca um site", "build me a landing page"):
+# a build verb, at most four intervening words that are not another operation, then a site noun.
+BUILD_VERB=(r'(?:crie|criar|cria|construa|construir|monte|montar|faca|fazer|desenvolva|desenvolver|gere|gerar'
+  r'|quero|preciso de|build|create|develop|generate|design|make\s+(?:me\s+)?(?:a|an|my|our|new))')
+OTHER_OPERATION=(r'(?:analis\w*|pesquis\w*|research\w*|compar\w*|audit\w*|benchmark\w*|edit\w*|refin\w*|mude|altere|corrij\w*'
+  r'|wireframe\w*|sitemap\w*|conceito\w*|roteiro\w*|estrutura\w*|publi\w*|deploy\w*|update\w*)\b')
+ACTIONS['WEB_PREVIEW']=(ACTIONS['WEB_PREVIEW'][:-3]+r'|'+BUILD_VERB+r'(?:\s+(?!'+OTHER_OPERATION+r')[\w-]+){0,4}?'
+  r'\s+(?:site|sites|website|websites|landing|landings|pagina|paginas|page|pages|homepage)\b)\b')
 NEGATION=r"\b(?:nao|nunca|nem|never|not|don't|dont|do not|sem|without|evite|avoid)\s+(?:\w+\s+){0,2}$"
 
 def action_state(text,pattern):
@@ -41,7 +49,7 @@ def resolve(text: str, intent: Optional[str]=None, deep:bool=False)->Route:
         if states[intent][1]:raise ValueError('Explicit intent conflicts with a stated prohibition')
         r=intent;reason='explicit_intent'
     else:
-        if not re.search(r'\b(?:site|sites|website|websites|landing|pagina|page|hero|ux|dominio|domain|wireframe|sitemap)\b',text):
+        if not re.search(r'\b(?:site|sites|website|websites|landing|landings|pagina|paginas|page|pages|homepage|hero|ux|dominio|domain|wireframe|sitemap)\b',text):
             raise ValueError('Ambiguous request; explicit intent or clarification needed')
         positive={route for route,(yes,no) in states.items() if yes and not no}
         if any(yes and no for yes,no in states.values()):
