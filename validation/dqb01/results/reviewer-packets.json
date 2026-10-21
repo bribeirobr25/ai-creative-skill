@@ -1,0 +1,22 @@
+{
+  "human_responses": 0,
+  "status": "AWAITING_HUMAN_REVIEW",
+  "packets": {
+    "R1-r1.zip": {
+      "bytes": 790975,
+      "sha256": "bae4cff2288efacff9fdaeb8b111a63285344c7c5792234b1bb29a913a6592d2"
+    },
+    "R1-r0.zip": {
+      "bytes": 789525,
+      "sha256": "39579778721fdd0f6e6249afdd9bedcecc6c31253c07bb009777960f61dc7e50"
+    },
+    "R2-r0.zip": {
+      "bytes": 789522,
+      "sha256": "848a8613f444d63e5adea29c58645d2efc921d028caf0195dddb0fb53870534e"
+    },
+    "R2-r1.zip": {
+      "bytes": 790979,
+      "sha256": "408415a78c52c1fdb8fdd3c6ef4cd067431f7654dcf56207d8a10b2c63a4eb04"
+    }
+  }
+}

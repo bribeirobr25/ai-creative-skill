@@ -1,0 +1,12 @@
+{
+  "at": "2026-10-20T21:08:24.694720+00:00",
+  "files": {
+    "app.js": "b78f27a218b84e09c57f3a75c2c46eb104360f181e9e6d9b63c09f17b8e63b06",
+    "assets/arco.jpg": "d74bd50d0d0c6df78159b41a0db4e420206a8b5d684fb0ef7c0848ac61dbb448",
+    "assets/credits.json": "12cb359c86012bc01d7fd4edc8ae590add804cee4521d092c77375e00477b4fe",
+    "assets/editorial.jpg": "a8abd9a64d1896cb9188870bed34ca52e2522939d1b072c895b5078852fb6c96",
+    "assets/trama.jpg": "7cc39d70adb94990c08254c14c71a12e345622c716c21ff56578d772b811b8d7",
+    "index.html": "2532d1fba5f8d5fe3b03d6caf5b5dd625cace13808a6de44476597ae7c70d1f2",
+    "styles.css": "9bc5b727968f13775054d67de4173e39611a6d045be3d0aba65a69d3f4c1fc7d"
+  }
+}
