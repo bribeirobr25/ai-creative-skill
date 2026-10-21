@@ -2,7 +2,12 @@ name: R1 Research Reframe Quality (synthetic only)
 
 on:
   push:
-    branches: ['feature/media-reframe-research']
+    branches: [main]
+    paths:
+      - 'docs/research/media-reframe/**'
+      - '.github/workflows/reframe-quality-r1.yml'
+  pull_request:
+    branches: [main]
     paths:
       - 'docs/research/media-reframe/**'
       - '.github/workflows/reframe-quality-r1.yml'
