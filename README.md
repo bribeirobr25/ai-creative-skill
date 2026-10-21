@@ -1,27 +1,33 @@
-> **Boundary-hardening candidate branch:** source changes here are not the installed V2.5 release. Use the [candidate two-gate workflow](validation/candidates/boundary-hardening-v1/README.md). The original V2.5 builder intentionally refuses candidate source; historical hashes remain unchanged.
-
 # AI Creative Skill
 
-**Status:** V2.5.0 integrated installable baseline, **not** production-quality or clean-host certified. Plugin metadata version \`0.3.0\`.
+**Status do `main`: 2.6.0-dev.** Linha de desenvolvimento sobre a baseline **V2.5.0**, atestada no commit
+`39a0bfa39270ea4b685b0f862e7dbf647cf81d77`. Não é release, não tem certificação de qualidade de produção nem de host limpo.
+Metadados do plugin: versão `0.3.0`.
 
-This is the public, provider-neutral source of the AI Creative Skill. The only canonical implementation tree is \`src/ai-creative-skill/\`. The Agent Skill and OpenAI Portable Plugin ZIPs are **generated artifacts**, not source trees that should be edited independently.
+O `main` já contém a candidata de boundary hardening (`validate_deliverable`, preview, router, revision, validate e schema `0.2.1-candidate`).
+A fonte em `src/ai-creative-skill/` difere da V2.5 por esses seis arquivos, por isso o builder original recusa a fonte
+atual por design; a V2.5 continua verificável byte a byte pelo gate de integridade.
+
+This is the public, provider-neutral source of the AI Creative Skill. The only canonical implementation tree is `src/ai-creative-skill/`. The Agent Skill and OpenAI Portable Plugin ZIPs are **generated artifacts**, not source trees that should be edited independently.
 
 ## Build & check
 
-\`\`\`bash
-python packaging/build.py --output-dir dist
-python -m unittest discover -s tests -p 'test_*.py' -v
-python -m unittest discover -s src/ai-creative-skill/web/tests -p 'test_*.py' -v
-python src/ai-creative-skill/scripts/smoke_install.py
-\`\`\`
+```bash
+pip install -r validation/requirements.txt
+python -m validation.release_integrity      # V2.5.0 exportada de 39a0bfa: testes, smoke e builders originais
+python -m validation.candidate_integrity    # fonte atual = inventário revisado da candidata
+python -m validation.candidate_tests        # testes de regressão e Web Experience da fonte atual
+```
 
+Uma nova mudança em `src/` exige um novo inventário revisado de candidata (veja
+[boundary-hardening-v1](validation/candidates/boundary-hardening-v1/README.md)); os hashes históricos nunca são reescritos.
 Runtime tests require optional local packages described in the source installation guide. No paid providers or GPU inference are called by repository CI.
 
 ## Governance
 
-- \`main\`: baseline source V2.5 import under validation.
-- \`v2.5.0-import\`: source import milestone, **not** product approval.
-- \`feature/media-reframe-research\`: comparative research; no implementation or promotion before evaluation.
+- `main`: 2.6.0-dev, integração validada por dois gates (integridade imutável da V2.5 e candidata).
+- V2.5.0: commit `39a0bfa`, referência de release preservada.
+- Pesquisas concluídas ficam em `docs/research/`; evidência pesada (sites, fotos, capturas) fica nas branches dos PRs fechados.
 - Every capability belongs to the shared creative architecture **and** may run and finish independently at the user-requested boundary.
 - Changes to canon, paid inference, publication and releases require separate authority.
 - **PUBLIC repository:** only publish code, generic documentation and permitted examples. Never commit client media, user data, API keys or third-party weights.
@@ -29,12 +35,13 @@ Runtime tests require optional local packages described in the source installati
 
 ## Repository
 
-- \`src/ai-creative-skill/\`: byte-preserved V2.5 source content.
-- \`packaging/\`: original plugin descriptor and deterministic two-format build.
-- \`docs/migration/\`: hashes and provenance.
-- \`docs/decisions/\`: architecture decisions (new proposals do not silently mutate V2.5).
-- \`assets/manifests/\`: storage-neutral asset schema, no actual media.
-- \`.github/workflows/\`: offline CI only.
+- `src/ai-creative-skill/`: canonical source (V2.5 plus the reviewed boundary-hardening candidate).
+- `packaging/`: original plugin descriptor and deterministic two-format build.
+- `docs/migration/`: hashes and provenance.
+- `docs/decisions/`: architecture decisions (ADR-0001 source of truth, ADR-0002 bounded capability invocation).
+- `docs/research/`: research records (creative quality, DQB-01, DQB-02, media reframe, video upscale, preference profiles).
+- `assets/manifests/`: storage-neutral asset schema, no actual media.
+- `.github/workflows/`: offline CI only.
 
 Original ZIP releases and old snapshots remain preserved in Google Drive.
 
