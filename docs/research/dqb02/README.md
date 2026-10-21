@@ -18,6 +18,8 @@ muito parecidas. Decisão formal: `INCONCLUSIVE`; inclinação: `REVISE CANDIDAT
 - [Relatório de decisão](relatorio-decisao.md)
 - [Galeria R0](galeria-r0.html) e [galeria R1](galeria-r1.html) (condições reveladas)
 - [Emendas e desvios](emendas.md)
+- [Feedback do proprietário (não cego)](feedback-proprietario.md) e
+  [perfil de preferências visuais v0.1](../preference-profiles/owner-web-visual-preferences-v0.1.md)
 - Briefings: [B1 Miolo](../../../validation/dqb02/shared/briefing-b1-miolo.md) · [B2 Tábua](../../../validation/dqb02/shared/briefing-b2-tabua.md)
 - Execuções, registros dos executores e hashes: `validation/dqb02/runs/`
 - Evidência comum, convergência e esforço: `validation/dqb02/results/`
