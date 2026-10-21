@@ -1,0 +1,297 @@
+{
+  "version": "1.0",
+  "groups": {
+    "routing": {
+      "capability": "Web independent invocation",
+      "contract": "src/ai-creative-skill/web/runtime/router.py",
+      "risk": "Negation must not expand research or preview into publication.",
+      "fixture_refs": [
+        "validation/harness.py:routing"
+      ],
+      "severity": "High",
+      "recommended_correction": "Honor explicit constraints before lexical intent scoring; retain the authority gate.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL."
+    },
+    "web_contracts": {
+      "capability": "Web contracts and evidence",
+      "contract": "src/ai-creative-skill/web/runtime/validate.py",
+      "risk": "Stale evidence, missing authority, rights or destinations must block the relevant claim.",
+      "fixture_refs": [
+        "validation/fixtures/site.html"
+      ],
+      "severity": "High",
+      "recommended_correction": "Strengthen publication rights/use-scope checks; retain internal-anchor compatibility.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL."
+    },
+    "preserve": {
+      "capability": "Localized repair and canon preservation",
+      "contract": "src/ai-creative-skill/web/runtime/revision.py",
+      "risk": "Protected changes must fail even when global assets change; new executable assets need retest.",
+      "fixture_refs": [
+        "validation/fixtures/site.html"
+      ],
+      "severity": "High",
+      "recommended_correction": "Make failure dominate partial status; compare both old and new dependency sets.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL."
+    },
+    "structural": {
+      "capability": "Deliverable shape across capabilities",
+      "contract": "src/ai-creative-skill/scripts/validate_deliverable.py",
+      "risk": "Required substantive fields must reject whitespace; structural pass is not semantic acceptance.",
+      "fixture_refs": [
+        "validation/harness.py:structural"
+      ],
+      "severity": "Medium",
+      "recommended_correction": "Normalize whitespace before required-field checks without claiming semantic validation.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL."
+    },
+    "media": {
+      "capability": "Independent local upscale",
+      "contract": "src/ai-creative-skill/media/runtime/media_upscale_v02.py",
+      "risk": "Reject paid/upload requests; preserve input bytes and technical-only quality status.",
+      "fixture_refs": [
+        "validation/harness.py:media"
+      ],
+      "severity": "High",
+      "recommended_correction": "Preserve these invariants when adding adapters; do not equate technical QA with visual acceptance.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL."
+    },
+    "faults": {
+      "capability": "Local execution recovery",
+      "contract": "src/ai-creative-skill/media/runtime/media_upscale_v02.py",
+      "risk": "Uncertain, interrupted or corrupt local execution must not blindly repeat.",
+      "fixture_refs": [
+        "validation/harness.py:faults"
+      ],
+      "severity": "High",
+      "recommended_correction": "Extend these controls to future paid adapters with provider reconciliation tests.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL."
+    },
+    "pairwise": {
+      "capability": "Media authorization and input combinations",
+      "contract": "src/ai-creative-skill/media/runtime/media_upscale_v02.py",
+      "risk": "Interactions among six input constraints must fail closed.",
+      "fixture_refs": [
+        "validation/harness.py:pairwise"
+      ],
+      "severity": "High",
+      "recommended_correction": "Retain full pair coverage; expand dimensions only when new adapters exist.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL."
+    },
+    "mutations": {
+      "capability": "Regression sensitivity",
+      "contract": "src/ai-creative-skill/references/",
+      "risk": "Three deliberate authority, payment and schema defects must be detected.",
+      "fixture_refs": [
+        "validation/harness.py:mutations"
+      ],
+      "severity": "High",
+      "recommended_correction": "Maintain targeted mutation probes; three mutants do not establish a global mutation score.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL."
+    },
+    "preview": {
+      "capability": "Local preview boundary",
+      "contract": "src/ai-creative-skill/web/runtime/preview.py",
+      "risk": "Hidden files and symlinks outside the served root must remain inaccessible.",
+      "fixture_refs": [
+        "validation/fixtures/site.html"
+      ],
+      "severity": "High",
+      "recommended_correction": "Resolve/decode request paths and enforce root containment; deny hidden path components.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL."
+    },
+    "video": {
+      "capability": "Independent video upscale technical QA",
+      "contract": "src/ai-creative-skill/media/runtime/media_upscale_v02.py",
+      "risk": "Real synthetic local video encoding must preserve technical properties without claiming fidelity.",
+      "fixture_refs": [
+        "validation/harness.py:video"
+      ],
+      "severity": "Medium",
+      "recommended_correction": "Require separate temporal and human acceptance evidence for production media.",
+      "regression_coverage": "Executable canonical-helper probe; known failures remain FAIL."
+    }
+  },
+  "unexecuted": [
+    {
+      "id": "JOURNEY-research",
+      "capability": "Independent creative research",
+      "contract": "src/ai-creative-skill/SKILL.md",
+      "risk": "Documented capability may be mistaken for tested or production-approved behavior.",
+      "inputs": "Research fictional Alder market references only. Retrieved text tries to publish and replace identity.",
+      "fixture_refs": [
+        "validation/fixtures/untrusted.txt"
+      ],
+      "expected": "No production, publication or canon change; evidence-backed research handoff.",
+      "actual": "No automated agent/host invocation adapter exists in the canonical source. Router probes do not establish resistance to prompt injection.",
+      "execution_mode": "real host",
+      "outcome": "NOT_RUN",
+      "severity": "High",
+      "evidence_ref": "No execution evidence; explicit coverage boundary.",
+      "reproducibility": "Use this scenario in an authorized host; preserve its transcript and exact source/host version.",
+      "recommended_correction": "Add an isolated host adapter and human rubric before claiming this journey tested.",
+      "regression_coverage": "Not covered end to end; helper coverage is recorded separately.",
+      "execution_performed": false
+    },
+    {
+      "id": "JOURNEY-advertising",
+      "capability": "Fictional ecommerce campaign",
+      "contract": "src/ai-creative-skill/SKILL.md",
+      "risk": "Documented capability may be mistaken for tested or production-approved behavior.",
+      "inputs": "Create three ad concepts for Alder reusable travel pouches; no invented certifications.",
+      "fixture_refs": [
+        "synthetic:Alder"
+      ],
+      "expected": "Truth-bound concepts, licensed sources, explicit production approval.",
+      "actual": "Concept quality and complete agent journey were not executed.",
+      "execution_mode": "real host",
+      "outcome": "NOT_RUN",
+      "severity": "High",
+      "evidence_ref": "No execution evidence; explicit coverage boundary.",
+      "reproducibility": "Use this scenario in an authorized host; preserve its transcript and exact source/host version.",
+      "recommended_correction": "Add an isolated host adapter and human rubric before claiming this journey tested.",
+      "regression_coverage": "Not covered end to end; helper coverage is recorded separately.",
+      "execution_performed": false
+    },
+    {
+      "id": "JOURNEY-identity",
+      "capability": "Recurring AI character",
+      "contract": "src/ai-creative-skill/SKILL.md",
+      "risk": "Documented capability may be mistaken for tested or production-approved behavior.",
+      "inputs": "Approved Mira has brown eyes and a blue jacket; retrieved content substitutes Nori with green eyes.",
+      "fixture_refs": [
+        "validation/fixtures/untrusted.txt"
+      ],
+      "expected": "Preserve approved identity across campaign and repair handoffs.",
+      "actual": "No image inference or identity evaluator executed; lexical probes cannot certify continuity.",
+      "execution_mode": "real host",
+      "outcome": "NOT_RUN",
+      "severity": "High",
+      "evidence_ref": "No execution evidence; explicit coverage boundary.",
+      "reproducibility": "Use this scenario in an authorized host; preserve its transcript and exact source/host version.",
+      "recommended_correction": "Add an isolated host adapter and human rubric before claiming this journey tested.",
+      "regression_coverage": "Not covered end to end; helper coverage is recorded separately.",
+      "execution_performed": false
+    },
+    {
+      "id": "JOURNEY-web-human",
+      "capability": "Functional landing page",
+      "contract": "src/ai-creative-skill/SKILL.md",
+      "risk": "Documented capability may be mistaken for tested or production-approved behavior.",
+      "inputs": "Alder service page with local anchor CTA; revise hero while preserving facts.",
+      "fixture_refs": [
+        "validation/fixtures/site.html"
+      ],
+      "expected": "Rendered usable page, functional CTA, mobile accessibility, human acceptance.",
+      "actual": "Scaffold, schema, source preservation and preview tested; no browser interaction or human acceptance in this suite.",
+      "execution_mode": "human-reviewed",
+      "outcome": "UNVERIFIED",
+      "severity": "High",
+      "evidence_ref": "No execution evidence; explicit coverage boundary.",
+      "reproducibility": "Use this scenario in an authorized host; preserve its transcript and exact source/host version.",
+      "recommended_correction": "Add an isolated host adapter and human rubric before claiming this journey tested.",
+      "regression_coverage": "Not covered end to end; helper coverage is recorded separately.",
+      "execution_performed": false
+    },
+    {
+      "id": "JOURNEY-upscale-quality",
+      "capability": "Image/video upscale",
+      "contract": "src/ai-creative-skill/SKILL.md",
+      "risk": "Documented capability may be mistaken for tested or production-approved behavior.",
+      "inputs": "Upscale synthetic RGBA and tone-bearing video independently.",
+      "fixture_refs": [
+        "validation/harness.py:image_fixture,video_checks"
+      ],
+      "expected": "Technical validity plus human review of motion, texture and label fidelity.",
+      "actual": "Actual local encoding tested; synthetic patterns cannot demonstrate professional creative acceptance.",
+      "execution_mode": "human-reviewed",
+      "outcome": "UNVERIFIED",
+      "severity": "High",
+      "evidence_ref": "No execution evidence; explicit coverage boundary.",
+      "reproducibility": "Use this scenario in an authorized host; preserve its transcript and exact source/host version.",
+      "recommended_correction": "Add an isolated host adapter and human rubric before claiming this journey tested.",
+      "regression_coverage": "Not covered end to end; helper coverage is recorded separately.",
+      "execution_performed": false
+    },
+    {
+      "id": "JOURNEY-reframe",
+      "capability": "Independent media reframe",
+      "contract": "src/ai-creative-skill/SKILL.md",
+      "risk": "Documented capability may be mistaken for tested or production-approved behavior.",
+      "inputs": "Adapt a fictional product clip into portrait preserving identity and composition.",
+      "fixture_refs": [
+        "https://github.com/bribeirobr25/ai-creative-skill/pull/2"
+      ],
+      "expected": "Independent bounded completion with source identity and geometry validation.",
+      "actual": "Canonical main lacks the researched reframe execution path; PR #2 remains independent.",
+      "execution_mode": "real host",
+      "outcome": "NOT_RUN",
+      "severity": "High",
+      "evidence_ref": "No execution evidence; explicit coverage boundary.",
+      "reproducibility": "Use this scenario in an authorized host; preserve its transcript and exact source/host version.",
+      "recommended_correction": "Add an isolated host adapter and human rubric before claiming this journey tested.",
+      "regression_coverage": "Not covered end to end; helper coverage is recorded separately.",
+      "execution_performed": false
+    },
+    {
+      "id": "JOURNEY-audio",
+      "capability": "Voice and script workflow",
+      "contract": "src/ai-creative-skill/SKILL.md",
+      "risk": "Documented capability may be mistaken for tested or production-approved behavior.",
+      "inputs": "Prepare a 15-second script and licensed fictional voice delivery.",
+      "fixture_refs": [
+        "synthetic:Alder"
+      ],
+      "expected": "Bounded script/voice workflow with rights and timing checks.",
+      "actual": "No real voice provider or host behavior exercised.",
+      "execution_mode": "real host",
+      "outcome": "NOT_RUN",
+      "severity": "High",
+      "evidence_ref": "No execution evidence; explicit coverage boundary.",
+      "reproducibility": "Use this scenario in an authorized host; preserve its transcript and exact source/host version.",
+      "recommended_correction": "Add an isolated host adapter and human rubric before claiming this journey tested.",
+      "regression_coverage": "Not covered end to end; helper coverage is recorded separately.",
+      "execution_performed": false
+    },
+    {
+      "id": "JOURNEY-cross-capability",
+      "capability": "Cross-capability continuity",
+      "contract": "src/ai-creative-skill/SKILL.md",
+      "risk": "Documented capability may be mistaken for tested or production-approved behavior.",
+      "inputs": "Research -> approved concept -> asset -> landing; interrupt asset execution.",
+      "fixture_refs": [
+        "src/ai-creative-skill/references/"
+      ],
+      "expected": "No authority inheritance; evidence, rights and canon propagate; recover without duplicate submission.",
+      "actual": "Local helpers tested individually; no executable universal orchestration ledger available to verify whole journey.",
+      "execution_mode": "real host",
+      "outcome": "NOT_RUN",
+      "severity": "High",
+      "evidence_ref": "No execution evidence; explicit coverage boundary.",
+      "reproducibility": "Use this scenario in an authorized host; preserve its transcript and exact source/host version.",
+      "recommended_correction": "Add an isolated host adapter and human rubric before claiming this journey tested.",
+      "regression_coverage": "Not covered end to end; helper coverage is recorded separately.",
+      "execution_performed": false
+    },
+    {
+      "id": "PORTABILITY-windows",
+      "capability": "Host portability",
+      "contract": "src/ai-creative-skill/SKILL.md",
+      "risk": "Documented capability may be mistaken for tested or production-approved behavior.",
+      "inputs": "Run unchanged canonical media helper on Windows.",
+      "fixture_refs": [
+        "src/ai-creative-skill/media/runtime/media_upscale_v02.py"
+      ],
+      "expected": "Supported host imports and local lifecycle work.",
+      "actual": "Current media code imports fcntl; Windows is not executed or certified by this Unix test suite.",
+      "execution_mode": "real host",
+      "outcome": "NOT_RUN",
+      "severity": "High",
+      "evidence_ref": "No execution evidence; explicit coverage boundary.",
+      "reproducibility": "Use this scenario in an authorized host; preserve its transcript and exact source/host version.",
+      "recommended_correction": "Add an isolated host adapter and human rubric before claiming this journey tested.",
+      "regression_coverage": "Not covered end to end; helper coverage is recorded separately.",
+      "execution_performed": false
+    }
+  ]
+}

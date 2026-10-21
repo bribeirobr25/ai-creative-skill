@@ -1,0 +1,684 @@
+{
+  "classification": "ILLUSTRATIVE_ASSUMPTIONS_NOT_EMPIRICAL",
+  "limits": [
+    "Fictional prices and independent Bernoulli draws; no provider calibration",
+    "No campaign correlations, queueing, learning, refunds or monetary labor/energy cost",
+    "Cost is conservative reserved cash, not verified billed cash",
+    "Conditional acceptance times exclude failures; inspect acceptance rate too",
+    "Three attempts maximum; strategies have intentionally different route mixes"
+  ],
+  "experiments": {
+    "base": {
+      "assumptions": {
+        "trials": 2000,
+        "seed": 20261020,
+        "budget_cents": 300,
+        "commercial_attempt_cents": 150,
+        "local_acceptance": 0.45,
+        "commercial_acceptance": 0.75,
+        "availability": 0.95,
+        "technical_success": 0.95,
+        "uncertain_outcome": 0.03,
+        "human_intervention": 0.1,
+        "local_minutes": 4,
+        "commercial_minutes": 1,
+        "human_minutes": 8
+      },
+      "results": [
+        {
+          "strategy": "local_only",
+          "trials": 2000,
+          "accepted": 1536,
+          "acceptance_rate": 0.768,
+          "mean_reserved_cash_usd": 0.0,
+          "cash_per_accepted_asset_including_failed_jobs_usd": 0.0,
+          "cash_quantiles_usd": {
+            "0.5": 0.0,
+            "0.9": 0.0,
+            "0.95": 0.0
+          },
+          "elapsed_all_outcomes_minutes": {
+            "0.5": 8,
+            "0.9": 16,
+            "0.95": 20
+          },
+          "time_to_acceptance_minutes_conditional_on_acceptance": {
+            "0.5": 8,
+            "0.9": 12,
+            "0.95": 16
+          },
+          "budget_overrun_count": 0,
+          "stops": {
+            "ACCEPTED": 1536,
+            "BUDGET_CAP": 0,
+            "UNKNOWN_RECONCILE": 110,
+            "ATTEMPT_CAP": 354
+          },
+          "mean_attempts": 1.821
+        },
+        {
+          "strategy": "commercial_only",
+          "trials": 2000,
+          "accepted": 1759,
+          "acceptance_rate": 0.8795,
+          "mean_reserved_cash_usd": 1.92225,
+          "cash_per_accepted_asset_including_failed_jobs_usd": 2.185616827743036,
+          "cash_quantiles_usd": {
+            "0.5": 1.5,
+            "0.9": 3.0,
+            "0.95": 3.0
+          },
+          "elapsed_all_outcomes_minutes": {
+            "0.5": 1,
+            "0.9": 9,
+            "0.95": 9
+          },
+          "time_to_acceptance_minutes_conditional_on_acceptance": {
+            "0.5": 1,
+            "0.9": 9,
+            "0.95": 9
+          },
+          "budget_overrun_count": 0,
+          "stops": {
+            "ACCEPTED": 1759,
+            "BUDGET_CAP": 132,
+            "UNKNOWN_RECONCILE": 86,
+            "ATTEMPT_CAP": 23
+          },
+          "mean_attempts": 1.2815
+        },
+        {
+          "strategy": "local_first_hybrid",
+          "trials": 2000,
+          "accepted": 1790,
+          "acceptance_rate": 0.895,
+          "mean_reserved_cash_usd": 1.071,
+          "cash_per_accepted_asset_including_failed_jobs_usd": 1.1966480446927374,
+          "cash_quantiles_usd": {
+            "0.5": 1.5,
+            "0.9": 3.0,
+            "0.95": 3.0
+          },
+          "elapsed_all_outcomes_minutes": {
+            "0.5": 5,
+            "0.9": 12,
+            "0.95": 13
+          },
+          "time_to_acceptance_minutes_conditional_on_acceptance": {
+            "0.5": 5,
+            "0.9": 12,
+            "0.95": 13
+          },
+          "budget_overrun_count": 0,
+          "stops": {
+            "ACCEPTED": 1790,
+            "BUDGET_CAP": 0,
+            "UNKNOWN_RECONCILE": 104,
+            "ATTEMPT_CAP": 106
+          },
+          "mean_attempts": 1.665
+        }
+      ]
+    },
+    "local_quality_low": {
+      "assumptions": {
+        "trials": 2000,
+        "seed": 20261020,
+        "budget_cents": 300,
+        "commercial_attempt_cents": 150,
+        "local_acceptance": 0.2,
+        "commercial_acceptance": 0.75,
+        "availability": 0.95,
+        "technical_success": 0.95,
+        "uncertain_outcome": 0.03,
+        "human_intervention": 0.1,
+        "local_minutes": 4,
+        "commercial_minutes": 1,
+        "human_minutes": 8
+      },
+      "results": [
+        {
+          "strategy": "local_only",
+          "trials": 2000,
+          "accepted": 881,
+          "acceptance_rate": 0.4405,
+          "mean_reserved_cash_usd": 0.0,
+          "cash_per_accepted_asset_including_failed_jobs_usd": 0.0,
+          "cash_quantiles_usd": {
+            "0.5": 0.0,
+            "0.9": 0.0,
+            "0.95": 0.0
+          },
+          "elapsed_all_outcomes_minutes": {
+            "0.5": 12,
+            "0.9": 20,
+            "0.95": 20
+          },
+          "time_to_acceptance_minutes_conditional_on_acceptance": {
+            "0.5": 8,
+            "0.9": 16,
+            "0.95": 20
+          },
+          "budget_overrun_count": 0,
+          "stops": {
+            "ACCEPTED": 881,
+            "BUDGET_CAP": 0,
+            "UNKNOWN_RECONCILE": 147,
+            "ATTEMPT_CAP": 972
+          },
+          "mean_attempts": 2.306
+        },
+        {
+          "strategy": "commercial_only",
+          "trials": 2000,
+          "accepted": 1759,
+          "acceptance_rate": 0.8795,
+          "mean_reserved_cash_usd": 1.92225,
+          "cash_per_accepted_asset_including_failed_jobs_usd": 2.185616827743036,
+          "cash_quantiles_usd": {
+            "0.5": 1.5,
+            "0.9": 3.0,
+            "0.95": 3.0
+          },
+          "elapsed_all_outcomes_minutes": {
+            "0.5": 1,
+            "0.9": 9,
+            "0.95": 9
+          },
+          "time_to_acceptance_minutes_conditional_on_acceptance": {
+            "0.5": 1,
+            "0.9": 9,
+            "0.95": 9
+          },
+          "budget_overrun_count": 0,
+          "stops": {
+            "ACCEPTED": 1759,
+            "BUDGET_CAP": 132,
+            "UNKNOWN_RECONCILE": 86,
+            "ATTEMPT_CAP": 23
+          },
+          "mean_attempts": 1.2815
+        },
+        {
+          "strategy": "local_first_hybrid",
+          "trials": 2000,
+          "accepted": 1730,
+          "acceptance_rate": 0.865,
+          "mean_reserved_cash_usd": 1.4895,
+          "cash_per_accepted_asset_including_failed_jobs_usd": 1.721965317919075,
+          "cash_quantiles_usd": {
+            "0.5": 1.5,
+            "0.9": 3.0,
+            "0.95": 3.0
+          },
+          "elapsed_all_outcomes_minutes": {
+            "0.5": 5,
+            "0.9": 13,
+            "0.95": 13
+          },
+          "time_to_acceptance_minutes_conditional_on_acceptance": {
+            "0.5": 5,
+            "0.9": 13,
+            "0.95": 13
+          },
+          "budget_overrun_count": 0,
+          "stops": {
+            "ACCEPTED": 1730,
+            "BUDGET_CAP": 0,
+            "UNKNOWN_RECONCILE": 123,
+            "ATTEMPT_CAP": 147
+          },
+          "mean_attempts": 1.944
+        }
+      ]
+    },
+    "local_quality_high": {
+      "assumptions": {
+        "trials": 2000,
+        "seed": 20261020,
+        "budget_cents": 300,
+        "commercial_attempt_cents": 150,
+        "local_acceptance": 0.75,
+        "commercial_acceptance": 0.75,
+        "availability": 0.95,
+        "technical_success": 0.95,
+        "uncertain_outcome": 0.03,
+        "human_intervention": 0.1,
+        "local_minutes": 4,
+        "commercial_minutes": 1,
+        "human_minutes": 8
+      },
+      "results": [
+        {
+          "strategy": "local_only",
+          "trials": 2000,
+          "accepted": 1865,
+          "acceptance_rate": 0.9325,
+          "mean_reserved_cash_usd": 0.0,
+          "cash_per_accepted_asset_including_failed_jobs_usd": 0.0,
+          "cash_quantiles_usd": {
+            "0.5": 0.0,
+            "0.9": 0.0,
+            "0.95": 0.0
+          },
+          "elapsed_all_outcomes_minutes": {
+            "0.5": 4,
+            "0.9": 12,
+            "0.95": 12
+          },
+          "time_to_acceptance_minutes_conditional_on_acceptance": {
+            "0.5": 4,
+            "0.9": 12,
+            "0.95": 12
+          },
+          "budget_overrun_count": 0,
+          "stops": {
+            "ACCEPTED": 1865,
+            "BUDGET_CAP": 0,
+            "UNKNOWN_RECONCILE": 82,
+            "ATTEMPT_CAP": 53
+          },
+          "mean_attempts": 1.3515
+        },
+        {
+          "strategy": "commercial_only",
+          "trials": 2000,
+          "accepted": 1759,
+          "acceptance_rate": 0.8795,
+          "mean_reserved_cash_usd": 1.92225,
+          "cash_per_accepted_asset_including_failed_jobs_usd": 2.185616827743036,
+          "cash_quantiles_usd": {
+            "0.5": 1.5,
+            "0.9": 3.0,
+            "0.95": 3.0
+          },
+          "elapsed_all_outcomes_minutes": {
+            "0.5": 1,
+            "0.9": 9,
+            "0.95": 9
+          },
+          "time_to_acceptance_minutes_conditional_on_acceptance": {
+            "0.5": 1,
+            "0.9": 9,
+            "0.95": 9
+          },
+          "budget_overrun_count": 0,
+          "stops": {
+            "ACCEPTED": 1759,
+            "BUDGET_CAP": 132,
+            "UNKNOWN_RECONCILE": 86,
+            "ATTEMPT_CAP": 23
+          },
+          "mean_attempts": 1.2815
+        },
+        {
+          "strategy": "local_first_hybrid",
+          "trials": 2000,
+          "accepted": 1865,
+          "acceptance_rate": 0.9325,
+          "mean_reserved_cash_usd": 0.60225,
+          "cash_per_accepted_asset_including_failed_jobs_usd": 0.6458445040214478,
+          "cash_quantiles_usd": {
+            "0.5": 0.0,
+            "0.9": 1.5,
+            "0.95": 3.0
+          },
+          "elapsed_all_outcomes_minutes": {
+            "0.5": 4,
+            "0.9": 6,
+            "0.95": 12
+          },
+          "time_to_acceptance_minutes_conditional_on_acceptance": {
+            "0.5": 4,
+            "0.9": 6,
+            "0.95": 12
+          },
+          "budget_overrun_count": 0,
+          "stops": {
+            "ACCEPTED": 1865,
+            "BUDGET_CAP": 0,
+            "UNKNOWN_RECONCILE": 82,
+            "ATTEMPT_CAP": 53
+          },
+          "mean_attempts": 1.3515
+        }
+      ]
+    },
+    "commercial_quality_low": {
+      "assumptions": {
+        "trials": 2000,
+        "seed": 20261020,
+        "budget_cents": 300,
+        "commercial_attempt_cents": 150,
+        "local_acceptance": 0.45,
+        "commercial_acceptance": 0.45,
+        "availability": 0.95,
+        "technical_success": 0.95,
+        "uncertain_outcome": 0.03,
+        "human_intervention": 0.1,
+        "local_minutes": 4,
+        "commercial_minutes": 1,
+        "human_minutes": 8
+      },
+      "results": [
+        {
+          "strategy": "local_only",
+          "trials": 2000,
+          "accepted": 1536,
+          "acceptance_rate": 0.768,
+          "mean_reserved_cash_usd": 0.0,
+          "cash_per_accepted_asset_including_failed_jobs_usd": 0.0,
+          "cash_quantiles_usd": {
+            "0.5": 0.0,
+            "0.9": 0.0,
+            "0.95": 0.0
+          },
+          "elapsed_all_outcomes_minutes": {
+            "0.5": 8,
+            "0.9": 16,
+            "0.95": 20
+          },
+          "time_to_acceptance_minutes_conditional_on_acceptance": {
+            "0.5": 8,
+            "0.9": 12,
+            "0.95": 16
+          },
+          "budget_overrun_count": 0,
+          "stops": {
+            "ACCEPTED": 1536,
+            "BUDGET_CAP": 0,
+            "UNKNOWN_RECONCILE": 110,
+            "ATTEMPT_CAP": 354
+          },
+          "mean_attempts": 1.821
+        },
+        {
+          "strategy": "commercial_only",
+          "trials": 2000,
+          "accepted": 1286,
+          "acceptance_rate": 0.643,
+          "mean_reserved_cash_usd": 2.3295,
+          "cash_per_accepted_asset_including_failed_jobs_usd": 3.6228615863141522,
+          "cash_quantiles_usd": {
+            "0.5": 3.0,
+            "0.9": 3.0,
+            "0.95": 3.0
+          },
+          "elapsed_all_outcomes_minutes": {
+            "0.5": 2,
+            "0.9": 9,
+            "0.95": 10
+          },
+          "time_to_acceptance_minutes_conditional_on_acceptance": {
+            "0.5": 1,
+            "0.9": 9,
+            "0.95": 10
+          },
+          "budget_overrun_count": 0,
+          "stops": {
+            "ACCEPTED": 1286,
+            "BUDGET_CAP": 516,
+            "UNKNOWN_RECONCILE": 111,
+            "ATTEMPT_CAP": 87
+          },
+          "mean_attempts": 1.553
+        },
+        {
+          "strategy": "local_first_hybrid",
+          "trials": 2000,
+          "accepted": 1536,
+          "acceptance_rate": 0.768,
+          "mean_reserved_cash_usd": 1.308,
+          "cash_per_accepted_asset_including_failed_jobs_usd": 1.703125,
+          "cash_quantiles_usd": {
+            "0.5": 1.5,
+            "0.9": 3.0,
+            "0.95": 3.0
+          },
+          "elapsed_all_outcomes_minutes": {
+            "0.5": 5,
+            "0.9": 13,
+            "0.95": 14
+          },
+          "time_to_acceptance_minutes_conditional_on_acceptance": {
+            "0.5": 5,
+            "0.9": 12,
+            "0.95": 13
+          },
+          "budget_overrun_count": 0,
+          "stops": {
+            "ACCEPTED": 1536,
+            "BUDGET_CAP": 0,
+            "UNKNOWN_RECONCILE": 110,
+            "ATTEMPT_CAP": 354
+          },
+          "mean_attempts": 1.821
+        }
+      ]
+    },
+    "availability_low": {
+      "assumptions": {
+        "trials": 2000,
+        "seed": 20261020,
+        "budget_cents": 300,
+        "commercial_attempt_cents": 150,
+        "local_acceptance": 0.45,
+        "commercial_acceptance": 0.75,
+        "availability": 0.65,
+        "technical_success": 0.95,
+        "uncertain_outcome": 0.03,
+        "human_intervention": 0.1,
+        "local_minutes": 4,
+        "commercial_minutes": 1,
+        "human_minutes": 8
+      },
+      "results": [
+        {
+          "strategy": "local_only",
+          "trials": 2000,
+          "accepted": 1245,
+          "acceptance_rate": 0.6225,
+          "mean_reserved_cash_usd": 0.0,
+          "cash_per_accepted_asset_including_failed_jobs_usd": 0.0,
+          "cash_quantiles_usd": {
+            "0.5": 0.0,
+            "0.9": 0.0,
+            "0.95": 0.0
+          },
+          "elapsed_all_outcomes_minutes": {
+            "0.5": 4,
+            "0.9": 12,
+            "0.95": 16
+          },
+          "time_to_acceptance_minutes_conditional_on_acceptance": {
+            "0.5": 4,
+            "0.9": 12,
+            "0.95": 16
+          },
+          "budget_overrun_count": 0,
+          "stops": {
+            "ACCEPTED": 1245,
+            "BUDGET_CAP": 0,
+            "UNKNOWN_RECONCILE": 90,
+            "ATTEMPT_CAP": 665
+          },
+          "mean_attempts": 1.442
+        },
+        {
+          "strategy": "commercial_only",
+          "trials": 2000,
+          "accepted": 1633,
+          "acceptance_rate": 0.8165,
+          "mean_reserved_cash_usd": 1.74,
+          "cash_per_accepted_asset_including_failed_jobs_usd": 2.131047152480098,
+          "cash_quantiles_usd": {
+            "0.5": 1.5,
+            "0.9": 3.0,
+            "0.95": 3.0
+          },
+          "elapsed_all_outcomes_minutes": {
+            "0.5": 1,
+            "0.9": 9,
+            "0.95": 9
+          },
+          "time_to_acceptance_minutes_conditional_on_acceptance": {
+            "0.5": 1,
+            "0.9": 9,
+            "0.95": 9
+          },
+          "budget_overrun_count": 0,
+          "stops": {
+            "ACCEPTED": 1633,
+            "BUDGET_CAP": 31,
+            "UNKNOWN_RECONCILE": 72,
+            "ATTEMPT_CAP": 264
+          },
+          "mean_attempts": 1.16
+        },
+        {
+          "strategy": "local_first_hybrid",
+          "trials": 2000,
+          "accepted": 1546,
+          "acceptance_rate": 0.773,
+          "mean_reserved_cash_usd": 1.041,
+          "cash_per_accepted_asset_including_failed_jobs_usd": 1.3467011642949547,
+          "cash_quantiles_usd": {
+            "0.5": 1.5,
+            "0.9": 1.5,
+            "0.95": 3.0
+          },
+          "elapsed_all_outcomes_minutes": {
+            "0.5": 4,
+            "0.9": 10,
+            "0.95": 13
+          },
+          "time_to_acceptance_minutes_conditional_on_acceptance": {
+            "0.5": 4,
+            "0.9": 12,
+            "0.95": 13
+          },
+          "budget_overrun_count": 0,
+          "stops": {
+            "ACCEPTED": 1546,
+            "BUDGET_CAP": 0,
+            "UNKNOWN_RECONCILE": 84,
+            "ATTEMPT_CAP": 370
+          },
+          "mean_attempts": 1.362
+        }
+      ]
+    },
+    "uncertainty_high": {
+      "assumptions": {
+        "trials": 2000,
+        "seed": 20261020,
+        "budget_cents": 300,
+        "commercial_attempt_cents": 150,
+        "local_acceptance": 0.45,
+        "commercial_acceptance": 0.75,
+        "availability": 0.95,
+        "technical_success": 0.95,
+        "uncertain_outcome": 0.15,
+        "human_intervention": 0.1,
+        "local_minutes": 4,
+        "commercial_minutes": 1,
+        "human_minutes": 8
+      },
+      "results": [
+        {
+          "strategy": "local_only",
+          "trials": 2000,
+          "accepted": 1226,
+          "acceptance_rate": 0.613,
+          "mean_reserved_cash_usd": 0.0,
+          "cash_per_accepted_asset_including_failed_jobs_usd": 0.0,
+          "cash_quantiles_usd": {
+            "0.5": 0.0,
+            "0.9": 0.0,
+            "0.95": 0.0
+          },
+          "elapsed_all_outcomes_minutes": {
+            "0.5": 8,
+            "0.9": 12,
+            "0.95": 16
+          },
+          "time_to_acceptance_minutes_conditional_on_acceptance": {
+            "0.5": 4,
+            "0.9": 12,
+            "0.95": 16
+          },
+          "budget_overrun_count": 0,
+          "stops": {
+            "ACCEPTED": 1226,
+            "BUDGET_CAP": 0,
+            "UNKNOWN_RECONCILE": 516,
+            "ATTEMPT_CAP": 258
+          },
+          "mean_attempts": 1.6745
+        },
+        {
+          "strategy": "commercial_only",
+          "trials": 2000,
+          "accepted": 1502,
+          "acceptance_rate": 0.751,
+          "mean_reserved_cash_usd": 1.8495,
+          "cash_per_accepted_asset_including_failed_jobs_usd": 2.46271637816245,
+          "cash_quantiles_usd": {
+            "0.5": 1.5,
+            "0.9": 3.0,
+            "0.95": 3.0
+          },
+          "elapsed_all_outcomes_minutes": {
+            "0.5": 1,
+            "0.9": 2,
+            "0.95": 9
+          },
+          "time_to_acceptance_minutes_conditional_on_acceptance": {
+            "0.5": 1,
+            "0.9": 9,
+            "0.95": 9
+          },
+          "budget_overrun_count": 0,
+          "stops": {
+            "ACCEPTED": 1502,
+            "BUDGET_CAP": 93,
+            "UNKNOWN_RECONCILE": 384,
+            "ATTEMPT_CAP": 21
+          },
+          "mean_attempts": 1.233
+        },
+        {
+          "strategy": "local_first_hybrid",
+          "trials": 2000,
+          "accepted": 1451,
+          "acceptance_rate": 0.7255,
+          "mean_reserved_cash_usd": 0.912,
+          "cash_per_accepted_asset_including_failed_jobs_usd": 1.2570640937284632,
+          "cash_quantiles_usd": {
+            "0.5": 1.5,
+            "0.9": 3.0,
+            "0.95": 3.0
+          },
+          "elapsed_all_outcomes_minutes": {
+            "0.5": 4,
+            "0.9": 12,
+            "0.95": 13
+          },
+          "time_to_acceptance_minutes_conditional_on_acceptance": {
+            "0.5": 5,
+            "0.9": 12,
+            "0.95": 13
+          },
+          "budget_overrun_count": 0,
+          "stops": {
+            "ACCEPTED": 1451,
+            "BUDGET_CAP": 0,
+            "UNKNOWN_RECONCILE": 478,
+            "ATTEMPT_CAP": 71
+          },
+          "mean_attempts": 1.555
+        }
+      ]
+    }
+  }
+}
