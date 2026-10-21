@@ -1,0 +1,16 @@
+<!doctype html><html lang="pt-BR"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>fixture</title>
+<style>a:focus,button:focus,input:focus,select:focus{outline:2px solid #000}img{width:200px;height:150px;object-fit:cover}</style>
+<nav><a href="#home" data-testid="nav-home">Início</a> <a href="#catalog" data-testid="nav-catalog">Fornada</a> <a href="#order" data-testid="nav-order">Encomenda</a></nav>
+<main id="app"></main><footer>Protótipo demonstrativo. Marca, produtos e preços fictícios. Nenhuma encomenda é enviada.</footer>
+<script>
+const P=[["no-cardamomo","Nó de cardamomo","Doce",2.8],["muffin-baunilha","Muffin","Doce",2.5],["torta-morango","Torta","Doce",24],["bolo-maca","Bolo de maçã","Doce",4.2],["scone-queijo","Scone","Salgado",3]];
+let cart={},filter="all",reviewed=false;const eur=v=>"€"+v.toFixed(2).replace(".",",");
+function r(){const h=location.hash.slice(1)||"home",a=document.getElementById("app");
+if(h==="home")a.innerHTML='<h1>O pão de sábado começa na sexta.</h1><img src="assets/cardamom-buns.jpg" alt="nós">';
+else if(h==="catalog")a.innerHTML='<button data-testid="filter-all" onclick="filter=\'all\';r()">Todos</button><button data-testid="filter-sweet" onclick="filter=\'Doce\';r()">Doces</button><button data-testid="filter-savory" onclick="filter=\'Salgado\';r()">Salgados</button>'+P.filter(p=>filter==="all"||p[2]===filter).map(p=>`<a data-testid="product-${p[0]}" href="#p/${p[0]}">${p[1]} ${eur(p[3])}</a>`).join(" ");
+else if(h.startsWith("p/")){const p=P.find(x=>x[0]===h.slice(2));a.innerHTML=`<h2>${p[1]}</h2>${p[0]==="bolo-maca"?"<p>Foto com sorvete; o sorvete não acompanha.</p>":""}<p>Informações sobre alérgenos não disponíveis neste protótipo.</p><button data-testid="add-order" onclick="cart['${p[0]}']=(cart['${p[0]}']||0)+1">Adicionar à encomenda</button>`}
+else if(h==="order"){const ids=Object.keys(cart);if(!ids.length){a.innerHTML='<p data-testid="order-empty">Vazia</p>';return}
+const tot=ids.reduce((s,i)=>s+P.find(p=>p[0]===i)[3]*cart[i],0);
+a.innerHTML=ids.map(i=>`<label>Qtd <input type="number" min="1" max="12" data-testid="order-quantity" value="${cart[i]}" onchange="const v=Math.round(+this.value);cart['${i}']=Math.min(12,Math.max(1,v||1));r()"></label><button data-testid="order-remove" onclick="delete cart['${i}'];r()">Remover</button>`).join("")+`<p data-testid="order-subtotal">${eur(tot)}</p><label><input type="radio" name="s" data-testid="pickup-slot">08:00–09:00</label><button data-testid="order-review" onclick="reviewed=true;document.getElementById('sum').hidden=false">Revisar encomenda</button><div id="sum" data-testid="order-summary" hidden>Resumo ${eur(tot)}</div><p>Nenhuma encomenda é enviada.</p>`}}
+addEventListener("hashchange",r);r();
+</script></html>

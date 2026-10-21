@@ -1,0 +1,336 @@
+{
+ "schema_version": "0.2.0",
+ "route": "WEB_PREVIEW",
+ "mode": "FAST",
+ "project": "DQB-02 t19 · Tabua (ficticia)",
+ "build_version": "r0",
+ "state": "PREVIEW_REVIEWED",
+ "verdict": "PARTIAL",
+ "execution": {
+  "execution_mode": "MANUAL_SPEC_GUIDED",
+  "skill_package_version": "2.5.0",
+  "methods": [
+   {
+    "name": "WEB_EXPERIENCE Work Profile v0.2",
+    "state": "DOCUMENTED"
+   },
+   {
+    "name": "Deliverable Completeness Catalog",
+    "state": "DOCUMENTED"
+   }
+  ],
+  "tools": [
+   "file edit",
+   "python3",
+   "playwright chromium"
+  ],
+  "paid_authorized": false,
+  "public_deploy_authorized": false,
+  "activation_evidence": null
+ },
+ "WEB_BRIEF": {
+  "deliverable_scope": "Site local navegavel (hash routes) para sauna ficticia Tabua",
+  "business_kind": "SERVICE",
+  "user_goal": "Entender experiencia/ritual/regras, ver horarios com filtro, abrir sessoes, estimar valor localmente",
+  "audience_basis": "briefing.md: adultos 25-60, iniciantes e habituais",
+  "product_service_truth_refs": [
+   "briefing.md"
+  ],
+  "known_unknown_boundary": [
+   "Marca, local, horarios e precos ficticios",
+   "Disponibilidade nao verificada",
+   "Fotos de outro local (CC0)"
+  ],
+  "brand_authority_state": "PROVISIONAL",
+  "primary_action_intent": "Ver horarios",
+  "task_completion_condition": "r0/ navegavel com requisitos e instrumentacao do briefing",
+  "regulated_claim_boundary": "Sem afirmacoes de saude, bem-estar, imunidade, desintoxicacao ou terapia"
+ },
+ "WEB_DIRECTION": {
+  "value_proposition": "Aqueca. Mergulhe. Descanse. Sauna a lenha sobre o pier com escada para o mar.",
+  "primary_cta_intent": "Ver horarios",
+  "sections_and_purpose": [
+   {
+    "id": "hero",
+    "purpose": "proposta + CTA"
+   },
+   {
+    "id": "como-funciona",
+    "purpose": "ritual em 4 passos"
+   },
+   {
+    "id": "band",
+    "purpose": "lugar"
+   },
+   {
+    "id": "levar-regras",
+    "purpose": "preparo e regras"
+   },
+   {
+    "id": "sessoes",
+    "purpose": "acesso aos detalhes"
+   },
+   {
+    "id": "horarios",
+    "purpose": "programacao com filtro"
+   },
+   {
+    "id": "planejar",
+    "purpose": "calculo local"
+   },
+   {
+    "id": "regras",
+    "purpose": "regras e FAQ"
+   }
+  ],
+  "visual_direction": "Tabuas e agua: ripas horizontais como regua (titulo do hero em tres pranchas), ardosia do ceu nublado, brasa da lenha como unico acento, papel de betula; Fraunces + Instrument Sans + IBM Plex Mono",
+  "creative_open_zones": [
+   "paleta",
+   "tipografia",
+   "wordmark",
+   "composicao"
+  ],
+  "brand_alignment": "Nome e assinatura fixos preservados",
+  "claim_and_offer_boundaries": "Sem saude, depoimentos, escassez ou vagas; aviso de prototipo no rodape e no planejador",
+  "motion_fallback_and_controls": "Entrada discreta de rota/linhas; neutralizada por prefers-reduced-motion",
+  "approved_reference_scope": [
+   "references/editorial-brand-led: apenas hierarquia de titulo serifado grande sobre fundo escuro; nada de layout, logotipo ou navegacao"
+  ]
+ },
+ "WEB_ASSET_PLAN": {
+  "assets_used": [
+   {
+    "path": "r0/assets/abyfjorden-estuary-2.jpg",
+    "origin": "Wikimedia Commons, W.carter (assets/credits.json)",
+    "approval": "PROVISIONAL",
+    "rights": "CLEARED",
+    "use_scope": "Ilustracao de marca ficticia em prototipo local; nao retrata o local"
+   },
+   {
+    "path": "r0/assets/bathing-ladder.jpg",
+    "origin": "Wikimedia Commons, W.carter (assets/credits.json)",
+    "approval": "PROVISIONAL",
+    "rights": "CLEARED",
+    "use_scope": "Ilustracao de marca ficticia em prototipo local; nao retrata o local"
+   },
+   {
+    "path": "r0/assets/bench-2.jpg",
+    "origin": "Wikimedia Commons, W.carter (assets/credits.json)",
+    "approval": "PROVISIONAL",
+    "rights": "CLEARED",
+    "use_scope": "Ilustracao de marca ficticia em prototipo local; nao retrata o local"
+   },
+   {
+    "path": "r0/assets/jetties-1.jpg",
+    "origin": "Wikimedia Commons, W.carter (assets/credits.json)",
+    "approval": "PROVISIONAL",
+    "rights": "CLEARED",
+    "use_scope": "Ilustracao de marca ficticia em prototipo local; nao retrata o local"
+   },
+   {
+    "path": "r0/assets/jetty-and-water-2.jpg",
+    "origin": "Wikimedia Commons, W.carter (assets/credits.json)",
+    "approval": "PROVISIONAL",
+    "rights": "CLEARED",
+    "use_scope": "Ilustracao de marca ficticia em prototipo local; nao retrata o local"
+   }
+  ],
+  "asset_authority_and_rights": "CC0 conforme assets/credits.json; pixels inalterados, enquadramento via object-fit/object-position",
+  "generation_required_decision": "Nenhuma geracao",
+  "product_identity_preservation": "Fotos rotuladas como ilustrativas de outro local",
+  "provisional_vs_approved_labels": "Identidade provisoria"
+ },
+ "WEB_PREVIEW_BUILD": {
+  "preview_status": "AVAILABLE_VERIFIED",
+  "source_files": [
+   "r0/index.html",
+   "r0/styles.css",
+   "r0/app.js",
+   "r0/credits-data.js",
+   "r0/fonts/fonts.css"
+  ],
+  "verified_preview_ref_or_local_open_instructions": "Abrir file:///tmp/dqb/runs/t19/r0/index.html",
+  "responsive_strategy": "Grade fluida; <=720px nav inferior fixa, passos e cards em coluna; <=860px planejador/detalhe em coluna",
+  "working_interactions": [
+   "hash routes",
+   "filtro horarios",
+   "detalhe de sessao",
+   "planejador local",
+   "FAQ details"
+  ],
+  "primary_cta_behavior": "SAFE_LOCAL_DEMO",
+  "real_vs_mock_integrations": "Nenhuma integracao; nada e enviado",
+  "version_id": "r0",
+  "form_mode": "LOCAL_CALCULATION",
+  "form_destination": null,
+  "prefers_reduced_motion_fallback": "Animacoes e transicoes reduzidas a ~0ms",
+  "external_link_targets": []
+ },
+ "WEB_QA": {
+  "checks": [
+   {
+    "check_id": "browser_render",
+    "requirement": "Site abre em Chromium sem erro JS",
+    "criticality": "CRITICAL",
+    "procedure": "Playwright file:// goto; pageerror/console listeners",
+    "result": "PASS",
+    "evidence_mode": "BROWSER_OBSERVED",
+    "evidence_ref": "evidence-r0/desktop-home.png",
+    "build_hash": "c43c3c70c33a40040b74918989977a28477fa0ce34b66dff0464581ba57c4608",
+    "viewport": "1440x900",
+    "checked_at": "2026-10-21T00:27:49Z"
+   },
+   {
+    "check_id": "desktop_render",
+    "requirement": "Home, horarios, detalhe, planejador, regras em 1440x900",
+    "criticality": "ESSENTIAL",
+    "procedure": "Capturas full-page + inspecao visual pelo agente",
+    "result": "PASS",
+    "evidence_mode": "BROWSER_OBSERVED",
+    "evidence_ref": "evidence-r0/desktop-home-full.png",
+    "build_hash": "c43c3c70c33a40040b74918989977a28477fa0ce34b66dff0464581ba57c4608",
+    "viewport": "1440x900",
+    "checked_at": "2026-10-21T00:27:49Z"
+   },
+   {
+    "check_id": "mobile_render",
+    "requirement": "Mesmas telas em 390x844 sem overflow horizontal",
+    "criticality": "ESSENTIAL",
+    "procedure": "scrollWidth<=390 em home/horarios/planejar + capturas",
+    "result": "PASS",
+    "evidence_mode": "BROWSER_OBSERVED",
+    "evidence_ref": "evidence-r0/mobile-home.png",
+    "build_hash": "c43c3c70c33a40040b74918989977a28477fa0ce34b66dff0464581ba57c4608",
+    "viewport": "390x844",
+    "checked_at": "2026-10-21T00:27:49Z"
+   },
+   {
+    "check_id": "responsive",
+    "requirement": "Verificacao adicional 768x1024",
+    "criticality": "ADVISORY",
+    "procedure": "scrollWidth<=768 + capturas",
+    "result": "PASS",
+    "evidence_mode": "BROWSER_OBSERVED",
+    "evidence_ref": "evidence-r0/tablet-home-full.png",
+    "build_hash": "c43c3c70c33a40040b74918989977a28477fa0ce34b66dff0464581ba57c4608",
+    "viewport": "768x1024",
+    "checked_at": "2026-10-21T00:27:49Z"
+   },
+   {
+    "check_id": "cta_interaction",
+    "requirement": "Ver horarios / nav / cards levam a rota correta; voltar funciona",
+    "criticality": "CRITICAL",
+    "procedure": "click nav-schedule, session-privativa, go_back",
+    "result": "PASS",
+    "evidence_mode": "BROWSER_OBSERVED",
+    "evidence_ref": "evidence-r0/qa-results.json",
+    "build_hash": "c43c3c70c33a40040b74918989977a28477fa0ce34b66dff0464581ba57c4608",
+    "viewport": "1440x900;390x844;768x1024",
+    "checked_at": "2026-10-21T00:27:49Z"
+   },
+   {
+    "check_id": "form_behavior",
+    "requirement": "Planejador: 54/44/120; aberta x9 e privativa x7 -> erro sem total; 0,-2,vazio,2.5 -> erro",
+    "criticality": "CRITICAL",
+    "procedure": "Playwright preenche plan-session/plan-people e le plan-total/plan-error",
+    "result": "PASS",
+    "evidence_mode": "BROWSER_OBSERVED",
+    "evidence_ref": "evidence-r0/qa-results.json",
+    "build_hash": "c43c3c70c33a40040b74918989977a28477fa0ce34b66dff0464581ba57c4608",
+    "viewport": "1440x900;390x844;768x1024",
+    "checked_at": "2026-10-21T00:27:49Z"
+   },
+   {
+    "check_id": "schedule_filter",
+    "requirement": "Filtro Nascer do sol mostra so Sab/Dom 07:00",
+    "criticality": "CRITICAL",
+    "procedure": "click schedule-filter-sunrise, lista data-session",
+    "result": "PASS",
+    "evidence_mode": "BROWSER_OBSERVED",
+    "evidence_ref": "evidence-r0/desktop-schedule-sunrise.png",
+    "build_hash": "c43c3c70c33a40040b74918989977a28477fa0ce34b66dff0464581ba57c4608",
+    "viewport": "1440x900;390x844;768x1024",
+    "checked_at": "2026-10-21T00:27:49Z"
+   },
+   {
+    "check_id": "keyboard_interaction",
+    "requirement": "Tab com foco visivel; Enter no filtro; setas nos radios",
+    "criticality": "ESSENTIAL",
+    "procedure": "Tab x8 com outline computado; Enter; ArrowDown",
+    "result": "PASS",
+    "evidence_mode": "BROWSER_OBSERVED",
+    "evidence_ref": "evidence-r0/desktop-focus-filter.png",
+    "build_hash": "c43c3c70c33a40040b74918989977a28477fa0ce34b66dff0464581ba57c4608",
+    "viewport": "1440x900",
+    "checked_at": "2026-10-21T00:27:49Z"
+   },
+   {
+    "check_id": "reduced_motion",
+    "requirement": "Animacoes neutralizadas com prefers-reduced-motion",
+    "criticality": "ADVISORY",
+    "procedure": "contexto reduced_motion=reduce; animationDuration computado",
+    "result": "PASS",
+    "evidence_mode": "BROWSER_OBSERVED",
+    "evidence_ref": "evidence-r0/qa-results.json",
+    "build_hash": "c43c3c70c33a40040b74918989977a28477fa0ce34b66dff0464581ba57c4608",
+    "viewport": "1440x900",
+    "checked_at": "2026-10-21T00:27:49Z"
+   },
+   {
+    "check_id": "no_external_network",
+    "requirement": "Nenhuma requisicao fora de file:/data:",
+    "criticality": "CRITICAL",
+    "procedure": "listener de requests em todas as viewports",
+    "result": "PASS",
+    "evidence_mode": "BROWSER_OBSERVED",
+    "evidence_ref": "evidence-r0/qa-results.json",
+    "build_hash": "c43c3c70c33a40040b74918989977a28477fa0ce34b66dff0464581ba57c4608",
+    "viewport": "todas",
+    "checked_at": "2026-10-21T00:27:49Z"
+   },
+   {
+    "check_id": "content_truth",
+    "requirement": "Textos obrigatorios, avisos, sem afirmacoes de saude/depoimentos/vagas",
+    "criticality": "CRITICAL",
+    "procedure": "Revisao estatica do codigo contra briefing",
+    "result": "PASS",
+    "evidence_mode": "STATIC_INSPECTED",
+    "evidence_ref": "r0/app.js",
+    "build_hash": "c43c3c70c33a40040b74918989977a28477fa0ce34b66dff0464581ba57c4608",
+    "viewport": null,
+    "checked_at": "2026-10-21T00:27:49Z"
+   },
+   {
+    "check_id": "assets_available",
+    "requirement": "Imagens locais carregam, todas com alt; creditos acessiveis",
+    "criticality": "ESSENTIAL",
+    "procedure": "naturalWidth>0, alt nao vazio, rota #/creditos com 19 itens",
+    "result": "PASS",
+    "evidence_mode": "BROWSER_OBSERVED",
+    "evidence_ref": "evidence-r0/desktop-credits.png",
+    "build_hash": "c43c3c70c33a40040b74918989977a28477fa0ce34b66dff0464581ba57c4608",
+    "viewport": "1440x900",
+    "checked_at": "2026-10-21T00:27:49Z"
+   },
+   {
+    "check_id": "screen_reader",
+    "requirement": "Leitura com leitor de tela real",
+    "criticality": "ADVISORY",
+    "procedure": "-",
+    "result": "NOT_TESTED",
+    "evidence_mode": "NONE",
+    "evidence_ref": null,
+    "build_hash": "c43c3c70c33a40040b74918989977a28477fa0ce34b66dff0464581ba57c4608",
+    "viewport": null,
+    "checked_at": "2026-10-21T00:27:49Z",
+    "reason": "Sem leitor de tela no ambiente; apenas rotulos/aria inspecionados"
+   }
+  ],
+  "known_limitations": [
+   "QA e autoavaliacao do agente, nao revisao humana independente",
+   "Sem leitor de tela real",
+   "Em celular o total do planejador fica abaixo do formulario (exige rolagem)"
+  ],
+  "verdict": "PARTIAL"
+ }
+}

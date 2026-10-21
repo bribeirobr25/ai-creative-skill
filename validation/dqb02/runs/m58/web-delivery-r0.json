@@ -1,0 +1,895 @@
+{
+ "schema_version": "0.2.0",
+ "route": "WEB_PREVIEW",
+ "mode": "FAST",
+ "project": "Miolo (DQB-02 m58, fictício)",
+ "build_version": "r0",
+ "state": "PREVIEW_DRAFT",
+ "verdict": "PARTIAL",
+ "execution": {
+  "execution_mode": "MANUAL_SPEC_GUIDED",
+  "skill_package_version": "V2.5 (plugin 0.3.0)",
+  "methods": [
+   {
+    "name": "WEB_EXPERIENCE Work Profile v0.2",
+    "state": "DOCUMENTED"
+   },
+   {
+    "name": "creative_web.py route/audit/validate",
+    "state": "EXECUTED"
+   }
+  ],
+  "tools": [
+   "file editing",
+   "bash",
+   "python3 playwright chromium"
+  ],
+  "paid_authorized": false,
+  "public_deploy_authorized": false,
+  "activation_evidence": null
+ },
+ "WEB_BRIEF": {
+  "deliverable_scope": "Site navegável local completo (home, fornada, detalhe, encomenda, créditos)",
+  "business_kind": "PHYSICAL_PRODUCT",
+  "user_goal": "Conhecer a padaria, ver/filtrar a fornada e montar encomenda demonstrativa com horário de retirada",
+  "audience_basis": "briefing.md: vizinhos 25–55 no bairro fictício Vale",
+  "product_service_truth_refs": [
+   "briefing.md tabela de produtos",
+   "assets/credits.json"
+  ],
+  "known_unknown_boundary": [
+   "Alérgenos: desconhecidos (aviso do briefing)",
+   "Ingredientes além da descrição: não alegados",
+   "Sorvete da foto do bolo: não incluso"
+  ],
+  "brand_authority_state": "PROVISIONAL",
+  "primary_action_intent": "Ver a fornada",
+  "task_completion_condition": "Encomenda demonstrativa revisada em resumo local",
+  "product_material_scale_truth_state": "Somente nome, categoria, preço, unidade e descrição do briefing; demais fatos UNKNOWN",
+  "regulated_claim_boundary": "Sem alegações nutricionais, orgânico, artesanal, validade ou benefícios"
+ },
+ "WEB_DIRECTION": {
+  "value_proposition": "Uma fornada por semana: encomende até sexta, retire sábado ainda morno",
+  "primary_cta_intent": "Ver a fornada",
+  "sections_and_purpose": [
+   {
+    "id": "hero",
+    "purpose": "proposta + CTA"
+   },
+   {
+    "id": "como-funciona",
+    "purpose": "linha do tempo sexta→sábado em 3 passos"
+   },
+   {
+    "id": "destaque",
+    "purpose": "3 itens da fornada"
+   },
+   {
+    "id": "fornada",
+    "purpose": "catálogo filtrável"
+   },
+   {
+    "id": "detalhe",
+    "purpose": "foto, preço, unidade, alérgenos, quantidade"
+   },
+   {
+    "id": "encomenda",
+    "purpose": "bilhete, horários, revisão"
+   },
+   {
+    "id": "creditos",
+    "purpose": "autor/licença/link por foto"
+   }
+  ],
+  "visual_direction": "'Bilhete da fornada': papel de farinha, casca tostada e tinta; Fraunces (voz), Instrument Sans (leitura), IBM Plex Mono (horários/preços); arco de forno no hero; encomenda como bilhete pontilhado",
+  "creative_open_zones": [
+   "paleta",
+   "tipografia",
+   "wordmark",
+   "layout"
+  ],
+  "brand_alignment": "Nome e assinatura fixos preservados",
+  "claim_and_offer_boundaries": "Sem escassez, contagens, depoimentos, prêmios; preços demonstrativos",
+  "motion_fallback_and_controls": "Transições curtas; prefers-reduced-motion zera animações"
+ },
+ "WEB_ASSET_PLAN": {
+  "assets_used": [
+   {
+    "path": "r0/assets/apple-cake-with-vanilla-ice-cream-1.jpg",
+    "origin": "Wikimedia Commons (W.carter), via assets/credits.json",
+    "approval": "APPROVED_FOR_THIS_USE",
+    "rights": "CLEARED",
+    "use_scope": "Ilustração de marca fictícia em protótipo local, com créditos"
+   },
+   {
+    "path": "r0/assets/apple-cake-with-vanilla-ice-cream-2.jpg",
+    "origin": "Wikimedia Commons (W.carter), via assets/credits.json",
+    "approval": "APPROVED_FOR_THIS_USE",
+    "rights": "CLEARED",
+    "use_scope": "Ilustração de marca fictícia em protótipo local, com créditos"
+   },
+   {
+    "path": "r0/assets/cardamom-buns-on-grate-under-towel.jpg",
+    "origin": "Wikimedia Commons (W.carter), via assets/credits.json",
+    "approval": "APPROVED_FOR_THIS_USE",
+    "rights": "CLEARED",
+    "use_scope": "Ilustração de marca fictícia em protótipo local, com créditos"
+   },
+   {
+    "path": "r0/assets/cardamom-buns.jpg",
+    "origin": "Wikimedia Commons (W.carter), via assets/credits.json",
+    "approval": "APPROVED_FOR_THIS_USE",
+    "rights": "CLEARED",
+    "use_scope": "Ilustração de marca fictícia em protótipo local, com créditos"
+   },
+   {
+    "path": "r0/assets/one-layer-of-cardamom-buns-on-grate.jpg",
+    "origin": "Wikimedia Commons (W.carter), via assets/credits.json",
+    "approval": "APPROVED_FOR_THIS_USE",
+    "rights": "CLEARED",
+    "use_scope": "Ilustração de marca fictícia em protótipo local, com créditos"
+   },
+   {
+    "path": "r0/assets/plain-vanilla-muffin.jpg",
+    "origin": "Wikimedia Commons (W.carter), via assets/credits.json",
+    "approval": "APPROVED_FOR_THIS_USE",
+    "rights": "CLEARED",
+    "use_scope": "Ilustração de marca fictícia em protótipo local, com créditos"
+   },
+   {
+    "path": "r0/assets/plain-vanilla-muffins-1.jpg",
+    "origin": "Wikimedia Commons (W.carter), via assets/credits.json",
+    "approval": "APPROVED_FOR_THIS_USE",
+    "rights": "CLEARED",
+    "use_scope": "Ilustração de marca fictícia em protótipo local, com créditos"
+   },
+   {
+    "path": "r0/assets/plain-vanilla-muffins-2.jpg",
+    "origin": "Wikimedia Commons (W.carter), via assets/credits.json",
+    "approval": "APPROVED_FOR_THIS_USE",
+    "rights": "CLEARED",
+    "use_scope": "Ilustração de marca fictícia em protótipo local, com créditos"
+   },
+   {
+    "path": "r0/assets/plain-vanilla-muffins-3.jpg",
+    "origin": "Wikimedia Commons (W.carter), via assets/credits.json",
+    "approval": "APPROVED_FOR_THIS_USE",
+    "rights": "CLEARED",
+    "use_scope": "Ilustração de marca fictícia em protótipo local, com créditos"
+   },
+   {
+    "path": "r0/assets/strawberry-pie-in-springform-pan-with-drip-tray-1.jpg",
+    "origin": "Wikimedia Commons (W.carter), via assets/credits.json",
+    "approval": "APPROVED_FOR_THIS_USE",
+    "rights": "CLEARED",
+    "use_scope": "Ilustração de marca fictícia em protótipo local, com créditos"
+   },
+   {
+    "path": "r0/assets/strawberry-pie-in-springform-pan-with-drip-tray-2.jpg",
+    "origin": "Wikimedia Commons (W.carter), via assets/credits.json",
+    "approval": "APPROVED_FOR_THIS_USE",
+    "rights": "CLEARED",
+    "use_scope": "Ilustração de marca fictícia em protótipo local, com créditos"
+   },
+   {
+    "path": "r0/assets/strawberry-pie-in-springform-pan-with-drip-tray-3.jpg",
+    "origin": "Wikimedia Commons (W.carter), via assets/credits.json",
+    "approval": "APPROVED_FOR_THIS_USE",
+    "rights": "CLEARED",
+    "use_scope": "Ilustração de marca fictícia em protótipo local, com créditos"
+   },
+   {
+    "path": "r0/assets/swedish-cheese-scones.jpg",
+    "origin": "Wikimedia Commons (W.carter), via assets/credits.json",
+    "approval": "APPROVED_FOR_THIS_USE",
+    "rights": "CLEARED",
+    "use_scope": "Ilustração de marca fictícia em protótipo local, com créditos"
+   },
+   {
+    "path": "r0/assets/two-layers-of-cardamom-buns-on-grate.jpg",
+    "origin": "Wikimedia Commons (W.carter), via assets/credits.json",
+    "approval": "APPROVED_FOR_THIS_USE",
+    "rights": "CLEARED",
+    "use_scope": "Ilustração de marca fictícia em protótipo local, com créditos"
+   }
+  ],
+  "asset_authority_and_rights": "Fotos fornecidas pelo estudo com licenças CC0/CC BY 4.0/CC BY-SA 4.0; créditos completos na rota #/creditos",
+  "generation_required_decision": "Nenhuma geração; só SVG simples (ícone de sacola)",
+  "product_identity_preservation": "Pixels inalterados; enquadramento via object-fit/object-position",
+  "provisional_vs_approved_labels": "Marca provisória/fictícia",
+  "observed_vs_unknown_photo_claims": "Bolo de maçã: sorvete visível na foto não acompanha o produto (aviso no cartão e no detalhe)"
+ },
+ "WEB_PREVIEW_BUILD": {
+  "preview_status": "AVAILABLE_VERIFIED",
+  "source_files": [
+   "r0/index.html",
+   "r0/styles.css",
+   "r0/app.js",
+   "r0/fonts/fonts.css",
+   "r0/assets/apple-cake-with-vanilla-ice-cream-1.jpg",
+   "r0/assets/apple-cake-with-vanilla-ice-cream-2.jpg",
+   "r0/assets/cardamom-buns-on-grate-under-towel.jpg",
+   "r0/assets/cardamom-buns.jpg",
+   "r0/assets/one-layer-of-cardamom-buns-on-grate.jpg",
+   "r0/assets/plain-vanilla-muffin.jpg",
+   "r0/assets/plain-vanilla-muffins-1.jpg",
+   "r0/assets/plain-vanilla-muffins-2.jpg",
+   "r0/assets/plain-vanilla-muffins-3.jpg",
+   "r0/assets/strawberry-pie-in-springform-pan-with-drip-tray-1.jpg",
+   "r0/assets/strawberry-pie-in-springform-pan-with-drip-tray-2.jpg",
+   "r0/assets/strawberry-pie-in-springform-pan-with-drip-tray-3.jpg",
+   "r0/assets/swedish-cheese-scones.jpg",
+   "r0/assets/two-layers-of-cardamom-buns-on-grate.jpg"
+  ],
+  "verified_preview_ref_or_local_open_instructions": "Abrir file:///tmp/dqb/runs/m58/r0/index.html (sem servidor)",
+  "responsive_strategy": "Grade de 12 colunas; quebras em 1024/860/640; passos viram linha do tempo vertical no mobile",
+  "working_interactions": [
+   "rotas por hash",
+   "filtro Todos/Doces/Salgados",
+   "galeria de fotos no detalhe",
+   "seletor de quantidade 1–12",
+   "adicionar/remover",
+   "horário obrigatório",
+   "resumo local"
+  ],
+  "primary_cta_behavior": "SAFE_LOCAL_DEMO",
+  "real_vs_mock_integrations": "Nenhuma integração; nada é enviado",
+  "version_id": "795065c3ab95",
+  "form_mode": "LOCAL_CALCULATION",
+  "form_destination": null,
+  "prefers_reduced_motion_fallback": "CSS @media reduce + scrollIntoView sem smooth",
+  "external_link_targets": [
+   "commons.wikimedia.org (créditos)",
+   "creativecommons.org (licenças)"
+  ]
+ },
+ "WEB_QA": {
+  "checks": [
+   {
+    "check_id": "pw_00",
+    "requirement": "desktop no horizontal overflow home",
+    "criticality": "ESSENTIAL",
+    "procedure": "Playwright Chromium, file:// r0/index.html (evidence-r0/qa.py)",
+    "result": "PASS",
+    "evidence_mode": "BROWSER_OBSERVED",
+    "evidence_ref": "evidence-r0/qa-results.json",
+    "build_hash": "795065c3ab95068409b1052801c9ac324bc6f7ecdda108cedfc03cfdb318d2c4",
+    "viewport": "1440x900",
+    "checked_at": "2026-10-21T00:04:02.541597+00:00"
+   },
+   {
+    "check_id": "pw_01",
+    "requirement": "hero title",
+    "criticality": "ESSENTIAL",
+    "procedure": "Playwright Chromium, file:// r0/index.html (evidence-r0/qa.py)",
+    "result": "PASS",
+    "evidence_mode": "BROWSER_OBSERVED",
+    "evidence_ref": "evidence-r0/qa-results.json",
+    "build_hash": "795065c3ab95068409b1052801c9ac324bc6f7ecdda108cedfc03cfdb318d2c4",
+    "viewport": "1440x900",
+    "checked_at": "2026-10-21T00:04:02.541597+00:00"
+   },
+   {
+    "check_id": "pw_02",
+    "requirement": "text: Encomende até sexta, 18h. Retire no sába",
+    "criticality": "ESSENTIAL",
+    "procedure": "Playwright Chromium, file:// r0/index.html (evidence-r0/qa.py)",
+    "result": "PASS",
+    "evidence_mode": "BROWSER_OBSERVED",
+    "evidence_ref": "evidence-r0/qa-results.json",
+    "build_hash": "795065c3ab95068409b1052801c9ac324bc6f7ecdda108cedfc03cfdb318d2c4",
+    "viewport": "1440x900",
+    "checked_at": "2026-10-21T00:04:02.541597+00:00"
+   },
+   {
+    "check_id": "pw_03",
+    "requirement": "text: Ver a fornada",
+    "criticality": "ESSENTIAL",
+    "procedure": "Playwright Chromium, file:// r0/index.html (evidence-r0/qa.py)",
+    "result": "PASS",
+    "evidence_mode": "BROWSER_OBSERVED",
+    "evidence_ref": "evidence-r0/qa-results.json",
+    "build_hash": "795065c3ab95068409b1052801c9ac324bc6f7ecdda108cedfc03cfdb318d2c4",
+    "viewport": "1440x900",
+    "checked_at": "2026-10-21T00:04:02.541597+00:00"
+   },
+   {
+    "check_id": "pw_04",
+    "requirement": "text: Escolha até sexta, 18h",
+    "criticality": "ESSENTIAL",
+    "procedure": "Playwright Chromium, file:// r0/index.html (evidence-r0/qa.py)",
+    "result": "PASS",
+    "evidence_mode": "BROWSER_OBSERVED",
+    "evidence_ref": "evidence-r0/qa-results.json",
+    "build_hash": "795065c3ab95068409b1052801c9ac324bc6f7ecdda108cedfc03cfdb318d2c4",
+    "viewport": "1440x900",
+    "checked_at": "2026-10-21T00:04:02.541597+00:00"
+   },
+   {
+    "check_id": "pw_05",
+    "requirement": "text: Assamos na madrugada de sábado",
+    "criticality": "ESSENTIAL",
+    "procedure": "Playwright Chromium, file:// r0/index.html (evidence-r0/qa.py)",
+    "result": "PASS",
+    "evidence_mode": "BROWSER_OBSERVED",
+    "evidence_ref": "evidence-r0/qa-results.json",
+    "build_hash": "795065c3ab95068409b1052801c9ac324bc6f7ecdda108cedfc03cfdb318d2c4",
+    "viewport": "1440x900",
+    "checked_at": "2026-10-21T00:04:02.541597+00:00"
+   },
+   {
+    "check_id": "pw_06",
+    "requirement": "text: Retire entre 8h e 12h",
+    "criticality": "ESSENTIAL",
+    "procedure": "Playwright Chromium, file:// r0/index.html (evidence-r0/qa.py)",
+    "result": "PASS",
+    "evidence_mode": "BROWSER_OBSERVED",
+    "evidence_ref": "evidence-r0/qa-results.json",
+    "build_hash": "795065c3ab95068409b1052801c9ac324bc6f7ecdda108cedfc03cfdb318d2c4",
+    "viewport": "1440x900",
+    "checked_at": "2026-10-21T00:04:02.541597+00:00"
+   },
+   {
+    "check_id": "pw_07",
+    "requirement": "text: Fornada de sábado, encomendada na sexta.",
+    "criticality": "ESSENTIAL",
+    "procedure": "Playwright Chromium, file:// r0/index.html (evidence-r0/qa.py)",
+    "result": "PASS",
+    "evidence_mode": "BROWSER_OBSERVED",
+    "evidence_ref": "evidence-r0/qa-results.json",
+    "build_hash": "795065c3ab95068409b1052801c9ac324bc6f7ecdda108cedfc03cfdb318d2c4",
+    "viewport": "1440x900",
+    "checked_at": "2026-10-21T00:04:02.541597+00:00"
+   },
+   {
+    "check_id": "pw_08",
+    "requirement": "text: Protótipo demonstrativo. Marca, produtos",
+    "criticality": "ESSENTIAL",
+    "procedure": "Playwright Chromium, file:// r0/index.html (evidence-r0/qa.py)",
+    "result": "PASS",
+    "evidence_mode": "BROWSER_OBSERVED",
+    "evidence_ref": "evidence-r0/qa-results.json",
+    "build_hash": "795065c3ab95068409b1052801c9ac324bc6f7ecdda108cedfc03cfdb318d2c4",
+    "viewport": "1440x900",
+    "checked_at": "2026-10-21T00:04:02.541597+00:00"
+   },
+   {
+    "check_id": "pw_09",
+    "requirement": "text: Fotografias ilustrativas de terceiros, s",
+    "criticality": "ESSENTIAL",
+    "procedure": "Playwright Chromium, file:// r0/index.html (evidence-r0/qa.py)",
+    "result": "PASS",
+    "evidence_mode": "BROWSER_OBSERVED",
+    "evidence_ref": "evidence-r0/qa-results.json",
+    "build_hash": "795065c3ab95068409b1052801c9ac324bc6f7ecdda108cedfc03cfdb318d2c4",
+    "viewport": "1440x900",
+    "checked_at": "2026-10-21T00:04:02.541597+00:00"
+   },
+   {
+    "check_id": "pw_10",
+    "requirement": "catalog 5 products",
+    "criticality": "ESSENTIAL",
+    "procedure": "Playwright Chromium, file:// r0/index.html (evidence-r0/qa.py)",
+    "result": "PASS",
+    "evidence_mode": "BROWSER_OBSERVED",
+    "evidence_ref": "evidence-r0/qa-results.json",
+    "build_hash": "795065c3ab95068409b1052801c9ac324bc6f7ecdda108cedfc03cfdb318d2c4",
+    "viewport": "1440x900",
+    "checked_at": "2026-10-21T00:04:02.541597+00:00"
+   },
+   {
+    "check_id": "pw_11",
+    "requirement": "savory only scone",
+    "criticality": "ESSENTIAL",
+    "procedure": "Playwright Chromium, file:// r0/index.html (evidence-r0/qa.py)",
+    "result": "PASS",
+    "evidence_mode": "BROWSER_OBSERVED",
+    "evidence_ref": "evidence-r0/qa-results.json",
+    "build_hash": "795065c3ab95068409b1052801c9ac324bc6f7ecdda108cedfc03cfdb318d2c4",
+    "viewport": "1440x900",
+    "checked_at": "2026-10-21T00:04:02.541597+00:00"
+   },
+   {
+    "check_id": "pw_12",
+    "requirement": "sweet 4",
+    "criticality": "ESSENTIAL",
+    "procedure": "Playwright Chromium, file:// r0/index.html (evidence-r0/qa.py)",
+    "result": "PASS",
+    "evidence_mode": "BROWSER_OBSERVED",
+    "evidence_ref": "evidence-r0/qa-results.json",
+    "build_hash": "795065c3ab95068409b1052801c9ac324bc6f7ecdda108cedfc03cfdb318d2c4",
+    "viewport": "1440x900",
+    "checked_at": "2026-10-21T00:04:02.541597+00:00"
+   },
+   {
+    "check_id": "pw_13",
+    "requirement": "all 5",
+    "criticality": "ESSENTIAL",
+    "procedure": "Playwright Chromium, file:// r0/index.html (evidence-r0/qa.py)",
+    "result": "PASS",
+    "evidence_mode": "BROWSER_OBSERVED",
+    "evidence_ref": "evidence-r0/qa-results.json",
+    "build_hash": "795065c3ab95068409b1052801c9ac324bc6f7ecdda108cedfc03cfdb318d2c4",
+    "viewport": "1440x900",
+    "checked_at": "2026-10-21T00:04:02.541597+00:00"
+   },
+   {
+    "check_id": "pw_14",
+    "requirement": "detail no-cardamomo",
+    "criticality": "ESSENTIAL",
+    "procedure": "Playwright Chromium, file:// r0/index.html (evidence-r0/qa.py)",
+    "result": "PASS",
+    "evidence_mode": "BROWSER_OBSERVED",
+    "evidence_ref": "evidence-r0/qa-results.json",
+    "build_hash": "795065c3ab95068409b1052801c9ac324bc6f7ecdda108cedfc03cfdb318d2c4",
+    "viewport": "1440x900",
+    "checked_at": "2026-10-21T00:04:02.541597+00:00"
+   },
+   {
+    "check_id": "pw_15",
+    "requirement": "detail muffin-baunilha",
+    "criticality": "ESSENTIAL",
+    "procedure": "Playwright Chromium, file:// r0/index.html (evidence-r0/qa.py)",
+    "result": "PASS",
+    "evidence_mode": "BROWSER_OBSERVED",
+    "evidence_ref": "evidence-r0/qa-results.json",
+    "build_hash": "795065c3ab95068409b1052801c9ac324bc6f7ecdda108cedfc03cfdb318d2c4",
+    "viewport": "1440x900",
+    "checked_at": "2026-10-21T00:04:02.541597+00:00"
+   },
+   {
+    "check_id": "pw_16",
+    "requirement": "detail torta-morango",
+    "criticality": "ESSENTIAL",
+    "procedure": "Playwright Chromium, file:// r0/index.html (evidence-r0/qa.py)",
+    "result": "PASS",
+    "evidence_mode": "BROWSER_OBSERVED",
+    "evidence_ref": "evidence-r0/qa-results.json",
+    "build_hash": "795065c3ab95068409b1052801c9ac324bc6f7ecdda108cedfc03cfdb318d2c4",
+    "viewport": "1440x900",
+    "checked_at": "2026-10-21T00:04:02.541597+00:00"
+   },
+   {
+    "check_id": "pw_17",
+    "requirement": "detail bolo-maca",
+    "criticality": "ESSENTIAL",
+    "procedure": "Playwright Chromium, file:// r0/index.html (evidence-r0/qa.py)",
+    "result": "PASS",
+    "evidence_mode": "BROWSER_OBSERVED",
+    "evidence_ref": "evidence-r0/qa-results.json",
+    "build_hash": "795065c3ab95068409b1052801c9ac324bc6f7ecdda108cedfc03cfdb318d2c4",
+    "viewport": "1440x900",
+    "checked_at": "2026-10-21T00:04:02.541597+00:00"
+   },
+   {
+    "check_id": "pw_18",
+    "requirement": "detail scone-queijo",
+    "criticality": "ESSENTIAL",
+    "procedure": "Playwright Chromium, file:// r0/index.html (evidence-r0/qa.py)",
+    "result": "PASS",
+    "evidence_mode": "BROWSER_OBSERVED",
+    "evidence_ref": "evidence-r0/qa-results.json",
+    "build_hash": "795065c3ab95068409b1052801c9ac324bc6f7ecdda108cedfc03cfdb318d2c4",
+    "viewport": "1440x900",
+    "checked_at": "2026-10-21T00:04:02.541597+00:00"
+   },
+   {
+    "check_id": "pw_19",
+    "requirement": "ice cream caveat",
+    "criticality": "ESSENTIAL",
+    "procedure": "Playwright Chromium, file:// r0/index.html (evidence-r0/qa.py)",
+    "result": "PASS",
+    "evidence_mode": "BROWSER_OBSERVED",
+    "evidence_ref": "evidence-r0/qa-results.json",
+    "build_hash": "795065c3ab95068409b1052801c9ac324bc6f7ecdda108cedfc03cfdb318d2c4",
+    "viewport": "1440x900",
+    "checked_at": "2026-10-21T00:04:02.541597+00:00"
+   },
+   {
+    "check_id": "pw_20",
+    "requirement": "order empty state",
+    "criticality": "ESSENTIAL",
+    "procedure": "Playwright Chromium, file:// r0/index.html (evidence-r0/qa.py)",
+    "result": "PASS",
+    "evidence_mode": "BROWSER_OBSERVED",
+    "evidence_ref": "evidence-r0/qa-results.json",
+    "build_hash": "795065c3ab95068409b1052801c9ac324bc6f7ecdda108cedfc03cfdb318d2c4",
+    "viewport": "1440x900",
+    "checked_at": "2026-10-21T00:04:02.541597+00:00"
+   },
+   {
+    "check_id": "pw_21",
+    "requirement": "2 nós = €5,60",
+    "criticality": "ESSENTIAL",
+    "procedure": "Playwright Chromium, file:// r0/index.html (evidence-r0/qa.py)",
+    "result": "PASS",
+    "evidence_mode": "BROWSER_OBSERVED",
+    "evidence_ref": "evidence-r0/qa-results.json",
+    "build_hash": "795065c3ab95068409b1052801c9ac324bc6f7ecdda108cedfc03cfdb318d2c4",
+    "viewport": "1440x900",
+    "checked_at": "2026-10-21T00:04:02.541597+00:00"
+   },
+   {
+    "check_id": "pw_22",
+    "requirement": "review blocked w/o slot",
+    "criticality": "ESSENTIAL",
+    "procedure": "Playwright Chromium, file:// r0/index.html (evidence-r0/qa.py)",
+    "result": "PASS",
+    "evidence_mode": "BROWSER_OBSERVED",
+    "evidence_ref": "evidence-r0/qa-results.json",
+    "build_hash": "795065c3ab95068409b1052801c9ac324bc6f7ecdda108cedfc03cfdb318d2c4",
+    "viewport": "1440x900",
+    "checked_at": "2026-10-21T00:04:02.541597+00:00"
+   },
+   {
+    "check_id": "pw_23",
+    "requirement": "4 slots",
+    "criticality": "ESSENTIAL",
+    "procedure": "Playwright Chromium, file:// r0/index.html (evidence-r0/qa.py)",
+    "result": "PASS",
+    "evidence_mode": "BROWSER_OBSERVED",
+    "evidence_ref": "evidence-r0/qa-results.json",
+    "build_hash": "795065c3ab95068409b1052801c9ac324bc6f7ecdda108cedfc03cfdb318d2c4",
+    "viewport": "1440x900",
+    "checked_at": "2026-10-21T00:04:02.541597+00:00"
+   },
+   {
+    "check_id": "pw_24",
+    "requirement": "12 nós €33,60",
+    "criticality": "ESSENTIAL",
+    "procedure": "Playwright Chromium, file:// r0/index.html (evidence-r0/qa.py)",
+    "result": "PASS",
+    "evidence_mode": "BROWSER_OBSERVED",
+    "evidence_ref": "evidence-r0/qa-results.json",
+    "build_hash": "795065c3ab95068409b1052801c9ac324bc6f7ecdda108cedfc03cfdb318d2c4",
+    "viewport": "1440x900",
+    "checked_at": "2026-10-21T00:04:02.541597+00:00"
+   },
+   {
+    "check_id": "pw_25",
+    "requirement": "qty options 1-12",
+    "criticality": "ESSENTIAL",
+    "procedure": "Playwright Chromium, file:// r0/index.html (evidence-r0/qa.py)",
+    "result": "PASS",
+    "evidence_mode": "BROWSER_OBSERVED",
+    "evidence_ref": "evidence-r0/qa-results.json",
+    "build_hash": "795065c3ab95068409b1052801c9ac324bc6f7ecdda108cedfc03cfdb318d2c4",
+    "viewport": "1440x900",
+    "checked_at": "2026-10-21T00:04:02.541597+00:00"
+   },
+   {
+    "check_id": "pw_26",
+    "requirement": "summary shown",
+    "criticality": "ESSENTIAL",
+    "procedure": "Playwright Chromium, file:// r0/index.html (evidence-r0/qa.py)",
+    "result": "PASS",
+    "evidence_mode": "BROWSER_OBSERVED",
+    "evidence_ref": "evidence-r0/qa-results.json",
+    "build_hash": "795065c3ab95068409b1052801c9ac324bc6f7ecdda108cedfc03cfdb318d2c4",
+    "viewport": "1440x900",
+    "checked_at": "2026-10-21T00:04:02.541597+00:00"
+   },
+   {
+    "check_id": "pw_27",
+    "requirement": "back nav to detail",
+    "criticality": "ESSENTIAL",
+    "procedure": "Playwright Chromium, file:// r0/index.html (evidence-r0/qa.py)",
+    "result": "PASS",
+    "evidence_mode": "BROWSER_OBSERVED",
+    "evidence_ref": "evidence-r0/qa-results.json",
+    "build_hash": "795065c3ab95068409b1052801c9ac324bc6f7ecdda108cedfc03cfdb318d2c4",
+    "viewport": "1440x900",
+    "checked_at": "2026-10-21T00:04:02.541597+00:00"
+   },
+   {
+    "check_id": "pw_28",
+    "requirement": "remove -> empty",
+    "criticality": "ESSENTIAL",
+    "procedure": "Playwright Chromium, file:// r0/index.html (evidence-r0/qa.py)",
+    "result": "PASS",
+    "evidence_mode": "BROWSER_OBSERVED",
+    "evidence_ref": "evidence-r0/qa-results.json",
+    "build_hash": "795065c3ab95068409b1052801c9ac324bc6f7ecdda108cedfc03cfdb318d2c4",
+    "viewport": "1440x900",
+    "checked_at": "2026-10-21T00:04:02.541597+00:00"
+   },
+   {
+    "check_id": "pw_29",
+    "requirement": "no NaN",
+    "criticality": "ESSENTIAL",
+    "procedure": "Playwright Chromium, file:// r0/index.html (evidence-r0/qa.py)",
+    "result": "PASS",
+    "evidence_mode": "BROWSER_OBSERVED",
+    "evidence_ref": "evidence-r0/qa-results.json",
+    "build_hash": "795065c3ab95068409b1052801c9ac324bc6f7ecdda108cedfc03cfdb318d2c4",
+    "viewport": "1440x900",
+    "checked_at": "2026-10-21T00:04:02.541597+00:00"
+   },
+   {
+    "check_id": "pw_30",
+    "requirement": "credits 14 entries",
+    "criticality": "ESSENTIAL",
+    "procedure": "Playwright Chromium, file:// r0/index.html (evidence-r0/qa.py)",
+    "result": "PASS",
+    "evidence_mode": "BROWSER_OBSERVED",
+    "evidence_ref": "evidence-r0/qa-results.json",
+    "build_hash": "795065c3ab95068409b1052801c9ac324bc6f7ecdda108cedfc03cfdb318d2c4",
+    "viewport": "1440x900",
+    "checked_at": "2026-10-21T00:04:02.541597+00:00"
+   },
+   {
+    "check_id": "pw_31",
+    "requirement": "keyboard focus visible",
+    "criticality": "ESSENTIAL",
+    "procedure": "Playwright Chromium, file:// r0/index.html (evidence-r0/qa.py)",
+    "result": "PASS",
+    "evidence_mode": "BROWSER_OBSERVED",
+    "evidence_ref": "evidence-r0/qa-results.json",
+    "build_hash": "795065c3ab95068409b1052801c9ac324bc6f7ecdda108cedfc03cfdb318d2c4",
+    "viewport": "1440x900",
+    "checked_at": "2026-10-21T00:04:02.541597+00:00"
+   },
+   {
+    "check_id": "pw_32",
+    "requirement": "all img have alt",
+    "criticality": "ESSENTIAL",
+    "procedure": "Playwright Chromium, file:// r0/index.html (evidence-r0/qa.py)",
+    "result": "PASS",
+    "evidence_mode": "BROWSER_OBSERVED",
+    "evidence_ref": "evidence-r0/qa-results.json",
+    "build_hash": "795065c3ab95068409b1052801c9ac324bc6f7ecdda108cedfc03cfdb318d2c4",
+    "viewport": "1440x900",
+    "checked_at": "2026-10-21T00:04:02.541597+00:00"
+   },
+   {
+    "check_id": "pw_33",
+    "requirement": "mobile no horizontal overflow home",
+    "criticality": "ESSENTIAL",
+    "procedure": "Playwright Chromium, file:// r0/index.html (evidence-r0/qa.py)",
+    "result": "PASS",
+    "evidence_mode": "BROWSER_OBSERVED",
+    "evidence_ref": "evidence-r0/qa-results.json",
+    "build_hash": "795065c3ab95068409b1052801c9ac324bc6f7ecdda108cedfc03cfdb318d2c4",
+    "viewport": "390x844",
+    "checked_at": "2026-10-21T00:04:02.541597+00:00"
+   },
+   {
+    "check_id": "pw_34",
+    "requirement": "mobile no overflow detail",
+    "criticality": "ESSENTIAL",
+    "procedure": "Playwright Chromium, file:// r0/index.html (evidence-r0/qa.py)",
+    "result": "PASS",
+    "evidence_mode": "BROWSER_OBSERVED",
+    "evidence_ref": "evidence-r0/qa-results.json",
+    "build_hash": "795065c3ab95068409b1052801c9ac324bc6f7ecdda108cedfc03cfdb318d2c4",
+    "viewport": "390x844",
+    "checked_at": "2026-10-21T00:04:02.541597+00:00"
+   },
+   {
+    "check_id": "pw_35",
+    "requirement": "mobile no overflow order",
+    "criticality": "ESSENTIAL",
+    "procedure": "Playwright Chromium, file:// r0/index.html (evidence-r0/qa.py)",
+    "result": "PASS",
+    "evidence_mode": "BROWSER_OBSERVED",
+    "evidence_ref": "evidence-r0/qa-results.json",
+    "build_hash": "795065c3ab95068409b1052801c9ac324bc6f7ecdda108cedfc03cfdb318d2c4",
+    "viewport": "390x844",
+    "checked_at": "2026-10-21T00:04:02.541597+00:00"
+   },
+   {
+    "check_id": "pw_36",
+    "requirement": "tablet no horizontal overflow home",
+    "criticality": "ESSENTIAL",
+    "procedure": "Playwright Chromium, file:// r0/index.html (evidence-r0/qa.py)",
+    "result": "PASS",
+    "evidence_mode": "BROWSER_OBSERVED",
+    "evidence_ref": "evidence-r0/qa-results.json",
+    "build_hash": "795065c3ab95068409b1052801c9ac324bc6f7ecdda108cedfc03cfdb318d2c4",
+    "viewport": "768x1024",
+    "checked_at": "2026-10-21T00:04:02.541597+00:00"
+   },
+   {
+    "check_id": "pw_37",
+    "requirement": "tablet no overflow detail",
+    "criticality": "ESSENTIAL",
+    "procedure": "Playwright Chromium, file:// r0/index.html (evidence-r0/qa.py)",
+    "result": "PASS",
+    "evidence_mode": "BROWSER_OBSERVED",
+    "evidence_ref": "evidence-r0/qa-results.json",
+    "build_hash": "795065c3ab95068409b1052801c9ac324bc6f7ecdda108cedfc03cfdb318d2c4",
+    "viewport": "768x1024",
+    "checked_at": "2026-10-21T00:04:02.541597+00:00"
+   },
+   {
+    "check_id": "pw_38",
+    "requirement": "tablet no overflow order",
+    "criticality": "ESSENTIAL",
+    "procedure": "Playwright Chromium, file:// r0/index.html (evidence-r0/qa.py)",
+    "result": "PASS",
+    "evidence_mode": "BROWSER_OBSERVED",
+    "evidence_ref": "evidence-r0/qa-results.json",
+    "build_hash": "795065c3ab95068409b1052801c9ac324bc6f7ecdda108cedfc03cfdb318d2c4",
+    "viewport": "768x1024",
+    "checked_at": "2026-10-21T00:04:02.541597+00:00"
+   },
+   {
+    "check_id": "pw_39",
+    "requirement": "reduced motion",
+    "criticality": "ESSENTIAL",
+    "procedure": "Playwright Chromium, file:// r0/index.html (evidence-r0/qa.py)",
+    "result": "PASS",
+    "evidence_mode": "BROWSER_OBSERVED",
+    "evidence_ref": "evidence-r0/qa-results.json",
+    "build_hash": "795065c3ab95068409b1052801c9ac324bc6f7ecdda108cedfc03cfdb318d2c4",
+    "viewport": "1440x900",
+    "checked_at": "2026-10-21T00:04:02.541597+00:00"
+   },
+   {
+    "check_id": "pw_40",
+    "requirement": "no external requests",
+    "criticality": "ESSENTIAL",
+    "procedure": "Playwright Chromium, file:// r0/index.html (evidence-r0/qa.py)",
+    "result": "PASS",
+    "evidence_mode": "BROWSER_OBSERVED",
+    "evidence_ref": "evidence-r0/qa-results.json",
+    "build_hash": "795065c3ab95068409b1052801c9ac324bc6f7ecdda108cedfc03cfdb318d2c4",
+    "viewport": "1440x900",
+    "checked_at": "2026-10-21T00:04:02.541597+00:00"
+   },
+   {
+    "check_id": "pw_41",
+    "requirement": "no js errors",
+    "criticality": "ESSENTIAL",
+    "procedure": "Playwright Chromium, file:// r0/index.html (evidence-r0/qa.py)",
+    "result": "PASS",
+    "evidence_mode": "BROWSER_OBSERVED",
+    "evidence_ref": "evidence-r0/qa-results.json",
+    "build_hash": "795065c3ab95068409b1052801c9ac324bc6f7ecdda108cedfc03cfdb318d2c4",
+    "viewport": "1440x900",
+    "checked_at": "2026-10-21T00:04:02.541597+00:00"
+   },
+   {
+    "check_id": "browser_render",
+    "requirement": "Site renderiza no Chromium sem erros JS",
+    "criticality": "ESSENTIAL",
+    "procedure": "Playwright file:// + pageerror/console",
+    "result": "PASS",
+    "evidence_mode": "BROWSER_OBSERVED",
+    "evidence_ref": "evidence-r0/desktop-home.png",
+    "build_hash": "795065c3ab95068409b1052801c9ac324bc6f7ecdda108cedfc03cfdb318d2c4",
+    "viewport": "1440x900",
+    "checked_at": "2026-10-21T00:04:02.541597+00:00"
+   },
+   {
+    "check_id": "desktop_render",
+    "requirement": "Home/fornada/detalhe/encomenda em 1440",
+    "criticality": "ESSENTIAL",
+    "procedure": "Capturas full-page revisadas",
+    "result": "PASS",
+    "evidence_mode": "BROWSER_OBSERVED",
+    "evidence_ref": "evidence-r0/desktop-catalog.png",
+    "build_hash": "795065c3ab95068409b1052801c9ac324bc6f7ecdda108cedfc03cfdb318d2c4",
+    "viewport": "1440x900",
+    "checked_at": "2026-10-21T00:04:02.541597+00:00"
+   },
+   {
+    "check_id": "mobile_render",
+    "requirement": "Home/fornada/detalhe/encomenda em 390 sem overflow",
+    "criticality": "ESSENTIAL",
+    "procedure": "Capturas + scrollWidth",
+    "result": "PASS",
+    "evidence_mode": "BROWSER_OBSERVED",
+    "evidence_ref": "evidence-r0/mobile-home.png",
+    "build_hash": "795065c3ab95068409b1052801c9ac324bc6f7ecdda108cedfc03cfdb318d2c4",
+    "viewport": "390x844",
+    "checked_at": "2026-10-21T00:04:02.541597+00:00"
+   },
+   {
+    "check_id": "cta_interaction",
+    "requirement": "Ver a fornada, filtros, adicionar, revisar",
+    "criticality": "ESSENTIAL",
+    "procedure": "Fluxo Playwright 2 nós = €5,60 e resumo",
+    "result": "PASS",
+    "evidence_mode": "BROWSER_OBSERVED",
+    "evidence_ref": "evidence-r0/desktop-order-summary.png",
+    "build_hash": "795065c3ab95068409b1052801c9ac324bc6f7ecdda108cedfc03cfdb318d2c4",
+    "viewport": "1440x900",
+    "checked_at": "2026-10-21T00:04:02.541597+00:00"
+   },
+   {
+    "check_id": "keyboard_interaction",
+    "requirement": "Foco visível via Tab",
+    "criticality": "ESSENTIAL",
+    "procedure": "Tab + outline computado",
+    "result": "PASS",
+    "evidence_mode": "BROWSER_OBSERVED",
+    "evidence_ref": "evidence-r0/qa-results.json",
+    "build_hash": "795065c3ab95068409b1052801c9ac324bc6f7ecdda108cedfc03cfdb318d2c4",
+    "viewport": "1440x900",
+    "checked_at": "2026-10-21T00:04:02.541597+00:00"
+   },
+   {
+    "check_id": "assets_available",
+    "requirement": "Assets locais presentes",
+    "criticality": "ESSENTIAL",
+    "procedure": "creative_web.py audit + carregamento no browser",
+    "result": "PASS",
+    "evidence_mode": "STATIC_INSPECTED",
+    "evidence_ref": "evidence-r0/static-audit/.qa/static_audit.json",
+    "build_hash": "795065c3ab95068409b1052801c9ac324bc6f7ecdda108cedfc03cfdb318d2c4",
+    "viewport": null,
+    "checked_at": "2026-10-21T00:04:02.541597+00:00"
+   },
+   {
+    "check_id": "content_truth",
+    "requirement": "Textos obrigatórios e sem alegações inventadas",
+    "criticality": "CRITICAL",
+    "procedure": "Checagem de strings obrigatórias no DOM + autorrevisão contra briefing",
+    "result": "PASS",
+    "evidence_mode": "BROWSER_OBSERVED",
+    "evidence_ref": "evidence-r0/qa-results.json",
+    "build_hash": "795065c3ab95068409b1052801c9ac324bc6f7ecdda108cedfc03cfdb318d2c4",
+    "viewport": "1440x900",
+    "checked_at": "2026-10-21T00:04:02.541597+00:00"
+   },
+   {
+    "check_id": "reduced_motion",
+    "requirement": "prefers-reduced-motion",
+    "criticality": "ADVISORY",
+    "procedure": "Contexto Playwright reduced_motion=reduce",
+    "result": "PASS",
+    "evidence_mode": "BROWSER_OBSERVED",
+    "evidence_ref": "evidence-r0/qa-results.json",
+    "build_hash": "795065c3ab95068409b1052801c9ac324bc6f7ecdda108cedfc03cfdb318d2c4",
+    "viewport": "1440x900",
+    "checked_at": "2026-10-21T00:04:02.541597+00:00"
+   },
+   {
+    "check_id": "visual_screenshots",
+    "requirement": "Visual self-review of screenshots at 1440/390/768",
+    "criticality": "ADVISORY",
+    "procedure": "Model viewed PNG captures in evidence-r0/",
+    "result": "PASS",
+    "evidence_mode": "BROWSER_OBSERVED",
+    "evidence_ref": "evidence-r0/mobile-order-summary.png",
+    "build_hash": "795065c3ab95068409b1052801c9ac324bc6f7ecdda108cedfc03cfdb318d2c4",
+    "viewport": "1440x900,390x844,768x1024",
+    "checked_at": "2026-10-21T00:04:02.541597+00:00",
+    "reason": "Self-review, not independent/human review"
+   },
+   {
+    "check_id": "static_anchors",
+    "requirement": "Static anchor check of method audit",
+    "criticality": "ADVISORY",
+    "procedure": "creative_web.py audit (copy of r0)",
+    "result": "NOT_APPLICABLE",
+    "evidence_mode": "STATIC_INSPECTED",
+    "evidence_ref": "evidence-r0/static-audit/.qa/static_audit.json",
+    "build_hash": "795065c3ab95068409b1052801c9ac324bc6f7ecdda108cedfc03cfdb318d2c4",
+    "viewport": null,
+    "checked_at": "2026-10-21T00:04:02.541597+00:00",
+    "reason": "Audit flags hash routes (#/...) as broken anchors; they are client-side routes verified in browser"
+   },
+   {
+    "check_id": "human_review",
+    "requirement": "Human/blind aesthetic review",
+    "criticality": "ADVISORY",
+    "procedure": "n/a",
+    "result": "NOT_TESTED",
+    "evidence_mode": "NONE",
+    "evidence_ref": null,
+    "build_hash": "795065c3ab95068409b1052801c9ac324bc6f7ecdda108cedfc03cfdb318d2c4",
+    "viewport": null,
+    "checked_at": "2026-10-21T00:04:02.541597+00:00",
+    "reason": "Fora do escopo do R0; nenhuma revisão humana disponível"
+   }
+  ],
+  "known_limitations": [
+   "Sem revisão humana ou leitor de tela",
+   "localStorage guarda a encomenda só neste navegador",
+   "Preview via file:// (sem servidor do método)"
+  ],
+  "verdict": "PARTIAL"
+ }
+}

@@ -1,0 +1,401 @@
+{
+ "round": "r0",
+ "note": "Descriptors of similarity, not quality. dHash distance: 0 identical, ~0.5 unrelated.",
+ "sites": {
+  "m13": {
+   "h1_font": "Fraunces",
+   "body_font": "Instrument Sans",
+   "families": [
+    "Fraunces",
+    "IBM Plex Mono",
+    "Instrument Sans"
+   ],
+   "body_bg": "rgb(246, 239, 227)",
+   "hero_images": [
+    "cardamom-buns-on-grate-under-towel.jpg"
+   ],
+   "brief": "B1",
+   "condition": "B",
+   "repetition": 1
+  },
+  "m58": {
+   "h1_font": "Fraunces",
+   "body_font": "Instrument Sans",
+   "families": [
+    "Fraunces",
+    "IBM Plex Mono",
+    "Instrument Sans"
+   ],
+   "body_bg": "rgb(246, 239, 227)",
+   "hero_images": [
+    "cardamom-buns.jpg"
+   ],
+   "brief": "B1",
+   "condition": "A",
+   "repetition": 1
+  },
+  "m50": {
+   "h1_font": "Fraunces",
+   "body_font": "Instrument Sans",
+   "families": [
+    "Fraunces",
+    "IBM Plex Mono",
+    "Instrument Sans"
+   ],
+   "body_bg": "rgb(245, 238, 226)",
+   "hero_images": [
+    "cardamom-buns-on-grate-under-towel.jpg"
+   ],
+   "brief": "B1",
+   "condition": "A",
+   "repetition": 2
+  },
+  "m31": {
+   "h1_font": "Fraunces",
+   "body_font": "Instrument Sans",
+   "families": [
+    "Fraunces",
+    "IBM Plex Mono",
+    "Instrument Sans"
+   ],
+   "body_bg": "rgb(245, 238, 225)",
+   "hero_images": [
+    "cardamom-buns-on-grate-under-towel.jpg"
+   ],
+   "brief": "B1",
+   "condition": "B",
+   "repetition": 2
+  },
+  "t19": {
+   "h1_font": "Fraunces",
+   "body_font": "Instrument Sans",
+   "families": [
+    "Fraunces",
+    "IBM Plex Mono",
+    "Instrument Sans"
+   ],
+   "body_bg": "rgb(241, 235, 225)",
+   "hero_images": [
+    "bathing-ladder.jpg"
+   ],
+   "brief": "B2",
+   "condition": "B",
+   "repetition": 1
+  },
+  "t48": {
+   "h1_font": "Fraunces",
+   "body_font": "Instrument Sans",
+   "families": [
+    "Fraunces",
+    "IBM Plex Mono",
+    "Instrument Sans"
+   ],
+   "body_bg": "rgb(242, 237, 229)",
+   "hero_images": [
+    "bathing-ladder.jpg"
+   ],
+   "brief": "B2",
+   "condition": "A",
+   "repetition": 1
+  },
+  "t94": {
+   "h1_font": "Fraunces",
+   "body_font": "Instrument Sans",
+   "families": [
+    "Fraunces",
+    "IBM Plex Mono",
+    "Instrument Sans"
+   ],
+   "body_bg": "rgb(241, 237, 229)",
+   "hero_images": [
+    "bathing-ladder.jpg"
+   ],
+   "brief": "B2",
+   "condition": "A",
+   "repetition": 2
+  },
+  "t92": {
+   "h1_font": "Fraunces",
+   "body_font": "Instrument Sans",
+   "families": [
+    "Fraunces",
+    "IBM Plex Mono",
+    "Instrument Sans"
+   ],
+   "body_bg": "rgb(243, 237, 228)",
+   "hero_images": [
+    "bathing-ladder.jpg"
+   ],
+   "brief": "B2",
+   "condition": "B",
+   "repetition": 2
+  }
+ },
+ "font_sets": {
+  "m13": [
+   "Fraunces",
+   "IBM Plex Mono",
+   "Instrument Sans"
+  ],
+  "m58": [
+   "Fraunces",
+   "IBM Plex Mono",
+   "Instrument Sans"
+  ],
+  "m50": [
+   "Fraunces",
+   "IBM Plex Mono",
+   "Instrument Sans"
+  ],
+  "m31": [
+   "Fraunces",
+   "IBM Plex Mono",
+   "Instrument Sans"
+  ],
+  "t19": [
+   "Fraunces",
+   "IBM Plex Mono",
+   "Instrument Sans"
+  ],
+  "t48": [
+   "Fraunces",
+   "IBM Plex Mono",
+   "Instrument Sans"
+  ],
+  "t94": [
+   "Fraunces",
+   "IBM Plex Mono",
+   "Instrument Sans"
+  ],
+  "t92": [
+   "Fraunces",
+   "IBM Plex Mono",
+   "Instrument Sans"
+  ]
+ },
+ "distinct_font_sets": 1,
+ "home_pairs": [
+  {
+   "a": "m13",
+   "b": "m58",
+   "kind": "same-brief/cross-condition",
+   "home_dhash_distance": 0.297
+  },
+  {
+   "a": "m13",
+   "b": "m50",
+   "kind": "same-brief/cross-condition",
+   "home_dhash_distance": 0.266
+  },
+  {
+   "a": "m13",
+   "b": "m31",
+   "kind": "same-brief/same-condition",
+   "home_dhash_distance": 0.176
+  },
+  {
+   "a": "m13",
+   "b": "t19",
+   "kind": "cross-brief/same-condition",
+   "home_dhash_distance": 0.512
+  },
+  {
+   "a": "m13",
+   "b": "t48",
+   "kind": "cross-brief/cross-condition",
+   "home_dhash_distance": 0.52
+  },
+  {
+   "a": "m13",
+   "b": "t94",
+   "kind": "cross-brief/cross-condition",
+   "home_dhash_distance": 0.457
+  },
+  {
+   "a": "m13",
+   "b": "t92",
+   "kind": "cross-brief/same-condition",
+   "home_dhash_distance": 0.523
+  },
+  {
+   "a": "m58",
+   "b": "m50",
+   "kind": "same-brief/same-condition",
+   "home_dhash_distance": 0.328
+  },
+  {
+   "a": "m58",
+   "b": "m31",
+   "kind": "same-brief/cross-condition",
+   "home_dhash_distance": 0.285
+  },
+  {
+   "a": "m58",
+   "b": "t19",
+   "kind": "cross-brief/cross-condition",
+   "home_dhash_distance": 0.504
+  },
+  {
+   "a": "m58",
+   "b": "t48",
+   "kind": "cross-brief/same-condition",
+   "home_dhash_distance": 0.496
+  },
+  {
+   "a": "m58",
+   "b": "t94",
+   "kind": "cross-brief/same-condition",
+   "home_dhash_distance": 0.473
+  },
+  {
+   "a": "m58",
+   "b": "t92",
+   "kind": "cross-brief/cross-condition",
+   "home_dhash_distance": 0.531
+  },
+  {
+   "a": "m50",
+   "b": "m31",
+   "kind": "same-brief/cross-condition",
+   "home_dhash_distance": 0.277
+  },
+  {
+   "a": "m50",
+   "b": "t19",
+   "kind": "cross-brief/cross-condition",
+   "home_dhash_distance": 0.504
+  },
+  {
+   "a": "m50",
+   "b": "t48",
+   "kind": "cross-brief/same-condition",
+   "home_dhash_distance": 0.504
+  },
+  {
+   "a": "m50",
+   "b": "t94",
+   "kind": "cross-brief/same-condition",
+   "home_dhash_distance": 0.457
+  },
+  {
+   "a": "m50",
+   "b": "t92",
+   "kind": "cross-brief/cross-condition",
+   "home_dhash_distance": 0.531
+  },
+  {
+   "a": "m31",
+   "b": "t19",
+   "kind": "cross-brief/same-condition",
+   "home_dhash_distance": 0.516
+  },
+  {
+   "a": "m31",
+   "b": "t48",
+   "kind": "cross-brief/cross-condition",
+   "home_dhash_distance": 0.523
+  },
+  {
+   "a": "m31",
+   "b": "t94",
+   "kind": "cross-brief/cross-condition",
+   "home_dhash_distance": 0.445
+  },
+  {
+   "a": "m31",
+   "b": "t92",
+   "kind": "cross-brief/same-condition",
+   "home_dhash_distance": 0.52
+  },
+  {
+   "a": "t19",
+   "b": "t48",
+   "kind": "same-brief/cross-condition",
+   "home_dhash_distance": 0.242
+  },
+  {
+   "a": "t19",
+   "b": "t94",
+   "kind": "same-brief/cross-condition",
+   "home_dhash_distance": 0.461
+  },
+  {
+   "a": "t19",
+   "b": "t92",
+   "kind": "same-brief/same-condition",
+   "home_dhash_distance": 0.52
+  },
+  {
+   "a": "t48",
+   "b": "t94",
+   "kind": "same-brief/same-condition",
+   "home_dhash_distance": 0.5
+  },
+  {
+   "a": "t48",
+   "b": "t92",
+   "kind": "same-brief/cross-condition",
+   "home_dhash_distance": 0.52
+  },
+  {
+   "a": "t94",
+   "b": "t92",
+   "kind": "same-brief/cross-condition",
+   "home_dhash_distance": 0.512
+  }
+ ],
+ "home_distance_by_kind": {
+  "cross-brief/cross-condition": {
+   "n": 8,
+   "mean": 0.502,
+   "values": [
+    0.52,
+    0.457,
+    0.504,
+    0.531,
+    0.504,
+    0.531,
+    0.523,
+    0.445
+   ]
+  },
+  "cross-brief/same-condition": {
+   "n": 8,
+   "mean": 0.5,
+   "values": [
+    0.512,
+    0.523,
+    0.496,
+    0.473,
+    0.504,
+    0.457,
+    0.516,
+    0.52
+   ]
+  },
+  "same-brief/cross-condition": {
+   "n": 8,
+   "mean": 0.357,
+   "values": [
+    0.297,
+    0.266,
+    0.285,
+    0.277,
+    0.242,
+    0.461,
+    0.52,
+    0.512
+   ]
+  },
+  "same-brief/same-condition": {
+   "n": 4,
+   "mean": 0.381,
+   "values": [
+    0.176,
+    0.328,
+    0.52,
+    0.5
+   ]
+  }
+ }
+}
