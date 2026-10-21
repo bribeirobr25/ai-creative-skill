@@ -1,5 +1,5 @@
 """Scoped technical QA for static sites. Browser verification is optional; no claim of WCAG or conversions."""
-import datetime,hashlib,json,pathlib,subprocess,urllib.parse,shutil
+import datetime,hashlib,json,pathlib,re,subprocess,urllib.parse,shutil
 from bs4 import BeautifulSoup
 from .validate import build_hash
 
@@ -8,6 +8,14 @@ def check(id,requirement,criticality,result,mode,evidence,hash,viewport=None,rea
     c={'check_id':id,'requirement':requirement,'criticality':criticality,'procedure':id.replace('_',' '),'result':result,'evidence_mode':mode,'evidence_ref':evidence,'build_hash':hash,'viewport':viewport,'checked_at':now()}
     if reason:c['reason']=reason
     return c
+
+ABSOLUTE_PATH=re.compile(r'(?<![\w:/.])(?:[A-Za-z]:\\|/)(?:[^\s:\'"()<>]+[/\\])+[^\s:\'"()<>]*')
+
+def redact(text,*roots):
+    """Evidence must not carry local directory names: known roots become '.', other absolute paths '<path>'."""
+    text=str(text)
+    for r in sorted({str(x) for x in roots if x},key=len,reverse=True):text=text.replace(r,'.')
+    return ABSOLUTE_PATH.sub('<path>',text)
 
 def project_files(root,project_root,files):
     """Express site files relative to the project root used by validate.check."""
@@ -36,8 +44,8 @@ def static_audit(root,project_root=None):
             # Relative path and cwd keep absolute local directories out of the evidence file.
             try:subprocess.run(['node','--check',js],cwd=root,check=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE,timeout=12,text=True)
             except subprocess.CalledProcessError as e:
-                detail=next((l for l in (e.stderr or '').splitlines() if 'Error' in l),'syntax check failed')
-                js_errors.append(js+': '+detail.replace(str(root),'.')[:160])
+                detail=next((l for l in (e.stderr or '').splitlines() if re.match(r'\w*Error\b',l)),'syntax check failed')
+                js_errors.append(js+': '+redact(detail,project_root,root)[:160])
             except (OSError,subprocess.TimeoutExpired) as e:js_errors.append(js+': '+type(e).__name__)
     css='\n'.join((root/p).read_text(errors='replace') for p in css_files if (root/p).exists())
     files=project_files(root,project_root,['index.html']+css_files+js_files)
@@ -45,14 +53,16 @@ def static_audit(root,project_root=None):
 
 VIEWPORTS=[(1440,900,'desktop_render'),(390,844,'mobile_render'),(320,640,'narrow_render')]
 SETTLE_JS='''async () => {
-  const step = Math.max(200, Math.floor(window.innerHeight * 0.8));
-  for (let y = 0; y < document.documentElement.scrollHeight; y += step) {
+  // Bounded: infinite-scroll pages grow while scrolling, so cap steps and time.
+  const step = Math.max(200, Math.floor(window.innerHeight * 0.8)), t0 = performance.now();
+  for (let i = 0, y = 0; i < 60 && y < document.documentElement.scrollHeight && performance.now() - t0 < 8000; i++, y += step) {
     window.scrollTo(0, y); await new Promise(r => setTimeout(r, 60));
   }
   window.scrollTo(0, 0);
   await Promise.all([...document.images].filter(i => !i.complete).map(i => new Promise(r => {
     i.addEventListener('load', r, {once: true}); i.addEventListener('error', r, {once: true}); setTimeout(r, 3000);
   })));
+  return [...document.images].filter(i => !i.complete).length;
 }'''
 BROKEN_IMAGES_JS='''() => [...document.images].filter(i => (i.currentSrc || i.getAttribute('src')) && i.complete && i.naturalWidth === 0)
   .map(i => i.getAttribute('src') || i.currentSrc)'''
@@ -82,8 +92,8 @@ def audit(root,out_dir,base_url=None,project_root=None):
                     response=page.goto(base_url,wait_until='domcontentloaded',timeout=12000)
                     if response and response.status==200:
                         # Scroll once so loading="lazy" images load before the full-page capture.
-                        try:page.evaluate(SETTLE_JS)
-                        except Exception:pass
+                        try:pending,settle_error=page.evaluate(SETTLE_JS),None
+                        except Exception as e:pending,settle_error=None,type(e).__name__
                         page.wait_for_timeout(200)
                         e=f'viewport_{width}.png';page.screenshot(path=str(out/e),full_page=True,timeout=12000)
                         overflow=page.evaluate('document.documentElement.scrollWidth - window.innerWidth')
@@ -92,12 +102,16 @@ def audit(root,out_dir,base_url=None,project_root=None):
                         if width==1440:
                             checks.append(check('browser_render','Actual HTML opened','ESSENTIAL','PASS','BROWSER_OBSERVED',rel(e),h,'1440'))
                             broken=page.evaluate(BROKEN_IMAGES_JS)
-                            checks.append(check('images_rendered','Referenced images decoded after scrolling','ESSENTIAL','FAIL' if broken else 'PASS','BROWSER_OBSERVED',rel(e),h,'1440',reason=('Images failed to load: '+', '.join(broken[:8])) if broken else None))
+                            notes=[]
+                            if broken:notes.append('Images failed to load: '+', '.join(redact(b,project_root,root) for b in broken[:8]))
+                            if pending:notes.append(f'{pending} image(s) not loaded after scrolling (hidden or still pending); not verified')
+                            if settle_error:notes.append('Scroll before capture failed: '+settle_error)
+                            checks.append(check('images_rendered','Referenced images decoded after scrolling','ESSENTIAL','FAIL' if broken else 'PASS','BROWSER_OBSERVED',rel(e),h,'1440',reason='; '.join(notes) or None))
                     else:browser_reason=f'HTTP status unavailable or {getattr(response,"status",None)}'
                     page.close()
                 browser.close()
         except Exception as e:
-            browser_reason=type(e).__name__+': '+str(e)[:250]
+            browser_reason=type(e).__name__+': '+redact(e,project_root,root,pathlib.Path.home())[:250]
     else:browser_reason='No accessible preview URL supplied'
     present={c['check_id'] for c in checks}
     rendered=('browser_render','desktop_render','mobile_render','narrow_render','images_rendered')

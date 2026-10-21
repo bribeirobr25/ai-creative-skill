@@ -23,7 +23,10 @@ ALLOWED_CHANGES=set(CANDIDATE_SCOPES[CANDIDATE_ID][1])
 # Superseded candidates stay byte-identical to the commit that reviewed them.
 SUPERSEDED={'boundary-hardening-v1':'b83b331f552baa22e14f2cf760dcd396b65a5537'}
 
-def lineage_valid():
+def lineage_valid(active=None):
+    active=active or CANDIDATE_ID
+    if active in SUPERSEDED or any(parent==active for parent,_ in CANDIDATE_SCOPES.values()):
+        raise ValueError('Active candidate must be the newest in its lineage: '+active)
     for cid,(parent,scope) in CANDIDATE_SCOPES.items():
         if parent is not None and not CANDIDATE_SCOPES[parent][1]<=scope:
             raise ValueError('Candidate scope must include its parent: '+cid)
@@ -46,9 +49,9 @@ def preserved_history(root=ROOT):
     # Compare historical evidence to its actual committed bytes, not mutable expectations.
     fixed={RELEASE_REF:['docs/migration/v2.5.0-source-attestation.json','src/ai-creative-skill/MANIFEST_SHA256.json','packaging/build.py','packaging/plugin.json','tests/test_packaging.py'],
       HARNESS_REF:['validation/known_findings.json','validation/reports/2026-10-20-baseline.json','validation/reports/2026-10-20-baseline-economics.json','validation/reports/2026-10-20-checks.json','validation/reports/2026-10-20-findings.md']}
+    # Always checked, whichever candidate is active, so pointing ACTIVE back cannot reopen a superseded record.
     for cid,ref in SUPERSEDED.items():
-        if cid!=CANDIDATE_ID:
-            fixed.setdefault(ref,[]).extend(f'validation/candidates/{cid}/{name}' for name in ('README.md','expectations.json','remediation.json','source-manifest.json'))
+        fixed.setdefault(ref,[]).extend(f'validation/candidates/{cid}/{name}' for name in ('README.md','expectations.json','remediation.json','source-manifest.json'))
     for ref,paths in fixed.items():
         for path in paths:
             if (root/path).read_bytes()!=git_bytes(ref,path):raise ValueError('Historical artifact changed: '+path)

@@ -34,24 +34,45 @@ def make_site(base,wide=False,broken=False):
     png(site/'assets/foto.png')
     return site
 
+BUILD=('Crie o website descrito no briefing, com as páginas pedidas','faça um site para minha padaria','build me a landing page for my sauna',
+ 'Quero um site novo para a loja','desenvolva a homepage da Tábua','gere uma página de vendas','Create the website described in the brief','make me a website',
+ 'Faz um site pra mim','Me faz uma landing page','Crie uma loja virtual','Elabore um site institucional','I want a website for my bakery',
+ 'Put together a landing page','Crie, por favor, um site','crie um site sem publicar','crie uma landing; não publique','preciso de um site',
+ 'we need a new website','Crie o e-commerce da marca')
+# Requests found in review that must not start a build (edits, bugs, other media, social pages, questions, negations).
+NOT_BUILD=('make the page faster','make my page faster','make our website responsive','faça o site mais rápido',
+ 'faça a página carregar mais rápido','quero que o site carregue mais rápido','melhore o design do site','Revise o design da landing page',
+ 'crie um botão no site','crie uma nova seção na página inicial','create a button on the page','o build do site quebrou',
+ 'the build of the site is broken','preciso de ajuda com o site','gere imagens para o site','create an image for my website',
+ 'generate copy for the landing page','crie o texto da landing page','crie o logo do site','crie um vídeo para a landing page',
+ 'crie um moodboard para o site','crie um mockup do site','crie uma página no Instagram','create a LinkedIn page for my company',
+ 'crie um post para a página do Instagram','quero ver exemplos de sites','quero saber como funciona um site','gere um relatório sobre o site',
+ 'faça uma avaliação do site','create a report about the website','como criar um site?','Quanto custa criar um site?',
+ 'how to make a landing page','Você consegue criar um site?','faça tudo menos o site','faca o app nao o site',
+ 'create everything except the website','crie qualquer coisa exceto uma landing page','crie um site e publique','não crie o site',
+ 'research the website and build a website','seria legal ter algo bonito')
+
 class RouterNaturalRequests(unittest.TestCase):
     def test_natural_build_requests_route_to_preview(self):
-        for text in ('Crie o website descrito no briefing, com as páginas pedidas','faça um site para minha padaria',
-                     'build me a landing page for my sauna','Create the website described in the brief',
-                     'Quero um site novo para a loja','desenvolva a homepage da Tábua','gere uma página de vendas'):
-            self.assertEqual(route(text),'WEB_PREVIEW',text)
+        for text in BUILD:self.assertEqual(route(text),'WEB_PREVIEW',text)
+
+    def test_non_build_requests_never_route_to_preview(self):
+        for text in NOT_BUILD:self.assertNotEqual(route(text),'WEB_PREVIEW',text)
+        for text in NOT_BUILD[:4]+('crie um botão no site','como criar um site?','faça tudo menos o site'):
+            self.assertEqual(route(text),'AMBIGUOUS',text)
 
     def test_other_operations_keep_their_route(self):
         cases={'crie um wireframe do site':'WEB_CONCEPT_ONLY','crie o conceito visual do site':'WEB_CONCEPT_ONLY',
                'quero analisar sites':'WEB_RESEARCH_ONLY','research how to build a website':'WEB_RESEARCH_ONLY',
-               'mude apenas o hero do site':'WEB_EDIT','quero publicar o site':'WEB_PUBLICATION',
-               'não crie um site, só pesquise sites':'WEB_RESEARCH_ONLY','crie um site sem publicar':'WEB_PREVIEW'}
+               'não crie um site, só pesquise sites':'WEB_RESEARCH_ONLY','mude apenas o hero do site':'WEB_EDIT',
+               'quero publicar o site':'WEB_PUBLICATION'}
         for text,expected in cases.items():self.assertEqual(route(text),expected,text)
 
-    def test_unsafe_or_multi_operation_requests_stay_ambiguous(self):
-        for text in ('make the page faster','crie um site e publique','não crie o site',
-                     'research the website and build a website','seria legal ter algo bonito'):
-            self.assertEqual(route(text),'AMBIGUOUS',text)
+    def test_long_inputs_stay_fast(self):
+        import time
+        for phrase in ('faça o site ','quero um site ','crie um site '):
+            start=time.monotonic();route(phrase*2000)
+            self.assertLess(time.monotonic()-start,2.0,phrase)
 
 class StaticAudit(unittest.TestCase):
     def test_hash_routes_are_not_broken_anchors(self):
@@ -70,6 +91,24 @@ class StaticAudit(unittest.TestCase):
             self.assertEqual(len(r['js_errors']),1)
             self.assertTrue(r['js_errors'][0].startswith('app.js: '))
             self.assertNotIn(str(Path(td).resolve()),json.dumps(r))
+
+    def test_js_error_detail_and_paths_outside_site(self):
+        if not shutil.which('node'):self.skipTest('node not installed')
+        with tempfile.TemporaryDirectory() as td:
+            project=Path(td);site=make_site(project);(project/'shared').mkdir()
+            (project/'shared/ErrorReporter.js').write_text("if (x) { throw new Error('boom' }")
+            (site/'index.html').write_text((site/'index.html').read_text().replace('<script src="app.js">','<script src="../shared/ErrorReporter.js">'))
+            r=qa.static_audit(site,project)
+            self.assertEqual(len(r['js_errors']),1)
+            self.assertIn('SyntaxError',r['js_errors'][0])
+            self.assertNotIn(str(project.resolve()),json.dumps(r))
+
+    def test_redact_keeps_urls_and_relative_paths(self):
+        self.assertEqual(qa.redact("Executable doesn't exist at /home/someone/.cache/ms-playwright/x/shell"),"Executable doesn't exist at <path>")
+        self.assertEqual(qa.redact('C:\\Users\\someone\\a.js:3'),'<path>:3')
+        for text in ('https://example.com/a/b.png','assets/foto.png','../shared/x.js',"SyntaxError: Unexpected token ';'"):
+            self.assertEqual(qa.redact(text),text)
+        self.assertEqual(qa.redact('/srv/proj/site/app.js','/srv/proj/site'),'./app.js')
 
     def test_files_and_hash_are_relative_to_project_root(self):
         with tempfile.TemporaryDirectory() as td:
@@ -90,6 +129,8 @@ class StaticAudit(unittest.TestCase):
             self.assertTrue(all(not ref.startswith('/') for ref in refs))
             with self.assertRaisesRegex(ValueError,'project root'):qa.audit(site,Path(td).parent/'elsewhere',project_root=project)
             with self.assertRaisesRegex(ValueError,'project root'):qa.audit(site,project/'qa-evidence')
+            from runtime.validate import contained_path
+            self.assertTrue(all(contained_path(project,ref).is_file() for ref in refs))
             names={c['check_id'] for c in report['checks']}
             self.assertTrue({'narrow_render','images_rendered'}<=names)
 
@@ -131,6 +172,15 @@ class BrowserAudit(unittest.TestCase):
         self.assertEqual(checks['narrow_render']['result'],'FAIL')
         self.assertIn('overflow',checks['narrow_render']['reason'])
 
+    def test_infinite_scroll_page_terminates(self):
+        td=tempfile.TemporaryDirectory();self.addCleanup(td.cleanup)
+        project=Path(td.name);root=make_site(project)
+        (root/'app.js').write_text("addEventListener('scroll',()=>{const d=document.createElement('div');d.style.height='3000px';document.body.append(d)});")
+        import time;start=time.monotonic()
+        report=qa.audit(root,project/'qa',self.serve(root),project_root=project)
+        self.assertLess(time.monotonic()-start,90)
+        self.assertEqual({c['check_id']:c for c in report['checks']}['browser_render']['result'],'PASS')
+
     def test_broken_image_is_reported(self):
         checks,_=self.run_audit(broken=True)
         self.assertEqual(checks['images_rendered']['result'],'FAIL')
@@ -156,6 +206,9 @@ class CandidateGovernance(unittest.TestCase):
         manifest=json.loads((self.ci.CANDIDATE/'source-manifest.json').read_text())
         manifest['parent_candidate']=None
         with self.assertRaisesRegex(ValueError,'lineage'):self.ci.check(manifest=manifest)
+
+    def test_pointer_cannot_roll_back_to_superseded_candidate(self):
+        with self.assertRaisesRegex(ValueError,'newest'):self.ci.lineage_valid('boundary-hardening-v1')
 
     def test_superseded_candidate_records_are_byte_preserved(self):
         self.assertTrue(self.ci.preserved_history())
