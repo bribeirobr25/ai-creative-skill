@@ -15,3 +15,10 @@
   como "open with applied flower clip". O objeto verde é um prendedor de cabelo (adereço), não a flor aplicada do Limão.
   A descrição chegou às 4 execuções da Della; d79 legendou o prendedor como "flor aplicada" no R0 e corrigiu no R1.
   O erro vale igualmente para A e B e não muda a comparação, mas é um defeito de material de entrada.
+
+## E4 · Normalização de texto no coletor (22/10/2026, depois do estudo)
+
+No teste dos 18 estilos (mesmo coletor, outra rodada), um site falhou em "hero copy preserved" porque um SVG decorativo
+dentro do `h1` quebrava o `innerText` ("details\n."). O título aparecia correto na tela. A comparação de cópia passa a
+colapsar espaços e quebras e a remover espaço antes de pontuação (`norm()`). Não muda nenhum resultado do DQB-03:
+as 16 entregas já passavam.

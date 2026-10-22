@@ -21,6 +21,10 @@ def money(s):
     m = re.findall(r"(\d+(?:[.,]\d{1,2})?)", s.replace(".", "") if re.search(r"\d\.\d{3}", s) else s)
     return [float(x.replace(",", ".")) for x in m]
 
+def norm(s):
+    """Amendment E4: collapse whitespace (inline SVG or spans inside a heading split innerText) and curly apostrophes."""
+    return re.sub(r"\s+([.,!?])", r"\1", " ".join(s.replace("\u2019", "'").split()))
+
 def tid(page, name):
     return page.locator(f'[data-testid="{name}"]')
 
@@ -207,7 +211,7 @@ with sync_playwright() as p:
         rec("all images have alt attribute", not img["noalt"], img["noalt"], vp)
         rec("no horizontal overflow (home)", overflow(page) <= 1, overflow(page), vp)
         body = page.inner_text("body")
-        rec("hero copy preserved", HERO[BRIEF] in body.replace("\n", " ").replace("\u2019", "'"), viewport=vp)
+        rec("hero copy preserved", HERO[BRIEF] in norm(body), viewport=vp)  # E4: whitespace-normalised
         rec("footer preview notice", NOTICE[BRIEF] in body, viewport=vp)
         LABEL_ORIG = LABEL
         globals()["LABEL"] = f"{LABEL_ORIG}-{w}"
