@@ -15,13 +15,19 @@ CANDIDATE_SCOPES={
    'web/runtime/qa.py','web/runtime/cli.py',
    'references/AI_Creative_Skill_Work_Profile_Web_Experience_v0.2.md'}),
 }
+CANDIDATE_SCOPES['web-runtime-2.6-v2']=('web-runtime-2.6-v1',CANDIDATE_SCOPES['web-runtime-2.6-v1'][1]|{
+   'references/AI_Creative_Skill_Method_Route_Compilation_Pre-v0.14-V2.4-CANDIDATE.md',
+   'references/AI_Creative_Skill_Method_Image_Direction_Pre-v0.12-V2.4-CANDIDATE.md',
+   'references/AI_Creative_Skill_Method_Localized_Repair_Pre-v0.12-V2.4-CANDIDATE.md',
+   'web/runtime/migrate.py'})
 CANDIDATES=ROOT/'validation/candidates'
 ACTIVE=json.loads((CANDIDATES/'ACTIVE.json').read_text())
 CANDIDATE_ID=ACTIVE['candidate_id']
 CANDIDATE=CANDIDATES/CANDIDATE_ID
 ALLOWED_CHANGES=set(CANDIDATE_SCOPES[CANDIDATE_ID][1])
 # Superseded candidates stay byte-identical to the commit that reviewed them.
-SUPERSEDED={'boundary-hardening-v1':'b83b331f552baa22e14f2cf760dcd396b65a5537'}
+SUPERSEDED={'boundary-hardening-v1':'b83b331f552baa22e14f2cf760dcd396b65a5537',
+ 'web-runtime-2.6-v1':'0f7089a5b473c0d878ba1cac1efbea27a960ecf1'}
 
 def lineage_valid(active=None):
     active=active or CANDIDATE_ID
@@ -50,8 +56,11 @@ def preserved_history(root=ROOT):
     fixed={RELEASE_REF:['docs/migration/v2.5.0-source-attestation.json','src/ai-creative-skill/MANIFEST_SHA256.json','packaging/build.py','packaging/plugin.json','tests/test_packaging.py'],
       HARNESS_REF:['validation/known_findings.json','validation/reports/2026-10-20-baseline.json','validation/reports/2026-10-20-baseline-economics.json','validation/reports/2026-10-20-checks.json','validation/reports/2026-10-20-findings.md']}
     # Always checked, whichever candidate is active, so pointing ACTIVE back cannot reopen a superseded record.
+    # Exactly the record files that existed at the reviewing commit, so candidates with fewer records are still covered.
     for cid,ref in SUPERSEDED.items():
-        fixed.setdefault(ref,[]).extend(f'validation/candidates/{cid}/{name}' for name in ('README.md','expectations.json','remediation.json','source-manifest.json'))
+        names=subprocess.check_output(['git','ls-tree','-r','--name-only',ref,f'validation/candidates/{cid}/'],cwd=ROOT,text=True).split()
+        if not names:raise ValueError('Superseded candidate has no records at its reviewed commit: '+cid)
+        fixed.setdefault(ref,[]).extend(names)
     for ref,paths in fixed.items():
         for path in paths:
             if (root/path).read_bytes()!=git_bytes(ref,path):raise ValueError('Historical artifact changed: '+path)

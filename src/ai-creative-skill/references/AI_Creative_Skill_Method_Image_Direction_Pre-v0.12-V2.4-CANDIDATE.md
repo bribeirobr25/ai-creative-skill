@@ -198,6 +198,8 @@ PERMISSION TO INVENT UNSEEN PRODUCT SURFACES
 
 For a real product, derived reference sheets must remain grounded in verified product authority. If an unseen surface is not established, mark coverage partial/missing, change the shot, obtain better authority or keep the uncertain surface out of material product claims.
 
+**Declared vs observed (2.6).** A product fact declared by a brief, caption or metadata file that the reference photos contradict is a conflict to resolve with the owner before use, never a fact. Until resolved, prompts describe only what the photos show and mark the declared detail unknown. Observed failures: a lining declared "with small dots" that the interior photos show plain; a hair clip used as a prop recorded as an "applied flower" of the product, which a website executor then published as a product detail.
+
 ---
 
 # 6. Character Realism
@@ -350,6 +352,8 @@ OFFICIAL BRAND MARK
 
 Embossing, foil, engraving or one-color reproduction must use an approved suitable variant or explicit authority; do not let the model invent a new logo variant. Repeated generation failure is a reason to move the mark to a controlled finishing layer, not to accept drift.
 
+**Marks applied on the product (2.6).** Woven or printed labels, tags and stitched marks follow the same rule. Image models render a label correctly when it is large in frame and garble it when it is small: in one photoshoot, 22 of 25 enlarged labels in single-product shots were correct (the 3 failures were small labels in lifestyle scenes) and 11 of 11 labels in multi-product shots were garbled. When the label will render small in the output (about 120 px wide or less; this threshold is an inference from those cases), plan a deterministic composite from a real photo of the label (Localized Repair §6.2) instead of relying on generated text. A generated label at larger size is acceptable only after a letter-by-letter check at zoom.
+
 Project reference restrictions prevail over this section. When the active Project Profile forbids visible brands, logos or readable text in generation reference images (pointer in §10), the mark is not supplied as a generation reference and is added only through controlled finishing/compositing unless the operator changes that project rule.
 
 ---
@@ -414,7 +418,7 @@ By default the map owns stations, arrangement, counts and clearance. Relative sc
 
 Prefer color or shape to identify mapped subjects; use letters or numbers only when color/shape is insufficient and the project permits readable text in that reference. When the active Project Profile forbids readable text in generation reference images, the map carries no text. If colors, numbers or labels identify mapped subjects, bind each label to the intended semantic subject/reference. The label is positional metadata, not wardrobe or identity authority. Map strokes, colors, arrows and labels are never inherited by the final image unless separate text/content authority explicitly requires them; record them in the binding's `excluded_inheritance` (Route Compilation §7). Scope the map to the shot/location/view for which its geometry is meaningful; a top-down left/right relationship does not automatically become screen-left/screen-right under every camera angle.
 
-Check reference readiness before use. Reject or scope references with conflicting identity, old packaging, unreadable defining details or contaminating text.
+Check reference readiness before use. Reject or scope references with conflicting identity, old packaging, unreadable defining details or contaminating text. When the route cannot bind a reference to a region or role, derive one-product crops as required by Route Compilation §7.2.
 
 ## 10.1 Cross-asset style continuity
 

@@ -1,4 +1,5 @@
-"""2.6.0-dev regressions for defects observed in DQB-02 (router, QA evidence, hash routes, 320 px, lazy images)."""
+"""2.6.0-dev regressions for defects observed in DQB-02/DQB-03 and the style test (router, QA evidence, hash routes, 320 px,
+lazy and collapsed images, file:// audit, delivery record draft) and candidate governance."""
 import functools,http.server,importlib.util,json,shutil,struct,sys,tempfile,threading,unittest,zlib
 from pathlib import Path
 
@@ -124,7 +125,9 @@ class StaticAudit(unittest.TestCase):
             project=Path(td);site=make_site(project)
             report=qa.audit(site,project/'qa-evidence',project_root=project)
             refs={c['evidence_ref'] for c in report['checks'] if c['evidence_ref']}
-            self.assertEqual(refs,{'qa-evidence/static_audit.json'})
+            # With a browser available the page is opened via file:// and captures join the evidence.
+            self.assertIn('qa-evidence/static_audit.json',refs)
+            self.assertTrue(all(ref.startswith('qa-evidence/') for ref in refs),refs)
             self.assertFalse((site/'qa-evidence').exists())
             self.assertTrue(all(not ref.startswith('/') for ref in refs))
             with self.assertRaisesRegex(ValueError,'project root'):qa.audit(site,Path(td).parent/'elsewhere',project_root=project)
@@ -181,6 +184,49 @@ class BrowserAudit(unittest.TestCase):
         self.assertLess(time.monotonic()-start,90)
         self.assertEqual({c['check_id']:c for c in report['checks']}['browser_render']['result'],'PASS')
 
+    def test_collapsed_image_fails_but_hidden_image_does_not(self):
+        td=tempfile.TemporaryDirectory();self.addCleanup(td.cleanup)
+        project=Path(td.name);root=make_site(project);png(root/'assets/big.png',80,80)
+        html=(root/'index.html').read_text()
+        (root/'index.html').write_text(html.replace('<script','<div style="display:none"><img src="assets/big.png" alt="menu"></div><script'))
+        checks={c['check_id']:c for c in qa.audit(root,project/'qa',self.serve(root),project_root=project)['checks']}
+        self.assertEqual(checks['images_rendered']['result'],'PASS',checks['images_rendered'].get('reason'))
+        (root/'index.html').write_text(html.replace('<script','<div style="height:0;overflow:hidden"><img src="assets/big.png" alt="card" style="width:100%;height:100%;object-fit:cover"></div><script'))
+        checks={c['check_id']:c for c in qa.audit(root,project/'qa',self.serve(root),project_root=project)['checks']}
+        self.assertEqual(checks['images_rendered']['result'],'FAIL')
+        self.assertIn('assets/big.png at 1440',checks['images_rendered']['reason'])
+
+    def test_audit_without_url_opens_the_file(self):
+        td=tempfile.TemporaryDirectory();self.addCleanup(td.cleanup)
+        project=Path(td.name);root=make_site(project)
+        report=qa.audit(root,project/'qa',project_root=project)
+        checks={c['check_id']:c for c in report['checks']}
+        self.assertEqual(report['opened_via'],'file')
+        for k in ('browser_render','desktop_render','mobile_render','narrow_render','images_rendered'):
+            self.assertEqual(checks[k]['result'],'PASS',(k,checks[k].get('reason')))
+        for f in (project/'qa').glob('*.json'):
+            text=f.read_text();self.assertNotIn(str(project.resolve()),text);self.assertNotIn('file:',text)
+
+    def test_record_draft_must_be_filled_then_validates(self):
+        from runtime import validate
+        td=tempfile.TemporaryDirectory();self.addCleanup(td.cleanup)
+        project=Path(td.name);root=make_site(project)
+        qa.audit(root,project/'qa',project_root=project)
+        rec=qa.draft_record(root,project/'qa/qa_matrix.json',project,'test')
+        self.assertEqual(rec['WEB_PREVIEW_BUILD']['preview_status'],'AVAILABLE_VERIFIED')
+        errors=validate.check(rec,project)
+        self.assertTrue(errors and {e['code'] for e in errors}=={'UNFILLED_FIELD'},errors)
+        self.assertIn('WEB_BRIEF/business_kind',{e['path'] for e in errors})
+        enums={'business_kind':'PHYSICAL_PRODUCT','brand_authority_state':'PROVISIONAL','approval':'PROVISIONAL','rights':'UNKNOWN',
+               'primary_cta_behavior':'SAFE_LOCAL_DEMO','form_mode':'NONE'}
+        def fill(node,key=None):
+            if isinstance(node,dict):return {k:fill(v,k) for k,v in node.items()}
+            if isinstance(node,list):return [fill(v,key) for v in node]
+            return enums.get(key,'filled') if isinstance(node,str) and node.startswith('TODO') else node
+        self.assertEqual(validate.check(fill(rec),project),[])
+        (root/'styles.css').write_text('body{color:red}')
+        with self.assertRaisesRegex(ValueError,'another build'):qa.draft_record(root,project/'qa/qa_matrix.json',project)
+
     def test_broken_image_is_reported(self):
         checks,_=self.run_audit(broken=True)
         self.assertEqual(checks['images_rendered']['result'],'FAIL')
@@ -193,9 +239,10 @@ class CandidateGovernance(unittest.TestCase):
         self.ci=candidate_integrity
 
     def test_active_candidate_is_cumulative_over_parent(self):
-        self.assertEqual(self.ci.CANDIDATE_ID,'web-runtime-2.6-v1')
+        self.assertEqual(self.ci.CANDIDATE_ID,'web-runtime-2.6-v2')
         parent,scope=self.ci.CANDIDATE_SCOPES[self.ci.CANDIDATE_ID]
-        self.assertEqual(parent,'boundary-hardening-v1')
+        self.assertEqual(parent,'web-runtime-2.6-v1')
+        self.assertTrue(self.ci.CANDIDATE_SCOPES[parent][1]<scope)
         self.assertTrue(self.ci.BOUNDARY_SCOPE<scope)
         self.assertTrue(self.ci.lineage_valid())
 
@@ -209,10 +256,22 @@ class CandidateGovernance(unittest.TestCase):
 
     def test_pointer_cannot_roll_back_to_superseded_candidate(self):
         with self.assertRaisesRegex(ValueError,'newest'):self.ci.lineage_valid('boundary-hardening-v1')
+        with self.assertRaisesRegex(ValueError,'newest'):self.ci.lineage_valid('web-runtime-2.6-v1')
 
     def test_superseded_candidate_records_are_byte_preserved(self):
         self.assertTrue(self.ci.preserved_history())
-        path='validation/candidates/boundary-hardening-v1/source-manifest.json'
-        self.assertEqual((self.ci.ROOT/path).read_bytes(),self.ci.git_bytes(self.ci.SUPERSEDED['boundary-hardening-v1'],path))
+        for cid,name in (('boundary-hardening-v1','source-manifest.json'),('boundary-hardening-v1','remediation.json'),
+                         ('web-runtime-2.6-v1','README.md'),('web-runtime-2.6-v1','source-manifest.json')):
+            path=f'validation/candidates/{cid}/{name}'
+            self.assertEqual((self.ci.ROOT/path).read_bytes(),self.ci.git_bytes(self.ci.SUPERSEDED[cid],path))
+
+    def test_record_todo_is_reported_even_with_schema_errors(self):
+        from runtime import validate
+        errors=validate.check({'schema_version':'0.2.0','route':'TODO: pick','WEB_BRIEF':{'user_goal':'TODO: goal'}},'.')
+        codes={(e['code'],e['path']) for e in errors}
+        self.assertIn(('UNFILLED_FIELD','route'),codes)
+        self.assertIn(('UNFILLED_FIELD','WEB_BRIEF/user_goal'),codes)
+        self.assertNotIn(('SCHEMA','route'),codes)
+        self.assertIn('SCHEMA',{c for c,_ in codes})
 
 if __name__=='__main__':unittest.main()

@@ -20,11 +20,19 @@ def contained_path(root,ref):
     if not target.is_relative_to(pathlib.Path(root).resolve()):return None
     return target
 
+def todo_paths(node,path=''):
+    """Strings still starting with TODO, as left by the record draft."""
+    if isinstance(node,str):return [path] if node.lstrip().upper().startswith('TODO') else []
+    items=node.items() if isinstance(node,dict) else enumerate(node) if isinstance(node,list) else []
+    return [p for k,v in items for p in todo_paths(v,f'{path}/{k}' if path else str(k))]
+
 def check(record, project_root, package_installed=False):
     """Returns machine errors; cannot certify browser actions, product truth or rights."""
-    errors=[]
+    errors=[{'code':'UNFILLED_FIELD','path':path,'message':'Placeholder left by creative_web.py record; fill it'} for path in todo_paths(record)]
+    todo={e['path'] for e in errors}
     for e in VALIDATOR.iter_errors(record):
-        errors.append({'code':'SCHEMA','path':'/'.join(map(str,e.absolute_path)),'message':e.message[:210]})
+        path='/'.join(map(str,e.absolute_path))
+        if path not in todo:errors.append({'code':'SCHEMA','path':path,'message':e.message[:210]})
     if errors: return errors
     def fail(code,path,message):errors.append({'code':code,'path':path,'message':message})
     ex=record['execution'];build=record['WEB_PREVIEW_BUILD'];qa=record['WEB_QA'];brief=record['WEB_BRIEF'];asset=record['WEB_ASSET_PLAN']
