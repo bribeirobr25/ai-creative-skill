@@ -8,6 +8,7 @@ from __future__ import annotations
 
 from datetime import date, datetime, timezone
 from typing import Iterable
+from urllib.parse import quote
 
 from engine import Observation, ValidationError, InsufficientEvidence, unique_observations, rank_sample
 
@@ -126,9 +127,14 @@ def build_research_execution_fixture(
 
     evidence = []
     metrics = []
+    evidence_by_publication: dict[tuple[str, str], str] = {}
     for row in rows:
         iso = row.observed_at.astimezone(timezone.utc).isoformat()
-        reference = f"fixture:{row.platform}:{row.publication_id}:{iso}"
+        # Encode each identifier independently. Raw ':' within either field
+        # must not collide with the ':' field delimiter in an evidence ID.
+        subject = f"{quote(row.platform, safe='')}:{quote(row.publication_id, safe='')}"
+        reference = f"fixture:{subject}:{iso}"
+        evidence_by_publication[(row.platform, row.publication_id)] = reference
         source_attempt = "synthetic-source-attempt:001"
         evidence.append({
             "evidence_id": reference,
@@ -137,7 +143,7 @@ def build_research_execution_fixture(
             "retrieved_at": iso,
             "published_at": row.published_at.astimezone(timezone.utc).isoformat(),
             "date_confidence": "HIGH",
-            "entity_scope": f"{row.platform}:{row.publication_id}",
+            "entity_scope": subject,
             "claim_or_observation": "Synthetic view-count observation",
             "exact_quote_ref": None,
             "relevance": "DIRECT",
@@ -151,7 +157,7 @@ def build_research_execution_fixture(
             "observation_id": reference,
             "evidence_id": reference,
             "source_outcome_ref": source_attempt,
-            "subject_id": f"{row.platform}:{row.publication_id}",
+            "subject_id": subject,
             "metric": "PUBLIC_VIEW_COUNT_FIXTURE",
             "value": row.views if row.views is not None else "UNKNOWN",
             "unit": "views",
@@ -164,14 +170,18 @@ def build_research_execution_fixture(
     # YouTube metric, creator comparison or ranking of a country.
     ranked_refs: list[str] = []
     ranking_note = "NO_OBSERVATIONS"
+    verified_scope = (
+        population_coverage_verified and source_coverage_verified
+        and source_outcome == "OK"
+    )
     if rows and any(row.views is not None for row in rows):
         try:
             ranked = rank_sample(
                 rows, limit=limit, requested_national_top=requested_national_top,
-                population_coverage_verified=population_coverage_verified,
+                population_coverage_verified=verified_scope if requested_national_top else population_coverage_verified,
             )
             ranked_refs = [
-                next(e["evidence_id"] for e in evidence if e["entity_scope"] == f"{rows[0].platform}:{result['publication_id']}")
+                evidence_by_publication[(rows[0].platform, result["publication_id"])]
                 for result in ranked["results"]
             ]
             ranking_note = ranked["population"]
@@ -179,11 +189,17 @@ def build_research_execution_fixture(
             ranking_note = "NOT_COMPARABLE"
     # A source attempt can be OK yet the research conclusion insufficient.
     # Separate source retrieval outcome from the ranking deliverable status.
-    if source_outcome == "OK" and rows:
-        if requested_national_top and not population_coverage_verified:
+    if requested_national_top and rows:
+        if not verified_scope:
             status = "INSUFFICIENT_EVIDENCE"
             ranking_note = "NATIONAL_COVERAGE_UNVERIFIED"
-        elif all(r.views is None for r in rows):
+            ranked_refs = []
+        elif ranking_note in ("NOT_COMPARABLE", "NO_OBSERVATIONS"):
+            status = "INSUFFICIENT_EVIDENCE"
+            ranking_note = "NATIONAL_RANKING_UNDETERMINED"
+            ranked_refs = []
+    elif source_outcome == "OK" and rows:
+        if all(r.views is None for r in rows):
             status = "INSUFFICIENT_EVIDENCE"
         elif ranking_note == "NOT_COMPARABLE" or any(r.views is None for r in rows):
             status = "PARTIAL"
@@ -213,7 +229,7 @@ def build_research_execution_fixture(
             "source_attempts": 1,
             "observed_publication_count": len(rows),
             "geography_basis": "UNKNOWN",
-            "population_verified": False if not population_coverage_verified else "SYNTHETIC_FIXTURE_ONLY",
+            "population_verified": "SYNTHETIC_FIXTURE_ONLY" if verified_scope else False,
             "report_is_real_market_research": False,
             "source_coverage_verified": source_coverage_verified,
             "requested_national_top": requested_national_top,
