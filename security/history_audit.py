@@ -30,29 +30,50 @@ def git(cmd: list[str], stdin: bytes | None = None) -> bytes:
         raise RuntimeError("Cannot inspect local Git object history safely") from exc
 
 
-def _reachable_blobs() -> tuple[dict[str, str], dict[str, int]]:
-    lines = git(["rev-list", "--objects", "--all"]).decode("utf-8", "replace").splitlines()
-    items: dict[str, str] = {}
-    for line in lines:
-        key, _, path = line.partition(" ")
-        if key:
-            items.setdefault(key, path)
-    if len(items) > MAX_BLOB_COUNT:
-        raise RuntimeError("Object inventory exceeds review cap; refusing partial green status")
-    if not items:
-        raise RuntimeError("Empty reachable Git object inventory")
-    payload = "".join(key + "\n" for key in items).encode()
+def _reachable_blobs() -> tuple[dict[str, set[str]], dict[str, int]]:
+    """Map every reachable blob to ALL its paths in reachable commit trees.
+
+    git rev-list --objects --all reports only one path hint per object. That is
+    insufficient for privacy triage if the same content occurs under multiple
+    paths. Inspect every reachable commit tree instead, de-duplicate by SHA.
+    """
+    commits = git(["rev-list", "--all"]).decode("ascii", "strict").splitlines()
+    if not commits or len(commits) > 10000:
+        raise RuntimeError("Commit inventory empty or beyond review cap")
+    item_paths: dict[str, set[str]] = {}
+    for commit in commits:
+        entries = git(["ls-tree", "-r", "-z", commit])
+        for row in entries.split(b"\x00"):
+            if not row:
+                continue
+            try:
+                meta, raw_path = row.split(b"\t", 1)
+                parts = meta.split()
+                if len(parts) != 3:
+                    raise ValueError
+                kind = parts[1]
+                blob_sha = parts[2].decode("ascii")
+                file_path = raw_path.decode("utf-8", "replace")
+            except (ValueError, UnicodeDecodeError) as exc:
+                raise RuntimeError("Unexpected commit-tree entry format") from exc
+            if kind != b"blob":
+                continue
+            item_paths.setdefault(blob_sha, set()).add(file_path)
+            if len(item_paths) > MAX_BLOB_COUNT:
+                raise RuntimeError("Blob history exceeds review cap")
+    if not item_paths:
+        raise RuntimeError("Empty reachable Git blob inventory")
+    payload = "".join(key + "\n" for key in item_paths).encode()
     info = git(["cat-file", "--batch-check=%(objectname) %(objecttype) %(objectsize)"], stdin=payload)
-    types = {}
     sizes = {}
     for ln in info.decode("utf-8", "replace").splitlines():
         parts = ln.split()
-        if len(parts) == 3 and parts[1] == "blob":
-            sizes[parts[0]] = int(parts[2])
-            types[parts[0]] = parts[1]
-    paths = {oid: path for oid, path in items.items() if oid in types}
-    return paths, sizes
-
+        if len(parts) != 3 or parts[1] != "blob":
+            raise RuntimeError("A reachable blob could not be verified")
+        sizes[parts[0]] = int(parts[2])
+    if len(sizes) != len(item_paths):
+        raise RuntimeError("Blob inventory size mismatch")
+    return item_paths, sizes
 
 def audit_text_blob(text: str, path: str) -> set[str]:
     """Return only rule/category names, never offending text or token."""
@@ -272,14 +293,16 @@ def scan_history() -> dict:
     summary = Counter()
     summary["VERIFIED_REMOTE_BRANCH_HEADS"] = branch_count
     exif_sensitive_paths: set[str] = set()
-    for oid, path in paths.items():
+    summary["MULTIPATH_BLOB_VERSIONS"] = sum(len(aliases) > 1 for aliases in paths.values())
+    summary["REACHABLE_PATH_ALIASES"] = sum(len(aliases) for aliases in paths.values())
+    for oid, aliases in paths.items():
         size = sizes[oid]
+        if any(PRIVATE_FILENAME.search(path) for path in aliases):
+            summary["BLOCK:PRIVATE_FILE_PATH"] += 1
+        if any(path.lower().endswith(REVIEW_FILE_SUFFIXES) for path in aliases):
+            summary["REVIEW:BINARY_OR_MEDIA_PATH"] += 1
         if size > MAX_TEXT_BLOB_BYTES:
             summary["SKIPPED_OVERSIZED_BLOB"] += 1
-            if PRIVATE_FILENAME.search(path):
-                summary["BLOCK:PRIVATE_FILE_PATH"] += 1
-            if path.lower().endswith(REVIEW_FILE_SUFFIXES):
-                summary["REVIEW:BINARY_OR_MEDIA_PATH"] += 1
             continue
         raw = git(["cat-file", "blob", oid])
         if b"\0" in raw:
@@ -288,11 +311,7 @@ def scan_history() -> dict:
             for kind in flags:
                 summary[kind] += 1
             if "BINARY_EXIF_POTENTIAL_IDENTIFYING_TAG" in flags:
-                exif_sensitive_paths.add(path)
-            if PRIVATE_FILENAME.search(path):
-                summary["BLOCK:PRIVATE_FILE_PATH"] += 1
-            if path.lower().endswith(REVIEW_FILE_SUFFIXES):
-                summary["REVIEW:BINARY_OR_MEDIA_PATH"] += 1
+                exif_sensitive_paths.update(aliases)
             continue
         try:
             value = raw.decode("utf-8")
@@ -300,13 +319,13 @@ def scan_history() -> dict:
             summary["SKIPPED_NON_UTF8_BLOB"] += 1
             continue
         summary["SCANNED_TEXT_BLOB"] += 1
-        link_flags = classify_link_metadata(value)
-        for flag in link_flags:
+        for flag in classify_link_metadata(value):
             summary[flag] += 1
-        for category in audit_text_blob(value, path):
+        for category in audit_text_blob(value, ""):
             summary[category] += 1
             if category in ("REVIEW:DRIVE_REFERENCE", "REVIEW:SHAREABLE_STORAGE_LINK"):
-                summary["LINK_SCOPE:" + _scope_bucket(path)] += 1
+                for scope in {_scope_bucket(path) for path in aliases}:
+                    summary["LINK_SCOPE:" + scope] += 1
     summary["REACHABLE_BLOB_VERSIONS"] = len(paths)
     summary["UNIQUE_PATHS_WITH_EXIF_IDENTIFYING_TAG"] = len(exif_sensitive_paths)
     summary.update(audit_commit_metadata())
