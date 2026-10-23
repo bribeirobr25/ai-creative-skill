@@ -1,7 +1,7 @@
 # Ordem revisada de desenvolvimento e Security Gate · Intelligence · v0.1
 
 **Data:** 2026-10-23  
-**Estado:** PLANO DE CONTROLE PREVENTIVO · PROPOSTA NÃO CANÔNICA · SEM IMPLEMENTAÇÃO DE SECURITY SCANNER  
+**Estado:** PLANO DE CONTROLE PREVENTIVO · PROPOSTA NÃO CANÔNICA · SCANNER CANDIDATO NO PR #20 (AINDA NÃO INTEGRADO À MAIN)  
 **Escopo:** PRs #18 e #19 e todos os futuros commits públicos da AI Creative Skill; alinhamento com ADR-0001 (código/documentação públicos, materiais privados fora do Git). O PR #17 pertence à sessão Claude Code de Web Experience e não deve ser modificado por esta frente.
 
 ## 1. Decisão de sequenciamento
@@ -54,7 +54,7 @@ Um nome público de marca **não é automaticamente** dado secreto, e uma URL do
 12. Remover referências do código e, quando houver necessidade, tratar **histórico Git, forks, caches e logs** com procedimento de segurança específico e coordenação do proprietário. Apagar a linha atual ou fechar um PR **não** desfaz exposição pública anterior.
 13. Registrar no Git público apenas referência opaca ao incidente e status de contenção, nunca o material original.
 
-**Implementação deste gate:** este documento é uma política de projeto proposta. Scanner/hook/CI de bloqueio **ainda não foi instalado**. A tarefa de instalação pertence a uma futura alteração controlada, com testes de falso positivo/negativo, em branch própria. Não alterar PR #17 sem coordenação.
+**Implementação deste gate (estado de 23/10/2026):** o [PR #20](https://github.com/bribeirobr25/ai-creative-skill/pull/20) implementa um **candidato** de guard/CI, auditoria histórica e triagem privada com 81 testes de segurança aprovados no [HEAD verificado](https://github.com/bribeirobr25/ai-creative-skill/actions/runs/40012658633). O guard foi reforçado para classificar também diffs binários sem cabeçalho textual. **Ainda não foi integrado à main nem instalado como controle pré-publicação local obrigatório**. S0 continua aberta para análise visual/direitos de mídia, metadados de autoria e decisão de privacidade. Não alterar PR #17 sem coordenação.
 
 ## 4. Contratos do laboratório a rever antes de expansão
 
