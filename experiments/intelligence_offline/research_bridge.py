@@ -74,7 +74,7 @@ def build_research_execution_fixture(
         raise ValidationError("End exclusive must follow start")
     if not isinstance(generated_at, datetime) or generated_at.tzinfo is None or generated_at.utcoffset() is None:
         raise ValidationError("Generated-at timestamp must be timezone-aware")
-    if source_outcome not in SOURCE_OUTCOMES:
+    if type(source_outcome) is not str or source_outcome not in SOURCE_OUTCOMES:
         raise ValidationError("Invalid source outcome")
     if type(limit) is not int or not 1 <= limit <= 100:
         raise ValidationError("Invalid limit")
@@ -83,6 +83,8 @@ def build_research_execution_fixture(
         source_coverage_verified, negative_coverage_satisfies_request,
     )):
         raise ValidationError("Coverage and intent flags must be booleans")
+    if requested_national_top and negative_coverage_satisfies_request:
+        raise ValidationError("A ranking request cannot be answered by an absence-only completion rule")
     if negative_coverage_satisfies_request and source_outcome != "NO_RESULTS":
         raise ValidationError("Negative completion intent requires NO_RESULTS outcome")
     rows = unique_observations(observation_rows)
