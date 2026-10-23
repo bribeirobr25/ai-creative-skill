@@ -58,6 +58,7 @@ def unverified_capability_template(key: str) -> dict:
         "purposes": [], "projects": [], "countries": [],
         "geography_bases": [], "time_bases": [],
         "transformations": [], "field_grants": {},
+        "available_from": "2026-10-23", "available_to": "2026-10-24",
         "reviewed_at": "2026-10-23T00:00:00+00:00",
         "expires_at": "2026-10-23T00:00:00+00:00",
         "revoked": False, "max_calls_per_day": 0,
