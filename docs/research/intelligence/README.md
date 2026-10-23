@@ -1,3 +1,5 @@
+> **ACTIVE CANDIDATE (24/10/2026):** [STATUS.md](STATUS.md) is the sole current phase and Gate 0 status; [architecture-v0.3.md](architecture-v0.3.md) is the current proposed design. The v0.1/v0.2 statements below are historical review evidence, not competing current policy. S0 closed by owner attestation; S1/S2/S3 tested synthetically only; no real access or merge authorized.
+
 # Intelligence · Pesquisa arquitetônica (PR #18)
 
 **Estado:** GATE 0 DESK REVIEW REALIZADA · COMPATIBILIDADE CONDICIONAL · ACEITE DO PROPRIETÁRIO PENDENTE · NÃO CANÔNICA/NÃO EXECUTADA  
