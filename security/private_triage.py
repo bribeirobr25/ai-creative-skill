@@ -52,10 +52,10 @@ def produce_private_triage() -> dict:
     links: dict[str, dict] = {}
     media: list[dict] = []
     for blob_sha, aliases in paths_by_sha.items():
-        raw = git(["cat-file", "blob", blob_sha])
         if sizes[blob_sha] > MAX_TEXT_BLOB_BYTES:
             media.append({"category": "OVERSIZED", "paths": sorted(aliases)})
             continue
+        raw = git(["cat-file", "blob", blob_sha])
         if b"\0" in raw:
             media.append({
                 "category": "BINARY",
@@ -113,8 +113,13 @@ def write_private_file(data: dict, destination: Path | None = None) -> Path:
         target = destination.expanduser().resolve()
         if _inside_repo(target, repo_root):
             raise RuntimeError("Destination inside Git repository is forbidden")
-        target.parent.mkdir(mode=0o700, parents=True, exist_ok=True)
-        os.chmod(target.parent, 0o700)
+        # Never chmod an existing directory such as /tmp or the user's home.
+        # Require a private destination directory; create it when absent.
+        if not target.parent.exists():
+            target.parent.mkdir(mode=0o700, parents=True)
+            os.chmod(target.parent, 0o700)
+        elif os.stat(target.parent).st_mode & 0o077:
+            raise RuntimeError("Destination directory is not private (mode 0700 required)")
     fd = os.open(str(target), os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600)
     try:
         with os.fdopen(fd, "w", encoding="utf-8") as handle:
