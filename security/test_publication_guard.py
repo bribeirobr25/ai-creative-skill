@@ -115,6 +115,18 @@ class SecretRulesTests(unittest.TestCase):
             self.assertNotIn(secret, buf.getvalue())
             self.assertIn("GITHUB_TOKEN", buf.getvalue())
 
+    def test_scanner_never_logs_sensitive_filename(self):
+        secret_in_path = "private/" + "user@example.com" + "/.env"
+        patch_text = fake_patch("api_token=" + "ghp_" + "P" * 40, secret_in_path)
+        with patch("publication_guard._get_diff", return_value=patch_text):
+            buf = io.StringIO()
+            with redirect_stdout(buf):
+                result = main(["--staged"])
+            self.assertEqual(1, result)
+            self.assertNotIn(secret_in_path, buf.getvalue())
+            self.assertNotIn("user@example.com", buf.getvalue())
+            self.assertIn("path_ref=", buf.getvalue())
+
     def test_warning_default_does_not_break(self):
         link = "https://" + "docs.google.com/document/d/" + "D" * 31 + "/edit"
         with patch("publication_guard._get_diff", return_value=fake_patch(link)):
