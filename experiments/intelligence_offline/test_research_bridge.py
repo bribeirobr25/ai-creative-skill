@@ -53,6 +53,18 @@ class SyntheticBridgeTests(unittest.TestCase):
         for ref in x["intelligence"]["ranked_evidence_refs"]:
             self.assertIn(ref, evid)
 
+    def test_composite_evidence_ids_cannot_collide_when_source_ids_have_colons(self):
+        x = request(observation_rows=[
+            synthetic_row("c", platform="a:b"),
+            synthetic_row("b:c", platform="a"),
+        ])
+        ids = [e["evidence_id"] for e in x["evidence_clusters"]]
+        self.assertEqual(2, len(set(ids)))
+        subjects = [m["subject_id"] for m in x["intelligence"]["metric_observations"]]
+        self.assertEqual(2, len(set(subjects)))
+        self.assertTrue(any("%3A" in v for v in ids))
+        self.assertEqual("PARTIAL", x["status"])  # mixed platforms, no mixed rank
+
     def test_unknown_metric_not_zero(self):
         x = request(observation_rows=[synthetic_row(views=None)])
         self.assertEqual("UNKNOWN", x["intelligence"]["metric_observations"][0]["value"])
@@ -109,8 +121,49 @@ class SyntheticBridgeTests(unittest.TestCase):
         self.assertEqual([], x["intelligence"]["ranked_evidence_refs"])
         self.assertTrue(x["coverage"]["requested_national_top"])
 
+    def test_national_top_needs_both_population_and_source_coverage(self):
+        x = request(requested_national_top=True,
+                    population_coverage_verified=True,
+                    source_coverage_verified=False)
+        self.assertEqual("INSUFFICIENT_EVIDENCE", x["status"])
+        self.assertEqual("NATIONAL_COVERAGE_UNVERIFIED",
+                         x["intelligence"]["ranking_scope"])
+        self.assertEqual([], x["intelligence"]["ranked_evidence_refs"])
+        self.assertFalse(x["coverage"]["population_verified"])
+
+    def test_rate_limited_source_cannot_qualify_as_exhaustive_national_rank(self):
+        x = request(requested_national_top=True,
+                    population_coverage_verified=True,
+                    source_coverage_verified=True, source_outcome="RATE_LIMITED")
+        self.assertEqual("INSUFFICIENT_EVIDENCE", x["status"])
+        self.assertEqual("RATE_LIMITED", x["source_outcomes"][0]["outcome"])
+        self.assertEqual([], x["intelligence"]["ranked_evidence_refs"])
+
+    def test_national_top_with_missing_counts_is_not_definitive(self):
+        x = request(requested_national_top=True,
+                    population_coverage_verified=True,
+                    source_coverage_verified=True,
+                    observation_rows=[
+                        synthetic_row("known", views=20),
+                        synthetic_row("unknown", views=None),
+                    ])
+        self.assertEqual("INSUFFICIENT_EVIDENCE", x["status"])
+        self.assertEqual("NATIONAL_RANKING_UNDETERMINED",
+                         x["intelligence"]["ranking_scope"])
+        self.assertEqual([], x["intelligence"]["ranked_evidence_refs"])
+
+    def test_fully_verified_synthetic_national_rank_keeps_auditable_refs(self):
+        x = request(requested_national_top=True,
+                    population_coverage_verified=True,
+                    source_coverage_verified=True)
+        self.assertEqual("COMPLETE", x["status"])
+        evid = {e["evidence_id"] for e in x["evidence_clusters"]}
+        self.assertTrue(x["intelligence"]["ranked_evidence_refs"])
+        self.assertTrue(set(x["intelligence"]["ranked_evidence_refs"]) <= evid)
+
     def test_synthetic_complete_scope_remains_explicitly_not_real_market(self):
-        x = request(requested_national_top=True, population_coverage_verified=True)
+        x = request(requested_national_top=True, population_coverage_verified=True,
+                    source_coverage_verified=True)
         self.assertEqual("COMPLETE", x["status"])
         self.assertFalse(x["coverage"]["report_is_real_market_research"])
         self.assertEqual("COMPLETE", x["intelligence"]["ranking_scope"])
