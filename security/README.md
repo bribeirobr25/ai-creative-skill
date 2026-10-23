@@ -33,7 +33,7 @@ Exemplo de hook a ser instalado/manual: [pre-commit.example](pre-commit.example)
 
 ## Auditoria do histórico já testada
 
-O novo [auditor de objetos Git alcançáveis](history_audit.py) percorre versões antigas de blobs textuais e mensagens de commit, agrega alertas sem mostrar valores, caminhos nem e-mails e marca mídia/binários para revisão separada.
+O novo [auditor de objetos Git alcançáveis](history_audit.py) percorre versões antigas de blobs textuais e mensagens de commit, **incluindo explicitamente o `HEAD` destacado do checkout de PR**, agrega alertas sem mostrar valores, caminhos nem e-mails e marca mídia/binários para revisão separada. Isso inclui commits de um PR que não estejam representados por uma branch local `origin/*`, desde que os objetos estejam no checkout; não alcança forks/caches/objetos que não foram buscados.
 
 O [resumo sanitizado da auditoria S0](../docs/security/S0-historical-audit-summary-2026-10-23.md) registra a primeira execução e suas limitações. A [auditoria ampliada de 21 branches e triagem binária](../docs/security/S0-extended-branch-and-binary-triage-2026-10-23.md) corrige a cobertura original, classifica metadados EXIF sem revelar valores e indica as revisões privadas ainda necessárias. Em execuções subsequentes, foram observadas referências de Drive/links compartilháveis e possível e-mail pessoal de autoria para **classificação privada**, nenhum padrão reconhecido `BLOCK`. Contagem por blob/versão não corresponde diretamente ao número de links únicos. Mídia não recebeu inspeção visual.
 
