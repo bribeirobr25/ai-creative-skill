@@ -46,6 +46,23 @@ python security/history_audit.py
 
 Um retorno bem-sucedido não significa que o histórico foi limpo ou que permissões de URLs foram verificadas. O resultado resumido do CI não contém as URLs sensíveis. A análise de permissões reais e de conteúdo binário deve ser feita privadamente, antes de promover a ADR.
 
+## Revisão privada dos links e materiais históricos
+
+A [triagem S0 aprofundada](../docs/security/S0-local-private-link-review-2026-10-23.md) explica a diferença entre uma varredura pública com categorias sanitizadas e uma revisão efetiva de permissões na origem.
+
+Num clone local controlado pelo proprietário, e **fora de qualquer CI ou terminal com logs compartilhados**, a ferramenta [private_triage.py](private_triage.py) pode gerar um JSON de revisão, protegido por permissões de arquivo e fora do repositório:
+
+```sh
+git fetch --no-tags --prune origin '+refs/heads/*:refs/remotes/origin/*'
+python security/private_triage.py
+```
+
+O arquivo local contém URLs completas, caminhos históricos e candidatos de mídia: **NUNCA fazer upload, commit, anexar a PR ou compartilhar em chat**. A ferramenta se recusa a rodar no CI, impede destino dentro do Git e exige diretório com acesso restrito. Ela não consulta Google Drive, não altera ACLs e não comprova se um link realmente dá acesso.
+
+Antes de uma conclusão de segurança, o proprietário deverá classificar os links diretamente na conta Google Drive, separar links públicos intencionais de compartilhamento indevido, verificar as mídias e avaliar o endereço de autoria Git. Se existir credencial/URL de acesso ativo publicada, priorizar revogação na origem.
+
+O auditor [history_audit.py](history_audit.py) agora percorre **todas as árvores de commits alcançáveis** e conserva aliases de caminhos quando o mesmo blob foi reutilizado. Isso evita atribuir um link antigo a um único caminho arbitrário.
+
 ## Antes do merge
 
 1. Conferir diff completo, não só scanner e tests.
