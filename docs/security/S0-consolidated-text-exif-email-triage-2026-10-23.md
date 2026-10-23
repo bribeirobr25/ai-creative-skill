@@ -64,3 +64,17 @@ Não foram divulgados os endereços nem seus domínios. As 22 ocorrências não 
 **Decisão operacional:** não bloquear desenvolvimento matemático sintético do PR #19 por questões de mídia não relacionadas, mas manter o PR #20 em Draft e a promoção da ADR-0003 pendente até revisão de risco residual, pré-publicação local e decisão do proprietário. PR #17 permanece sob sua sessão responsável.
 
 **Nenhuma exposição crítica foi confirmada pelos candidatos avaliados.** Isso é uma conclusão circunscrita, não a declaração de que o repositório inteiro está livre de informações sensíveis.
+
+## 6. Verificação complementar de autoria em commits
+
+Uma extensão posterior do auditor classificou a **posição** dos e-mails nas mensagens de commit sem emitir seus valores. O [job verificado com 74 testes PASS](https://github.com/bribeirobr25/ai-creative-skill/actions/runs/40007350647/job/120598524690) observou:
+
+- **22 linhas de coautoria** (`Co-authored-by`) com endereço candidato, correspondendo a **um único endereço distinto**;
+- nenhum alerta de e-mail de mensagem fora de trailers de coautoria nas regras aplicadas à execução;
+- continua havendo **um endereço de autoria Git** para revisão independente.
+
+Isso reclassifica as 22 ocorrências: **são atribuições técnicas repetidas de coautoria, não 22 documentos com e-mail pessoal**. Mesmo assim, a publicação do endereço no histórico é um fato que exige avaliar intenção e privacidade. Não remover coautoria nem alterar commits retroativamente sem aprovação e análise de impacto.
+
+O check de diff do mesmo job retornou `0 BLOCK / 0 REVIEW` para as linhas novas examinadas. Esse número não apaga nem ignora os alertas históricos já classificados.
+
+**O primeiro job de 73 testes citado no início continua sendo evidência do commit anterior. A evidência de execução mais recente desta revisão é o job de 74 testes acima.**
