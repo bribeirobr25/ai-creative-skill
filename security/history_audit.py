@@ -147,8 +147,17 @@ def _exif_tag_categories(payload: bytes) -> set[str]:
             tag = number(item[:2])
             if tag == 0x8825:
                 results.add("BINARY_EXIF_GPS_POINTER")
-            if tag in (0x013B, 0x8298, 0xA430, 0xA431, 0x9286, 0x010E):
+            sensitive_tags = {
+                0x013B: "BINARY_EXIF_ARTIST_TAG",
+                0x8298: "BINARY_EXIF_COPYRIGHT_TAG",
+                0xA430: "BINARY_EXIF_CAMERA_OWNER_TAG",
+                0xA431: "BINARY_EXIF_CAMERA_SERIAL_TAG",
+                0x9286: "BINARY_EXIF_USER_COMMENT_TAG",
+                0x010E: "BINARY_EXIF_IMAGE_DESCRIPTION_TAG",
+            }
+            if tag in sensitive_tags:
                 results.add("BINARY_EXIF_POTENTIAL_IDENTIFYING_TAG")
+                results.add(sensitive_tags[tag])
             if tag == 0x8769 and number(item[2:4]) == 4 and number(item[4:8]) == 1:
                 pointers.append(number(item[8:12]))
     return results
