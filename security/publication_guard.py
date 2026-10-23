@@ -38,6 +38,24 @@ REVIEW_RULES = (
     ("SHAREABLE_STORAGE_LINK", re.compile(r"https?://[^\s<>'\"]{1,300}/(?:share|sharing|download)/[^\s<>'\"]{10,}", re.I)),
 )
 
+EMAIL_CANDIDATE = re.compile(r"\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b", re.I)
+_RESERVED_SAMPLE_DOMAINS = frozenset({"example.com", "example.net", "example.org"})
+
+
+def has_reviewable_email(text: str) -> bool:
+    """Report possible personal emails but ignore documentation-only domains."""
+    for match in EMAIL_CANDIDATE.finditer(text):
+        domain = match.group(0).rsplit("@", 1)[1].lower()
+        if domain in _RESERVED_SAMPLE_DOMAINS:
+            continue
+        if domain.endswith((".invalid", ".example", ".test", ".localhost", ".noreply.github.com")):
+            continue
+        if domain.endswith("@users.noreply.github.com"):
+            continue
+        return True
+    return False
+
+
 PRIVATE_FILENAME = re.compile(
     r"(?i)(?:^|/)(?:\.env(?:\.[\w-]+)?|id_(?:rsa|ed25519)|credentials?\.(?:json|ya?ml)|"
     r"[^/]+\.(?:p12|pfx|key|pem|sqlite|db))$"
@@ -54,6 +72,8 @@ def scan_added_line(path: str, line: str, line_number: int) -> list[Finding]:
     for name, rx in REVIEW_RULES:
         if rx.search(line):
             findings.append(Finding("REVIEW", name, path, line_number))
+    if has_reviewable_email(line):
+        findings.append(Finding("REVIEW", "EMAIL_ADDRESS", path, line_number))
     return findings
 
 
