@@ -6,6 +6,8 @@ This folder is a *candidate*, not a second research execution runtime. It lives 
 
 Run: python -m unittest discover -s experiments/intelligence_contracts -p 'test_*.py' -v
 
+**Evidência de execução:** [42/42 testes PASS no commit 9c5cff1c](https://github.com/bribeirobr25/ai-creative-skill/actions/runs/40019484706), incluindo validações de cópias não independentes, evidência órfã, timestamps, fonte com falha e limites de autoridade. [Relatório S2 com gates e pendências](S2-compatibility-review-2026-10-23.md). O CI testa o candidato offline, não valida direitos reais.
+
 ## Verified source-of-truth mapping
 
 | Authoritative document | Protected owner / vocabulary | What candidate checks |
