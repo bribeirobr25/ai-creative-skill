@@ -75,6 +75,17 @@ A [classificação sanitizada](../docs/security/S0-historical-links-classified-2
 - [Mídia/EXIF e inspeção amostral](../docs/security/S0-media-exif-visual-review-2026-10-23.md): tags de autor, copyright e descrição em imagens do histórico exigem análise privada dos valores, e a revisão visual inicial abrangeu somente três screenshots de protótipo.
 - A classificação textual automatizada não aprova material binário, licença, dados pessoais, autorias, forks ou links cuja permissão foi modificada no passado.
 
+## Classificação consolidada S0 (atualização de 23/10/2026)
+
+A [consolidação textual + EXIF + e-mails de commit](../docs/security/S0-consolidated-text-exif-email-triage-2026-10-23.md) apresenta os resultados atuais sem divulgar links ou valores:
+
+- A triagem dos links históricos encontrou uma pasta real atualmente restrita, duas fixtures incompletas e downloads públicos do GitHub; nenhum dos casos examinados comprovou acesso público indevido.
+- A inspeção EXIF classificou a presença de valores em 27 versões JPEG sem sinalizar padrões específicos de e-mail, URL ou números longos; os valores ainda não foram semanticamente avaliados.
+- Foram detectadas 22 mensagens de commit com um mesmo endereço candidato (um endereço distinto), além de um e-mail de autoria para revisão.
+- O [job de segurança](https://github.com/bribeirobr25/ai-creative-skill/actions/runs/40006660415/job/120596191692) aprovou 73 testes do código examinado. Isso não equivale à aprovação de direitos de mídia nem à ativação do gate na `main`.
+
+**S0 permanece aberta** apenas nos tópicos ainda sem evidência suficiente, especialmente a análise visual e direitos das mídias, a preferência de privacidade de autoria e superfícies fora dos refs alcançáveis.
+
 ## Antes do merge
 
 1. Conferir diff completo, não só scanner e tests.
