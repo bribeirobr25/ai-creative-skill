@@ -212,6 +212,44 @@ def _verified_branch_coverage() -> int:
     return len(remote)
 
 
+def classify_link_metadata(text: str) -> set[str]:
+    """Classify public-repository links by *shape*; never reveal URL or ID.
+
+    This is a lexical pre-screen. It does NOT determine Google Drive sharing
+    permissions, whether a link is valid, or whether it confers access.
+    """
+    import re
+    from urllib.parse import urlsplit, parse_qsl
+    kinds: set[str] = set()
+    matches = re.findall(
+        r"""https?://(?:drive|docs)\.google\.com/[^\s<>"')]{1,1200}""",
+        text, flags=re.I,
+    )
+    for candidate in matches:
+        try:
+            url = urlsplit(candidate)
+            path = url.path.casefold()
+            params = {key.casefold() for key, _ in parse_qsl(url.query)}
+        except ValueError:
+            kinds.add("LINK_DRIVE_PARSE_REVIEW")
+            continue
+        if "/folders/" in path:
+            kinds.add("LINK_DRIVE_FOLDER")
+        elif "/document/d/" in path or "/spreadsheets/d/" in path or "/presentation/d/" in path:
+            kinds.add("LINK_DRIVE_NATIVE_DOCUMENT")
+        elif "/file/d/" in path:
+            kinds.add("LINK_DRIVE_FILE")
+        else:
+            kinds.add("LINK_DRIVE_OTHER")
+        if "resourcekey" in params or "key" in params:
+            kinds.add("LINK_WITH_ACCESS_HINT_NEEDS_PRIVATE_REVIEW")
+        if {"token", "access_token", "signature", "sig"} & params:
+            kinds.add("LINK_WITH_AUTH_QUERY_NEEDS_PRIVATE_REVIEW")
+        if any(x in path for x in ("/file_id", "/folder_id", "/document_id", "/example/")):
+            kinds.add("LINK_POSSIBLE_PLACEHOLDER")
+    return kinds
+
+
 def _scope_bucket(path: str) -> str:
     """Broad, non-identifying origin bucket for manual review planning."""
     if path.startswith("docs/research/"):
@@ -262,6 +300,9 @@ def scan_history() -> dict:
             summary["SKIPPED_NON_UTF8_BLOB"] += 1
             continue
         summary["SCANNED_TEXT_BLOB"] += 1
+        link_flags = classify_link_metadata(value)
+        for flag in link_flags:
+            summary[flag] += 1
         for category in audit_text_blob(value, path):
             summary[category] += 1
             if category in ("REVIEW:DRIVE_REFERENCE", "REVIEW:SHAREABLE_STORAGE_LINK"):
