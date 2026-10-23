@@ -254,14 +254,24 @@ def classify_link_metadata(text: str) -> set[str]:
         except ValueError:
             kinds.add("LINK_DRIVE_PARSE_REVIEW")
             continue
+        expected_id = None
         if "/folders/" in path:
             kinds.add("LINK_DRIVE_FOLDER")
+            expected_id = path.split("/folders/", 1)[-1].split("/", 1)[0]
         elif "/document/d/" in path or "/spreadsheets/d/" in path or "/presentation/d/" in path:
             kinds.add("LINK_DRIVE_NATIVE_DOCUMENT")
+            expected_id = path.split("/d/", 1)[-1].split("/", 1)[0]
         elif "/file/d/" in path:
             kinds.add("LINK_DRIVE_FILE")
+            expected_id = path.split("/file/d/", 1)[-1].split("/", 1)[0]
         else:
             kinds.add("LINK_DRIVE_OTHER")
+        # A literal tutorial prefix like /file/d/ is not a resolvable
+        # resource. Plausible ID shape is NOT permission verification.
+        if expected_id is not None and (
+            len(expected_id) < 12 or not re.fullmatch(r"[a-z0-9_-]+", expected_id)
+        ):
+            kinds.add("LINK_INCOMPLETE_OR_PLACEHOLDER_IDENTIFIER")
         if "resourcekey" in params or "key" in params:
             kinds.add("LINK_WITH_ACCESS_HINT_NEEDS_PRIVATE_REVIEW")
         if {"token", "access_token", "signature", "sig"} & params:
