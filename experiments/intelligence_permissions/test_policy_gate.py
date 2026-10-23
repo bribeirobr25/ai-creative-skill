@@ -215,6 +215,14 @@ class InvalidShapes(unittest.TestCase):
         with self.assertRaises(InvalidContract):
             verdict(query=q)
 
+    def test_extreme_retention_request_and_grant_rejected(self):
+        with self.assertRaises(InvalidContract):
+            verdict(query=request(storage_mode="PERSIST", retention_days=10 ** 18))
+        c = capability()
+        c["field_grants"]["viewCount"]["max_retention_days"] = 10 ** 18
+        with self.assertRaises(InvalidContract):
+            verdict(source=c)
+
     def test_unknown_storage_mode(self):
         with self.assertRaises(InvalidContract):
             verdict(query=request(storage_mode="UNBOUNDED"))
@@ -305,6 +313,10 @@ class RetentionTests(unittest.TestCase):
         with self.assertRaises(InvalidContract):
             retention_verdict(recorded_at=NOW, ttl_days=1,
                               now="2026-10-23T15:00:00")
+
+    def test_extreme_ttl_fails_before_timedelta_overflow(self):
+        with self.assertRaises(InvalidContract):
+            retention_verdict(recorded_at=NOW, ttl_days=10 ** 18, now=NOW)
 
     def test_bool_ttl_and_revocation_rejected(self):
         with self.assertRaises(InvalidContract):
