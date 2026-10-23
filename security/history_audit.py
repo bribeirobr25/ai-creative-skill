@@ -14,7 +14,7 @@ from collections import Counter
 import subprocess
 import sys
 
-from publication_guard import BLOCK_RULES, REVIEW_RULES, PRIVATE_FILENAME, REVIEW_FILE_SUFFIXES
+from publication_guard import BLOCK_RULES, REVIEW_RULES, PRIVATE_FILENAME, REVIEW_FILE_SUFFIXES, has_reviewable_email
 
 MAX_TEXT_BLOB_BYTES = 2_000_000
 MAX_BLOB_COUNT = 50000
@@ -84,6 +84,8 @@ def audit_text_blob(text: str, path: str) -> set[str]:
     for name, pat in REVIEW_RULES:
         if pat.search(text):
             found.add("REVIEW:" + name)
+    if has_reviewable_email(text):
+        found.add("REVIEW:EMAIL_ADDRESS")
     # path classification can be useful, but suppress actual paths in output.
     if PRIVATE_FILENAME.search(path):
         found.add("BLOCK:PRIVATE_FILE_PATH")
