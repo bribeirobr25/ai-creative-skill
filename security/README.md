@@ -29,7 +29,7 @@ python security/publication_guard.py --staged --fail-on-warning
 
 Na integração com GitHub connector, que não usa Git local, é obrigatório **inspecionar o conteúdo antes da ação de escrita**. Este guard não é automaticamente invocado pelo connector.
 
-Exemplo de hook a ser instalado/manual: [pre-commit.example](pre-commit.example). Não sobrescrever hooks já existentes; integrar com o hook prévio, se necessário.
+Exemplo de hook a ser instalado/manual: [pre-commit.example](pre-commit.example), agora com `--fail-on-warning`, exigindo revisão humana antes de publicar mídia e links ambíguos. **Não está instalado automaticamente** e não é chamado por ações de GitHub connector. Não sobrescrever hooks já existentes; integrar com o hook prévio, se necessário.
 
 ## Auditoria do histórico já testada
 
@@ -68,6 +68,12 @@ O auditor [history_audit.py](history_audit.py) agora percorre **todas as árvore
 A [classificação sanitizada](../docs/security/S0-historical-links-classified-2026-10-23.md) resolve a ambiguidade das quatro correspondências antigas de Drive: são **três strings distintas**, das quais uma corresponde a uma pasta real cujas permissões atuais foram verificadas como restritas, e duas são URLs incompletas de fixtures históricas sem ID. Os três links genéricos de compartilhamento identificados apontam para o domínio público do GitHub. A análise não reproduziu os links ou IDs.
 
 **Atenção:** permissões atuais não provam configurações históricas; a publicação do identificador da pasta pode ainda requerer decisão do proprietário. A S0 não está encerrada para mídia, EXIF, autoria Git e superfícies fora do histórico alcançável.
+
+## Resultados das triagens históricas (status parcial)
+
+- [Links antigos classificados](../docs/security/S0-historical-links-classified-2026-10-23.md): três strings distintas de Drive, sendo uma referência a pasta real **atualmente restrita** e duas fixtures antigas sem ID; três links genéricos são downloads em domínio público do GitHub. Permissão atual não atesta histórico anterior.
+- [Mídia/EXIF e inspeção amostral](../docs/security/S0-media-exif-visual-review-2026-10-23.md): tags de autor, copyright e descrição em imagens do histórico exigem análise privada dos valores, e a revisão visual inicial abrangeu somente três screenshots de protótipo.
+- A classificação textual automatizada não aprova material binário, licença, dados pessoais, autorias, forks ou links cuja permissão foi modificada no passado.
 
 ## Antes do merge
 
