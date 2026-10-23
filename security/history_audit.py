@@ -91,10 +91,40 @@ def audit_commit_metadata() -> dict[str, int]:
     return dict(out)
 
 
+def _verified_branch_coverage() -> int:
+    """Require every current remote public branch tip to be fetched.
+
+    The CI fetches all refs/heads first. If refs are missing or stale, fail
+    closed rather than reporting an incomplete history as clean.
+    """
+    remote_raw = git(["ls-remote", "--heads", "origin"]).decode("utf-8", "replace")
+    local_raw = git([
+        "for-each-ref",
+        "--format=%(refname:strip=3) %(objectname)",
+        "refs/remotes/origin",
+    ]).decode("utf-8", "replace")
+    remote: dict[str, str] = {}
+    for item in remote_raw.splitlines():
+        bits = item.split()
+        if len(bits) != 2 or not bits[1].startswith("refs/heads/"):
+            raise RuntimeError("Invalid remote branch listing")
+        remote[bits[1][len("refs/heads/"):]] = bits[0]
+    local: dict[str, str] = {}
+    for item in local_raw.splitlines():
+        bits = item.split()
+        if len(bits) == 2:
+            local[bits[0]] = bits[1]
+    if not remote or any(local.get(key) != sha for key, sha in remote.items()):
+        raise RuntimeError("Historical scan incomplete: public branch heads not all fetched")
+    return len(remote)
+
+
 def scan_history() -> dict:
     """Conservative scan: every readable reachable blob version within cap."""
+    branch_count = _verified_branch_coverage()
     paths, sizes = _reachable_blobs()
     summary = Counter()
+    summary["VERIFIED_REMOTE_BRANCH_HEADS"] = branch_count
     for oid, path in paths.items():
         size = sizes[oid]
         if size > MAX_TEXT_BLOB_BYTES:
