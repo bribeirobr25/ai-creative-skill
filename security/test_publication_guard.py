@@ -8,7 +8,7 @@ from contextlib import redirect_stdout
 from unittest.mock import patch
 
 from publication_guard import scan_added_line, scan_unified_diff, main
-from history_audit import audit_text_blob, _verified_branch_coverage, classify_binary_metadata, _scope_bucket
+from history_audit import audit_text_blob, _verified_branch_coverage, classify_binary_metadata, _scope_bucket, classify_link_metadata
 
 
 def fake_patch(line: str, path: str = "docs/example.md") -> str:
@@ -226,6 +226,32 @@ class SecretRulesTests(unittest.TestCase):
 
     def test_unrecognized_binary_type(self):
         self.assertIn("BINARY_UNKNOWN_OR_OTHER", classify_binary_metadata(b"\x00\x01\x02"))
+
+    def test_drive_link_classification_redacts_identifier(self):
+        u = "https://" + "drive.google.com/drive/folders/" + "F" * 33
+        flags = classify_link_metadata(u)
+        self.assertIn("LINK_DRIVE_FOLDER", flags)
+        self.assertNotIn(u, repr(flags))
+        self.assertTrue(all("F" * 33 not in tag for tag in flags))
+
+    def test_docs_link_classification(self):
+        u = "https://" + "docs.google.com/document/d/" + "D" * 28 + "/edit"
+        self.assertIn("LINK_DRIVE_NATIVE_DOCUMENT", classify_link_metadata(u))
+
+    def test_drive_resource_key_is_reviewed_not_granted(self):
+        u = "https://" + "drive.google.com/file/d/" + "X" * 30 + "/view?resourcekey=" + "Y" * 31
+        flags = classify_link_metadata(u)
+        self.assertIn("LINK_DRIVE_FILE", flags)
+        self.assertIn("LINK_WITH_ACCESS_HINT_NEEDS_PRIVATE_REVIEW", flags)
+
+    def test_example_file_ref_may_be_placeholder(self):
+        u = "https://" + "drive.google.com/file/d/FILE_ID/view"
+        flags = classify_link_metadata(u)
+        self.assertIn("LINK_POSSIBLE_PLACEHOLDER", flags)
+
+    def test_no_drive_links(self):
+        flags = classify_link_metadata("https://github.com/public/project")
+        self.assertEqual(set(), flags)
 
     def test_origin_scope_buckets_do_not_reveal_private_paths(self):
         self.assertEqual("RESEARCH", _scope_bucket("docs/research/brand-private/report.md"))
