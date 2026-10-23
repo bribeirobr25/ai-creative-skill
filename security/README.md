@@ -31,6 +31,21 @@ Na integração com GitHub connector, que não usa Git local, é obrigatório **
 
 Exemplo de hook a ser instalado/manual: [pre-commit.example](pre-commit.example). Não sobrescrever hooks já existentes; integrar com o hook prévio, se necessário.
 
+## Auditoria do histórico já testada
+
+O novo [auditor de objetos Git alcançáveis](history_audit.py) percorre versões antigas de blobs textuais e mensagens de commit, agrega alertas sem mostrar valores, caminhos nem e-mails e marca mídia/binários para revisão separada.
+
+O [resumo sanitizado da auditoria S0](../docs/security/S0-historical-audit-summary-2026-10-23.md) registra a primeira execução e suas limitações. Em execuções subsequentes, foram observadas referências de Drive/links compartilháveis e possível e-mail pessoal de autoria para **classificação privada**, nenhum padrão reconhecido `BLOCK`. Contagem por blob/versão não corresponde diretamente ao número de links únicos. Mídia não recebeu inspeção visual.
+
+Para reproduzir localmente com os refs disponíveis:
+
+```sh
+git fetch --all --tags
+python security/history_audit.py
+```
+
+Um retorno bem-sucedido não significa que o histórico foi limpo ou que permissões de URLs foram verificadas. O resultado resumido do CI não contém as URLs sensíveis. A análise de permissões reais e de conteúdo binário deve ser feita privadamente, antes de promover a ADR.
+
 ## Antes do merge
 
 1. Conferir diff completo, não só scanner e tests.
