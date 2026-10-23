@@ -42,6 +42,24 @@ class InputAndIdentityTests(unittest.TestCase):
         with self.assertRaises(ValidationError):
             obs(snap=datetime(2026, 10, 20))
 
+    def test_malformed_identity_and_datetime_fail_with_validation_error(self):
+        for field, value in (("publication_id", "  "), ("channel_id", 42),
+                             ("platform", None)):
+            with self.subTest(field=field), self.assertRaises(ValidationError):
+                Observation(**{
+                    "publication_id": "v", "channel_id": "c",
+                    "platform": "synthetic", "content_type": "long",
+                    "views": 5, "observed_at": T0,
+                    "published_at": T0 - timedelta(hours=1),
+                    field: value,
+                })
+        with self.assertRaises(ValidationError):
+            Observation(
+                publication_id="v", channel_id="c", platform="synthetic",
+                content_type="long", views=5, observed_at="not-a-datetime",
+                published_at=T0 - timedelta(hours=1),
+            )
+
     def test_exact_duplicate_deduplicated(self):
         self.assertEqual(1, len(unique_observations([obs(), obs()])))
 
@@ -76,6 +94,14 @@ class MetricsTests(unittest.TestCase):
                                  obs("bad3", hours_old=200, views=1)]
         val = outlier_ratio(self.target, cases, derived_permission=True)
         self.assertEqual(4, val["baseline_n"])
+
+    def test_outlier_rejects_boolean_and_malformed_comparator_options(self):
+        for opts in ({"min_baseline": True}, {"min_baseline": "3"},
+                     {"age_tolerance": True}, {"age_tolerance": float("nan")},
+                     {"age_tolerance": "0.2"}):
+            with self.subTest(opts=opts), self.assertRaises(ValidationError):
+                outlier_ratio(self.target, self.baseline,
+                              derived_permission=True, **opts)
 
     def test_outlier_missing_baseline(self):
         with self.assertRaises(InsufficientEvidence):
@@ -122,6 +148,13 @@ class MetricsTests(unittest.TestCase):
         out = view_velocity(earlier, later, derived_permission=True)
         self.assertEqual(20.0, out["views_per_hour"])
 
+    def test_velocity_rejects_cross_format_observations(self):
+        before = obs("same", fmt="long", views=10)
+        after = obs("same", fmt="short", views=30,
+                    snap=T0 + timedelta(hours=2), hours_old=26)
+        with self.assertRaises(ValidationError):
+            view_velocity(before, after, derived_permission=True)
+
     def test_velocity_rejects_counter_correction(self):
         earlier = obs("target", views=200)
         later = obs("target", views=120, snap=T0 + timedelta(hours=4), hours_old=28)
@@ -142,6 +175,12 @@ class MetricsTests(unittest.TestCase):
     def test_ranking_cannot_claim_national_top_without_population(self):
         with self.assertRaises(InsufficientEvidence):
             rank_sample([obs("one", views=1)], limit=10, requested_national_top=True)
+
+    def test_national_top_fails_when_any_counter_is_unknown(self):
+        with self.assertRaises(InsufficientEvidence):
+            rank_sample([obs("a", views=10), obs("b", views=None)],
+                        limit=1, requested_national_top=True,
+                        population_coverage_verified=True)
 
     def test_sample_rank_stable_ties_and_missing(self):
         ranked = rank_sample([obs("b", views=10), obs("a", views=10), obs("c", views=None)], limit=5)
@@ -174,6 +213,15 @@ class MonteCarloTests(unittest.TestCase):
             trials=100, common_outage_probability=0.0, independent_failure_probability=0.0
         )
         self.assertEqual(100, a["counts"]["COMPLETE"])
+
+    def test_monte_carlo_rejects_boolean_or_malformed_parameters(self):
+        cases = ({"trials": True}, {"trials": 2.5}, {"seed": "test"},
+                 {"common_outage_probability": True},
+                 {"independent_failure_probability": "0.1"},
+                 {"common_outage_probability": float("nan")})
+        for opts in cases:
+            with self.subTest(opts=opts), self.assertRaises(ValidationError):
+                simulate_operational_resilience(**opts)
 
     def test_invalid_probabilities_rejected(self):
         with self.assertRaises(ValidationError):
