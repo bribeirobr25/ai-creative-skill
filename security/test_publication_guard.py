@@ -8,7 +8,7 @@ from contextlib import redirect_stdout
 from unittest.mock import patch
 
 from publication_guard import scan_added_line, scan_unified_diff, main
-from history_audit import audit_text_blob, _verified_branch_coverage, classify_binary_metadata, _scope_bucket, classify_link_metadata, _reachable_blobs, _link_fingerprints
+from history_audit import audit_text_blob, _verified_branch_coverage, classify_binary_metadata, _scope_bucket, classify_link_metadata, _reachable_blobs, _link_fingerprints, _generic_share_host_types
 
 
 def fake_patch(line: str, path: str = "docs/example.md") -> str:
@@ -255,6 +255,19 @@ class SecretRulesTests(unittest.TestCase):
         with patch("history_audit.git", return_value=b""):
             with self.assertRaises(RuntimeError):
                 _reachable_blobs()
+
+    def test_classify_github_download_without_exposing_url(self):
+        url = "https://" + "github.com/public/example/releases/download/v1.0/asset.zip"
+        flags = _generic_share_host_types(url)
+        self.assertEqual(1, len(flags["PUBLIC_GITHUB"]))
+        self.assertEqual(0, len(flags["OTHER"]))
+        self.assertNotIn(url, str(flags))
+
+    def test_classify_unknown_download_service_as_reviewable(self):
+        url = "https://" + "files.example.invalid/download/" + "abcdef1234567890"
+        flags = _generic_share_host_types(url)
+        self.assertEqual(1, len(flags["OTHER"]))
+        self.assertEqual(0, len(flags["PUBLIC_GITHUB"]))
 
     def test_distinct_link_fingerprints_deduplicate_repeated_url(self):
         a = "https://" + "drive.google.com/drive/folders/" + "D" * 32
