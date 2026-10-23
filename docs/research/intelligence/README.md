@@ -15,6 +15,10 @@ O proprietário esclareceu que a ferramenta é **de uso próprio e não será co
 
 Os documentos v0.1/v0.2 abaixo continuam como **propostas históricas sob crítica** e não conferem licença, aprovação de arquitetura, readiness nem permissão de consulta paga. Esta auditoria é estática e não executa dados/API; não altera os contratos canônicos ou a `main`.
 
+## Nova prioridade: revisão cruzada e proteção do Git público
+
+A [sequência revisada e o Security/Privacy Gate](revised-roadmap-security-gate-2026-10-23.md) passam a orientar o **planejamento** antes da implementação real: primeiro triagem de possível exposição em repositório/histórico, revisão cruzada dos PRs #18/#19 e estabelecimento de controles pré-publicação; depois fonte e autorização, testes avançados e integração. **O procedimento está documentado, mas scanner/hook ainda não foram instalados e a auditoria específica de exposição ainda não foi executada.** PR #17 permanece sob seu responsável até a retomada.
+
 ## Viabilidade de fontes e laboratório sintético
 
 - [YouTube: roteiro de solicitação Analytics & Reporting (23/10/2026)](youtube-analytics-approval-checklist-2026-10-23.md): formulário oficial, inscrição como pessoa física, evidências e texto-base. Ainda não submetido; não inserir informações privadas no GitHub.
