@@ -118,7 +118,8 @@ def validate_research_execution(
     data = _obj(envelope, "research_execution")
     _require(RESEARCH_REQUIRED <= data.keys(), "missing canonical research envelope keys")
     rid = _id(data["research_execution_id"], "research_execution_id")
-    _require(data["status"] in RESEARCH_STATUSES, "unknown research completion status")
+    _require(type(data["status"]) is str and data["status"] in RESEARCH_STATUSES,
+             "unknown research completion status")
     _require(_date(data["range_from"], "range_from") < _date(data["range_to"], "range_to"),
              "invalid research date window")
     _time(data["generated_at"], "generated_at")
@@ -135,7 +136,8 @@ def validate_research_execution(
         s = _obj(raw, "source_outcome")
         ref = _id(s.get("source_ref"), "source_ref")
         _require(ref not in attempts, "duplicate source attempt")
-        _require(s.get("outcome") in SOURCE_OUTCOMES, "source outcome is not canonical")
+        _require(type(s.get("outcome")) is str and s["outcome"] in SOURCE_OUTCOMES,
+                 "source outcome is not canonical")
         attempts[ref] = s
     _require(bool(attempts), "at least one source attempt required")
 
@@ -146,15 +148,17 @@ def validate_research_execution(
                  "Evidence index mismatch")
         attempt = _id(ev.get("source_outcome_ref"), "Evidence source_outcome_ref")
         _require(attempt in attempts, "Evidence points to nonexistent source attempt")
-        _require(attempts[attempt]["outcome"] != "NO_RESULTS",
-                 "NO_RESULTS source cannot have returned evidence")
+        _require(attempts[attempt]["outcome"] in ("OK", "PARTIAL", "RATE_LIMITED", "TIMEOUT"),
+                 "failed/empty/untrusted source cannot support an Evidence Record")
         _require(ev.get("source_class") == "SYNTHETIC_FIXTURE",
                  "external evidence prohibited in S2")
         _require(attempts[attempt].get("source_class") == ev.get("source_class"),
                  "Evidence source class mismatch")
         for key in ("source_ref", "independence_key", "claim_or_observation"):
             _id(ev.get(key), "Evidence." + key)
-        _time(ev.get("retrieved_at"), "Evidence.retrieved_at")
+        observed = _time(ev.get("retrieved_at"), "Evidence.retrieved_at")
+        _require(observed <= _time(data["generated_at"], "generated_at"),
+                 "Evidence retrieved after report generation")
         _require(ev.get("date_confidence") in DATE_CONFIDENCE,
                  "invalid Evidence date confidence")
         _require(ev.get("relevance") in RELEVANCE, "invalid Evidence relevance")
@@ -201,7 +205,9 @@ def validate_research_execution(
         _id(m.get("geography_meaning"), "metric.geography_meaning")
         _id(m.get("population_coverage"), "metric.population_coverage")
         _id(m.get("license_policy_ref"), "metric.license_policy_ref")
-        _time(m.get("observed_at"), "metric.observed_at")
+        moment = _time(m.get("observed_at"), "metric.observed_at")
+        _require(moment <= _time(data["generated_at"], "generated_at"),
+                 "Metric observation after report generation")
         _require(m.get("provenance") == "SYNTHETIC_FIXTURE",
                  "metric is not a synthetic fixture")
         _require(m.get("storage_disposition") == "IN_MEMORY_EXPERIMENT_ONLY",
@@ -211,9 +217,10 @@ def validate_research_execution(
                  (type(value) in (int, float) and isfinite(value) and value >= 0),
                  "metric value must be finite nonnegative or UNKNOWN")
     ranked = _list(intelligence.get("ranked_evidence_refs"), "ranked_evidence_refs")
-    _require(len(ranked) == len(set(ranked)) and
-             all(type(ref) is str and ref in registry for ref in ranked),
-             "ranking uses unverified or duplicated Evidence")
+    _require(all(type(ref) is str and ref in registry for ref in ranked),
+             "ranking uses unverified Evidence")
+    _require(len(ranked) == len(set(ranked)),
+             "ranking repeats Evidence")
     if coverage.get("requested_national_top") is True and data["status"] == "COMPLETE":
         _require(coverage.get("source_coverage_verified") is True and
                  coverage.get("population_verified") == "SYNTHETIC_FIXTURE_ONLY" and
@@ -288,13 +295,13 @@ def evaluate_source_candidate(
 def validate_handoff(packet: Mapping) -> None:
     """V2.3 HANDOFF_PACKET authority boundary; never transfer permissions."""
     h = _obj(packet, "handoff_packet")
-    required = ("project_id", "from_task_id", "from_profile", "to_profile",
+    required = ("project_id", "from_task_id", "to_task_id", "from_profile", "to_profile",
                 "task_outcome", "accepted_constraints", "stable_entities",
                 "evidence_items", "explicit_unknowns", "accepted_outputs",
                 "protected_state", "invalidated_state")
     for name in required:
         _require(name in h, "missing HANDOFF_PACKET field: " + name)
-    for name in ("project_id", "from_task_id", "from_profile", "to_profile"):
+    for name in ("project_id", "from_task_id", "to_task_id", "from_profile", "to_profile"):
         _id(h[name], "handoff." + name)
     _require(h.get("permissions_carried") == "NONE",
              "HANDOFF_PACKET cannot carry authority")
@@ -305,3 +312,17 @@ def validate_handoff(packet: Mapping) -> None:
                  "invalidated_state"):
         _list(h[name], name)
     _obj(h["task_outcome"], "handoff.task_outcome")
+    for item in h["stable_entities"]:
+        entity = _obj(item, "stable_entity")
+        _id(entity.get("entity_id"), "stable_entity.entity_id")
+        _id(entity.get("entity_type"), "stable_entity.entity_type")
+        _list(entity.get("source_refs"), "stable_entity.source_refs")
+    for item in h["evidence_items"]:
+        ev = _obj(item, "handoff evidence item")
+        _id(ev.get("evidence_ref"), "handoff.evidence_ref")
+        _require(ev.get("evidence_class") in
+                 ("OBSERVED", "USER_PROVIDED", "VERIFIED", "INFERRED", "UNKNOWN"),
+                 "invalid evidence class")
+        _require(ev.get("confidence") in ("HIGH", "MEDIUM", "LOW", "UNKNOWN"),
+                 "invalid evidence confidence")
+        _require("freshness" in ev, "handoff evidence freshness missing")
