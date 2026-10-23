@@ -8,7 +8,7 @@ from contextlib import redirect_stdout
 from unittest.mock import patch
 
 from publication_guard import scan_added_line, scan_unified_diff, main
-from history_audit import audit_text_blob
+from history_audit import audit_text_blob, _verified_branch_coverage
 
 
 def fake_patch(line: str, path: str = "docs/example.md") -> str:
@@ -138,6 +138,38 @@ class SecretRulesTests(unittest.TestCase):
         with patch("publication_guard._get_diff", return_value=fake_patch(link)):
             with redirect_stdout(io.StringIO()):
                 self.assertEqual(1, main(["--staged", "--fail-on-warning"]))
+
+    def test_remote_branch_coverage_exact_match(self):
+        def fake_git(args, stdin=None):
+            if args[:2] == ["ls-remote", "--heads"]:
+                return b"a" * 40 + b"\\trefs/heads/main\\n" + b"b" * 40 + b"\\trefs/heads/feature/example\\n"
+            if args and args[0] == "for-each-ref":
+                return b"main " + b"a" * 40 + b"\\nfeature/example " + b"b" * 40 + b"\\n"
+            raise AssertionError("Unexpected git command")
+        with patch("history_audit.git", side_effect=fake_git):
+            self.assertEqual(2, _verified_branch_coverage())
+
+    def test_remote_branch_missing_blocks_audit(self):
+        def fake_git(args, stdin=None):
+            if args[:2] == ["ls-remote", "--heads"]:
+                return b"a" * 40 + b"\\trefs/heads/main\\n" + b"b" * 40 + b"\\trefs/heads/secret-branch\\n"
+            if args and args[0] == "for-each-ref":
+                return b"main " + b"a" * 40 + b"\\n"
+            raise AssertionError("Unexpected git command")
+        with patch("history_audit.git", side_effect=fake_git):
+            with self.assertRaisesRegex(RuntimeError, "incomplete"):
+                _verified_branch_coverage()
+
+    def test_stale_branch_head_blocks_audit(self):
+        def fake_git(args, stdin=None):
+            if args[:2] == ["ls-remote", "--heads"]:
+                return b"a" * 40 + b"\\trefs/heads/main\\n"
+            if args and args[0] == "for-each-ref":
+                return b"main " + b"b" * 40 + b"\\n"
+            raise AssertionError("Unexpected git command")
+        with patch("history_audit.git", side_effect=fake_git):
+            with self.assertRaisesRegex(RuntimeError, "incomplete"):
+                _verified_branch_coverage()
 
     def test_history_scan_detects_categories_without_content(self):
         synthetic = "https://" + "drive.google.com/file/d/" + "1" * 32 + "/view"
