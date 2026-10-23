@@ -163,6 +163,82 @@ def _exif_tag_categories(payload: bytes) -> set[str]:
     return results
 
 
+def _exif_value_risk_categories(payload: bytes) -> set[str]:
+    """Bounded, non-disclosing inspection of selected EXIF text values.
+
+    Reads ASCII/UNDEFINED payload bytes of identifying tags but emits ONLY
+    predeclared risk labels. Does not persist or print extracted values.
+    Malformed or unsupported entries remain UNKNOWN, never "safe".
+    """
+    import re
+
+    flags: set[str] = set()
+    exif_pos = payload.find(b"Exif\x00\x00")
+    if exif_pos < 0:
+        return flags
+    tiff = payload[exif_pos + 6:]
+    if len(tiff) < 8 or tiff[:2] not in (b"II", b"MM"):
+        return {"BINARY_EXIF_VALUE_INSPECTION_INCOMPLETE"}
+    endian = "little" if tiff[:2] == b"II" else "big"
+    def number(data: bytes) -> int:
+        return int.from_bytes(data, endian)
+
+    if number(tiff[2:4]) != 42:
+        return {"BINARY_EXIF_VALUE_INSPECTION_INCOMPLETE"}
+    to_visit = [number(tiff[4:8])]
+    visited: set[int] = set()
+    wanted = {0x013B, 0x8298, 0x010E, 0x9286, 0xA430, 0xA431}
+    while to_visit:
+        offset = to_visit.pop()
+        if offset in visited:
+            continue
+        visited.add(offset)
+        if offset < 8 or offset + 2 > len(tiff):
+            flags.add("BINARY_EXIF_VALUE_INSPECTION_INCOMPLETE")
+            continue
+        count = number(tiff[offset:offset + 2])
+        if count > 512 or offset + 2 + count * 12 > len(tiff):
+            flags.add("BINARY_EXIF_VALUE_INSPECTION_INCOMPLETE")
+            continue
+        for idx in range(count):
+            item = tiff[offset + 2 + idx * 12:offset + 14 + idx * 12]
+            tag = number(item[:2])
+            kind = number(item[2:4])
+            n = number(item[4:8])
+            if tag == 0x8769 and kind == 4 and n == 1:
+                to_visit.append(number(item[8:12]))
+                continue
+            if tag not in wanted:
+                continue
+            if kind not in (2, 7) or n > 65536 or n < 1:
+                flags.add("BINARY_EXIF_VALUE_INSPECTION_INCOMPLETE")
+                continue
+            if n <= 4:
+                value = item[8:8 + n]
+            else:
+                pointer = number(item[8:12])
+                if pointer < 8 or pointer + n > len(tiff):
+                    flags.add("BINARY_EXIF_VALUE_INSPECTION_INCOMPLETE")
+                    continue
+                value = tiff[pointer:pointer + n]
+            value = value.strip(b"\x00 \t\r\n")
+            if not value:
+                flags.add("BINARY_EXIF_IDENTIFYING_VALUE_EMPTY")
+                continue
+            flags.add("BINARY_EXIF_IDENTIFYING_VALUE_PRESENT")
+            if kind == 7:
+                flags.add("BINARY_EXIF_UNSTRUCTURED_USER_BYTES_PRESENT")
+                continue
+            text = value.decode("utf-8", "replace")
+            if re.search(r"(?i)\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b", text):
+                flags.add("BINARY_EXIF_EMAIL_LIKE_VALUE_NEEDS_REVIEW")
+            if re.search(r"(?i)https?://", text):
+                flags.add("BINARY_EXIF_URL_LIKE_VALUE_NEEDS_REVIEW")
+            if re.search(r"(?:\+?\d[\s().-]?){10,}", text):
+                flags.add("BINARY_EXIF_LONG_NUMBER_LIKE_VALUE_NEEDS_REVIEW")
+    return flags
+
+
 def _embedded_link_categories(payload: bytes) -> set[str]:
     """Classify URI hosts in metadata without emitting URIs or identifiers."""
     import re
@@ -192,6 +268,7 @@ def classify_binary_metadata(raw: bytes) -> set[str]:
         if b"Exif\x00\x00" in head:
             kinds.add("BINARY_EXIF_PRESENT")
             kinds.update(_exif_tag_categories(head))
+            kinds.update(_exif_value_risk_categories(head))
         kinds.update(_embedded_link_categories(head))
     elif raw.startswith(b"\x89PNG\r\n\x1a\n"):
         kinds.add("BINARY_PNG")
