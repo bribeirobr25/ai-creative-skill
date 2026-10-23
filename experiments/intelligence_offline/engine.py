@@ -106,6 +106,20 @@ def outlier_ratio(
         and abs(obs.age_hours - video.age_hours) / video.age_hours <= age_tolerance
         and obs.views is not None
     ]
+    # A baseline video measured twice must not count as two distinct videos.
+    # Reject ambiguous snapshots rather than silently inflating sample size.
+    selected_ids = [
+        obs.publication_id for obs in dedup
+        if obs.publication_id != video.publication_id
+        and obs.platform == video.platform
+        and obs.channel_id == video.channel_id
+        and obs.content_type == video.content_type
+        and obs.age_hours > 0
+        and abs(obs.age_hours - video.age_hours) / video.age_hours <= age_tolerance
+        and obs.views is not None
+    ]
+    if len(set(selected_ids)) != len(selected_ids):
+        raise ValidationError("Repeated baseline publication at multiple timestamps")
     if len(selected) < min_baseline:
         raise InsufficientEvidence("Insufficient comparable baseline sample")
     typical = median(selected)
