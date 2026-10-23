@@ -100,6 +100,21 @@ def outlier_ratio(
     if video.views is None or video.age_hours <= 0:
         raise InsufficientEvidence("Missing target views or invalid video age")
     dedup = unique_observations(baseline)
+    # Validate all snapshots of a stable publication identity BEFORE cohort
+    # filtering. Otherwise changed channel/format metadata could be silently
+    # discarded and leave a deceptively clean comparator group.
+    identities: dict[tuple[str, str], tuple[str, str, datetime]] = {}
+    for sample in dedup:
+        key = (sample.platform, sample.publication_id)
+        identity = (sample.channel_id, sample.content_type, sample.published_at)
+        previous = identities.get(key)
+        if previous is not None and previous != identity:
+            raise ValidationError("Conflicting metadata across publication snapshots")
+        identities[key] = identity
+    target_key = (video.platform, video.publication_id)
+    target_identity = (video.channel_id, video.content_type, video.published_at)
+    if target_key in identities and identities[target_key] != target_identity:
+        raise ValidationError("Baseline disagrees with target publication identity")
     # One independent publication contributes at most one count.
     # Compare snapshots of the same creator/format near the target's age.
     # The nearest age-matched snapshot is selected; equal-distance ties
