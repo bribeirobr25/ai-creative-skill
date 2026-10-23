@@ -84,6 +84,22 @@ class SecretRulesTests(unittest.TestCase):
         candidate = "documentation@" + "example.invalid"
         self.assertNotIn(("REVIEW", "EMAIL_ADDRESS"), rules(fake_patch(candidate)))
 
+    def test_commit_coauthor_email_separated_from_other_message_content(self):
+        address = "contributor@" + "company.org"
+        data = ("Subject\n\nCo-authored-by: Tester <" + address + ">\n").encode()
+        def fake_git(args, stdin=None):
+            if args == ["log", "--all", "--format=%B%x00"]:
+                return data + b"\x00"
+            if args == ["log", "--all", "--format=%ae"]:
+                return b"bot@users.noreply.github.com\n"
+            raise AssertionError("Unexpected Git request")
+        with patch("history_audit.git", side_effect=fake_git):
+            report = audit_commit_metadata()
+        self.assertEqual(1, report["REVIEW:COAUTHORSHIP_TRAILER_EMAIL_LINES"])
+        self.assertEqual(1, report["UNIQUE_COMMIT_MESSAGE_EMAILS_REVIEW"])
+        self.assertEqual(0, report.get("REVIEW:OTHER_COMMIT_MESSAGE_EMAIL_LINES", 0))
+        self.assertNotIn(address, repr(report))
+
     def test_repeated_commit_message_email_counts_as_one_unique_candidate(self):
         email = "person@" + "company.org"
         messages = (("first " + email) + "\x00" + ("second " + email)
