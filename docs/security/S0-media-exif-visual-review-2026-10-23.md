@@ -39,3 +39,9 @@ Não apagar automaticamente campos `Artist` e `Copyright`: alguns podem ser atri
 - Definir aceitação da ADR-0003 e instalação de gate local antes de liberar merge; o pre-commit fornecido é apenas exemplo, não hook instalado.
 
 **Veredito:** a auditoria automatizada e a amostra visual reduzem incertezas, mas **S0 ainda não recebeu clearance geral**.
+
+## 5. Adendo de decisão do proprietário · 23/10/2026
+
+O proprietário confirmou que as mídias sob sua responsabilidade no projeto são produzidas com IA ou fotografadas/filmadas por ele, e que também é o autor dos textos. Solicitou o **encerramento da fase S0**. O fechamento é administrativo, por atestação de origem: `OWNER_ATTESTED / S0_CLOSED_WITH_DOCUMENTED_RESIDUALS`.
+
+**Importante:** os itens de revisão técnica enumerados na seção 4 permanecem historicamente **não verificados por inspeção exaustiva**, embora deixem de ser bloqueios para o encerramento desta fase por decisão do proprietário. Não declarar clearance per-file, aprovação de licenças de ferramentas de IA, ausência de dados em pixels/EXIF ou direitos de eventuais terceiros. Novas mídias continuam sujeitas ao guard e à classificação pré-publicação. O PR #20 e a adoção da ADR-0003 seguem sujeitos a gates próprios.
