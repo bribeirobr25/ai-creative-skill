@@ -58,6 +58,22 @@ class SyntheticBridgeTests(unittest.TestCase):
         self.assertEqual("UNKNOWN", x["intelligence"]["metric_observations"][0]["value"])
         self.assertEqual([], x["intelligence"]["ranked_evidence_refs"])
 
+    def test_ok_source_without_any_ranking_metrics_is_not_complete(self):
+        x = request(observation_rows=[synthetic_row(views=None)])
+        self.assertEqual("INSUFFICIENT_EVIDENCE", x["status"])
+
+    def test_ok_source_with_some_missing_metrics_is_partial(self):
+        x = request(observation_rows=[synthetic_row("a", views=100), synthetic_row("b", views=None)])
+        self.assertEqual("PARTIAL", x["status"])
+
+    def test_ok_source_with_incompatible_platforms_is_partial(self):
+        x = request(observation_rows=[
+            synthetic_row("a", platform="A"),
+            synthetic_row("b", platform="B")
+        ])
+        self.assertEqual("PARTIAL", x["status"])
+        self.assertEqual("NOT_COMPARABLE", x["intelligence"]["ranking_scope"])
+
     def test_source_outcomes_are_exactly_original_vocab(self):
         self.assertEqual(11, len(SOURCE_OUTCOMES))
         x = request(source_outcome="RATE_LIMITED")
