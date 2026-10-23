@@ -58,7 +58,7 @@ class SyntheticBridgeTests(unittest.TestCase):
             synthetic_row("c", platform="a:b"),
             synthetic_row("b:c", platform="a"),
         ])
-        ids = [e["evidence_id"] for e in x["evidence_clusters"]]
+        ids = [e["evidence_id"] for e in x["fixture_evidence_index"].values()]
         self.assertEqual(2, len(set(ids)))
         subjects = [m["subject_id"] for m in x["intelligence"]["metric_observations"]]
         self.assertEqual(2, len(set(subjects)))
@@ -67,7 +67,7 @@ class SyntheticBridgeTests(unittest.TestCase):
 
     def test_unknown_metric_not_zero(self):
         x = request(observation_rows=[synthetic_row(views=None)])
-        self.assertEqual("UNKNOWN", x["intelligence"]["metric_observations"][0]["value"])
+        self.assertEqual("UNKNOWN", x["intelligence"]["metric_observations"][0]["metric_value"])
         self.assertEqual([], x["intelligence"]["ranked_evidence_refs"])
 
     def test_ok_source_without_any_ranking_metrics_is_not_complete(self):
@@ -157,7 +157,7 @@ class SyntheticBridgeTests(unittest.TestCase):
                     population_coverage_verified=True,
                     source_coverage_verified=True)
         self.assertEqual("COMPLETE", x["status"])
-        evid = {e["evidence_id"] for e in x["evidence_clusters"]}
+        evid = {e["evidence_id"] for e in x["fixture_evidence_index"].values()}
         self.assertTrue(x["intelligence"]["ranked_evidence_refs"])
         self.assertTrue(set(x["intelligence"]["ranked_evidence_refs"]) <= evid)
 
