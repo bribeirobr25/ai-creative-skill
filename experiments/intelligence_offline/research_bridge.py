@@ -157,6 +157,14 @@ def build_research_execution_fixture(
     if limit < 1 or limit > 100:
         raise ValidationError("Invalid limit")
 
+    # A source attempt can be OK yet the research conclusion insufficient.
+    # Separate source retrieval outcome from the ranking deliverable status.
+    if source_outcome == "OK" and rows:
+        if all(r.views is None for r in rows):
+            status = "INSUFFICIENT_EVIDENCE"
+        elif ranking_note == "NOT_COMPARABLE" or any(r.views is None for r in rows):
+            status = "PARTIAL"
+
     result = {
         "research_execution_id": research_execution_id,
         "research_intent": research_intent,
