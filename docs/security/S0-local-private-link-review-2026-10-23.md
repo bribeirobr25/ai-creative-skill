@@ -57,3 +57,9 @@ Se uma credencial/URL de acesso válida tiver sido publicada, deve ser revogada/
 - Aprovar/instalar o gate antes de publicação. CI pós-push não substitui pré-publicação.
 
 **Situação:** S0 automatizado ampliado, **S0 manual ainda aberto**. Não alterar `main`, PR #17, credenciais, permissões ou documentação canônica por inferência automática.
+
+## 5. CI de verificação mais recente (23/10/2026, 16:02 UTC)
+
+No [job de segurança do PR #20](https://github.com/bribeirobr25/ai-creative-skill/actions/runs/39983440088/job/120516374436), o HEAD testado apresentou **58 testes PASS**, `0 BLOCK / 0 REVIEW` **no diff novo**, 21 branch heads verificadas, 895 versões de blob histórico, 1.022 aliases de caminho, 104 blobs reutilizados em múltiplos caminhos e 628 blobs textuais inspecionados. Os alertas históricos de links permaneceram em **quatro referências a Drive/Docs e um link genérico compartilhável**, sem identificação pública dos recursos. Nenhuma análise de ACL do Google Drive nem inspeção visual de mídia foi concluída.
+
+O utilitário local é opt-in e deve gerar conteúdo confidencial apenas no computador do responsável, fora do repositório. **Não foi executado neste ambiente**, e a avaliação privada S0 permanece aberta.
