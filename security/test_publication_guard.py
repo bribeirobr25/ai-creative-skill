@@ -8,7 +8,7 @@ from contextlib import redirect_stdout
 from unittest.mock import patch
 
 from publication_guard import scan_added_line, scan_unified_diff, main
-from history_audit import audit_text_blob, _exif_value_risk_categories, _verified_branch_coverage, classify_binary_metadata, _scope_bucket, classify_link_metadata, _reachable_blobs, _link_fingerprints, _generic_share_host_types
+from history_audit import audit_text_blob, _exif_value_risk_categories, _verified_branch_coverage, classify_binary_metadata, _scope_bucket, classify_link_metadata, _reachable_blobs, _link_fingerprints, _generic_share_host_types, audit_commit_metadata
 
 
 def fake_patch(line: str, path: str = "docs/example.md") -> str:
@@ -83,6 +83,22 @@ class SecretRulesTests(unittest.TestCase):
     def test_reserved_example_email_does_not_raise_review(self):
         candidate = "documentation@" + "example.invalid"
         self.assertNotIn(("REVIEW", "EMAIL_ADDRESS"), rules(fake_patch(candidate)))
+
+    def test_repeated_commit_message_email_counts_as_one_unique_candidate(self):
+        email = "person@" + "company.org"
+        messages = (("first " + email) + "\x00" + ("second " + email)
+                    + "\x00" + "test test@example.invalid" + "\x00").encode()
+        def fake_git(args, stdin=None):
+            if args == ["log", "--all", "--format=%B%x00"]:
+                return messages
+            if args == ["log", "--all", "--format=%ae"]:
+                return b"bot@users.noreply.github.com\n"
+            raise AssertionError("Unexpected git request")
+        with patch("history_audit.git", side_effect=fake_git):
+            result = audit_commit_metadata()
+        self.assertEqual(1, result["UNIQUE_COMMIT_MESSAGE_EMAILS_REVIEW"])
+        self.assertEqual(2, result["COMMIT_REVIEW:EMAIL_ADDRESS"])
+        self.assertNotIn(email, repr(result))
 
     def test_historical_email_is_reviewed_without_value_disclosure(self):
         address = "user@" + "privatecompany.de"
