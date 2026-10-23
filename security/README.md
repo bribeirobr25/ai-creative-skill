@@ -84,7 +84,7 @@ A [consolidação textual + EXIF + e-mails de commit](../docs/security/S0-consol
 - Foram detectadas 22 mensagens de commit com um mesmo endereço candidato (um endereço distinto), além de um e-mail de autoria para revisão.
 - O [job de segurança](https://github.com/bribeirobr25/ai-creative-skill/actions/runs/40006660415/job/120596191692) aprovou 73 testes do código examinado. Isso não equivale à aprovação de direitos de mídia nem à ativação do gate na `main`.
 
-**S0 permanece aberta** apenas nos tópicos ainda sem evidência suficiente, especialmente a análise visual e direitos das mídias, a preferência de privacidade de autoria e superfícies fora dos refs alcançáveis.
+**S0 encerrada administrativamente por declaração do proprietário em 23/10/2026**, com riscos residuais documentados no [adendo da consolidação S0](../docs/security/S0-consolidated-text-exif-email-triage-2026-10-23.md#7-encerramento-da-fase-s0-por-declaração-do-proprietário--23102026). Isso não certifica direitos sobre elementos de terceiros, pixels, EXIF, e-mails de autoria, forks/caches ou privacidade histórica; a implantação do guard e a ADR-0003 continuam propostas e não liberadas para merge.
 
 ## Antes do merge
 
