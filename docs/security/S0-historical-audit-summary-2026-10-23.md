@@ -1,7 +1,7 @@
 # Auditoria S0 do histórico público · resultado limitado · 2026-10-23
 
 **Escopo:** repositório público `bribeirobr25/ai-creative-skill`, refs alcançáveis pelo clone do GitHub Actions usado no PR #20, executando `security/history_audit.py` sem conexão a fontes externas.  
-**Referência de execução:** [job de segurança do PR #20](https://github.com/bribeirobr25/ai-creative-skill/actions/runs/39946355851) e confirmação em log do job `scan-publication-diff` (consultar run/HEAD do PR).  
+**Referência de execução:** [job de segurança do PR #20](https://github.com/bribeirobr25/ai-creative-skill/actions/runs/39946530593/job/120390439873) e confirmação em log do job `scan-publication-diff` (consultar run/HEAD do PR).  
 **Estado:** **S0_AUTOMATED_PRESCREEN_COMPLETE / MANUAL_REVIEW_PENDING / NOT_FULLY_CLEARED**. Não é certificação de ausência de vazamentos e não presume direito de publicar artefatos binários.
 
 ## Inventário automatizado observado
