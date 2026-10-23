@@ -176,6 +176,30 @@ class SecretRulesTests(unittest.TestCase):
                         "--no-ext-diff", "--no-color", "--unified=0", base + "..HEAD").decode()
             self.assertIn(("BLOCK", "GITHUB_TOKEN"), rules(history))
 
+    def test_new_common_token_families_block_without_logging_values(self):
+        examples = (
+            ("STRIPE_LIVE_KEY", "sk_live_" + "S" * 32),
+            ("SLACK_TOKEN", "xoxb-" + "1" * 12 + "-" + "A" * 30),
+            ("HUGGINGFACE_TOKEN", "hf_" + "H" * 40),
+            ("NPM_TOKEN", "npm_" + "N" * 40),
+        )
+        for rule, token in examples:
+            with self.subTest(rule=rule):
+                self.assertIn(("BLOCK", rule), rules(fake_patch("value=" + token)))
+
+    def test_ambiguous_certificate_and_database_extensions_are_review_not_block(self):
+        for filename in ("lecture.key", "public-cert.pem", "offline.db"):
+            with self.subTest(filename=filename):
+                matches = rules(fake_patch("ordinary", filename))
+                self.assertIn(("REVIEW", "BINARY_OR_MEDIA_REVIEW"), matches)
+                self.assertFalse(any(severity == "BLOCK" for severity, _ in matches))
+
+    def test_drive_open_and_uc_share_routes_need_review(self):
+        for route in ("open?id=", "uc?id="):
+            with self.subTest(route=route):
+                url="https://" + "drive.google.com/" + route + "D" * 30
+                self.assertIn(("REVIEW", "DRIVE_REFERENCE"), rules(fake_patch(url)))
+
     def test_github_classic_token(self):
         token = "ghp_" + "X" * 32
         self.assertIn(("BLOCK", "GITHUB_TOKEN"), rules(fake_patch("token=" + token)))
