@@ -1,0 +1,29 @@
+name: Publication Safety Guard (candidate)
+
+on:
+  pull_request:
+    paths:
+      - '**'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  scan-publication-diff:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Test redaction and detection rules
+        run: python -m unittest discover -s security -p 'test_*.py' -v
+      - name: Inspect PR diff without echoing secret values
+        if: github.event_name == 'pull_request'
+        run: python security/publication_guard.py --range "origin/$GITHUB_BASE_REF...HEAD"
+      - name: Safety note for manual triggers
+        if: github.event_name == 'workflow_dispatch'
+        run: echo "Manual trigger ran guard unit tests only; no PR base was supplied."
