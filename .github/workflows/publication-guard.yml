@@ -24,6 +24,12 @@ jobs:
       - name: Inspect PR diff without echoing secret values
         if: github.event_name == 'pull_request'
         run: python security/publication_guard.py --range "origin/$GITHUB_BASE_REF...HEAD"
+      - name: Fetch all public branch heads for historical coverage
+        run: |
+          git fetch --no-tags --prune origin '+refs/heads/*:refs/remotes/origin/*' > /dev/null 2>&1 || {
+            echo "History audit blocked: cannot fetch all public branches"
+            exit 2
+          }
       - name: Audit reachable Git history without exposing matches
         run: python security/history_audit.py
       - name: Safety note for manual triggers
