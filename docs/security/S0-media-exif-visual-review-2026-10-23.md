@@ -1,6 +1,6 @@
 # S0 · EXIF, inspeção visual amostral e precauções de mídia · 23/10/2026
 
-**Estado:** TRIAGEM BINÁRIA AMPLIADA / METADADOS COMPLETOS E REVISÃO VISUAL GLOBAL PENDENTES.  
+**Estado atual:** S0 encerrada por decisão do proprietário, com limites técnicos e riscos residuais registrados no §5; a inspeção visual exaustiva e a leitura completa de metadados NÃO foram executadas.  
 **Branch:** PR #20, proposta não canônica. Nenhum arquivo de imagem ou permissão foi alterado.  
 **Fonte:** auditor histórico nos 21 heads públicos alcançáveis, binários examinados por assinatura e tags EXIF sem revelar valores. [Evidência de execução e testes](https://github.com/bribeirobr25/ai-creative-skill/actions/runs/39994741760/job/120555222613) (associar resultados ao SHA efetivamente testado).
 
