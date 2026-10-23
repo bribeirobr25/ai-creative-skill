@@ -6,9 +6,15 @@
 
 Este experimento testa **apenas lógica matemático-estatística e invariantes sobre dados artificiais**. Não usa a YouTube Data API, Meta, TikTok, vidIQ, Orthogonal, web scraping, APIs, credenciais, dados pessoais, imagens, vídeo, armazenamento persistente ou modelos de IA. Também não é parte do runtime da skill em `src/ai-creative-skill/`.
 
+## S1 concluída: revisão técnica offline
+
+A [revisão S1 consolidada](S1-technical-review-2026-10-23.md) documenta a correção de inconsistências de cobertura nacional, resultados com contagem de views desconhecida, colidência de IDs de evidência, identidade contraditória entre snapshots, comparações de formato e entrada estatística inválida. **68/68 testes sintéticos PASS** no [job do commit `5efb2ebe`](https://github.com/bribeirobr25/ai-creative-skill/actions/runs/40017781052/job/120634192975). S1 está encerrada **somente quanto à revisão técnica offline**. PR #19 continua Draft, e a cobertura de provedores/licenças, contrato executável e integrações permanecem pendentes.
+
+A S0 de mídia/textos foi encerrada administrativamente por declaração do proprietário no PR #20. O guard ainda não foi promovido à `main` ou instalado como proteção pré-push obrigatória.
+
 ## Revisão cruzada antes de expandir
 
-O [checklist de revisão](cross-review-checklist-2026-10-23.md) registra dez pontos trazidos pelo Claude Code e pelo planejamento de segurança: semântica de resultado vazio, snapshots, parâmetro de limite, ranking nacional, deduplicação e Monte Carlo. São tarefas **pendentes**, não bugs corrigidos por este README. A nova regra de **pré-publicação sem segredos** está detalhada no [roadmap do PR #18](https://github.com/bribeirobr25/ai-creative-skill/blob/proposal/intelligence-architecture-pre-v0-1-20261023/docs/research/intelligence/revised-roadmap-security-gate-2026-10-23.md) e ainda precisa de implementação técnica.
+O [checklist de revisão](cross-review-checklist-2026-10-23.md) registra dez pontos trazidos pelo Claude Code e pelo planejamento de segurança: semântica de resultado vazio, snapshots, parâmetro de limite, ranking nacional, deduplicação e Monte Carlo. Esse checklist é o registro **histórico**: os reparos verificados na S1 constam no relatório acima; tarefas de integração, política e Monte Carlo operacional permanecem pendentes. A nova regra de **pré-publicação sem segredos** está detalhada no [roadmap do PR #18](https://github.com/bribeirobr25/ai-creative-skill/blob/proposal/intelligence-architecture-pre-v0-1-20261023/docs/research/intelligence/revised-roadmap-security-gate-2026-10-23.md) e ainda precisa de implementação técnica.
 
 ## Atualização: adaptador experimental de pesquisa
 
