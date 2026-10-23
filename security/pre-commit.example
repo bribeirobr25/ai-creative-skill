@@ -1,4 +1,4 @@
 #!/bin/sh
 # Example only. To activate, integrate manually with existing .git/hooks/pre-commit.
 # Run locally before commit. GitHub API writes do not invoke this hook.
-python3 security/publication_guard.py --staged
+python3 security/publication_guard.py --staged --fail-on-warning
