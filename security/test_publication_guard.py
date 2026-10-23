@@ -284,6 +284,18 @@ class SecretRulesTests(unittest.TestCase):
         self.assertEqual(0, len(result["DRIVE"]))
         self.assertEqual(1, len(result["GENERIC_SHARE"]))
 
+    def test_incomplete_file_and_document_url_prefixes_are_not_real_resources(self):
+        f = "https://" + "drive.google.com/file/d/"
+        d = "https://" + "docs.google.com/document/d/"
+        self.assertIn("LINK_INCOMPLETE_OR_PLACEHOLDER_IDENTIFIER", classify_link_metadata(f))
+        self.assertIn("LINK_INCOMPLETE_OR_PLACEHOLDER_IDENTIFIER", classify_link_metadata(d))
+
+    def test_plausible_complete_folder_id_not_flagged_as_placeholder(self):
+        u = "https://" + "drive.google.com/drive/folders/" + "A" * 33
+        flags = classify_link_metadata(u)
+        self.assertIn("LINK_DRIVE_FOLDER", flags)
+        self.assertNotIn("LINK_INCOMPLETE_OR_PLACEHOLDER_IDENTIFIER", flags)
+
     def test_drive_link_classification_redacts_identifier(self):
         u = "https://" + "drive.google.com/drive/folders/" + "F" * 33
         flags = classify_link_metadata(u)
