@@ -56,6 +56,19 @@ class PrivateReviewGuardTests(unittest.TestCase):
                 self.assertEqual(stat.S_IMODE(p.stat().st_mode), 0o600)
                 self.assertEqual(stat.S_IMODE(p.parent.stat().st_mode), 0o700)
 
+    def test_world_readable_destination_is_rejected_without_chmod(self):
+        if os.name != "posix":
+            self.skipTest("POSIX mode check")
+        with tempfile.TemporaryDirectory(prefix="test-review-unsafe-") as d:
+            previous = stat.S_IMODE(Path(d).stat().st_mode)
+            os.chmod(d, 0o755)
+            with patch.dict(os.environ, {"CI": "", "GITHUB_ACTIONS": ""}):
+                with patch("private_triage.git", return_value=b"/unrelated/repository\n"):
+                    with self.assertRaisesRegex(RuntimeError, "not private"):
+                        write_private_file({"status": "test"}, Path(d) / "review.json")
+            self.assertEqual(0o755, stat.S_IMODE(Path(d).stat().st_mode))
+            os.chmod(d, previous)
+
     def test_existing_target_refused_without_overwriting(self):
         with tempfile.TemporaryDirectory(prefix="test-review-existing-") as d:
             out = Path(d) / "review.json"
