@@ -91,6 +91,37 @@ def audit_commit_metadata() -> dict[str, int]:
     return dict(out)
 
 
+def classify_binary_metadata(raw: bytes) -> set[str]:
+    """Categorize signatures/metadata only; no pixel analysis or extraction."""
+    kinds: set[str] = set()
+    head = raw[:262144]
+    if raw.startswith(b"\xff\xd8\xff"):
+        kinds.add("BINARY_JPEG")
+        if b"Exif\x00\x00" in head:
+            kinds.add("BINARY_EXIF_PRESENT")
+        if b"http://" in head or b"https://" in head:
+            kinds.add("BINARY_TEXT_URL_PRESENT")
+    elif raw.startswith(b"\x89PNG\r\n\x1a\n"):
+        kinds.add("BINARY_PNG")
+        if any(label in head for label in (b"tEXt", b"zTXt", b"iTXt", b"eXIf")):
+            kinds.add("BINARY_PNG_METADATA_PRESENT")
+    elif raw.startswith(b"%PDF"):
+        kinds.add("BINARY_PDF")
+        if b"/URI" in head or b"/JavaScript" in head:
+            kinds.add("BINARY_PDF_LINK_OR_SCRIPT_MARKER")
+    elif raw.startswith((b"PK\x03\x04", b"PK\x05\x06")):
+        kinds.add("BINARY_ZIP")
+    elif len(head) >= 12 and head[4:8] == b"ftyp":
+        kinds.add("BINARY_ISOBMFF_MP4_OR_MOV")
+    elif raw.startswith(b"GIF8"):
+        kinds.add("BINARY_GIF")
+    elif raw.startswith(b"RIFF"):
+        kinds.add("BINARY_RIFF")
+    else:
+        kinds.add("BINARY_UNKNOWN_OR_OTHER")
+    return kinds
+
+
 def _verified_branch_coverage() -> int:
     """Require every current remote public branch tip to be fetched.
 
@@ -137,6 +168,8 @@ def scan_history() -> dict:
         raw = git(["cat-file", "blob", oid])
         if b"\0" in raw:
             summary["SKIPPED_BINARY_BLOB"] += 1
+            for kind in classify_binary_metadata(raw):
+                summary[kind] += 1
             if PRIVATE_FILENAME.search(path):
                 summary["BLOCK:PRIVATE_FILE_PATH"] += 1
             if path.lower().endswith(REVIEW_FILE_SUFFIXES):
