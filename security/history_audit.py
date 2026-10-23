@@ -71,6 +71,26 @@ def audit_text_blob(text: str, path: str) -> set[str]:
     return found
 
 
+def audit_commit_metadata() -> dict[str, int]:
+    """Scan reachable commit messages and author addresses without logging them."""
+    out: Counter[str] = Counter()
+    raw = git(["log", "--all", "--format=%B%x00"]).decode("utf-8", "replace")
+    messages = [s for s in raw.split("\0") if s.strip()]
+    out["SCANNED_COMMIT_MESSAGES"] = len(messages)
+    for message in messages:
+        for category in audit_text_blob(message, ""):
+            out["COMMIT_" + category] += 1
+    authors = git(["log", "--all", "--format=%ae"]).decode("utf-8", "replace").splitlines()
+    emails = {v.strip().casefold() for v in authors if v.strip()}
+    # Git commit author email can be personal data even though git hosts
+    # display it. Noreply addresses and generic localhost examples are omitted.
+    for mail in emails:
+        if not (mail.endswith("@users.noreply.github.com") or mail.endswith("@noreply.github.com")
+                or mail.endswith("@localhost") or mail.endswith("@example.com")):
+            out["REVIEW:COMMIT_AUTHOR_EMAIL"] += 1
+    return dict(out)
+
+
 def scan_history() -> dict:
     """Conservative scan: every readable reachable blob version within cap."""
     paths, sizes = _reachable_blobs()
@@ -101,6 +121,7 @@ def scan_history() -> dict:
         for category in audit_text_blob(value, path):
             summary[category] += 1
     summary["REACHABLE_BLOB_VERSIONS"] = len(paths)
+    summary.update(audit_commit_metadata())
     return dict(sorted(summary.items()))
 
 
@@ -114,7 +135,7 @@ def main() -> int:
     for label, value in counts.items():
         print(f"  {label}: {value}")
     print("Not a complete privacy certification: manual binary/rights/history review required.")
-    blockers = sum(v for k, v in counts.items() if k.startswith("BLOCK:"))
+    blockers = sum(v for k, v in counts.items() if k.startswith("BLOCK:") or k.startswith("COMMIT_BLOCK:"))
     return 1 if blockers else 0
 
 
