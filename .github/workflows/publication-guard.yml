@@ -24,6 +24,8 @@ jobs:
       - name: Inspect PR diff without echoing secret values
         if: github.event_name == 'pull_request'
         run: python security/publication_guard.py --range "origin/$GITHUB_BASE_REF...HEAD"
+      - name: Audit reachable Git history without exposing matches
+        run: python security/history_audit.py
       - name: Safety note for manual triggers
         if: github.event_name == 'workflow_dispatch'
         run: echo "Manual trigger ran guard unit tests only; no PR base was supplied."
