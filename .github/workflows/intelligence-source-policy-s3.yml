@@ -1,0 +1,24 @@
+name: Intelligence S3 offline source policy canary
+on:
+  pull_request:
+    paths:
+      - 'experiments/intelligence_permissions/**'
+      - '.github/workflows/intelligence-source-policy-s3.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  offline:
+    name: Synthetic-only policy tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Validate prior S2 contract invariants
+        run: python -m unittest discover -s experiments/intelligence_contracts -p 'test_*.py' -v
+      - name: Validate S2-to-S3 permission projection and offline boundaries
+        env:
+          PYTHONPATH: experiments/intelligence_contracts:experiments/intelligence_permissions
+        run: python -m unittest discover -s experiments/intelligence_permissions -p 'test_*.py' -v
