@@ -63,6 +63,12 @@ Antes de uma conclusão de segurança, o proprietário deverá classificar os li
 
 O auditor [history_audit.py](history_audit.py) agora percorre **todas as árvores de commits alcançáveis** e conserva aliases de caminhos quando o mesmo blob foi reutilizado. Isso evita atribuir um link antigo a um único caminho arbitrário.
 
+## Verificação dos links históricos (resultado de 23/10/2026)
+
+A [classificação sanitizada](../docs/security/S0-historical-links-classified-2026-10-23.md) resolve a ambiguidade das quatro correspondências antigas de Drive: são **três strings distintas**, das quais uma corresponde a uma pasta real cujas permissões atuais foram verificadas como restritas, e duas são URLs incompletas de fixtures históricas sem ID. Os três links genéricos de compartilhamento identificados apontam para o domínio público do GitHub. A análise não reproduziu os links ou IDs.
+
+**Atenção:** permissões atuais não provam configurações históricas; a publicação do identificador da pasta pode ainda requerer decisão do proprietário. A S0 não está encerrada para mídia, EXIF, autoria Git e superfícies fora do histórico alcançável.
+
 ## Antes do merge
 
 1. Conferir diff completo, não só scanner e tests.
