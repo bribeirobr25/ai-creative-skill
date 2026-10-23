@@ -18,5 +18,7 @@ jobs:
           python-version: '3.11'
       - name: Validate prior S2 contract invariants
         run: python -m unittest discover -s experiments/intelligence_contracts -p 'test_*.py' -v
-      - name: Validate offline source-policy boundaries
+      - name: Validate S2-to-S3 permission projection and offline boundaries
+        env:
+          PYTHONPATH: experiments/intelligence_contracts:experiments/intelligence_permissions
         run: python -m unittest discover -s experiments/intelligence_permissions -p 'test_*.py' -v
