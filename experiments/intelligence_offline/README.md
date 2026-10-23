@@ -6,6 +6,13 @@
 
 Este experimento testa **apenas lógica matemático-estatística e invariantes sobre dados artificiais**. Não usa a YouTube Data API, Meta, TikTok, vidIQ, Orthogonal, web scraping, APIs, credenciais, dados pessoais, imagens, vídeo, armazenamento persistente ou modelos de IA. Também não é parte do runtime da skill em `src/ai-creative-skill/`.
 
+## Atualização: adaptador experimental de pesquisa
+
+- `research_bridge.py`: converte fixtures sintéticas em um *envelope lógico* compatível com os campos documentados por `RESEARCH_EVIDENCE_SYNTHESIS`: `research_execution_id`, `query_plan`, `source_outcomes`, `coverage`, `evidence_clusters`, `counterevidence`, `freshness_verdicts`, `status` e `unknowns`. Métricas e ranking permanecem em extensão `intelligence`, com ligações por `evidence_id`.
+- `test_research_bridge.py`: verifica estados de fonte `OK`, `NO_RESULTS`, `RATE_LIMITED`, `AUTH_FAILED`, vínculo de evidência, datas, métricas ausentes e não comparabilidade.
+- **Importante:** o contrato de pesquisa atualmente é uma especificação em Markdown, **não um schema executável em produção**. A correspondência é a uma *fixture de pesquisa*, não a um runtime canônico implementado. Não persistimos resultados, não acessamos APIs e não autorizamos uso de dados reais.
+- Uma fonte `OK` pode produzir pesquisa `PARTIAL` ou `INSUFFICIENT_EVIDENCE` quando faltam métricas para a pergunta. Um resultado de API não é automaticamente uma pesquisa completa.
+
 ## O que existe
 
 - `engine.py`: entidades sintéticas, verificação de fonte, deduplicação por plataforma/publicação/instante, cálculo de outlier relativo à idade e baseline comparável, velocidade entre dois snapshots, classificação por contagem bruta de views da amostra, simulação offline de falha comum/correlacionada em dois conectores fictícios.
