@@ -6,7 +6,7 @@ not an implementation of provider access or a legal/contractual grant.
 """
 from __future__ import annotations
 
-from datetime import datetime, timedelta, timezone
+from datetime import date, datetime, timedelta, timezone
 from typing import Mapping
 
 TRANSFORMATIONS = frozenset({"DISPLAY_NATIVE", "DERIVE_RATIO", "SUMMARIZE"})
@@ -52,11 +52,24 @@ def aware_instant(value: object, label: str) -> datetime:
     return instant.astimezone(timezone.utc)
 
 
+def date_field(value: object, label: str) -> date:
+    require(type(value) is str, "INVALID_" + label)
+    try:
+        result = date.fromisoformat(value)
+    except ValueError as exc:
+        raise InvalidContract("INVALID_" + label) from exc
+    require(result.isoformat() == value, "INVALID_" + label)
+    return result
+
+
 def validate_request(raw: Mapping) -> Mapping:
     q = mapping(raw, "REQUEST")
     for key in ("operation", "platform", "project_id", "purpose", "country",
                 "geography_basis", "time_basis"):
         text_field(q, key)
+    start = date_field(q.get("window_start"), "WINDOW_START")
+    end = date_field(q.get("window_end"), "WINDOW_END")
+    require(start < end, "INVALID_REQUEST_WINDOW")
     fields = string_list(q.get("fields"), "FIELDS")
     require(bool(fields), "EMPTY_FIELDS")
     changes = string_list(q.get("transformations"), "TRANSFORMATIONS")
@@ -101,6 +114,9 @@ def validate_capability(raw: Mapping) -> Mapping:
         require(type(ttl) is int and 0 <= ttl <= 36500, "INVALID_GRANT_TTL")
         if "PERSIST" in actions:
             require(ttl > 0, "PERSIST_GRANT_REQUIRES_TTL")
+    available_start = date_field(c.get("available_from"), "AVAILABLE_FROM")
+    available_end = date_field(c.get("available_to"), "AVAILABLE_TO")
+    require(available_start < available_end, "INVALID_SOURCE_WINDOW")
     for key in ("reviewed_at", "expires_at"):
         aware_instant(c.get(key), key.upper())
     require(type(c.get("revoked")) is bool, "INVALID_REVOKED")
@@ -133,6 +149,11 @@ def evaluate(request: Mapping, capability: Mapping, *, now: str) -> dict:
     reject("GEOGRAPHY_SEMANTICS_MISMATCH",
            q["geography_basis"] not in c["geography_bases"])
     reject("TIME_SEMANTICS_MISMATCH", q["time_basis"] not in c["time_bases"])
+    reject("TIME_WINDOW_OUTSIDE_DECLARED_SCOPE",
+           date_field(q["window_start"], "WINDOW_START") <
+           date_field(c["available_from"], "AVAILABLE_FROM") or
+           date_field(q["window_end"], "WINDOW_END") >
+           date_field(c["available_to"], "AVAILABLE_TO"))
     reject("TRANSFORMATION_NOT_GRANTED",
            not set(q["transformations"]) <= set(c["transformations"]))
     reject("POLICY_NOT_CURRENT", reviewed > instant or expires <= reviewed or
