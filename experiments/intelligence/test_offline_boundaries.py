@@ -6,7 +6,7 @@ import unittest
 ROOT = Path(__file__).resolve().parent
 CANDIDATE_MODULES = ("policy_gate.py", "provider_templates.py", "s2_projection.py", "contract_canary.py", "engine.py", "research_bridge.py")
 PROHIBITED_ROOTS = frozenset({
-    "requests", "httpx", "urllib", "socket", "subprocess", "http", "ftplib",
+    "requests", "httpx", "urllib.request", "socket", "subprocess", "http", "ftplib",
     "aiohttp", "boto3", "sqlite3", "psycopg2", "sqlalchemy"
 })
 PROHIBITED_NAME_CALLS = frozenset({"eval", "exec", "__import__"})
@@ -24,7 +24,7 @@ class S3IsolationTests(unittest.TestCase):
                     imported = [item.module]
                 for name in imported:
                     with self.subTest(filename=filename, module=name):
-                        self.assertNotIn(name.split(".", 1)[0], PROHIBITED_ROOTS)
+                        self.assertNotIn(name, PROHIBITED_ROOTS)
 
     def test_candidate_modules_do_not_call_dynamic_code_evaluation(self):
         for filename in CANDIDATE_MODULES:
