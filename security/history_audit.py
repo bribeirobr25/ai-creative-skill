@@ -285,7 +285,7 @@ def _link_fingerprints(text: str) -> dict[str, set[str]]:
         text, flags=re.I,
     )
     shared = re.findall(
-        r"""https?://[^\s<>"')]{1,1200}/(?:share|sharing|download)/[^\s<>"')]{10,1200}""",
+        r"""https?://[^\s<>"')]{1,1200}/(?:share|sharing|download)/[^\s<>"')]{1,1200}""",
         text, flags=re.I,
     )
     for category, urls in (("DRIVE", drive), ("GENERIC_SHARE", shared)):
