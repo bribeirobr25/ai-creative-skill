@@ -74,6 +74,22 @@ class SecretRulesTests(unittest.TestCase):
         link = "https://" + "docs.google.com/document/d/" + "a" * 30 + "/edit"
         self.assertIn(("REVIEW", "DRIVE_REFERENCE"), rules(fake_patch(link)))
 
+    def test_email_in_public_text_requires_review_but_not_autoblock(self):
+        candidate = "person@" + "company.org"
+        result = rules(fake_patch("Contact: " + candidate))
+        self.assertIn(("REVIEW", "EMAIL_ADDRESS"), result)
+        self.assertFalse(any(severity == "BLOCK" for severity, _ in result))
+
+    def test_reserved_example_email_does_not_raise_review(self):
+        candidate = "documentation@" + "example.invalid"
+        self.assertNotIn(("REVIEW", "EMAIL_ADDRESS"), rules(fake_patch(candidate)))
+
+    def test_historical_email_is_reviewed_without_value_disclosure(self):
+        address = "user@" + "privatecompany.de"
+        result = audit_text_blob("Contact is " + address, "docs/review.md")
+        self.assertIn("REVIEW:EMAIL_ADDRESS", result)
+        self.assertNotIn(address, repr(result))
+
     def test_public_github_reference_does_not_warn(self):
         link = "https://github.com/bribeirobr25/ai-creative-skill/pull/18"
         self.assertEqual([], rules(fake_patch(link)))
