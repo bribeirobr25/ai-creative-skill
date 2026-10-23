@@ -2,9 +2,9 @@
 
 **Data:** 2026-10-23  
 **Estado:** PROPOSTA PARA REVISÃO · NÃO CANÔNICA · NÃO IMPLEMENTADA · NÃO INSTALADA  
-**Base examinada:** \`main\` 2.6.0-dev, commit \`fb7f794ca2c51c2752afde5f907bd2866c9d1f25\`  
-**Referência de release preservada:** V2.5.0, \`39a0bfa39270ea4b685b0f862e7dbf647cf81d77\`  
-**Paralelo em andamento:** PR #17, \`feature/web-runtime-2.6\`, fora desta proposta.  
+**Base examinada:** `main` 2.6.0-dev, commit `fb7f794ca2c51c2752afde5f907bd2866c9d1f25`  
+**Referência de release preservada:** V2.5.0, `39a0bfa39270ea4b685b0f862e7dbf647cf81d77`  
+**Paralelo em andamento:** PR #17, `feature/web-runtime-2.6`, fora desta proposta.  
 **Classe:** desenho técnico / research candidate. Nenhuma autoridade de release, geração, publicação, compra, consulta paga ou alteração de cânone.
 
 ## 0. Síntese executiva
@@ -15,13 +15,13 @@ Esta proposta **não** recomenda copiar código, algoritmos, bases privadas ou i
 
 ### Autoridades normativas existentes (não reescritas aqui)
 
-1. \`src/ai-creative-skill/SKILL.md\` (roteamento host e limites de autoridade).
-2. \`src/ai-creative-skill/references/AI_Creative_Skill_V2.5_Integration_Manifest.md\` e o Current Design Manifest V2.4 herdado (resolução de versões).
-3. \`AI_Creative_Skill_Architecture_Spec_Pre-v0.17-V2.4-CANDIDATE.md\` (núcleo, §24.1 DATA-SOURCE CONNECTORS).
-4. \`AI_Creative_Skill_Execution_Contracts_Pre-v0.21-V2.4-CANDIDATE.md\` (aprovação, orçamento, estado, ingestão, handoff).
-5. \`AI_Creative_Skill_Specialist_Method_System_Pre-v0.14-V2.4-CANDIDATE.md\` (owners e Growth Rule).
-6. \`RESEARCH_EVIDENCE_SYNTHESIS\`, \`PRODUCT_MARKETPLACE_INTELLIGENCE\`, \`BUYER_RESEARCH\`, \`AD_FUNNEL_INTELLIGENCE\`, \`VIDEO_EVIDENCE_INSPECTION\`, \`ADS_STRATEGY\` e \`ORGANIC_CONTENT_CRAFT\`.
-7. \`docs/decisions/ADR-0001-source-of-truth.md\` e \`ADR-0002-capability-bounded-invocation.md\`.
+1. `src/ai-creative-skill/SKILL.md` (roteamento host e limites de autoridade).
+2. `src/ai-creative-skill/references/AI_Creative_Skill_V2.5_Integration_Manifest.md` e o Current Design Manifest V2.4 herdado (resolução de versões).
+3. `AI_Creative_Skill_Architecture_Spec_Pre-v0.17-V2.4-CANDIDATE.md` (núcleo, §24.1 DATA-SOURCE CONNECTORS).
+4. `AI_Creative_Skill_Execution_Contracts_Pre-v0.21-V2.4-CANDIDATE.md` (aprovação, orçamento, estado, ingestão, handoff).
+5. `AI_Creative_Skill_Specialist_Method_System_Pre-v0.14-V2.4-CANDIDATE.md` (owners e Growth Rule).
+6. `RESEARCH_EVIDENCE_SYNTHESIS`, `PRODUCT_MARKETPLACE_INTELLIGENCE`, `BUYER_RESEARCH`, `AD_FUNNEL_INTELLIGENCE`, `VIDEO_EVIDENCE_INSPECTION`, `ADS_STRATEGY` e `ORGANIC_CONTENT_CRAFT`.
+7. `docs/decisions/ADR-0001-source-of-truth.md` e `ADR-0002-capability-bounded-invocation.md`.
 
 Em conflito com qualquer norma atual, esta proposta cede precedência. Nomes dos exemplos abaixo são **rascunhos de contratos**, não campos canônicos aceitos.
 
@@ -36,7 +36,7 @@ Em conflito com qualquer norma atual, esta proposta cede precedência. Nomes dos
 - **R5:** “Compare evidências de publicidade, demanda e concorrência para uma categoria nos EUA, Brasil e Alemanha.”
 - **R6:** “Pesquise referências e depois proponha um briefing original.” A pesquisa termina e faz handoff; produção não é autorizada automaticamente.
 
-Dimensões parametrizáveis: termo/produto/entidade/conta, modalidade \`PAID_AD|ORGANIC_CONTENT|PRODUCT|MIXED\`, plataforma, localização e fundamento geográfico, janela temporal e fundamento do tempo, métrica desejada, limite de resultados, licença/cobertura da fonte, idioma e custo máximo autorizado.
+Dimensões parametrizáveis: termo/produto/entidade/conta, modalidade `PAID_AD|ORGANIC_CONTENT|PRODUCT|MIXED`, plataforma, localização e fundamento geográfico, janela temporal e fundamento do tempo, métrica desejada, limite de resultados, licença/cobertura da fonte, idioma e custo máximo autorizado.
 
 ### 1.2 Não objetivos desta fase
 
@@ -49,7 +49,7 @@ Não construir um novo hub de APIs, crawler indiscriminado, um clone integral de
 - **Intelligence Runtime não é Creative Core:** o runtime busca, normaliza, calcula e devolve dados com proveniência; métodos especializados interpretam.
 - **Conector não escolhe metodologia:** disponibilidade de API não decide propriedade da tarefa.
 - **AI interpretação; analytics cálculo:** métricas e agregações devem ser determinísticas, versionadas e auditáveis. Análise criativa por modelo é uma camada separada e explicitamente inferencial.
-- **Ausência não é zero:** métrica não fornecida = \`UNKNOWN\`, jamais \`0\`.
+- **Ausência não é zero:** métrica não fornecida = `UNKNOWN`, jamais `0`.
 - **Observação ≠ verdade comercial:** longevity ≠ conversão, views ≠ vendas, origem do canal ≠ origem da audiência.
 - **Sem dependência de MCP:** interface opcional e fina sobre as mesmas operações internas.
 - **Políticas por fonte:** acesso, escopo, quotas, armazenagem e finalidade exigem revisão por provedor, inclusive fornecedores de dados terceirizados.
@@ -58,18 +58,18 @@ Não construir um novo hub de APIs, crawler indiscriminado, um clone integral de
 
 | Componente | Dono existente ou proposta | Responsabilidade | Não pode assumir |
 |---|---|---|---|
-| Roteamento, autoridade, task boundary | Architecture / \`SKILL.md\` | Propriedade do pedido, limites, canon | Autoampliar pesquisa para geração |
-| Pesquisa genérica e fontes | \`RESEARCH_EVIDENCE_SYNTHESIS\` | Plano, freshness, source outcome, cobertura | Interpretar “vencedor” por contagem de ads |
-| Anúncios e funis | \`AD_FUNNEL_INTELLIGENCE\` | Criativos, mecanismos, variantes, sinais de publicidade | Declarar ROAS/CPA sem dados |
-| Produto e marketplace | \`PRODUCT_MARKETPLACE_INTELLIGENCE\` | Famílias, variantes, listing, seller, equivalência, sinais de demanda | Confundir similaridade com mesma origem |
-| Buyer/reviews | \`BUYER_RESEARCH\` | Voz do consumidor e intenção | Converter comentários em vendas |
-| Inspeção de vídeo | \`VIDEO_EVIDENCE_INSPECTION\` | Evidência temporal/visual/áudio com cobertura | Reinterpretar métricas de canal |
-| Performance de conteúdo | **Candidato** \`CONTENT_PERFORMANCE_INTELLIGENCE\` | Estatística de outliers, velocidade e benchmarks contextualizados | Duplicar fonte, vídeo-inspection, estratégia |
+| Roteamento, autoridade, task boundary | Architecture / `SKILL.md` | Propriedade do pedido, limites, canon | Autoampliar pesquisa para geração |
+| Pesquisa genérica e fontes | `RESEARCH_EVIDENCE_SYNTHESIS` | Plano, freshness, source outcome, cobertura | Interpretar “vencedor” por contagem de ads |
+| Anúncios e funis | `AD_FUNNEL_INTELLIGENCE` | Criativos, mecanismos, variantes, sinais de publicidade | Declarar ROAS/CPA sem dados |
+| Produto e marketplace | `PRODUCT_MARKETPLACE_INTELLIGENCE` | Famílias, variantes, listing, seller, equivalência, sinais de demanda | Confundir similaridade com mesma origem |
+| Buyer/reviews | `BUYER_RESEARCH` | Voz do consumidor e intenção | Converter comentários em vendas |
+| Inspeção de vídeo | `VIDEO_EVIDENCE_INSPECTION` | Evidência temporal/visual/áudio com cobertura | Reinterpretar métricas de canal |
+| Performance de conteúdo | **Candidato** `CONTENT_PERFORMANCE_INTELLIGENCE` | Estatística de outliers, velocidade e benchmarks contextualizados | Duplicar fonte, vídeo-inspection, estratégia |
 | Produção e direção | ADS / ORGANIC e métodos atuais | Conceito original, script, produção e QA | Considerar pesquisa autorização de gastar |
 | Coleta e métricas | **Novo** Intelligence Runtime | Adapters, observações, métricas, persistence sob licença | Nova governança ou decidir cânone |
 | Interface de cliente | CLI/host adapter primeiro; MCP opcional | Invocar operações autorizadas e entregar resultados estruturados | Nova lógica de inteligência |
 
-**Growth Rule:** só promover \`CONTENT_PERFORMANCE_INTELLIGENCE\` a método formal depois de demonstrar, por ablação com exemplos representativos, que os métodos existentes não expressam a disciplina estatística. Não criar um Work Profile por tecnologia/plataforma.
+**Growth Rule:** só promover `CONTENT_PERFORMANCE_INTELLIGENCE` a método formal depois de demonstrar, por ablação com exemplos representativos, que os métodos existentes não expressam a disciplina estatística. Não criar um Work Profile por tecnologia/plataforma.
 
 ### 3.1 Caminho de execução lógico
 
@@ -121,9 +121,9 @@ execution:
   approval_ref: null
 ~~~
 
-**Fundamentos geográficos distintos:** \`AD_DELIVERY_GEO\`, \`CREATOR_REGISTERED_GEO\`, \`AUDIENCE_GEO\`, \`SEARCH_RESULT_LOCALE\`, \`SELLER_GEO\`, \`SHIPPING_DESTINATION\`. Cidade/estado só quando a fonte o oferecer com significado correspondente. Não rebaixar automaticamente \`AUDIENCE_GEO\` para país do criador.
+**Fundamentos geográficos distintos:** `AD_DELIVERY_GEO`, `CREATOR_REGISTERED_GEO`, `AUDIENCE_GEO`, `SEARCH_RESULT_LOCALE`, `SELLER_GEO`, `SHIPPING_DESTINATION`. Cidade/estado só quando a fonte o oferecer com significado correspondente. Não rebaixar automaticamente `AUDIENCE_GEO` para país do criador.
 
-**Fundamentos temporais distintos:** \`PUBLISHED_DURING_WINDOW\`, \`ACTIVE_DURING_WINDOW\`, \`ENGAGEMENT_GAINED_DURING_WINDOW\`, \`OBSERVED_AS_OF\`. Um total acumulado atual não demonstra visualizações ganhas dentro da janela. Horários UTC para armazenamento; fuso original e interpretação local preservados.
+**Fundamentos temporais distintos:** `PUBLISHED_DURING_WINDOW`, `ACTIVE_DURING_WINDOW`, `ENGAGEMENT_GAINED_DURING_WINDOW`, `OBSERVED_AS_OF`. Um total acumulado atual não demonstra visualizações ganhas dentro da janela. Horários UTC para armazenamento; fuso original e interpretação local preservados.
 
 ### 4.2 SourceCapabilityRecord v0.1
 
@@ -148,18 +148,18 @@ A tabela de suporte real deve ser obtida por preflight/documentação atual e en
 
 ### 4.3 Modelo de entidades e identidade
 
-**Reusar** \`PRODUCT_FAMILY\`, \`PRODUCT_VARIANT\`, \`LISTING\`, \`SELLER\`, \`BRAND\`, \`SOURCE_PRODUCT_REF\` do Product/Marketplace Method; não criar versões concorrentes.
+**Reusar** `PRODUCT_FAMILY`, `PRODUCT_VARIANT`, `LISTING`, `SELLER`, `BRAND`, `SOURCE_PRODUCT_REF` do Product/Marketplace Method; não criar versões concorrentes.
 
 **Adicionar somente onde necessário:**
 
-- \`SOCIAL_ACCOUNT\`: identidade da conta com IDs e aliases por plataforma.
-- \`CONTENT_WORK\`: ideia/obra audiovisual abstrata, quando há evidência de identidade entre publicações.
-- \`CONTENT_PUBLICATION\`: postagem/publicação específica em plataforma, com ID estável e URL.
-- \`ADVERTISEMENT\`: execução/publicação publicitária identificável, ligada a criativo e anunciante quando verificável.
-- \`CREATIVE_VARIANT_RELATION\`: repost, recorte, tradução, nova legenda, hook, anúncio derivado; vínculo com confiança e evidência.
-- \`OBSERVATION\`: dado medido ou fornecido, associado ao objeto e à fonte.
-- \`METRIC_SERIES\`: derivação temporal **somente quando histórico autorizado e existente**.
-- \`RESEARCH_REPORT\`: saída com escopo, proveniência e conclusão.
+- `SOCIAL_ACCOUNT`: identidade da conta com IDs e aliases por plataforma.
+- `CONTENT_WORK`: ideia/obra audiovisual abstrata, quando há evidência de identidade entre publicações.
+- `CONTENT_PUBLICATION`: postagem/publicação específica em plataforma, com ID estável e URL.
+- `ADVERTISEMENT`: execução/publicação publicitária identificável, ligada a criativo e anunciante quando verificável.
+- `CREATIVE_VARIANT_RELATION`: repost, recorte, tradução, nova legenda, hook, anúncio derivado; vínculo com confiança e evidência.
+- `OBSERVATION`: dado medido ou fornecido, associado ao objeto e à fonte.
+- `METRIC_SERIES`: derivação temporal **somente quando histórico autorizado e existente**.
+- `RESEARCH_REPORT`: saída com escopo, proveniência e conclusão.
 
 ID interno estável, ID da fonte, URL original e time stamp de descoberta são coisas distintas. Match exato, provável, similar e insuficiente permanecem separados. Uma mesma peça publicada em duas plataformas possui **observações separadas**.
 
@@ -186,13 +186,13 @@ usage_rights_ref: license-policy-001
 retain_until: null # obrigatório calcular pela política antes de persistir
 ~~~
 
-**Regras:** uma métrica derivada ganha novo registro com \`derived_from_observations[]\`, fórmula e versão. Não falsificar número, janela temporal, localização, denominador nem status de direitos. Conteúdo e métricas que não podem ser armazenados devem permanecer transitórios e não entrar no banco.
+**Regras:** uma métrica derivada ganha novo registro com `derived_from_observations[]`, fórmula e versão. Não falsificar número, janela temporal, localização, denominador nem status de direitos. Conteúdo e métricas que não podem ser armazenados devem permanecer transitórios e não entrar no banco.
 
 ### 4.5 ResearchResult v0.1
 
-Registrar \`source_outcomes[]\` com vocabulário canônico (\`OK\`, \`NO_RESULTS\`, \`PARTIAL\`, \`RATE_LIMITED\`, \`AUTH_FAILED\`, \`PAYMENT_REQUIRED\`, \`UNREACHABLE\`, \`TIMEOUT\`, \`SCHEMA_DRIFT\`, \`SKIPPED_UNCONFIGURED\`, \`ERROR\`), \`population_definition\`, \`sample_coverage\`, \`metric_eligibility\`, \`ranked_results[]\`, \`excluded_results[]\`, \`assumptions[]\`, \`counterevidence[]\`, \`unverified_claims[]\`, \`data_access_cost\`, \`evidence_refs[]\`, \`verified_at\`, \`completion_boundary\`.
+Registrar `source_outcomes[]` com vocabulário canônico (`OK`, `NO_RESULTS`, `PARTIAL`, `RATE_LIMITED`, `AUTH_FAILED`, `PAYMENT_REQUIRED`, `UNREACHABLE`, `TIMEOUT`, `SCHEMA_DRIFT`, `SKIPPED_UNCONFIGURED`, `ERROR`), `population_definition`, `sample_coverage`, `metric_eligibility`, `ranked_results[]`, `excluded_results[]`, `assumptions[]`, `counterevidence[]`, `unverified_claims[]`, `data_access_cost`, `evidence_refs[]`, `verified_at`, `completion_boundary`.
 
-Sinalizar explicitamente “top 10 **na amostra acessível**” quando cobertura populacional não for demonstrada; falta de resultados com falha de API não é \`NO_RESULTS\`. Mapeamento final do estado de entrega deve reutilizar os status efetivos da skill, sem um novo enum proprietário.
+Sinalizar explicitamente “top 10 **na amostra acessível**” quando cobertura populacional não for demonstrada; falta de resultados com falha de API não é `NO_RESULTS`. Mapeamento final do estado de entrega deve reutilizar os status efetivos da skill, sem um novo enum proprietário.
 
 ## 5. Métricas e rankings
 
@@ -201,25 +201,25 @@ Modelos separados e explicáveis:
 1. **Outlier ratio:** visualizações observadas do vídeo com idade \(t\) / mediana dos vídeos comparáveis do mesmo canal na idade \(t\). Exigir grupo comparável, mínimo de amostras definido em teste, tratar zeros e intervalos ausentes. Fórmula **nossa**, não alegação sobre vidIQ.
 2. **Velocity:** delta de contador entre duas observações permitidas / horas efetivamente decorridas. Total atual ÷ idade não é velocity medida; no máximo proxy rotulada.
 3. **Engagement rate:** definir numerador, denominador, plataforma, tipo de conteúdo e janela; nunca comparar métricas com denominadores incompatíveis.
-4. **Trend momentum:** evolução de indicadores observáveis dentro de uma definição de universo, janela e amostragem consistente; ausência de histórico = \`UNKNOWN\`.
+4. **Trend momentum:** evolução de indicadores observáveis dentro de uma definição de universo, janela e amostragem consistente; ausência de histórico = `UNKNOWN`.
 5. **Advertising persistence:** datas e recapturas verificadas; captura isolada não confirma atividade contínua nem vendas.
 6. **Demand/opportunity:** síntese multidimensional, com sinais de busca, preços, comentários, competição e viabilidade. Distinguir demanda observada, interesse inferido, intenção de compra e evidência econômica.
 7. **Creative analysis:** interpretação pelo método existente de Video Evidence Inspection + Ads/Organic, nunca mecanismo de substituição de métricas reais.
 
-Todo ranking preserva \`eligible_population\`, \`sort_definition\`, \`metric_version\`, \`normalization_group\`, \`missing_rate\`, \`source_coverage\` e \`confidence_notes\`. Pontuações entre plataformas ficam separadas por padrão; agregação só após um protocolo de comparabilidade testado. Não criar score universal 0–100 sem calibração externa.
+Todo ranking preserva `eligible_population`, `sort_definition`, `metric_version`, `normalization_group`, `missing_rate`, `source_coverage` e `confidence_notes`. Pontuações entre plataformas ficam separadas por padrão; agregação só após um protocolo de comparabilidade testado. Não criar score universal 0–100 sem calibração externa.
 
 ## 6. Infraestrutura e modos de execução
 
-### 6.1 Primeiro modo: \`ON_DEMAND_LOCAL\`
+### 6.1 Primeiro modo: `ON_DEMAND_LOCAL`
 
 Biblioteca Python provider-neutral invocada por um adaptador local/CLI do host autorizado. Sem servidor sempre ativo, sem MCP, sem agendamento. A skill permanece distribuível sem login GitHub/Drive e sem credenciais no pacote. Em host sem execução de código ou sem rede, retornar capacidade ausente/limitação honesta.
 
 ### 6.2 Modos opcionais, não no MVP
 
-- \`ON_DEMAND_HOSTED\`: mesmo motor acessível por API autenticada, sem duplicar regras.
-- \`SCHEDULED_COLLECTION\`: agendador e store, somente para fontes, métricas, finalidades e retenções permitidas; não surge automaticamente.
-- \`DATASET_IMPORT\`: ingestão de export autorizado, com escopo e direitos explícitos.
-- \`MCP_ADAPTER\`: interface adicional, quando exigida por interoperabilidade, reaproveitando operações existentes.
+- `ON_DEMAND_HOSTED`: mesmo motor acessível por API autenticada, sem duplicar regras.
+- `SCHEDULED_COLLECTION`: agendador e store, somente para fontes, métricas, finalidades e retenções permitidas; não surge automaticamente.
+- `DATASET_IMPORT`: ingestão de export autorizado, com escopo e direitos explícitos.
+- `MCP_ADAPTER`: interface adicional, quando exigida por interoperabilidade, reaproveitando operações existentes.
 
 ### 6.3 Persistência por permissões
 
@@ -229,7 +229,7 @@ Protótipo: SQLite local **se armazenamento permitido**; Postgres/objeto/cloud a
 
 ### 6.4 Idempotência, custo e erros
 
-Consultas com paginação, timeout, retry condicionado à classe do erro, deduplicação e quotas. \`RATE_LIMITED\` não pode virar “sem anúncios”. Para fonte paga, reutilizar aprovação, orçamento/reserva e registro de gasto de Execution Contracts §4.1; esse binding é declarado \`LATER\` e precisará de implementação/validação antes de chamadas pagas autônomas. Limite zero de gastos por padrão. \`use\` pago, geração, publicação e ações externas permanecem bloqueadas sem autorização específica.
+Consultas com paginação, timeout, retry condicionado à classe do erro, deduplicação e quotas. `RATE_LIMITED` não pode virar “sem anúncios”. Para fonte paga, reutilizar aprovação, orçamento/reserva e registro de gasto de Execution Contracts §4.1; esse binding é declarado `LATER` e precisará de implementação/validação antes de chamadas pagas autônomas. Limite zero de gastos por padrão. `use` pago, geração, publicação e ações externas permanecem bloqueadas sem autorização específica.
 
 ## 7. Segurança, direitos e evidência
 
@@ -239,7 +239,7 @@ Consultas com paginação, timeout, retry condicionado à classe do erro, dedupl
 - Conteúdo externo é dado não confiável: separar texto recuperado de comandos de execução, URLs e instruções, aplicar allowlist e impedir exfiltração e prompt injection.
 - Sem inferir localização real de audiência por idioma, país do canal ou plataforma de busca.
 - Identificar finalidade, minimização, base jurídica e transferência internacional quando houver dados pessoais, inclusive RGPD/GDPR quando aplicável. Revisão jurídica/compliance é gate, não decisão automática da LLM.
-- Nunca transferir autoridade de produto, canon, aprovação, publicação ou gasto em \`HANDOFF_PACKET\`.
+- Nunca transferir autoridade de produto, canon, aprovação, publicação ou gasto em `HANDOFF_PACKET`.
 - Falha de permissão, termos desatualizados ou política desconhecida bloqueia uso persistente ou de fonte paga até revisão.
 
 ## 8. Fontes: matriz inicial de hipótese, não certificação
@@ -261,7 +261,7 @@ Consultas com paginação, timeout, retry condicionado à classe do erro, dedupl
 
 ## 9. Compatibilidade com a arquitetura existente
 
-### 9.1 Futuro layout proposto (nenhum arquivo criado em \`src/\` nesta fase)
+### 9.1 Futuro layout proposto (nenhum arquivo criado em `src/` nesta fase)
 
 ~~~text
 src/ai-creative-skill/
@@ -281,15 +281,15 @@ validation/
   scenarios/...               # regressões do contrato
 ~~~
 
-Esses diretórios são **propostos** e precisam passar pela disciplina de versionamento. Não mover nem duplicar métodos normativos em \`references/\`. A extensão somente poderá mudar \`SKILL.md\` após demonstração end-to-end e aprovação para candidate integration.
+Esses diretórios são **propostos** e precisam passar pela disciplina de versionamento. Não mover nem duplicar métodos normativos em `references/`. A extensão somente poderá mudar `SKILL.md` após demonstração end-to-end e aprovação para candidate integration.
 
 ### 9.2 Handoff
 
-Pesquisa independente é \`RESEARCH_ONLY\`. Se a solicitação inclui produção final, o resultado da pesquisa é um subtrabalho e os owners finais continuam Ads/Organic/outro. Handoff preserva IDs, evidência, direitos, o que é inferência, limitações, escopo e canon. Nunca converte \`RESEARCH COMPLETE\` em \`GENERATION AUTHORIZED\`.
+Pesquisa independente é `RESEARCH_ONLY`. Se a solicitação inclui produção final, o resultado da pesquisa é um subtrabalho e os owners finais continuam Ads/Organic/outro. Handoff preserva IDs, evidência, direitos, o que é inferência, limitações, escopo e canon. Nunca converte `RESEARCH COMPLETE` em `GENERATION AUTHORIZED`.
 
 ### 9.3 Versionamento / branches
 
-Preservar \`main\` 2.6.0-dev e a release V2.5.0. PR #17 é paralelo e não deve ser alterado. Esta proposta entra **somente em \`docs/research/\` numa branch própria**, sem alterar \`src/\`, testes, contracts, scripts, manifest ou históricos. A implementação futura pede outro candidate, integrações revisadas e gates de regressão oficiais; o PR de pesquisa não é aprovação de release.
+Preservar `main` 2.6.0-dev e a release V2.5.0. PR #17 é paralelo e não deve ser alterado. Esta proposta entra **somente em `docs/research/` numa branch própria**, sem alterar `src/`, testes, contracts, scripts, manifest ou históricos. A implementação futura pede outro candidate, integrações revisadas e gates de regressão oficiais; o PR de pesquisa não é aprovação de release.
 
 ## 10. Sequência e gates de desenvolvimento
 
@@ -303,9 +303,9 @@ Preservar \`main\` 2.6.0-dev e a release V2.5.0. PR #17 é paralelo e não deve 
 
 **Gate 4 · Expansão:** TikTok, Instagram, marketplaces, outros países/terceiros somente após custo-benefício e licenciamento; monitoramento contínuo somente sob demanda explícita.
 
-**Gate 5 · Empacotamento/host:** candidato separado, validar \`release_integrity\`, \`candidate_integrity\`, testes novos, host canaries, direitos e usuário. Teste verde de código não é aprovação de qualidade editorial, legal ou comercial.
+**Gate 5 · Empacotamento/host:** candidato separado, validar `release_integrity`, `candidate_integrity`, testes novos, host canaries, direitos e usuário. Teste verde de código não é aprovação de qualidade editorial, legal ou comercial.
 
-**Custos:** meta de experimento inicial \`US$0–50\` em serviços externos **excluindo desenvolvimento**; não é estimativa garantida nem teto implícito de autorização. Sem cobrança até aprovação. Escala/fonte define o custo real. Registrar custo por consulta, por resultado válido e por relatório útil para decisões posteriores.
+**Custos:** meta de experimento inicial `US$0–50` em serviços externos **excluindo desenvolvimento**; não é estimativa garantida nem teto implícito de autorização. Sem cobrança até aprovação. Escala/fonte define o custo real. Registrar custo por consulta, por resultado válido e por relatório útil para decisões posteriores.
 
 ## 11. Pendências de decisão antes de implementar
 
