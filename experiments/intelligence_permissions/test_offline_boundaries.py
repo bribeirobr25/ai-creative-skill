@@ -4,7 +4,7 @@ from pathlib import Path
 import unittest
 
 ROOT = Path(__file__).resolve().parent
-CANDIDATE_MODULES = ("policy_gate.py", "provider_templates.py")
+CANDIDATE_MODULES = ("policy_gate.py", "provider_templates.py", "s2_projection.py")
 PROHIBITED_ROOTS = frozenset({
     "requests", "httpx", "urllib", "socket", "subprocess", "http", "ftplib",
     "aiohttp", "boto3", "sqlite3", "psycopg2", "sqlalchemy"
