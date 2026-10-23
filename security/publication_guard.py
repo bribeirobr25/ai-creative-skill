@@ -88,10 +88,16 @@ def _destination_from_git_header(line: str) -> str | None:
         words = shlex.split(line)
     except ValueError:
         return None
-    if (len(words) != 4 or words[:2] != ["diff", "--git"]
-            or not words[2].startswith("a/") or not words[3].startswith("b/")):
-        return None
-    return words[3][2:]
+    if (len(words) == 4 and words[:2] == ["diff", "--git"]
+            and words[2].startswith("a/") and words[3].startswith("b/")):
+        return words[3][2:]
+    # Git with core.quotePath=false may emit an *unquoted* path with spaces.
+    # Only recover an unambiguous single a/ ... b/ pair. Ambiguity is BLOCK
+    # at the call site and added hunk lines are still inspected.
+    prefix = "diff --git a/"
+    if line.startswith(prefix) and line.count(" b/") == 1:
+        return line.split(" b/", 1)[1]
+    return None
 
 
 def scan_unified_diff(patch: str) -> list[Finding]:
