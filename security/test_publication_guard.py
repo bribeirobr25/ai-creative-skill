@@ -524,14 +524,14 @@ class SecretRulesTests(unittest.TestCase):
         self.assertIn("BINARY_ZIP", kinds)
 
     def test_webp_exif_and_xmp_categories_are_detected_without_raw_values(self):
-        blob = b"RIFF" + b"\\x00" * 4 + b"WEBP" + b"EXIF" + b"xmpmeta"
+        blob = b"RIFF" + b"\x00" * 4 + b"WEBP" + b"EXIF" + b"xmpmeta"
         kinds = classify_binary_metadata(blob)
         self.assertIn("BINARY_WEBP", kinds)
         self.assertIn("BINARY_WEBP_METADATA_PRESENT", kinds)
         self.assertIn("BINARY_POSSIBLE_XMP_METADATA", kinds)
 
     def test_heic_container_gets_manual_media_review_class(self):
-        blob = b"\\x00\\x00\\x00\\x18ftypheic" + b"\\x00" * 12
+        blob = b"\x00\x00\x00\x18ftypheic" + b"\x00" * 12
         kinds = classify_binary_metadata(blob)
         self.assertIn("BINARY_HEIF_OR_HEIC_NEEDS_MEDIA_REVIEW", kinds)
 
