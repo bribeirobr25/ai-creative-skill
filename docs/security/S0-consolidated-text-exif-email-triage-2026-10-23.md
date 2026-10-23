@@ -1,6 +1,6 @@
 # S0 · Consolidação da classificação textual e EXIF · 2026-10-23
 
-**Status:** `S0_TEXTUAL_CANDIDATES_CLASSIFIED_TO_AVAILABLE_EVIDENCE / S0_MEDIA_RIGHTS_AND_AUTHOR_PRIVACY_OPEN`  
+**Status atual:** `S0_CLOSED_BY_OWNER_ATTESTATION_WITH_RESIDUAL_LIMITATIONS` (adendo §7). Os achados históricos abaixo preservam as limitações técnicas e a situação anterior ao encerramento administrativo.  
 **Origem:** análise de 21 refs públicas atuais no PR #20. **Não é certificação geral de privacidade ou direitos.**  
 **CI verificado:** [GitHub Actions, 73 testes PASS](https://github.com/bribeirobr25/ai-creative-skill/actions/runs/40006660415/job/120596191692). Três checks do HEAD do commit executado passaram.  
 **Nota:** todo registro público usa somente categorias, contagens e links para documentos de método; nenhum endereço privado, e-mail pessoal, URL, valor EXIF ou ID de arquivo é reproduzido.
