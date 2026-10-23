@@ -65,12 +65,12 @@ class SecretRulesTests(unittest.TestCase):
         self.assertEqual([], rules(fake_patch("The GitHub provider requires tokens.")))
 
     def test_drive_link_requires_review_not_automatic_block(self):
-        link = "https://drive.google.com/file/d/" + "1" * 30 + "/view"
+        link = "https://" + "drive.google.com/file/d/" + "1" * 30 + "/view"
         self.assertIn(("REVIEW", "DRIVE_REFERENCE"), rules(fake_patch(link)))
         self.assertFalse(any(x[0] == "BLOCK" for x in rules(fake_patch(link))))
 
     def test_docs_link_requires_review(self):
-        link = "https://docs.google.com/document/d/" + "a" * 30 + "/edit"
+        link = "https://" + "docs.google.com/document/d/" + "a" * 30 + "/edit"
         self.assertIn(("REVIEW", "DRIVE_REFERENCE"), rules(fake_patch(link)))
 
     def test_public_github_reference_does_not_warn(self):
@@ -115,13 +115,13 @@ class SecretRulesTests(unittest.TestCase):
             self.assertIn("GITHUB_TOKEN", buf.getvalue())
 
     def test_warning_default_does_not_break(self):
-        link = "https://docs.google.com/document/d/" + "D" * 31 + "/edit"
+        link = "https://" + "docs.google.com/document/d/" + "D" * 31 + "/edit"
         with patch("publication_guard._get_diff", return_value=fake_patch(link)):
             with redirect_stdout(io.StringIO()):
                 self.assertEqual(0, main(["--staged"]))
 
     def test_warning_can_be_strict(self):
-        link = "https://docs.google.com/document/d/" + "D" * 31 + "/edit"
+        link = "https://" + "docs.google.com/document/d/" + "D" * 31 + "/edit"
         with patch("publication_guard._get_diff", return_value=fake_patch(link)):
             with redirect_stdout(io.StringIO()):
                 self.assertEqual(1, main(["--staged", "--fail-on-warning"]))
