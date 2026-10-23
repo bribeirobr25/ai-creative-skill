@@ -91,6 +91,68 @@ def audit_commit_metadata() -> dict[str, int]:
     return dict(out)
 
 
+def _exif_tag_categories(payload: bytes) -> set[str]:
+    """Read only IFD tag IDs, never their values, from a bounded TIFF block."""
+    results: set[str] = set()
+    exif_pos = payload.find(b"Exif\x00\x00")
+    if exif_pos < 0:
+        return results
+    tiff = payload[exif_pos + 6:]
+    if len(tiff) < 8 or tiff[:2] not in (b"II", b"MM"):
+        return {"BINARY_EXIF_UNPARSEABLE"}
+    order = "little" if tiff[:2] == b"II" else "big"
+
+    def number(a: bytes) -> int:
+        return int.from_bytes(a, order)
+
+    if number(tiff[2:4]) != 42:
+        return {"BINARY_EXIF_UNPARSEABLE"}
+    pointers = [number(tiff[4:8])]
+    visited: set[int] = set()
+    while pointers:
+        offset = pointers.pop()
+        if offset in visited:
+            continue
+        visited.add(offset)
+        if offset < 8 or offset + 2 > len(tiff):
+            results.add("BINARY_EXIF_UNPARSEABLE")
+            continue
+        entries = number(tiff[offset:offset + 2])
+        if entries > 512 or offset + 2 + entries * 12 > len(tiff):
+            results.add("BINARY_EXIF_UNPARSEABLE")
+            continue
+        for idx in range(entries):
+            item = tiff[offset + 2 + idx * 12:offset + 14 + idx * 12]
+            tag = number(item[:2])
+            if tag == 0x8825:
+                results.add("BINARY_EXIF_GPS_POINTER")
+            if tag in (0x013B, 0x8298, 0xA430, 0xA431, 0x9286, 0x010E):
+                results.add("BINARY_EXIF_POTENTIAL_IDENTIFYING_TAG")
+            if tag == 0x8769 and number(item[2:4]) == 4 and number(item[4:8]) == 1:
+                pointers.append(number(item[8:12]))
+    return results
+
+
+def _embedded_link_categories(payload: bytes) -> set[str]:
+    """Classify URI hosts in metadata without emitting URIs or identifiers."""
+    import re
+    from urllib.parse import urlsplit
+    found: set[str] = set()
+    raw_urls = re.findall(rb"https?://[^\x00-\x20'\"<>]{4,320}", payload[:262144])
+    for raw in raw_urls:
+        try:
+            hostname = urlsplit(raw.decode("ascii", "ignore")).hostname or ""
+        except ValueError:
+            hostname = ""
+        if hostname in ("ns.adobe.com", "www.w3.org", "purl.org"):
+            found.add("BINARY_STANDARD_METADATA_NAMESPACE")
+        elif hostname in ("drive.google.com", "docs.google.com"):
+            found.add("BINARY_DRIVE_REFERENCE_NEEDS_REVIEW")
+        else:
+            found.add("BINARY_OTHER_EMBEDDED_URL_NEEDS_REVIEW")
+    return found
+
+
 def classify_binary_metadata(raw: bytes) -> set[str]:
     """Categorize signatures/metadata only; no pixel analysis or extraction."""
     kinds: set[str] = set()
@@ -99,8 +161,8 @@ def classify_binary_metadata(raw: bytes) -> set[str]:
         kinds.add("BINARY_JPEG")
         if b"Exif\x00\x00" in head:
             kinds.add("BINARY_EXIF_PRESENT")
-        if b"http://" in head or b"https://" in head:
-            kinds.add("BINARY_TEXT_URL_PRESENT")
+            kinds.update(_exif_tag_categories(head))
+        kinds.update(_embedded_link_categories(head))
     elif raw.startswith(b"\x89PNG\r\n\x1a\n"):
         kinds.add("BINARY_PNG")
         if any(label in head for label in (b"tEXt", b"zTXt", b"iTXt", b"eXIf")):
