@@ -86,14 +86,35 @@ class MetricsTests(unittest.TestCase):
         with self.assertRaises(InsufficientEvidence):
             outlier_ratio(self.target, x, derived_permission=True)
 
-    def test_multiple_snapshots_one_baseline_publication_do_not_inflate_n(self):
+    def test_multiple_snapshots_count_each_baseline_publication_once(self):
         one = obs("repeat", views=100)
         later = obs("repeat", views=150, snap=T0 + timedelta(minutes=10),
                     hours_old=24 + 10 / 60)
-        # One video sampled twice is not two independent comparison videos.
+        val = outlier_ratio(
+            self.target, [one, later, obs("b"), obs("c")], derived_permission=True
+        )
+        self.assertEqual(3, val["baseline_n"])
+        self.assertEqual(100, val["median_comparable_views"])
+
+    def test_closest_age_snapshot_wins_even_if_seen_later(self):
+        far = obs("repeat", views=90, snap=T0, hours_old=19.5)
+        close = obs("repeat", views=500, snap=T0 + timedelta(hours=1), hours_old=24)
+        val = outlier_ratio(
+            self.target, [far, close, obs("b", views=600), obs("c", views=700)],
+            derived_permission=True,
+        )
+        self.assertEqual(3, val["baseline_n"])
+        self.assertEqual(600, val["median_comparable_views"])
+
+    def test_conflicting_baseline_publication_metadata_rejected(self):
+        a = obs("repeat", views=100)
+        b = obs("repeat", views=120, snap=T0 + timedelta(minutes=10), hours_old=25)
         with self.assertRaises(ValidationError):
-            outlier_ratio(self.target, [one, later, obs("b"), obs("c")],
-                          derived_permission=True)
+            outlier_ratio(self.target, [a, b, obs("b"), obs("c")], derived_permission=True)
+
+    def test_ranking_rejects_boolean_limit(self):
+        with self.assertRaises(ValidationError):
+            rank_sample([obs("one", views=1)], limit=True)
 
     def test_velocity_is_interval_delta_not_total_over_age(self):
         earlier = obs("target", views=120)
