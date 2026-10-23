@@ -303,13 +303,22 @@ def classify_binary_metadata(raw: bytes) -> set[str]:
     elif raw.startswith((b"PK\x03\x04", b"PK\x05\x06")):
         kinds.add("BINARY_ZIP")
     elif len(head) >= 12 and head[4:8] == b"ftyp":
-        kinds.add("BINARY_ISOBMFF_MP4_OR_MOV")
+        if head[8:12] in (b"heic", b"heix", b"hevc", b"hevx", b"mif1"):
+            kinds.add("BINARY_HEIF_OR_HEIC_NEEDS_MEDIA_REVIEW")
+        else:
+            kinds.add("BINARY_ISOBMFF_MP4_OR_MOV")
     elif raw.startswith(b"GIF8"):
         kinds.add("BINARY_GIF")
+    elif raw.startswith(b"RIFF") and head[8:12] == b"WEBP":
+        kinds.add("BINARY_WEBP")
+        if b"EXIF" in head or b"XMP " in head:
+            kinds.add("BINARY_WEBP_METADATA_PRESENT")
     elif raw.startswith(b"RIFF"):
         kinds.add("BINARY_RIFF")
     else:
         kinds.add("BINARY_UNKNOWN_OR_OTHER")
+    if any(x in head for x in (b"xmpmeta", b"rdf:RDF", b"ns.adobe.com/xap/1.0")):
+        kinds.add("BINARY_POSSIBLE_XMP_METADATA")
     return kinds
 
 
