@@ -5,6 +5,12 @@
 **Branch:** `proposal/intelligence-architecture-pre-v0-1-20261023` (nome histórico da branch, apesar da revisão documental v0.2).  
 **PR #17:** paralelo e não alterado.
 
+## ALERTA DE AUDITORIA INDEPENDENTE (2026-10-23)
+
+**Status atualizado: `GATE_0_NOT_PASSED / IMPLEMENTATION_BLOCKED`.** A [auditoria forense independente](forensic-audit-2026-10-23.md) identificou 4 achados P0, 7 P1 e 5 P2. **Principal bloqueio:** a política oficial da YouTube Data API restringe agregações, métricas derivadas e armazenamento de dados de terceiros; não podemos assumir que ela permite o algoritmo de outliers/viralidade planejado. O vertical slice “YouTube primeiro” requer revisão de fonte/licença e finalidade **antes** de qualquer implementação.
+
+Os documentos v0.1/v0.2 abaixo continuam como **propostas históricas sob crítica** e não conferem licença, aprovação de arquitetura, readiness nem permissão de consulta paga. Esta auditoria é estática e não executa dados/API; não altera os contratos canônicos ou a `main`.
+
 ## Documento de trabalho atual (proposta, não norma)
 
 1. **[Arquitetura pré-implementação v0.2](architecture-preimplementation-v0.2.md)**: contrato de pesquisa alinhado ao `research_execution` existente, `MetricObservation` vinculada à evidência canônica, fontes e permissões, MCP opcional, métricas, rollout.
