@@ -5,13 +5,13 @@
 
 ## O que este gate faz
 
-O script `publication_guard.py` lê SOMENTE **linhas adicionadas num diff Git**, sem rede, sem pacotes externos e sem divulgar valores encontrados. Ele classifica:
+O script `publication_guard.py` examina **linhas adicionadas e caminhos de destino em diffs Git**, inclusive mudanças binárias sem cabeçalho textual `+++ b/...`, sem rede, sem pacotes externos e sem divulgar valores encontrados. Ele classifica:
 
 - `BLOCK`: formatos reconhecíveis de chaves/tokens, bearer credentials, URLs com assinaturas de acesso, marcadores de private key e arquivos de credenciais como `.env` ou `.pem`.
 - `REVIEW`: URLs de Google Drive/Docs (podem ser compartilhamentos legítimos ou privados), mídias e arquivos binários. Um alerta de Drive **não prova vazamento**.
 - Saída sem o segredo, apresentando apenas regra e arquivo/posição de linha adicionada. Atenção: o próprio nome do arquivo pode carregar contexto sensível; usar nomes neutros desde a origem.
 
-**Limites:** não procura exfiltração por base64 genérica/obfuscação, fotos com dados, texto confidencial sem marcadores, trechos em commits antigos, forks ou logs externos. A revisão humana continua obrigatória. O scanner CI funciona **depois do push**, por isso o uso local antes de publicar é indispensável.
+**Limites:** a checagem adicional de caminhos não inspeciona os bytes das mídias; não procura exfiltração por base64 genérica/obfuscação, fotos com dados, texto confidencial sem marcadores, trechos em commits antigos, forks ou logs externos. Adições, cópias e renomeações binárias sem trechos textuais passam a exigir REVIEW, enquanto exclusões isoladas não são tratadas como novas publicações. A revisão humana continua obrigatória. O scanner CI funciona **depois do push**, por isso o uso local antes de publicar é indispensável.
 
 ## Rodar antes de um commit/push local
 
