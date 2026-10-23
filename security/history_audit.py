@@ -14,7 +14,7 @@ from collections import Counter
 import subprocess
 import sys
 
-from publication_guard import BLOCK_RULES, REVIEW_RULES, PRIVATE_FILENAME, REVIEW_FILE_SUFFIXES, has_reviewable_email
+from publication_guard import BLOCK_RULES, REVIEW_RULES, PRIVATE_FILENAME, REVIEW_FILE_SUFFIXES, has_reviewable_email, EMAIL_CANDIDATE
 
 MAX_TEXT_BLOB_BYTES = 2_000_000
 MAX_BLOB_COUNT = 50000
@@ -100,9 +100,15 @@ def audit_commit_metadata() -> dict[str, int]:
     raw = git(["log", "--all", "--format=%B%x00"]).decode("utf-8", "replace")
     messages = [s for s in raw.split("\0") if s.strip()]
     out["SCANNED_COMMIT_MESSAGES"] = len(messages)
+    unique_message_emails: set[str] = set()
     for message in messages:
         for category in audit_text_blob(message, ""):
             out["COMMIT_" + category] += 1
+        for match in EMAIL_CANDIDATE.finditer(message):
+            address = match.group(0)
+            if has_reviewable_email(address):
+                unique_message_emails.add(address.casefold())
+    out["UNIQUE_COMMIT_MESSAGE_EMAILS_REVIEW"] = len(unique_message_emails)
     authors = git(["log", "--all", "--format=%ae"]).decode("utf-8", "replace").splitlines()
     emails = {v.strip().casefold() for v in authors if v.strip()}
     # Git commit author email can be personal data even though git hosts
