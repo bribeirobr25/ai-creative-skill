@@ -34,7 +34,7 @@ def capability(**changes):
         "platform": "fixture-platform", "operation": "PUBLIC_VIDEO_SEARCH",
         "adapter_version": "canary-0.1", "policy_ref": "synthetic-policy-01",
         "authorization_state": "SIMULATED_VERIFIED",
-        "purposes": ["RESEARCH_ONLY"], "projects": ["fixture-project"],
+        "purposes": ["RESEARCH_ONLY"],
         "countries": ["DE"], "geography_bases": ["SEARCH_RESULT_LOCALE"],
         "time_bases": ["PUBLISHED_DURING_WINDOW"],
         "transformations": ["DISPLAY_NATIVE", "DERIVE_RATIO", "SUMMARIZE"],
@@ -114,9 +114,18 @@ class AuthorizationBoundary(unittest.TestCase):
         d = verdict(query=q, source=capability(source_kind="OFFICIAL_API"))
         self.assertFalse(d["may_access_real_source"])
 
-    def test_missing_project_scope_fails_closed(self):
+    def test_project_authority_not_decided_by_provider_descriptor(self):
+        # This only validates a hypothetical source-rights shape.
+        # Project Profile and AUTONOMY_ENVELOPE still must authorize usage.
         d = verdict(query=request(project_id="different"))
-        self.assertIn("PROJECT_NOT_IN_SCOPE", d["reason_codes"])
+        self.assertEqual("SHAPE_CHECK_PASSED_SYNTHETIC_ONLY", d["decision"])
+        self.assertFalse(d["may_access_real_source"])
+
+    def test_source_descriptor_cannot_define_project_authority(self):
+        c = capability()
+        c["projects"] = ["fixture-project"]
+        with self.assertRaises(InvalidContract):
+            verdict(source=c)
 
     def test_purpose_not_in_scope_is_blocked(self):
         d = verdict(query=request(purpose="CREATIVE_GENERATION"))
