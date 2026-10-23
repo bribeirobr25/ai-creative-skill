@@ -143,9 +143,9 @@ class SecretRulesTests(unittest.TestCase):
         address = "contributor@" + "company.org"
         data = ("Subject\n\nCo-authored-by: Tester <" + address + ">\n").encode()
         def fake_git(args, stdin=None):
-            if args == ["log", "--all", "--format=%B%x00"]:
+            if args == ["log", "--all", "HEAD", "--format=%B%x00"]:
                 return data + b"\x00"
-            if args == ["log", "--all", "--format=%ae"]:
+            if args == ["log", "--all", "HEAD", "--format=%ae"]:
                 return b"bot@users.noreply.github.com\n"
             raise AssertionError("Unexpected Git request")
         with patch("history_audit.git", side_effect=fake_git):
@@ -160,9 +160,9 @@ class SecretRulesTests(unittest.TestCase):
         messages = (("first " + email) + "\x00" + ("second " + email)
                     + "\x00" + "test test@example.invalid" + "\x00").encode()
         def fake_git(args, stdin=None):
-            if args == ["log", "--all", "--format=%B%x00"]:
+            if args == ["log", "--all", "HEAD", "--format=%B%x00"]:
                 return messages
-            if args == ["log", "--all", "--format=%ae"]:
+            if args == ["log", "--all", "HEAD", "--format=%ae"]:
                 return b"bot@users.noreply.github.com\n"
             raise AssertionError("Unexpected git request")
         with patch("history_audit.git", side_effect=fake_git):
@@ -170,6 +170,21 @@ class SecretRulesTests(unittest.TestCase):
         self.assertEqual(1, result["UNIQUE_COMMIT_MESSAGE_EMAILS_REVIEW"])
         self.assertEqual(2, result["COMMIT_REVIEW:EMAIL_ADDRESS"])
         self.assertNotIn(email, repr(result))
+
+    def test_detached_checkout_head_is_included_in_commit_metadata_scan(self):
+        requested = []
+        def fake_git(args, stdin=None):
+            requested.append(args)
+            if args == ["log", "--all", "HEAD", "--format=%B%x00"]:
+                return b"example subject\\x00"
+            if args == ["log", "--all", "HEAD", "--format=%ae"]:
+                return b"bot@users.noreply.github.com\\n"
+            raise AssertionError("Unexpected Git query")
+        with patch("history_audit.git", side_effect=fake_git):
+            report = audit_commit_metadata()
+        self.assertEqual(1, report["SCANNED_COMMIT_MESSAGES"])
+        self.assertEqual(2, len(requested))
+        self.assertTrue(all("HEAD" in query for query in requested))
 
     def test_historical_email_is_reviewed_without_value_disclosure(self):
         address = "user@" + "privatecompany.de"
@@ -398,7 +413,7 @@ class SecretRulesTests(unittest.TestCase):
         commit2 = b"b" * 40
 
         def fake_git(args, stdin=None):
-            if args == ["rev-list", "--all"]:
+            if args == ["rev-list", "--all", "HEAD"]:
                 return commit1 + b"\n" + commit2 + b"\n"
             if args[:3] == ["ls-tree", "-r", "-z"]:
                 path = b"docs/research/public-reference.md" if args[3] == commit1.decode() else b"src/references/old-path.md"
