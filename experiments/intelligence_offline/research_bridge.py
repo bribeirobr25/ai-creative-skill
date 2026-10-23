@@ -46,6 +46,9 @@ def build_research_execution_fixture(
     source_outcome: str = "OK",
     limit: int = 10,
     population_coverage_verified: bool = False,
+    requested_national_top: bool = False,
+    source_coverage_verified: bool = False,
+    negative_coverage_satisfies_request: bool = False,
     generated_at: datetime,
 ) -> dict:
     """Make a synthetic-only contract fixture for a bounded Research result.
@@ -65,14 +68,23 @@ def build_research_execution_fixture(
         ("language", language),
     ):
         _nonempty(value, name)
-    if not isinstance(range_from, date) or not isinstance(range_to, date):
-        raise ValidationError("Date window requires date objects")
+    if type(range_from) is not date or type(range_to) is not date:
+        raise ValidationError("Date window requires plain date objects")
     if range_from >= range_to:
         raise ValidationError("End exclusive must follow start")
     if not isinstance(generated_at, datetime) or generated_at.tzinfo is None or generated_at.utcoffset() is None:
         raise ValidationError("Generated-at timestamp must be timezone-aware")
     if source_outcome not in SOURCE_OUTCOMES:
         raise ValidationError("Invalid source outcome")
+    if type(limit) is not int or not 1 <= limit <= 100:
+        raise ValidationError("Invalid limit")
+    if any(type(x) is not bool for x in (
+        population_coverage_verified, requested_national_top,
+        source_coverage_verified, negative_coverage_satisfies_request,
+    )):
+        raise ValidationError("Coverage and intent flags must be booleans")
+    if negative_coverage_satisfies_request and source_outcome != "NO_RESULTS":
+        raise ValidationError("Negative completion intent requires NO_RESULTS outcome")
     rows = unique_observations(observation_rows)
 
     # To be explicit: "OK with no rows" is NOT a valid full negative scan.
@@ -100,7 +112,13 @@ def build_research_execution_fixture(
     elif rows:
         status = "PARTIAL"
     elif source_outcome == "NO_RESULTS":
-        status = "INSUFFICIENT_EVIDENCE"
+        # A fully completed empty search may answer an ABSENCE question, but
+        # it does not answer a request for a Top N of existing videos.
+        status = (
+            "COMPLETE"
+            if negative_coverage_satisfies_request and source_coverage_verified
+            else "INSUFFICIENT_EVIDENCE"
+        )
     else:
         status = "BLOCKED"
 
@@ -146,7 +164,10 @@ def build_research_execution_fixture(
     ranking_note = "NO_OBSERVATIONS"
     if rows and any(row.views is not None for row in rows):
         try:
-            ranked = rank_sample(rows, limit=limit, population_coverage_verified=population_coverage_verified)
+            ranked = rank_sample(
+                rows, limit=limit, requested_national_top=requested_national_top,
+                population_coverage_verified=population_coverage_verified,
+            )
             ranked_refs = [
                 next(e["evidence_id"] for e in evidence if e["entity_scope"] == f"{rows[0].platform}:{result['publication_id']}")
                 for result in ranked["results"]
@@ -154,13 +175,13 @@ def build_research_execution_fixture(
             ranking_note = ranked["population"]
         except (InsufficientEvidence, ValidationError):
             ranking_note = "NOT_COMPARABLE"
-    if limit < 1 or limit > 100:
-        raise ValidationError("Invalid limit")
-
     # A source attempt can be OK yet the research conclusion insufficient.
     # Separate source retrieval outcome from the ranking deliverable status.
     if source_outcome == "OK" and rows:
-        if all(r.views is None for r in rows):
+        if requested_national_top and not population_coverage_verified:
+            status = "INSUFFICIENT_EVIDENCE"
+            ranking_note = "NATIONAL_COVERAGE_UNVERIFIED"
+        elif all(r.views is None for r in rows):
             status = "INSUFFICIENT_EVIDENCE"
         elif ranking_note == "NOT_COMPARABLE" or any(r.views is None for r in rows):
             status = "PARTIAL"
@@ -192,6 +213,9 @@ def build_research_execution_fixture(
             "geography_basis": "UNKNOWN",
             "population_verified": False if not population_coverage_verified else "SYNTHETIC_FIXTURE_ONLY",
             "report_is_real_market_research": False,
+            "source_coverage_verified": source_coverage_verified,
+            "requested_national_top": requested_national_top,
+            "negative_coverage_satisfies_request": negative_coverage_satisfies_request,
         },
         "evidence_clusters": evidence,
         "counterevidence": [],
