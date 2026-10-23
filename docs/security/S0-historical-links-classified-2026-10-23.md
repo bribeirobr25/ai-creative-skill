@@ -2,7 +2,7 @@
 
 **Status:** `LINK_TRIAGE_COMPLETED_FOR_FOUND_CANDIDATES / GLOBAL_S0_MANUAL_REVIEW_OPEN`.  
 **PR:** [#20](https://github.com/bribeirobr25/ai-creative-skill/pull/20).  
-**Evidência de CI:** varredura de refs atuais do repositório público, com preservação de todos os aliases de caminhos; [job de auditoria e testes](https://github.com/bribeirobr25/ai-creative-skill/actions/runs/39984767026). Revisões reais foram realizadas por leituras autorizadas, sem logs de URLs ou IDs.
+**Evidência de CI:** varredura de refs atuais do repositório público, com preservação de todos os aliases de caminhos; [job de auditoria e testes](https://github.com/bribeirobr25/ai-creative-skill/actions/runs/39993964607/job/120552569822). Revisões reais foram realizadas por leituras autorizadas, sem logs de URLs ou IDs.
 
 ## 1. Descoberta: correspondências não significam recursos diferentes
 
