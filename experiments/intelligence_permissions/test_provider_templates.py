@@ -11,6 +11,7 @@ def fake_request(cap):
         "project_id": "fixture-only", "purpose": "RESEARCH_ONLY",
         "country": "DE", "geography_basis": "SEARCH_RESULT_LOCALE",
         "time_basis": "PUBLISHED_DURING_WINDOW",
+        "window_start": "2026-10-01", "window_end": "2026-10-24",
         "fields": ["viewCount"], "transformations": ["DISPLAY_NATIVE"],
         "storage_mode": "TRANSIENT_ONLY", "retention_days": 0,
         "requires_paid": False, "requests_raw_media": False,
