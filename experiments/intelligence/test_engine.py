@@ -50,14 +50,14 @@ class InputAndIdentityTests(unittest.TestCase):
                     "publication_id": "v", "channel_id": "c",
                     "platform": "synthetic", "content_type": "long",
                     "views": 5, "observed_at": T0,
-                    "published_at": T0 - timedelta(hours=1),
+                    "published_at": T0 - timedelta(hours=1), "source_kind": "SYNTHETIC_FIXTURE",
                     field: value,
                 })
         with self.assertRaises(ValidationError):
             Observation(
                 publication_id="v", channel_id="c", platform="synthetic",
                 content_type="long", views=5, observed_at="not-a-datetime",
-                published_at=T0 - timedelta(hours=1),
+                published_at=T0 - timedelta(hours=1), source_kind="SYNTHETIC_FIXTURE",
             )
 
     def test_exact_duplicate_deduplicated(self):
