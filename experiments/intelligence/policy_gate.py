@@ -90,6 +90,8 @@ def validate_request(raw: Mapping) -> Mapping:
         require(retention == 0, "TRANSIENT_CANNOT_RETAIN")
     if storage == "PERSIST":
         require(retention > 0, "PERSIST_REQUIRES_TTL")
+    if "redistribute_output" in q:
+        require(type(q["redistribute_output"]) is bool, "INVALID_REDISTRIBUTION_FLAG")
     for key in ("requires_paid", "requests_raw_media", "background_collection"):
         require(type(q.get(key)) is bool, "INVALID_" + key.upper())
     calls = q.get("estimated_calls")
@@ -115,6 +117,8 @@ def validate_capability(raw: Mapping) -> Mapping:
     for field, grant in grants.items():
         require(type(field) is str and bool(field.strip()), "INVALID_GRANTED_FIELD")
         g = mapping(grant, "GRANT")
+        text_field(g, "data_class")
+        text_field(g, "retention_policy_ref")
         actions = string_list(g.get("actions"), "GRANT_ACTIONS")
         require(set(actions) <= ACTIONS, "INVALID_GRANT_ACTION")
         ttl = g.get("max_retention_days")
@@ -196,7 +200,8 @@ def evaluate(request: Mapping, capability: Mapping, *, now: str) -> dict:
                ("PERSIST" not in allowed or
                 q["retention_days"] > grant["max_retention_days"]))
         reject("FIELD_REDISTRIBUTION_NOT_GRANTED",
-               "SUMMARIZE" in q["transformations"] and "REDISTRIBUTE" not in allowed)
+               q.get("redistribute_output", False) is True and
+               "REDISTRIBUTE" not in allowed)
 
     reject("PAID_RESEARCH_NOT_ENABLED_IN_S3", q["requires_paid"])
     reject("RAW_MEDIA_NOT_AUTHORIZED_IN_S3", q["requests_raw_media"])
