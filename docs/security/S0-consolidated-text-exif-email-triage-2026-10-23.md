@@ -78,3 +78,15 @@ Isso reclassifica as 22 ocorrências: **são atribuições técnicas repetidas d
 O check de diff do mesmo job retornou `0 BLOCK / 0 REVIEW` para as linhas novas examinadas. Esse número não apaga nem ignora os alertas históricos já classificados.
 
 **O primeiro job de 73 testes citado no início continua sendo evidência do commit anterior. A evidência de execução mais recente desta revisão é o job de 74 testes acima.**
+
+## 7. Encerramento da fase S0 por declaração do proprietário · 23/10/2026
+
+**Decisão registrada:** `S0_CLOSED_BY_OWNER_ATTESTATION_WITH_RESIDUAL_LIMITATIONS`. O proprietário declarou que os materiais de mídia sob sua responsabilidade são **imagens/vídeos gerados com IA ou fotografias/vídeos captados por ele**, e que os **textos são de sua própria autoria**. Pediu expressamente o encerramento desta fase de revisão. Essa declaração é registrada como **atestação de proveniência/autoria do proprietário**, não como inspeção independente arquivo a arquivo nem parecer de licença.
+
+**Tratamento:** a revisão aprofundada de autoria e proveniência das mídias/textos existentes deixa de ser bloqueio **para encerrar a triagem S0 administrativa**. Não houve nova inspeção visual global nem leitura semântica dos valores EXIF. O histórico já documentado sobre links/branches, as limitações dos scanners e os resultados de CI permanecem preservados.
+
+**Riscos residuais não certificados:** direitos de eventuais elementos de terceiros presentes em conteúdos gerados por IA ou nas gravações (pessoas, marcas, música etc.), termos das ferramentas utilizadas, dados privados acidentais em pixels/EXIF, histórico de acesso a links, endereço de autoria/coautoria em metadados Git e superfícies externas (forks/caches). A declaração de autoria **não equivale** a autorização para tornar público um e-mail pessoal. Esses riscos ficam registrados, mas a fase S0 não será mantida aberta indefinidamente apenas por falta de inspeção exaustiva.
+
+**Separação de gates:** encerrar S0 **não aprova** a ADR-0003, não ativa o preflight antes do push, não libera automaticamente merge do PR #20, não altera `main`, não autoriza APIs/dados reais de Intelligence e não dispensa verificação de novas publicações. Se surgir evidência concreta de exposição, reabrir a investigação pontual e conter o risco na origem.
+
+**Fonte da decisão:** manifestação expressa do proprietário nesta conversa, em 23/10/2026. Sem publicar URLs, imagens, e-mails ou metadados identificadores.
