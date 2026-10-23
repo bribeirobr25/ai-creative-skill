@@ -1,0 +1,24 @@
+name: Experimental Intelligence Offline Canary
+on:
+  pull_request:
+    paths:
+      - 'experiments/intelligence_offline/**'
+      - '.github/workflows/intelligence-offline-experiment.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  offline:
+    name: Synthetic-only invariant tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Verify synthetic experiment invariants
+        run: python -m unittest discover -s experiments/intelligence_offline -p 'test_*.py' -v
+      - name: Show reproducible offline Monte Carlo scenario
+        run: python experiments/intelligence_offline/engine.py
