@@ -171,6 +171,38 @@ class SecretRulesTests(unittest.TestCase):
             with self.assertRaisesRegex(RuntimeError, "incomplete"):
                 _verified_branch_coverage()
 
+    def test_exif_gps_and_author_tags_are_classified_without_values(self):
+        # Small synthetic TIFF IFD: GPSInfo tag and Artist tag.
+        exif = (
+            b"Exif\x00\x00" + b"II\x2a\x00" + (8).to_bytes(4, "little")
+            + (2).to_bytes(2, "little")
+            + (0x8825).to_bytes(2, "little") + (4).to_bytes(2, "little")
+            + (1).to_bytes(4, "little") + (40).to_bytes(4, "little")
+            + (0x013B).to_bytes(2, "little") + (2).to_bytes(2, "little")
+            + (1).to_bytes(4, "little") + (88).to_bytes(4, "little")
+            + (0).to_bytes(4, "little")
+        )
+        flags = classify_binary_metadata(b"\xff\xd8\xff" + exif)
+        self.assertIn("BINARY_EXIF_GPS_POINTER", flags)
+        self.assertIn("BINARY_EXIF_POTENTIAL_IDENTIFYING_TAG", flags)
+        self.assertTrue(all("88" not in f for f in flags))
+
+    def test_malformed_exif_gets_review_classification(self):
+        flags = classify_binary_metadata(b"\xff\xd8\xff" + b"Exif\x00\x00" + b"broken")
+        self.assertIn("BINARY_EXIF_UNPARSEABLE", flags)
+
+    def test_standard_metadata_namespace_is_separate_from_link_review(self):
+        flags = classify_binary_metadata(
+            b"\xff\xd8\xff" + b'http://ns.adobe.com/xap/1.0/'
+        )
+        self.assertIn("BINARY_STANDARD_METADATA_NAMESPACE", flags)
+        self.assertNotIn("BINARY_OTHER_EMBEDDED_URL_NEEDS_REVIEW", flags)
+
+    def test_drive_uri_in_jpeg_metadata_requires_review(self):
+        url = b"https://" + b"drive.google.com/file/d/" + b"X" * 32
+        flags = classify_binary_metadata(b"\xff\xd8\xff" + url)
+        self.assertIn("BINARY_DRIVE_REFERENCE_NEEDS_REVIEW", flags)
+
     def test_jpeg_exif_flag_without_publishing_metadata(self):
         raw = b"\xff\xd8\xff" + b"\x00" * 8 + b"Exif\x00\x00" + b"GPS private"
         result = classify_binary_metadata(raw)
