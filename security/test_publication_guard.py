@@ -70,7 +70,7 @@ class SecretRulesTests(unittest.TestCase):
 
     def test_unparseable_diff_header_fails_open_to_manual_review_not_silence(self):
         diff = "diff --git a/incomplete\\nBinary files differ\\n".replace("\\n", "\n")
-        self.assertIn(("REVIEW", "UNPARSEABLE_DIFF_HEADER"), rules(diff))
+        self.assertIn(("BLOCK", "UNPARSEABLE_DIFF_HEADER"), rules(diff))
 
     def test_two_binary_files_reviewed_separately(self):
         diff = (
@@ -80,6 +80,57 @@ class SecretRulesTests(unittest.TestCase):
             "Binary files /dev/null and b/two.png differ\\n"
         ).replace("\\n", "\n")
         self.assertEqual(2, sum(rule == "BINARY_OR_MEDIA_REVIEW" for _, rule in rules(diff)))
+
+    def test_token_after_formfeed_is_scanned(self):
+        synthetic = "ghp_" + "A" * 32
+        self.assertIn(("BLOCK", "GITHUB_TOKEN"),
+                      rules(fake_patch("safe" + "\f" + synthetic)))
+
+    def test_token_after_unicode_line_separator_is_scanned(self):
+        synthetic = "ghp_" + "B" * 32
+        self.assertIn(("BLOCK", "GITHUB_TOKEN"),
+                      rules(fake_patch("safe" + "\u2028" + synthetic)))
+
+    def test_quoted_plus_header_with_spaces_is_scanned(self):
+        synthetic = "ghp_" + "B" * 32
+        patch_text = (
+            'diff --git "a/my file.txt" "b/my file.txt"\n'
+            'new file mode 100644\n'
+            '--- /dev/null\n'
+            '+++ "b/my file.txt"\n'
+            '@@ -0,0 +1 @@\n'
+            '+' + synthetic + '\n'
+        )
+        self.assertIn(("BLOCK", "GITHUB_TOKEN"), rules(patch_text))
+
+    def test_nonutf8_git_diff_is_operational_failure_not_clean(self):
+        from types import SimpleNamespace
+        with patch("publication_guard.subprocess.run",
+                   return_value=SimpleNamespace(stdout=b"\\xffbroken".replace(b"\\xff", b"\xff"))):
+            from publication_guard import _get_diff
+            from argparse import Namespace
+            with self.assertRaises(RuntimeError):
+                _get_diff(Namespace(staged=True, range=None))
+
+    def test_real_git_accented_path_and_binary_name(self):
+        import tempfile
+        import subprocess
+        from pathlib import Path
+        with tempfile.TemporaryDirectory() as d:
+            def git(*args):
+                return subprocess.run(["git", "-C", d, *args],
+                                      capture_output=True, check=True).stdout
+            git("init", "-q")
+            (Path(d) / "relatório.txt").write_text(
+                "token=" + "ghp_" + "Q" * 32 + "\n", encoding="utf-8")
+            (Path(d) / "secrets").mkdir()
+            (Path(d) / "secrets" / ".env").write_bytes(b"\x00\xff\x00")
+            git("add", ".")
+            patch_bytes = git("-c", "core.quotePath=false", "diff", "--cached",
+                              "--no-ext-diff", "--no-color", "--unified=0", "--")
+            result = rules(patch_bytes.decode("utf-8"))
+            self.assertIn(("BLOCK", "GITHUB_TOKEN"), result)
+            self.assertIn(("BLOCK", "PRIVATE_FILE_PATH"), result)
 
     def test_github_classic_token(self):
         token = "ghp_" + "X" * 32
