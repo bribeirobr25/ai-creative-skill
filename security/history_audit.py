@@ -212,12 +212,28 @@ def _verified_branch_coverage() -> int:
     return len(remote)
 
 
+def _scope_bucket(path: str) -> str:
+    """Broad, non-identifying origin bucket for manual review planning."""
+    if path.startswith("docs/research/"):
+        return "RESEARCH"
+    if path.startswith("docs/migration/"):
+        return "MIGRATION"
+    if path.startswith("validation/"):
+        return "VALIDATION"
+    if path.startswith(("security/", "tests/")):
+        return "TESTS"
+    if path.startswith("src/"):
+        return "SOURCE"
+    return "OTHER"
+
+
 def scan_history() -> dict:
     """Conservative scan: every readable reachable blob version within cap."""
     branch_count = _verified_branch_coverage()
     paths, sizes = _reachable_blobs()
     summary = Counter()
     summary["VERIFIED_REMOTE_BRANCH_HEADS"] = branch_count
+    exif_sensitive_paths: set[str] = set()
     for oid, path in paths.items():
         size = sizes[oid]
         if size > MAX_TEXT_BLOB_BYTES:
@@ -230,8 +246,11 @@ def scan_history() -> dict:
         raw = git(["cat-file", "blob", oid])
         if b"\0" in raw:
             summary["SKIPPED_BINARY_BLOB"] += 1
-            for kind in classify_binary_metadata(raw):
+            flags = classify_binary_metadata(raw)
+            for kind in flags:
                 summary[kind] += 1
+            if "BINARY_EXIF_POTENTIAL_IDENTIFYING_TAG" in flags:
+                exif_sensitive_paths.add(path)
             if PRIVATE_FILENAME.search(path):
                 summary["BLOCK:PRIVATE_FILE_PATH"] += 1
             if path.lower().endswith(REVIEW_FILE_SUFFIXES):
@@ -245,7 +264,10 @@ def scan_history() -> dict:
         summary["SCANNED_TEXT_BLOB"] += 1
         for category in audit_text_blob(value, path):
             summary[category] += 1
+            if category in ("REVIEW:DRIVE_REFERENCE", "REVIEW:SHAREABLE_STORAGE_LINK"):
+                summary["LINK_SCOPE:" + _scope_bucket(path)] += 1
     summary["REACHABLE_BLOB_VERSIONS"] = len(paths)
+    summary["UNIQUE_PATHS_WITH_EXIF_IDENTIFYING_TAG"] = len(exif_sensitive_paths)
     summary.update(audit_commit_metadata())
     return dict(sorted(summary.items()))
 
