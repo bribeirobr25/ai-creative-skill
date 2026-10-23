@@ -4,7 +4,9 @@
 
 This candidate is stacked on [PR #21 (S2 contracts)](https://github.com/bribeirobr25/ai-creative-skill/pull/21), itself stacked on [PR #18 (architecture)](https://github.com/bribeirobr25/ai-creative-skill/pull/18). It neither modifies the S2 code nor merges into the AI Creative Skill. It is a small, pure Python standard-library laboratory with **no HTTP client, subprocess, network access, API keys, provider SDK, persistence or spending**.
 
-Run: `python -m unittest discover -s experiments/intelligence_permissions -p 'test_*.py' -v`.
+Run S2+S3 in a stacked checkout: `PYTHONPATH=experiments/intelligence_contracts:experiments/intelligence_permissions python -m unittest discover -s experiments/intelligence_permissions -p 'test_*.py' -v`.
+
+**S3+S2 CI:** [113/113 synthetic tests PASS](https://github.com/bribeirobr25/ai-creative-skill/actions/runs/40022017507), commit `6b0637d65b74fb57e2a7a717ad91c7762706c6c5` (42 S2 + 71 S3). [S3 review and safe owner setup checklist](S3-offline-review-2026-10-23.md). The CI checks test the proposed code only, never provider permission.
 
 ## Purpose
 
@@ -25,6 +27,8 @@ Before any external provider can be connected, the proposed SourceCapabilityReco
 For a successful **synthetic** candidate the response is `SIMULATION_ELIGIBLE` with `may_access_real_source=false`, `may_spend=false`, `may_store_real_data=false`, `may_publish=false`. It is **not** an actionable real-source authorization. Invalid types fail with `InvalidContract`, and policy mismatches produce sanitized reason codes. Neither tokens, filenames, private URLs nor raw source data are logged.
 
 `retention_verdict` only computes when a hypothetical fixture would need purge/invalidation. It does **not** create, refresh, delete or persist actual records. Rights tied to downstream derivatives need a future revocation workflow in S5/S6.
+
+For a request passed from S2, `s2_projection.py` enforces exactly one platform and copies the operation, country, geography meaning, temporal meaning and exact **inclusive-start/exclusive-end** window without substitution. Provider templates carry no actual history coverage. The S3 candidate verifies synthetic request windows against explicitly simulated availability windows; its future real source rights must be separately checked. The date-window and provider TTL fixture values are **not** real platform policies.
 
 ## Provider templates: hypotheses, NOT approved profiles
 
