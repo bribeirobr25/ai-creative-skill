@@ -138,6 +138,25 @@ class MetricsTests(unittest.TestCase):
         with self.assertRaises(ValidationError):
             outlier_ratio(self.target, [a, b, obs("b"), obs("c")], derived_permission=True)
 
+    def test_cross_snapshot_channel_conflict_not_hidden_by_cohort_filter(self):
+        good = obs("repeat", channel="c1", views=100)
+        changed = obs("repeat", channel="other", views=130,
+                      snap=T0 + timedelta(hours=1), hours_old=25)
+        with self.assertRaises(ValidationError):
+            outlier_ratio(
+                self.target, [good, changed, obs("b"), obs("c")],
+                derived_permission=True,
+            )
+
+    def test_target_publication_conflict_cannot_be_silently_excluded(self):
+        contradictory = obs("target", channel="other", views=100,
+                            snap=T0 - timedelta(hours=1), hours_old=23)
+        with self.assertRaises(ValidationError):
+            outlier_ratio(
+                self.target, [contradictory, *self.baseline],
+                derived_permission=True,
+            )
+
     def test_ranking_rejects_boolean_limit(self):
         with self.assertRaises(ValidationError):
             rank_sample([obs("one", views=1)], limit=True)
