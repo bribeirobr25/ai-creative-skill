@@ -2,7 +2,7 @@
 
 **Estado:** TRIAGEM BINÁRIA AMPLIADA / METADADOS COMPLETOS E REVISÃO VISUAL GLOBAL PENDENTES.  
 **Branch:** PR #20, proposta não canônica. Nenhum arquivo de imagem ou permissão foi alterado.  
-**Fonte:** auditor histórico nos 21 heads públicos alcançáveis, binários examinados por assinatura e tags EXIF sem revelar valores. [Evidência de execução e testes](https://github.com/bribeirobr25/ai-creative-skill/actions/runs/39995689902/job/120555222613) (associar resultados ao SHA efetivamente testado).
+**Fonte:** auditor histórico nos 21 heads públicos alcançáveis, binários examinados por assinatura e tags EXIF sem revelar valores. [Evidência de execução e testes](https://github.com/bribeirobr25/ai-creative-skill/actions/runs/39994741760/job/120555222613) (associar resultados ao SHA efetivamente testado).
 
 ## 1. Categorias observadas
 
