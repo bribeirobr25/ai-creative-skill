@@ -15,6 +15,11 @@ O proprietário esclareceu que a ferramenta é **de uso próprio e não será co
 
 Os documentos v0.1/v0.2 abaixo continuam como **propostas históricas sob crítica** e não conferem licença, aprovação de arquitetura, readiness nem permissão de consulta paga. Esta auditoria é estática e não executa dados/API; não altera os contratos canônicos ou a `main`.
 
+## Viabilidade de fontes e laboratório sintético
+
+- [YouTube: policy preflight por operação (23/10/2026)](youtube-source-permission-preflight-2026-10-23.md): política geral, aprovação adicional para Analytics & Reporting, retenção por classe de dados e quota. Verificação documental, **sem chaves, chamadas ou aprovação recebida**.
+- [PR #19 · Canário sintético independente](https://github.com/bribeirobr25/ai-creative-skill/pull/19): experimento Python offline, não integrado à skill; resultados dos testes devem ser consultados no CI do PR. Os algoritmos desse PR **não podem receber dados reais da YouTube API sem verificação de permissão**.
+
 ## Documento de trabalho atual (proposta, não norma)
 
 1. **[Arquitetura pré-implementação v0.2](architecture-preimplementation-v0.2.md)**: contrato de pesquisa alinhado ao `research_execution` existente, `MetricObservation` vinculada à evidência canônica, fontes e permissões, MCP opcional, métricas, rollout.
