@@ -8,6 +8,7 @@ Python standard library only. No network, filesystem, secrets or billing.
 from __future__ import annotations
 
 from datetime import date, datetime
+from math import isfinite
 from typing import Mapping
 
 SOURCE_OUTCOMES = frozenset({
@@ -195,6 +196,11 @@ def validate_research_execution(
                  "metric source attempt disagrees with Evidence")
         _id(m.get("subject_id"), "metric.subject_id")
         _id(m.get("metric_name"), "metric.metric_name")
+        _id(m.get("observation_basis"), "metric.observation_basis")
+        _id(m.get("measurement_window"), "metric.measurement_window")
+        _id(m.get("geography_meaning"), "metric.geography_meaning")
+        _id(m.get("population_coverage"), "metric.population_coverage")
+        _id(m.get("license_policy_ref"), "metric.license_policy_ref")
         _time(m.get("observed_at"), "metric.observed_at")
         _require(m.get("provenance") == "SYNTHETIC_FIXTURE",
                  "metric is not a synthetic fixture")
@@ -202,8 +208,8 @@ def validate_research_execution(
                  "S2 cannot approve persistence")
         value = m.get("metric_value")
         _require(value == "UNKNOWN" or
-                 (type(value) in (int, float) and value >= 0),
-                 "metric value must be nonnegative or UNKNOWN")
+                 (type(value) in (int, float) and isfinite(value) and value >= 0),
+                 "metric value must be finite nonnegative or UNKNOWN")
     ranked = _list(intelligence.get("ranked_evidence_refs"), "ranked_evidence_refs")
     _require(len(ranked) == len(set(ranked)) and
              all(type(ref) is str and ref in registry for ref in ranked),
@@ -221,8 +227,8 @@ def validate_research_execution(
 
 
 def evaluate_source_candidate(
-    query: Mapping, capability: Mapping, *, requested_fields: list[str],
-    transformation: str, storage: str = "TRANSIENT_ONLY",
+    query: Mapping, capability: Mapping, *, purpose: str,
+    requested_fields: list[str], transformation: str, storage: str = "TRANSIENT_ONLY",
     requires_paid: bool = False, approval_ref: str | None = None,
     reservation_ref: str | None = None
 ) -> dict:
@@ -237,6 +243,7 @@ def evaluate_source_candidate(
     _require(type(requires_paid) is bool, "requires_paid must be a boolean")
     _require(storage in ("TRANSIENT_ONLY", "PERSIST"), "unknown storage disposition")
     _id(transformation, "transformation")
+    _id(purpose, "purpose")
     _require(type(requested_fields) is list and all(type(x) is str and x for x in requested_fields),
              "requested_fields must be names")
     if rec.get("source_kind") != "SYNTHETIC_FIXTURE":
@@ -247,6 +254,8 @@ def evaluate_source_candidate(
         reasons.append("ACCESS_NOT_VERIFIED")
     if rec.get("processing_rights") != "VERIFIED_SYNTHETIC":
         reasons.append("PROCESSING_RIGHTS_UNVERIFIED")
+    if purpose not in rec.get("allowed_purposes", []):
+        reasons.append("PURPOSE_NOT_AUTHORIZED")
     if query["geographic_filter"]["meaning"] not in rec.get("documented_geo_semantics", []):
         reasons.append("GEO_SEMANTICS_MISMATCH")
     if query["time_filter"]["meaning"] not in rec.get("documented_time_semantics", []):
