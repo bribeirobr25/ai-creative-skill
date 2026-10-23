@@ -33,11 +33,14 @@ def git(cmd: list[str], stdin: bytes | None = None) -> bytes:
 def _reachable_blobs() -> tuple[dict[str, set[str]], dict[str, int]]:
     """Map every reachable blob to ALL its paths in reachable commit trees.
 
+    Include detached checkout HEAD explicitly: pull-request merge refs and fork
+    commits need not be reachable through refs/remotes/origin or --all alone.
+
     git rev-list --objects --all reports only one path hint per object. That is
     insufficient for privacy triage if the same content occurs under multiple
     paths. Inspect every reachable commit tree instead, de-duplicate by SHA.
     """
-    commits = git(["rev-list", "--all"]).decode("ascii", "strict").splitlines()
+    commits = git(["rev-list", "--all", "HEAD"]).decode("ascii", "strict").splitlines()
     if not commits or len(commits) > 10000:
         raise RuntimeError("Commit inventory empty or beyond review cap")
     item_paths: dict[str, set[str]] = {}
@@ -95,9 +98,9 @@ def audit_text_blob(text: str, path: str) -> set[str]:
 
 
 def audit_commit_metadata() -> dict[str, int]:
-    """Scan reachable commit messages and author addresses without logging them."""
+    """Scan reachable commit messages and author addresses, including detached HEAD."""
     out: Counter[str] = Counter()
-    raw = git(["log", "--all", "--format=%B%x00"]).decode("utf-8", "replace")
+    raw = git(["log", "--all", "HEAD", "--format=%B%x00"]).decode("utf-8", "replace")
     messages = [s for s in raw.split("\0") if s.strip()]
     out["SCANNED_COMMIT_MESSAGES"] = len(messages)
     unique_message_emails: set[str] = set()
@@ -120,7 +123,7 @@ def audit_commit_metadata() -> dict[str, int]:
                 out["REVIEW:OTHER_COMMIT_MESSAGE_EMAIL_LINES"] += 1
             unique_message_emails.update(x.casefold() for x in matches)
     out["UNIQUE_COMMIT_MESSAGE_EMAILS_REVIEW"] = len(unique_message_emails)
-    authors = git(["log", "--all", "--format=%ae"]).decode("utf-8", "replace").splitlines()
+    authors = git(["log", "--all", "HEAD", "--format=%ae"]).decode("utf-8", "replace").splitlines()
     emails = {v.strip().casefold() for v in authors if v.strip()}
     # Git commit author email can be personal data even though git hosts
     # display it. Noreply addresses and generic localhost examples are omitted.
