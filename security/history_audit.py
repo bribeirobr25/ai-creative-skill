@@ -295,6 +295,30 @@ def _link_fingerprints(text: str) -> dict[str, set[str]]:
     return result
 
 
+def _generic_share_host_types(text: str) -> dict[str, set[str]]:
+    """Group link hashes into host classes without logging URLs or identifiers."""
+    import re
+    import hashlib
+    from urllib.parse import urlsplit
+    result: dict[str, set[str]] = {"PUBLIC_GITHUB": set(), "GOOGLE_STORAGE": set(), "OTHER": set()}
+    links = re.findall(
+        r"""https?://[^\s<>"')]{1,1200}/(?:share|sharing|download)/[^\s<>"')]{1,1200}""",
+        text, flags=re.I,
+    )
+    for url in links:
+        try:
+            host = (urlsplit(url).hostname or "").lower()
+        except ValueError:
+            host = ""
+        bucket = (
+            "PUBLIC_GITHUB" if host in ("github.com", "www.github.com")
+            else "GOOGLE_STORAGE" if host in ("drive.google.com", "docs.google.com")
+            else "OTHER"
+        )
+        result[bucket].add(hashlib.sha256(url.rstrip(".,;").encode("utf-8")).hexdigest())
+    return result
+
+
 def _scope_bucket(path: str) -> str:
     """Broad, non-identifying origin bucket for manual review planning."""
     if path.startswith("docs/research/"):
@@ -318,6 +342,7 @@ def scan_history() -> dict:
     summary["VERIFIED_REMOTE_BRANCH_HEADS"] = branch_count
     exif_sensitive_paths: set[str] = set()
     distinct_links: dict[str, set[str]] = {"DRIVE": set(), "GENERIC_SHARE": set()}
+    generic_host_classes: dict[str, set[str]] = {"PUBLIC_GITHUB": set(), "GOOGLE_STORAGE": set(), "OTHER": set()}
     summary["MULTIPATH_BLOB_VERSIONS"] = sum(len(aliases) > 1 for aliases in paths.values())
     summary["REACHABLE_PATH_ALIASES"] = sum(len(aliases) for aliases in paths.values())
     for oid, aliases in paths.items():
@@ -347,6 +372,8 @@ def scan_history() -> dict:
         fingerprints = _link_fingerprints(value)
         for category, hashes in fingerprints.items():
             distinct_links[category].update(hashes)
+        for category, hashes in _generic_share_host_types(value).items():
+            generic_host_classes[category].update(hashes)
         for flag in classify_link_metadata(value):
             summary[flag] += 1
         for category in audit_text_blob(value, ""):
@@ -358,6 +385,8 @@ def scan_history() -> dict:
     summary["UNIQUE_PATHS_WITH_EXIF_IDENTIFYING_TAG"] = len(exif_sensitive_paths)
     summary["UNIQUE_DRIVE_URL_STRINGS"] = len(distinct_links["DRIVE"])
     summary["UNIQUE_GENERIC_SHARE_URL_STRINGS"] = len(distinct_links["GENERIC_SHARE"])
+    for host_class, hashes in generic_host_classes.items():
+        summary["GENERIC_SHARE_HOST:" + host_class] = len(hashes)
     summary.update(audit_commit_metadata())
     return dict(sorted(summary.items()))
 
