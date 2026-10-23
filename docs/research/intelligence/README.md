@@ -5,6 +5,10 @@
 **Branch:** `proposal/intelligence-architecture-pre-v0-1-20261023` (nome histórico da branch, apesar da revisão documental v0.2).  
 **PR #17:** paralelo e não alterado.
 
+## CORREÇÃO POSTERIOR: USO PESSOAL + AUTORIZAÇÃO ANALÍTICA DO YOUTUBE (2026-10-23)
+
+O proprietário esclareceu que a ferramenta é **de uso próprio e não será comercializada**. A auditoria anterior também deixou de considerar a [política adicional do YouTube introduzida em 2026](personal-use-youtube-2026-policy-clarification.md), que prevê scores, comparações e retenção ampliada para determinados casos de Analytics & Reporting **formalmente aprovados**. Portanto, o bloqueio do YouTube é de **escopo e autorização ainda não resolvidos**, não de inviabilidade absoluta de rankings/outliers. O uso pessoal não concede automaticamente permissões especiais, e eventuais pesquisas para campanhas de marca merecem classificação por finalidade. A revisão mantém `GATE_0_NOT_PASSED` até essa verificação, preservando as conclusões históricas anteriores com a correção visível.
+
 ## ALERTA DE AUDITORIA INDEPENDENTE (2026-10-23)
 
 **Status atualizado: `GATE_0_NOT_PASSED / IMPLEMENTATION_BLOCKED`.** A [auditoria forense independente](forensic-audit-2026-10-23.md) identificou 4 achados P0, 7 P1 e 5 P2. **Principal bloqueio:** a política oficial da YouTube Data API restringe agregações, métricas derivadas e armazenamento de dados de terceiros; não podemos assumir que ela permite o algoritmo de outliers/viralidade planejado. O vertical slice “YouTube primeiro” requer revisão de fonte/licença e finalidade **antes** de qualquer implementação.
