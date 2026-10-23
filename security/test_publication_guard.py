@@ -132,6 +132,50 @@ class SecretRulesTests(unittest.TestCase):
             self.assertIn(("BLOCK", "GITHUB_TOKEN"), result)
             self.assertIn(("BLOCK", "PRIVATE_FILE_PATH"), result)
 
+    def test_real_git_quoted_binary_secret_path_with_spaces(self):
+        import tempfile
+        import subprocess
+        from pathlib import Path
+        with tempfile.TemporaryDirectory() as d:
+            def git(*args):
+                return subprocess.run(["git", "-C", d, *args],
+                                      capture_output=True, check=True).stdout
+            git("init", "-q")
+            (Path(d) / "internal files").mkdir()
+            (Path(d) / "internal files" / ".env").write_bytes(b"\\x00\\xff".replace(b"\\x00", b"\x00").replace(b"\\xff", b"\xff"))
+            git("add", ".")
+            patch_bytes = git("-c", "core.quotePath=false", "diff",
+                              "--cached", "--no-ext-diff", "--no-color", "--unified=0")
+            self.assertIn(("BLOCK", "PRIVATE_FILE_PATH"), rules(patch_bytes.decode("utf-8")))
+
+    def test_git_commit_history_detects_token_removed_before_final_diff(self):
+        import tempfile
+        import subprocess
+        from pathlib import Path
+        with tempfile.TemporaryDirectory() as d:
+            def git(*args):
+                return subprocess.run(["git", "-C", d, *args],
+                                      capture_output=True, check=True).stdout
+            git("init", "-q")
+            git("config", "user.email", "test@example.invalid")
+            git("config", "user.name", "Synthetic Test")
+            target=Path(d) / "test.txt"
+            target.write_text("ordinary\n")
+            git("add", ".")
+            git("commit", "-qm", "base")
+            base=git("rev-parse", "HEAD").decode().strip()
+            target.write_text("token=" + "ghp_" + "Y" * 32 + "\n")
+            git("add", ".")
+            git("commit", "-qm", "introduce synthetic secret")
+            target.write_text("ordinary\n")
+            git("add", ".")
+            git("commit", "-qm", "remove synthetic secret")
+            final_patch=git("diff", base + "...HEAD").decode()
+            self.assertNotIn(("BLOCK", "GITHUB_TOKEN"), rules(final_patch))
+            history=git("-c", "core.quotePath=false", "log", "--patch", "--format=",
+                        "--no-ext-diff", "--no-color", "--unified=0", base + "..HEAD").decode()
+            self.assertIn(("BLOCK", "GITHUB_TOKEN"), rules(history))
+
     def test_github_classic_token(self):
         token = "ghp_" + "X" * 32
         self.assertIn(("BLOCK", "GITHUB_TOKEN"), rules(fake_patch("token=" + token)))
