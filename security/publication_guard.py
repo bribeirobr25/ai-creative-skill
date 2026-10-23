@@ -95,16 +95,16 @@ def _destination_from_git_header(line: str) -> str | None:
 
 
 def scan_unified_diff(patch: str) -> list[Finding]:
-    """Inspect added lines AND destination paths, including binary-only changes.
+    """Scan every added hunk line, even if a filename cannot be decoded.
 
-    Git does not emit a +++ b/path line for many binary additions, copies and
-    renames. Defer destination-path checking until the end of each file block
-    so deletions alone do not trigger a false new-publication warning.
+    Git textual diffs quote unusual paths, sometimes using octal byte escapes.
+    Never make scanning the *content* contingent on decoding a +++ filename.
+    An ambiguous path is BLOCK, not an ignored warning.
     """
     results: list[Finding] = []
-    path: str | None = None
     destination: str | None = None
     deleted = False
+    in_hunk = False
     line_no = 0
     seen_file_checks: set[tuple[str, str]] = set()
 
@@ -116,46 +116,69 @@ def scan_unified_diff(patch: str) -> list[Finding]:
             results.append(Finding("REVIEW", "BINARY_OR_MEDIA_REVIEW", value, 0))
             seen_file_checks.add((value, "BINARY_OR_MEDIA_REVIEW"))
 
-    for raw in patch.splitlines():
-        if raw.startswith("diff --git "):
+    for raw in patch.split("\n"):
+        # Splitting only at LF is essential: str.splitlines() would silently
+        # skip a token following form feed, vertical tab or U+2028.
+        line = raw.removesuffix("\r")
+        if line.startswith("diff --git "):
             if destination is not None and not deleted:
                 check_destination(destination)
-            destination = _destination_from_git_header(raw)
+            destination = _destination_from_git_header(line)
             if destination is None:
-                results.append(Finding("REVIEW", "UNPARSEABLE_DIFF_HEADER", "<unknown-file>", 0))
+                destination = "<unparsed-git-path>"
+                results.append(Finding("BLOCK", "UNPARSEABLE_DIFF_HEADER", destination, 0))
             deleted = False
-            path = None
+            in_hunk = False
             line_no = 0
             continue
-        if raw.startswith("deleted file mode ") or raw == "+++ /dev/null":
+        if line.startswith("deleted file mode ") or line == "+++ /dev/null":
             deleted = True
-            path = None
+            in_hunk = False
             continue
-        m = DIFF_FILE.match(raw)
-        if m:
-            path = m.group(1)
-            destination = path
-            line_no = 0
+        if line.startswith("+++ "):
+            quoted = line[4:]
+            if quoted.startswith('"'):
+                try:
+                    fields = shlex.split(quoted)
+                    if len(fields) == 1 and fields[0].startswith("b/"):
+                        destination = fields[0][2:]
+                    else:
+                        results.append(Finding("BLOCK", "UNPARSEABLE_DESTINATION", "<unparsed-git-path>", 0))
+                except ValueError:
+                    results.append(Finding("BLOCK", "UNPARSEABLE_DESTINATION", "<unparsed-git-path>", 0))
+            elif quoted.startswith("b/"):
+                destination = quoted[2:]
+            elif quoted != "/dev/null":
+                results.append(Finding("BLOCK", "UNPARSEABLE_DESTINATION", "<unparsed-git-path>", 0))
             continue
-        if raw.startswith("+++ ") or raw.startswith("--- ") or raw.startswith("\\ No newline"):
+        if line.startswith("@@ "):
+            in_hunk = True
             continue
-        if path and raw.startswith("+"):
+        if in_hunk and line.startswith("+"):
             line_no += 1
-            results.extend(scan_added_line(path, raw[1:], line_no))
+            results.extend(scan_added_line(destination or "<unknown-file>", line[1:], line_no))
     if destination is not None and not deleted:
         check_destination(destination)
     return results
 
+
 def _get_diff(args: argparse.Namespace) -> str:
+    # core.quotePath=false avoids octal UTF-8 escapes for ordinary accented
+    # names. Quoted names with spaces still require explicit parsing.
+    cmd = ["git", "-c", "core.quotePath=false", "diff"]
     if args.staged:
-        cmd = ["git", "diff", "--cached", "--no-ext-diff", "--no-color", "--unified=0", "--"]
-    else:
-        cmd = ["git", "diff", "--no-ext-diff", "--no-color", "--unified=0", args.range, "--"]
+        cmd += ["--cached"]
+    cmd += ["--no-ext-diff", "--no-color", "--unified=0"]
+    if args.range:
+        cmd += [args.range]
+    cmd += ["--"]
     try:
-        result = subprocess.run(cmd, capture_output=True, text=True, check=True, timeout=30)
-        return result.stdout
-    except (subprocess.SubprocessError, OSError) as exc:
-        raise RuntimeError("Git diff unavailable; pre-publication scan was NOT performed") from exc
+        raw = subprocess.run(cmd, capture_output=True, check=True, timeout=30).stdout
+        return raw.decode("utf-8", "strict")
+    except (UnicodeDecodeError, subprocess.SubprocessError, OSError) as exc:
+        # Exit 2 is an operational failure. Never report this as a BLOCK scan,
+        # and never echo undecodable bytes from exceptions.
+        raise RuntimeError("Git diff unavailable or not UTF-8; scan NOT performed") from exc
 
 
 def main(argv: list[str] | None = None) -> int:
