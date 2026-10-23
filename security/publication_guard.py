@@ -28,6 +28,11 @@ BLOCK_RULES = (
     ("GITHUB_TOKEN", re.compile(r"\b(?:ghp_|gho_|ghu_|ghs_|ghr_)[A-Za-z0-9]{30,}\b|\bgithub_pat_[A-Za-z0-9_]{40,}\b")),
     ("SECRET_KEY", re.compile(r"\bsk-(?:proj-)?[A-Za-z0-9_-]{24,}\b")),
     ("GOOGLE_API_KEY", re.compile(r"\bAIza[A-Za-z0-9_-]{35}\b")),
+    ("STRIPE_LIVE_KEY", re.compile(r"\b(?:sk|rk)_live_[A-Za-z0-9]{20,}\b")),
+    ("SLACK_TOKEN", re.compile(r"\bxox(?:b|p|s|a|r)-[A-Za-z0-9-]{24,}\b")),
+    ("HUGGINGFACE_TOKEN", re.compile(r"\bhf_[A-Za-z0-9]{30,}\b")),
+    ("NPM_TOKEN", re.compile(r"\bnpm_[A-Za-z0-9]{30,}\b")),
+
     ("AWS_ACCESS_ID", re.compile(r"\b(?:AKIA|ASIA)[A-Z0-9]{16}\b")),
     ("BEARER_CREDENTIAL", re.compile(r"(?i)\bauthorization\s*[:=]\s*bearer\s+[A-Za-z0-9._~+/-]{24,}")),
     ("PRIVATE_KEY_PEM", re.compile(r"-----BEGIN (?:RSA |EC |DSA |OPENSSH )?PRIVATE KEY-----")),
@@ -35,7 +40,7 @@ BLOCK_RULES = (
     ("SIGNED_QUERY_TOKEN", re.compile(r"(?i)(?:https?://[^\s<>'\"]{1,900}[?&](?:token|access_token|signature|sig|auth)=)[A-Za-z0-9%._~-]{24,}")),
 )
 REVIEW_RULES = (
-    ("DRIVE_REFERENCE", re.compile(r"https?://(?:drive|docs)\.google\.com/(?:file|drive|document|spreadsheets|presentation)/", re.I)),
+    ("DRIVE_REFERENCE", re.compile(r"https?://(?:drive|docs)\.google\.com/(?:file|drive|document|spreadsheets|presentation|open\?|uc\?|u/)/", re.I)),
     ("SHAREABLE_STORAGE_LINK", re.compile(r"https?://[^\s<>'\"]{1,300}/(?:share|sharing|download)/[^\s<>'\"]{10,}", re.I)),
 )
 
@@ -59,9 +64,11 @@ def has_reviewable_email(text: str) -> bool:
 
 PRIVATE_FILENAME = re.compile(
     r"(?i)(?:^|/)(?:\.env(?:\.[\w-]+)?|id_(?:rsa|ed25519)|credentials?\.(?:json|ya?ml)|"
-    r"[^/]+\.(?:p12|pfx|key|pem|sqlite|db))$"
+    r"(?:secrets?|private|credentials?)/[^/]+\.(?:p12|pfx|pem|key|db|sqlite)|"
+    r"[^/]*(?:private|secret|credential|token)[^/]*\.(?:p12|pfx|pem|key|db|sqlite)|"
+    r"[^/]+\.(?:p12|pfx))$"
 )
-REVIEW_FILE_SUFFIXES = (".zip", ".pdf", ".png", ".jpg", ".jpeg", ".webp", ".mov", ".mp4")
+REVIEW_FILE_SUFFIXES = (".zip", ".pdf", ".png", ".jpg", ".jpeg", ".webp", ".heic", ".heif", ".mov", ".mp4", ".key", ".pem", ".db", ".sqlite")
 DIFF_FILE = re.compile(r"^\+\+\+ b/(.+)$")
 
 
