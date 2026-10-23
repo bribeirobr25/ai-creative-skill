@@ -128,12 +128,25 @@ class CanonicalVocabularyTests(unittest.TestCase):
             validate_research_execution(e, evidence_by_id=refs)
 
     def test_source_outcome_vocabulary_cannot_be_shortened(self):
-        e, refs = fixture()
         for outcome in ("RATE_LIMITED", "AUTH_FAILED", "SCHEMA_DRIFT",
                         "PAYMENT_REQUIRED", "SKIPPED_UNCONFIGURED"):
             with self.subTest(outcome=outcome):
+                e, _ = fixture()
                 e["source_outcomes"][0]["outcome"] = outcome
-                validate_research_execution(e, evidence_by_id=refs)
+                e["evidence_clusters"] = []
+                e["intelligence"]["metric_observations"] = []
+                e["intelligence"]["ranked_evidence_refs"] = []
+                validate_research_execution(e, evidence_by_id={})
+
+    def test_failed_source_cannot_support_claims_or_metrics(self):
+        for outcome in ("AUTH_FAILED", "SCHEMA_DRIFT", "PAYMENT_REQUIRED",
+                        "SKIPPED_UNCONFIGURED", "UNREACHABLE", "ERROR"):
+            with self.subTest(outcome=outcome):
+                e, refs = fixture()
+                e["source_outcomes"][0]["outcome"] = outcome
+                with self.assertRaises(ContractViolation):
+                    validate_research_execution(e, evidence_by_id=refs)
+
 
     def test_invalid_source_outcome_rejected(self):
         e, refs = fixture()
@@ -169,6 +182,26 @@ class EvidenceOwnershipTests(unittest.TestCase):
     def test_legacy_bridge_shape_is_not_a_cluster(self):
         e, refs = fixture()
         e["evidence_clusters"] = [copy.deepcopy(refs["e-1"])]
+        with self.assertRaises(ContractViolation):
+            validate_research_execution(e, evidence_by_id=refs)
+
+    def test_future_metric_and_evidence_timestamps_are_rejected(self):
+        e, refs = fixture()
+        e["intelligence"]["metric_observations"][0]["observed_at"] = "2026-10-24T00:00:00+00:00"
+        with self.assertRaises(ContractViolation):
+            validate_research_execution(e, evidence_by_id=refs)
+        e, refs = fixture()
+        refs["e-1"]["retrieved_at"] = "2026-10-24T00:00:00+00:00"
+        with self.assertRaises(ContractViolation):
+            validate_research_execution(e, evidence_by_id=refs)
+
+    def test_invalid_source_state_type_does_not_crash_with_typeerror(self):
+        e, refs = fixture()
+        e["source_outcomes"][0]["outcome"] = []
+        with self.assertRaises(ContractViolation):
+            validate_research_execution(e, evidence_by_id=refs)
+        e, refs = fixture()
+        e["status"] = []
         with self.assertRaises(ContractViolation):
             validate_research_execution(e, evidence_by_id=refs)
 
@@ -269,6 +302,32 @@ class CoverageAndHandoffTests(unittest.TestCase):
         e["intelligence"]["permissions_carried"] = "PUBLISH"
         with self.assertRaises(ContractViolation):
             validate_research_execution(e, evidence_by_id=refs)
+
+    def test_handoff_requires_lineage_and_evidence_provenance(self):
+        base = {
+            "project_id": "synthetic", "from_task_id": "r1",
+            "to_task_id": "t1", "from_profile": "Research",
+            "to_profile": "Ads", "task_outcome": {},
+            "accepted_constraints": [], "stable_entities": [{
+                "entity_id": "e1", "entity_type": "CONTENT_PUBLICATION",
+                "canonical_label": "UNKNOWN", "source_refs": ["ev-1"],
+            }], "evidence_items": [{
+                "evidence_ref": "ev-1", "evidence_class": "OBSERVED",
+                "confidence": "LOW", "freshness": "UNKNOWN",
+            }],
+            "explicit_unknowns": [], "accepted_outputs": [],
+            "protected_state": [], "invalidated_state": [],
+            "permissions_carried": "NONE", "action_authority_recheck_required": True,
+        }
+        validate_handoff(base)
+        missing = copy.deepcopy(base)
+        del missing["evidence_items"][0]["evidence_ref"]
+        with self.assertRaises(ContractViolation):
+            validate_handoff(missing)
+        missing = copy.deepcopy(base)
+        del missing["to_task_id"]
+        with self.assertRaises(ContractViolation):
+            validate_handoff(missing)
 
     def test_handoff_refuses_authority_transfer(self):
         h = {
