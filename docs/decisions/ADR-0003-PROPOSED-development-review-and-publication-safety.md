@@ -40,6 +40,20 @@ Um nome de marca ou URL de Drive não é necessariamente segredo por si só: é 
 
 Não republicar conteúdo comprometido. Para credencial ou URL que concede acesso, revogar/rotacionar na origem antes de tratar histórico; investigar impacto em acessos/logs, forks/caches e registrar somente status e categoria em documentos públicos. Detalhes e dados privados ficam fora do Git público.
 
+## Aprendizado adicional: confirmação de links e redução de falsos positivos
+
+O scanner de diff e a auditoria histórica encontram **padrões**, não necessariamente vazamentos. A revisão S0 dos PRs de Intelligence identificou que três strings diferentes do Drive no histórico correspondiam a uma pasta com identificador efetivo e duas referências de testes que não possuíam identificadores de arquivo. A pasta pôde ter suas **permissões atuais verificadas** pelo conector Drive autorizado; este dado não certifica as permissões passadas. Links genéricos de download foram classificados por domínio, evitando tratá-los automaticamente como credenciais.
+
+Regras permanentes propostas:
+
+- Contar **blobs, ocorrências e URLs distintas** separadamente: uma URL repetida em versões ou caminhos não vira novos recursos.
+- Classificar referências incompletas/fixtures sem ID, sem as equiparar a links de acesso reais.
+- Usar, quando permitido, o conector da **fonte proprietária do recurso** para confirmar a permissão real; não inferir ACL por URL, aparência ou resultado de HTTP.
+- Separar claramente `CURRENT_PERMISSIONS_VERIFIED` de `HISTORICAL_ACCESS_UNKNOWN`.
+- Preservar o relatório público estritamente sanitizado, sem URLs, IDs, e-mails, nomes de pastas privadas ou valores de metadados EXIF.
+- Não alterar compartilhamento, revogar link ou reescrever Git por inferência automatizada; mudanças na origem precisam de decisão explícita e análise de impacto.
+- Uma auditoria de links concluída não aprova automaticamente arquivos binários, direitos de uso, EXIF, commit author metadata ou forks/caches fora do alcance.
+
 ## Aplicação aos trabalhos atuais
 
 - PR #17: permanecer sob a sessão Claude Code de website.
