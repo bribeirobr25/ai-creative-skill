@@ -1,3 +1,5 @@
+> **HISTORICAL SCENARIO MATRIX:** INT-01..INT-35 are proposals, not a record of real source execution or full integration. [STATUS.md](STATUS.md) is authoritative for present acceptance and [architecture-v0.3.md](architecture-v0.3.md) owns the candidate interfaces.
+
 # AI Creative Skill · Intelligence · Plano de validação v0.2
 
 **Data:** 2026-10-23  
