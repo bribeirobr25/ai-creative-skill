@@ -8,7 +8,7 @@ from contextlib import redirect_stdout
 from unittest.mock import patch
 
 from publication_guard import scan_added_line, scan_unified_diff, main
-from history_audit import audit_text_blob, _verified_branch_coverage, classify_binary_metadata, _scope_bucket, classify_link_metadata, _reachable_blobs
+from history_audit import audit_text_blob, _verified_branch_coverage, classify_binary_metadata, _scope_bucket, classify_link_metadata, _reachable_blobs, _link_fingerprints
 
 
 def fake_patch(line: str, path: str = "docs/example.md") -> str:
@@ -255,6 +255,21 @@ class SecretRulesTests(unittest.TestCase):
         with patch("history_audit.git", return_value=b""):
             with self.assertRaises(RuntimeError):
                 _reachable_blobs()
+
+    def test_distinct_link_fingerprints_deduplicate_repeated_url(self):
+        a = "https://" + "drive.google.com/drive/folders/" + "D" * 32
+        b = "https://" + "drive.google.com/drive/folders/" + "E" * 32
+        first = _link_fingerprints(a + "\n" + a)["DRIVE"]
+        second = _link_fingerprints(a + "\n" + b)["DRIVE"]
+        self.assertEqual(1, len(first))
+        self.assertEqual(2, len(second))
+        self.assertTrue(all(a not in x and b not in x for x in second))
+
+    def test_distinct_share_link_is_not_drive_count(self):
+        u = "https://" + "github.com/public/project/releases/download/" + "test-data"
+        result = _link_fingerprints(u)
+        self.assertEqual(0, len(result["DRIVE"]))
+        self.assertEqual(1, len(result["GENERIC_SHARE"]))
 
     def test_drive_link_classification_redacts_identifier(self):
         u = "https://" + "drive.google.com/drive/folders/" + "F" * 33
