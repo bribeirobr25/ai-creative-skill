@@ -43,6 +43,8 @@ def capability(**changes):
             "viewCount": {
                 "actions": ["READ", "PROCESS", "DERIVE", "PERSIST", "REDISTRIBUTE"],
                 "max_retention_days": 7,
+                "data_class": "STATISTICS",
+                "retention_policy_ref": "fixture-policy",
             },
         },
         "available_from": "2026-01-01", "available_to": "2027-01-01",
@@ -168,10 +170,22 @@ class AuthorizationBoundary(unittest.TestCase):
         d = verdict(query=request(transformations=["DERIVE_RATIO"]), source=r)
         self.assertIn("TRANSFORMATION_NOT_GRANTED", d["reason_codes"])
 
-    def test_summary_output_requires_redistribution_right_in_fixture(self):
+    def test_private_summary_does_not_require_external_redistribution(self):
         r = capability()
         r["field_grants"]["viewCount"]["actions"].remove("REDISTRIBUTE")
         d = verdict(query=request(transformations=["SUMMARIZE"]), source=r)
+        self.assertEqual("SHAPE_CHECK_PASSED_SYNTHETIC_ONLY", d["decision"])
+
+    def test_grants_require_data_class_and_policy_provenance(self):
+        r = capability()
+        del r["field_grants"]["viewCount"]["data_class"]
+        with self.assertRaises(InvalidContract):
+            verdict(source=r)
+
+    def test_summary_output_requires_redistribution_right_in_fixture(self):
+        r = capability()
+        r["field_grants"]["viewCount"]["actions"].remove("REDISTRIBUTE")
+        d = verdict(query=request(transformations=["SUMMARIZE"], redistribute_output=True), source=r)
         self.assertIn("FIELD_REDISTRIBUTION_NOT_GRANTED", d["reason_codes"])
 
     def test_paid_stays_blocked_even_if_approval_refs_are_supplied(self):
