@@ -4,6 +4,12 @@
 **Origem:** revisão independente de Claude Code após os PRs #18 e #19 e plano de segurança do PR #20.  
 **CI verificado:** 56 testes unitários offline concluídos em PR #19 no commit de código verificado. Os checks normativos existentes de V2.5/boundary são separados e não certificam integração.
 
+## Atualização final de S1 (mesmo dia)
+
+A rodada adicional de revisão técnica está **concluída no escopo offline sintético**: [registro consolidado S1](S1-technical-review-2026-10-23.md). Foram corrigidos seis grupos de falhas de invariantes, incluindo `NATIONAL_COVERAGE_UNVERIFIED`, ranking com views desconhecidas, colisões de `evidence_id`, identidade conflitante entre snapshots, incompatibilidade de formato em velocidade e tipos inválidos de configuração. O CI confirmou **68/68 testes PASS**, 12 a mais que a base anterior, no [job de referência](https://github.com/bribeirobr25/ai-creative-skill/actions/runs/40017781052/job/120634192975).
+
+O texto da tabela e o total de 56 testes abaixo são **históricos da primeira rodada**, não o estado mais recente. Segurança S0 foi encerrada por declaração do proprietário, com limites, no PR #20. `derived_permission` real, contratos de execução e fontes continuam sujeitos a S2/S3; Monte Carlo avançado permanece em S4. Sem merge ou publicação em `main`.
+
 ## Resolução por achado
 
 | Achado | Status | Mudança / evidência |
