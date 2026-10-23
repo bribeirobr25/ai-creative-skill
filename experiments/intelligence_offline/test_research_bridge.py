@@ -85,6 +85,55 @@ class SyntheticBridgeTests(unittest.TestCase):
         self.assertEqual("BLOCKED", x["status"])
         self.assertEqual("AUTH_FAILED", x["source_outcomes"][0]["outcome"])
 
+    def test_exhaustive_negative_search_can_complete_absence_question(self):
+        x = request(
+            source_outcome="NO_RESULTS", observation_rows=[],
+            negative_coverage_satisfies_request=True,
+            source_coverage_verified=True,
+        )
+        self.assertEqual("COMPLETE", x["status"])
+        self.assertTrue(x["coverage"]["source_coverage_verified"])
+
+    def test_negative_search_without_complete_scope_remains_insufficient(self):
+        x = request(
+            source_outcome="NO_RESULTS", observation_rows=[],
+            negative_coverage_satisfies_request=True,
+            source_coverage_verified=False,
+        )
+        self.assertEqual("INSUFFICIENT_EVIDENCE", x["status"])
+
+    def test_national_rank_flag_propagates_and_prevents_sample_substitution(self):
+        x = request(requested_national_top=True, population_coverage_verified=False)
+        self.assertEqual("INSUFFICIENT_EVIDENCE", x["status"])
+        self.assertEqual("NATIONAL_COVERAGE_UNVERIFIED", x["intelligence"]["ranking_scope"])
+        self.assertEqual([], x["intelligence"]["ranked_evidence_refs"])
+        self.assertTrue(x["coverage"]["requested_national_top"])
+
+    def test_synthetic_complete_scope_remains_explicitly_not_real_market(self):
+        x = request(requested_national_top=True, population_coverage_verified=True)
+        self.assertEqual("COMPLETE", x["status"])
+        self.assertFalse(x["coverage"]["report_is_real_market_research"])
+        self.assertEqual("COMPLETE", x["intelligence"]["ranking_scope"])
+
+    def test_national_rank_and_absence_rule_cannot_combine(self):
+        with self.assertRaises(ValidationError):
+            request(
+                source_outcome="NO_RESULTS", observation_rows=[],
+                requested_national_top=True, negative_coverage_satisfies_request=True,
+                source_coverage_verified=True,
+            )
+
+    def test_limit_rejected_before_rank_try_handler(self):
+        for x in [0, True, -1, 101]:
+            with self.subTest(limit=x), self.assertRaises(ValidationError):
+                request(limit=x, observation_rows=[
+                    synthetic_row("a", platform="A"), synthetic_row("b", platform="B")
+                ])
+
+    def test_reject_unhashable_source_outcome_cleanly(self):
+        with self.assertRaises(ValidationError):
+            request(source_outcome=[])
+
     def test_successful_no_results_distinct_from_auth_failure(self):
         x = request(source_outcome="NO_RESULTS", observation_rows=[])
         self.assertEqual("INSUFFICIENT_EVIDENCE", x["status"])
