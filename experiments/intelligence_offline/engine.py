@@ -96,30 +96,36 @@ def outlier_ratio(
     if video.views is None or video.age_hours <= 0:
         raise InsufficientEvidence("Missing target views or invalid video age")
     dedup = unique_observations(baseline)
-    selected = [
-        obs.views for obs in dedup
-        if obs.publication_id != video.publication_id
-        and obs.platform == video.platform
-        and obs.channel_id == video.channel_id
-        and obs.content_type == video.content_type
-        and obs.age_hours > 0
-        and abs(obs.age_hours - video.age_hours) / video.age_hours <= age_tolerance
-        and obs.views is not None
-    ]
-    # A baseline video measured twice must not count as two distinct videos.
-    # Reject ambiguous snapshots rather than silently inflating sample size.
-    selected_ids = [
-        obs.publication_id for obs in dedup
-        if obs.publication_id != video.publication_id
-        and obs.platform == video.platform
-        and obs.channel_id == video.channel_id
-        and obs.content_type == video.content_type
-        and obs.age_hours > 0
-        and abs(obs.age_hours - video.age_hours) / video.age_hours <= age_tolerance
-        and obs.views is not None
-    ]
-    if len(set(selected_ids)) != len(selected_ids):
-        raise ValidationError("Repeated baseline publication at multiple timestamps")
+    # One independent publication contributes at most one count.
+    # Compare snapshots of the same creator/format near the target's age.
+    # The nearest age-matched snapshot is selected; equal-distance ties
+    # choose the earlier observation time for deterministic behavior.
+    groups: dict[str, list[Observation]] = {}
+    for item in dedup:
+        if item.publication_id == video.publication_id:
+            continue
+        if (item.platform, item.channel_id, item.content_type) != (
+            video.platform, video.channel_id, video.content_type
+        ):
+            continue
+        groups.setdefault(item.publication_id, []).append(item)
+
+    selected: list[int] = []
+    for publication_id in sorted(groups):
+        candidates = groups[publication_id]
+        identity = {(x.published_at, x.channel_id, x.content_type) for x in candidates}
+        if len(identity) != 1:
+            raise ValidationError("Conflicting metadata for baseline publication")
+        eligible = [
+            x for x in candidates
+            if x.age_hours > 0 and x.views is not None
+            and abs(x.age_hours - video.age_hours) / video.age_hours <= age_tolerance
+        ]
+        if not eligible:
+            continue
+        chosen = min(eligible, key=lambda x: (abs(x.age_hours - video.age_hours), x.observed_at))
+        selected.append(chosen.views)
+
     if len(selected) < min_baseline:
         raise InsufficientEvidence("Insufficient comparable baseline sample")
     typical = median(selected)
@@ -171,8 +177,8 @@ def rank_sample(
     population_coverage_verified: bool = False,
 ) -> dict:
     """Sort reported counters, not a derived cross-platform viral score."""
-    if limit < 1 or limit > 100:
-        raise ValidationError("Limit must be from 1 to 100")
+    if type(limit) is not int or not 1 <= limit <= 100:
+        raise ValidationError("Limit must be an integer from 1 to 100")
     rows = unique_observations(observations)
     if requested_national_top and not population_coverage_verified:
         raise InsufficientEvidence("National Top N cannot be inferred from an observed sample")
