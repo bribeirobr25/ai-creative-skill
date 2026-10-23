@@ -1,0 +1,29 @@
+name: Intelligence unified offline lab
+on:
+  pull_request:
+    paths:
+      - 'experiments/intelligence/**'
+      - 'experiments/__init__.py'
+      - '.github/workflows/intelligence-consolidated-review.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  test:
+    name: Single-package synthetic integration
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Run unified Python suite without PYTHONPATH
+        run: python -m unittest discover -s experiments -p 'test_*.py' -v
+      - name: Verify baseline and candidate checks
+        run: |
+          python -m validation.release_integrity
+          python -m validation.candidate_integrity
+          python -m validation.candidate_tests
