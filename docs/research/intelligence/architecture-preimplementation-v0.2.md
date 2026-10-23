@@ -1,3 +1,5 @@
+> **HISTORICAL PROPOSAL:** this v0.2 is superseded as the active candidate by [architecture-v0.3.md](architecture-v0.3.md) and [STATUS.md](STATUS.md). This retains earlier rationale, not current implementation approval.
+
 # AI Creative Skill · Intelligence Architecture · Pré-implementação v0.2
 
 **Data:** 2026-10-23  
