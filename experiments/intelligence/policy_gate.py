@@ -103,7 +103,8 @@ def validate_capability(raw: Mapping) -> Mapping:
                 "adapter_version", "policy_ref", "authorization_state"):
         text_field(c, key)
     require(c["source_kind"] in SOURCE_KINDS, "UNKNOWN_SOURCE_KIND")
-    for key in ("purposes", "projects", "countries", "geography_bases",
+    require("projects" not in c, "SOURCE_CAPABILITY_MUST_NOT_OWN_PROJECT_AUTHORITY")
+    for key in ("purposes", "countries", "geography_bases",
                 "time_bases", "transformations", "documented_metric_support"):
         string_list(c.get(key), key.upper())
     require(set(c["transformations"]) <= TRANSFORMATIONS,
@@ -154,7 +155,8 @@ def evaluate(request: Mapping, capability: Mapping, *, now: str) -> dict:
            c["authorization_state"] != "SIMULATED_VERIFIED")
     reject("OPERATION_MISMATCH", (c["operation"], c["platform"]) !=
            (q["operation"], q["platform"]))
-    reject("PROJECT_NOT_IN_SCOPE", q["project_id"] not in c["projects"])
+    # Project-specific authority belongs to Project Profile/AUTONOMY_ENVELOPE,
+    # never to a provider rights descriptor. This lab does not grant authority.
     reject("PURPOSE_NOT_IN_SCOPE", q["purpose"] not in c["purposes"])
     reject("COUNTRY_NOT_IN_SCOPE", q["country"] not in c["countries"])
     reject("GEOGRAPHY_SEMANTICS_MISMATCH",
