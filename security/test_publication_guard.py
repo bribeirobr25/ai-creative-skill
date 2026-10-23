@@ -8,7 +8,7 @@ from contextlib import redirect_stdout
 from unittest.mock import patch
 
 from publication_guard import scan_added_line, scan_unified_diff, main
-from history_audit import audit_text_blob, _verified_branch_coverage, classify_binary_metadata, _scope_bucket, classify_link_metadata, _reachable_blobs, _link_fingerprints, _generic_share_host_types
+from history_audit import audit_text_blob, _exif_value_risk_categories, _verified_branch_coverage, classify_binary_metadata, _scope_bucket, classify_link_metadata, _reachable_blobs, _link_fingerprints, _generic_share_host_types
 
 
 def fake_patch(line: str, path: str = "docs/example.md") -> str:
@@ -170,6 +170,54 @@ class SecretRulesTests(unittest.TestCase):
         with patch("history_audit.git", side_effect=fake_git):
             with self.assertRaisesRegex(RuntimeError, "incomplete"):
                 _verified_branch_coverage()
+
+    @staticmethod
+    def _synthetic_exif_text(value: bytes, tag: int = 0x013B) -> bytes:
+        import struct
+        offset = 26
+        entry = struct.pack("<HHII", tag, 2, len(value), offset)
+        return (
+            b"\xff\xd8\xffExif\x00\x00"
+            + b"II\x2a\x00"
+            + struct.pack("<I", 8)
+            + struct.pack("<H", 1)
+            + entry + b"\x00" * 4 + value
+        )
+
+    def test_exif_real_value_flags_email_without_emitting_it(self):
+        private_example = b"person@example.invalid\x00"
+        raw = self._synthetic_exif_text(private_example)
+        flags = classify_binary_metadata(raw)
+        self.assertIn("BINARY_EXIF_IDENTIFYING_VALUE_PRESENT", flags)
+        self.assertIn("BINARY_EXIF_EMAIL_LIKE_VALUE_NEEDS_REVIEW", flags)
+        self.assertNotIn("person@example.invalid", repr(flags))
+
+    def test_exif_benign_text_is_still_marked_present_not_certified(self):
+        flags = classify_binary_metadata(self._synthetic_exif_text(b"Generic Creator\x00"))
+        self.assertIn("BINARY_EXIF_IDENTIFYING_VALUE_PRESENT", flags)
+        self.assertNotIn("BINARY_EXIF_EMAIL_LIKE_VALUE_NEEDS_REVIEW", flags)
+
+    def test_exif_text_url_flag(self):
+        flags = classify_binary_metadata(
+            self._synthetic_exif_text(b"https://" + b"example.invalid/private\x00", tag=0x010E)
+        )
+        self.assertIn("BINARY_EXIF_URL_LIKE_VALUE_NEEDS_REVIEW", flags)
+
+    def test_exif_invalid_value_offset_returns_incomplete(self):
+        raw = (
+            b"Exif\x00\x00II\x2a\x00"
+            + (8).to_bytes(4, "little")
+            + (1).to_bytes(2, "little")
+            + (0x013B).to_bytes(2, "little")
+            + (2).to_bytes(2, "little")
+            + (30).to_bytes(4, "little")
+            + (4000).to_bytes(4, "little")
+            + (0).to_bytes(4, "little")
+        )
+        self.assertIn(
+            "BINARY_EXIF_VALUE_INSPECTION_INCOMPLETE",
+            _exif_value_risk_categories(raw),
+        )
 
     def test_exif_gps_and_author_tags_are_classified_without_values(self):
         # Small synthetic TIFF IFD: GPSInfo tag and Artist tag.
