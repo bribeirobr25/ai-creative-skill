@@ -34,6 +34,17 @@ class PrivateReviewGuardTests(unittest.TestCase):
             with self.assertRaisesRegex(RuntimeError, "CI"):
                 write_private_file({"raw_links": []})
 
+    def test_default_tmpdir_inside_repo_is_rejected(self):
+        with tempfile.TemporaryDirectory(prefix="test-repo-temp-") as d:
+            folder = Path(d) / "generated-private-dir"
+            folder.mkdir()
+            with patch.dict(os.environ, {"CI": "", "GITHUB_ACTIONS": ""}):
+                with patch("private_triage.git", return_value=(str(Path(d)) + "\n").encode()):
+                    with patch("private_triage.tempfile.mkdtemp", return_value=str(folder)):
+                        with self.assertRaisesRegex(RuntimeError, "inside Git repository"):
+                            write_private_file({"raw_links": []})
+            self.assertFalse(folder.exists())
+
     def test_private_review_cannot_write_under_repo(self):
         root = "/tmp/test-acsskill-repository"
         with patch.dict(os.environ, {"CI": "", "GITHUB_ACTIONS": ""}):
