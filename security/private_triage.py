@@ -108,6 +108,11 @@ def write_private_file(data: dict, destination: Path | None = None) -> Path:
     if destination is None:
         safe_dir = Path(tempfile.mkdtemp(prefix="acs-security-private-"))
         os.chmod(safe_dir, 0o700)
+        if _inside_repo(safe_dir, repo_root):
+            # A custom TMPDIR can point inside the Git clone; do not leave an
+            # accessible report there merely because mkdtemp succeeded.
+            safe_dir.rmdir()
+            raise RuntimeError("Temporary report directory is inside Git repository")
         target = safe_dir / "review.json"
     else:
         target = destination.expanduser().resolve()
