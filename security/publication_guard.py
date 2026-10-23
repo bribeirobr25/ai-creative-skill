@@ -169,9 +169,16 @@ def _get_diff(args: argparse.Namespace) -> str:
     if args.staged:
         cmd += ["--cached"]
     cmd += ["--no-ext-diff", "--no-color", "--unified=0"]
-    if args.range:
-        cmd += [args.range]
-    cmd += ["--"]
+    if getattr(args, "history_range", None):
+        # Every commit in a PR may have contained a secret even if its final
+        # merged diff no longer does. Scan each patch independently.
+        cmd = ["git", "-c", "core.quotePath=false", "log", "--patch",
+               "--format=", "--no-ext-diff", "--no-color", "--unified=0",
+               args.history_range, "--"]
+    else:
+        if args.range:
+            cmd += [args.range]
+        cmd += ["--"]
     try:
         raw = subprocess.run(cmd, capture_output=True, check=True, timeout=30).stdout
         return raw.decode("utf-8", "strict")
@@ -186,10 +193,18 @@ def main(argv: list[str] | None = None) -> int:
     mode = ap.add_mutually_exclusive_group(required=True)
     mode.add_argument("--staged", action="store_true", help="Pre-commit check staged additions")
     mode.add_argument("--range", metavar="BASE...HEAD", help="Check all additions in branch compared to base")
+    ap.add_argument("--history-range", metavar="BASE..HEAD",
+                    help="Additionally inspect added lines from every commit in this range")
     ap.add_argument("--fail-on-warning", action="store_true", help="Manually opt to fail also for REVIEW items")
     ns = ap.parse_args(argv)
     try:
         findings = scan_unified_diff(_get_diff(ns))
+        if ns.history_range:
+            from argparse import Namespace
+            history = _get_diff(Namespace(
+                staged=False, range=None, history_range=ns.history_range
+            ))
+            findings.extend(scan_unified_diff(history))
     except RuntimeError as exc:
         print(str(exc), file=sys.stderr)
         return 2
