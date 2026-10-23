@@ -15,6 +15,12 @@ O proprietário esclareceu que a ferramenta é **de uso próprio e não será co
 
 Os documentos v0.1/v0.2 abaixo continuam como **propostas históricas sob crítica** e não conferem licença, aprovação de arquitetura, readiness nem permissão de consulta paga. Esta auditoria é estática e não executa dados/API; não altera os contratos canônicos ou a `main`.
 
+## Aprendizado promovido a proposta de governança transversal
+
+O [PR #20](https://github.com/bribeirobr25/ai-creative-skill/pull/20) contém a **ADR-0003-PROPOSED** e um guard experimental de publicação, com scanner de diff, testes e workflow de PR. A intenção é aplicar a segurança de publicação e o ciclo PLAN → IMPLEMENT → VERIFY → REVIEW → LEARN a **todas** as capacidades, não apenas Intelligence.
+
+**Importante:** o guard ainda não foi integrado à main nem é invocado automaticamente por escritas via GitHub connector. A varredura de histórico completo continua pendente. O [PR #19](https://github.com/bribeirobr25/ai-creative-skill/pull/19) registra separadamente correções de revisão cruzada e suas limitações; a sessão de website continua dona do PR #17.
+
 ## Nova prioridade: revisão cruzada e proteção do Git público
 
 A [sequência revisada e o Security/Privacy Gate](revised-roadmap-security-gate-2026-10-23.md) passam a orientar o **planejamento** antes da implementação real: primeiro triagem de possível exposição em repositório/histórico, revisão cruzada dos PRs #18/#19 e estabelecimento de controles pré-publicação; depois fonte e autorização, testes avançados e integração. **O procedimento está documentado, mas scanner/hook ainda não foram instalados e a auditoria específica de exposição ainda não foi executada.** PR #17 permanece sob seu responsável até a retomada.
