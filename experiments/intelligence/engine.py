@@ -39,12 +39,12 @@ class Observation:
     def __post_init__(self) -> None:
         if self.source_kind != "SYNTHETIC_FIXTURE":
             raise ValidationError("Explicit synthetic provenance required")
-        if self.platform.strip().casefold() in ("youtube", "meta", "facebook", "instagram", "tiktok"):
-            raise ValidationError("Real platform not accepted as synthetic fixture")
         if any(type(v) is not str or not v.strip() for v in (
             self.publication_id, self.channel_id, self.platform
         )):
             raise ValidationError("Stable source identities must be nonempty strings")
+        if self.platform.strip().casefold() in ("youtube", "meta", "facebook", "instagram", "tiktok"):
+            raise ValidationError("Real platform not accepted as synthetic fixture")
         for field in ("publication_id", "channel_id", "platform"):
             object.__setattr__(self, field, normalize("NFC", getattr(self, field).strip()))
         if self.content_type not in ("short", "long"):
