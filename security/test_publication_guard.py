@@ -8,7 +8,7 @@ from contextlib import redirect_stdout
 from unittest.mock import patch
 
 from publication_guard import scan_added_line, scan_unified_diff, main
-from history_audit import audit_text_blob, _verified_branch_coverage
+from history_audit import audit_text_blob, _verified_branch_coverage, classify_binary_metadata
 
 
 def fake_patch(line: str, path: str = "docs/example.md") -> str:
@@ -170,6 +170,30 @@ class SecretRulesTests(unittest.TestCase):
         with patch("history_audit.git", side_effect=fake_git):
             with self.assertRaisesRegex(RuntimeError, "incomplete"):
                 _verified_branch_coverage()
+
+    def test_jpeg_exif_flag_without_publishing_metadata(self):
+        raw = b"\xff\xd8\xff" + b"\x00" * 8 + b"Exif\x00\x00" + b"GPS private"
+        result = classify_binary_metadata(raw)
+        self.assertIn("BINARY_JPEG", result)
+        self.assertIn("BINARY_EXIF_PRESENT", result)
+        self.assertTrue(all("GPS private" not in flag for flag in result))
+
+    def test_png_metadata_flag(self):
+        raw = b"\x89PNG\r\n\x1a\n" + b"\x00\x00\x00\x05iTXt" + b"example"
+        self.assertIn("BINARY_PNG_METADATA_PRESENT", classify_binary_metadata(raw))
+
+    def test_pdf_embedded_url_marker(self):
+        raw = b"%PDF-1.7\n" + b" /URI " + b"ignored-private-link"
+        kinds = classify_binary_metadata(raw)
+        self.assertIn("BINARY_PDF", kinds)
+        self.assertIn("BINARY_PDF_LINK_OR_SCRIPT_MARKER", kinds)
+
+    def test_zip_requires_private_manual_review(self):
+        kinds = classify_binary_metadata(b"PK\x03\x04\x00\x00")
+        self.assertIn("BINARY_ZIP", kinds)
+
+    def test_unrecognized_binary_type(self):
+        self.assertIn("BINARY_UNKNOWN_OR_OTHER", classify_binary_metadata(b"\x00\x01\x02"))
 
     def test_history_scan_detects_categories_without_content(self):
         synthetic = "https://" + "drive.google.com/file/d/" + "1" * 32 + "/view"
