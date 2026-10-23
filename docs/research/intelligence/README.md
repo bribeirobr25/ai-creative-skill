@@ -17,6 +17,7 @@ Os documentos v0.1/v0.2 abaixo continuam como **propostas históricas sob críti
 
 ## Viabilidade de fontes e laboratório sintético
 
+- [YouTube: roteiro de solicitação Analytics & Reporting (23/10/2026)](youtube-analytics-approval-checklist-2026-10-23.md): formulário oficial, inscrição como pessoa física, evidências e texto-base. Ainda não submetido; não inserir informações privadas no GitHub.
 - [YouTube: policy preflight por operação (23/10/2026)](youtube-source-permission-preflight-2026-10-23.md): política geral, aprovação adicional para Analytics & Reporting, retenção por classe de dados e quota. Verificação documental, **sem chaves, chamadas ou aprovação recebida**.
 - [PR #19 · Canário sintético independente](https://github.com/bribeirobr25/ai-creative-skill/pull/19): experimento Python offline, não integrado à skill; resultados dos testes devem ser consultados no CI do PR. Os algoritmos desse PR **não podem receber dados reais da YouTube API sem verificação de permissão**.
 
