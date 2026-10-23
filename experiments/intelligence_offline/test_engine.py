@@ -97,8 +97,8 @@ class MetricsTests(unittest.TestCase):
         self.assertEqual(100, val["median_comparable_views"])
 
     def test_closest_age_snapshot_wins_even_if_seen_later(self):
-        far = obs("repeat", views=90, snap=T0, hours_old=19.5)
-        close = obs("repeat", views=500, snap=T0 + timedelta(hours=1), hours_old=24)
+        far = obs("repeat", views=90, snap=T0 - timedelta(hours=4), hours_old=20)
+        close = obs("repeat", views=500, snap=T0, hours_old=24)
         val = outlier_ratio(
             self.target, [far, close, obs("b", views=600), obs("c", views=700)],
             derived_permission=True,
