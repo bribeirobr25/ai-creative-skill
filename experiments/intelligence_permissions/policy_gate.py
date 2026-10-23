@@ -174,8 +174,9 @@ def evaluate(request: Mapping, capability: Mapping, *, now: str) -> dict:
         "simulated_transient_processing": not reasons,
         "simulated_retention_days": (q["retention_days"] if not reasons and
                                      q["storage_mode"] == "PERSIST" else 0),
-        "policy_ref": c["policy_ref"] if c["source_kind"] == "SYNTHETIC_FIXTURE"
-                      else "UNVERIFIED_EXTERNAL_POLICY",
+        "policy_ref_class": "SYNTHETIC_POLICY_TEST_ONLY" if
+                            c["source_kind"] == "SYNTHETIC_FIXTURE" else
+                            "UNVERIFIED_EXTERNAL_POLICY",
     }
 
 
