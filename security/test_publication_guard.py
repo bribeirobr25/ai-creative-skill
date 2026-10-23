@@ -8,6 +8,7 @@ from contextlib import redirect_stdout
 from unittest.mock import patch
 
 from publication_guard import scan_added_line, scan_unified_diff, main
+from history_audit import audit_text_blob
 
 
 def fake_patch(line: str, path: str = "docs/example.md") -> str:
@@ -125,6 +126,24 @@ class SecretRulesTests(unittest.TestCase):
         with patch("publication_guard._get_diff", return_value=fake_patch(link)):
             with redirect_stdout(io.StringIO()):
                 self.assertEqual(1, main(["--staged", "--fail-on-warning"]))
+
+    def test_history_scan_detects_categories_without_content(self):
+        synthetic = "https://" + "drive.google.com/file/d/" + "1" * 32 + "/view"
+        token = "ghp_" + "Q" * 40
+        found = audit_text_blob("reference: " + synthetic + " token=" + token, "docs/example.md")
+        self.assertIn("REVIEW:DRIVE_REFERENCE", found)
+        self.assertIn("BLOCK:GITHUB_TOKEN", found)
+        self.assertTrue(all(synthetic not in item and token not in item for item in found))
+
+    def test_history_scan_flags_binary_and_private_names_without_exposing_path(self):
+        found = audit_text_blob("nothing secret here", "internal/.env")
+        self.assertIn("BLOCK:PRIVATE_FILE_PATH", found)
+        self.assertNotIn("internal/.env", str(found))
+        other = audit_text_blob("", "assets/brand-photo.jpg")
+        self.assertIn("REVIEW:BINARY_OR_MEDIA_PATH", other)
+
+    def test_history_scan_allows_safe_text(self):
+        self.assertEqual(set(), audit_text_blob("ordinary public method", "docs/safe.md"))
 
     def test_git_error_not_success(self):
         with patch("publication_guard._get_diff", side_effect=RuntimeError("Git diff unavailable")):
