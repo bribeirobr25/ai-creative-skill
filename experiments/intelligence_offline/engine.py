@@ -38,8 +38,10 @@ class Observation:
     def __post_init__(self) -> None:
         if self.source_kind != "SYNTHETIC_FIXTURE":
             raise ValidationError("Only synthetic fixtures are allowed in this experiment")
-        if not self.publication_id or not self.channel_id or not self.platform:
-            raise ValidationError("Stable source identities must be nonempty")
+        if any(type(v) is not str or not v.strip() for v in (
+            self.publication_id, self.channel_id, self.platform
+        )):
+            raise ValidationError("Stable source identities must be nonempty strings")
         if self.content_type not in ("short", "long"):
             raise ValidationError("Unknown content type")
         for d in (self.observed_at, self.published_at):
@@ -91,8 +93,10 @@ def outlier_ratio(
     age. The median is undefined for zero-only baselines.
     """
     _require_derived_permission(derived_permission)
-    if min_baseline < 2 or not 0 <= age_tolerance <= 1:
-        raise ValidationError("Invalid comparator configuration")
+    if type(min_baseline) is not int or min_baseline < 2:
+        raise ValidationError("Baseline minimum must be an integer >= 2")
+    if type(age_tolerance) not in (float, int) or not isfinite(age_tolerance) or not 0 <= age_tolerance <= 1:
+        raise ValidationError("Age tolerance must be finite and between 0 and 1")
     if video.views is None or video.age_hours <= 0:
         raise InsufficientEvidence("Missing target views or invalid video age")
     dedup = unique_observations(baseline)
@@ -190,6 +194,8 @@ def rank_sample(
     with_count = [r for r in rows if r.views is not None]
     if not with_count:
         raise InsufficientEvidence("No available counters")
+    if requested_national_top and len(with_count) != len(rows):
+        raise InsufficientEvidence("Unknown counters can change the national top N")
     if len({r.observed_at for r in with_count}) != 1:
         raise ValidationError("Mixed observation moments: choose a comparable snapshot")
     ranked = sorted(with_count, key=lambda v: (-v.views, v.publication_id))
@@ -211,11 +217,13 @@ def simulate_operational_resilience(
     Two hypothetical sources with correlated common-mode outages.
     No input/output links to real APIs. Simple fixed-seed Monte Carlo.
     """
-    if not 1 <= trials <= 100000:
-        raise ValidationError("Trial count out of bounds")
+    if type(trials) is not int or not 1 <= trials <= 100000:
+        raise ValidationError("Trial count must be an integer from 1 to 100000")
+    if type(seed) is not int:
+        raise ValidationError("Seed must be an integer")
     for p in (common_outage_probability, independent_failure_probability):
-        if not isfinite(p) or not 0 <= p <= 1:
-            raise ValidationError("Probability outside [0,1]")
+        if type(p) not in (int, float) or not isfinite(p) or not 0 <= p <= 1:
+            raise ValidationError("Probability must be a finite number in [0,1]")
     rng = random.Random(seed)
     complete = partial = blocked = 0
     for _ in range(trials):
