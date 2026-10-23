@@ -45,7 +45,7 @@ class Observation:
         if self.content_type not in ("short", "long"):
             raise ValidationError("Unknown content type")
         for d in (self.observed_at, self.published_at):
-            if d.tzinfo is None or d.utcoffset() is None:
+            if not isinstance(d, datetime) or d.tzinfo is None or d.utcoffset() is None:
                 raise ValidationError("Timezones are required")
         if self.observed_at < self.published_at:
             raise ValidationError("Observation cannot predate publication")
@@ -152,8 +152,12 @@ def outlier_ratio(
 
 def view_velocity(earlier: Observation, later: Observation, *, derived_permission: bool = False) -> dict:
     _require_derived_permission(derived_permission)
-    if (earlier.platform, earlier.publication_id, earlier.channel_id, earlier.published_at) != (
-        later.platform, later.publication_id, later.channel_id, later.published_at
+    if (
+        earlier.platform, earlier.publication_id, earlier.channel_id,
+        earlier.content_type, earlier.published_at
+    ) != (
+        later.platform, later.publication_id, later.channel_id,
+        later.content_type, later.published_at
     ):
         raise ValidationError("Incompatible publication observations")
     if earlier.views is None or later.views is None:
