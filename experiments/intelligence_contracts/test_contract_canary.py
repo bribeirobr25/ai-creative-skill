@@ -233,6 +233,30 @@ class EvidenceOwnershipTests(unittest.TestCase):
         with self.assertRaises(ContractViolation):
             validate_research_execution(e, evidence_by_id=refs)
 
+    def test_independence_count_cannot_treat_copies_as_corroboration(self):
+        e, refs = fixture()
+        second = copy.deepcopy(refs["e-1"])
+        second["evidence_id"] = "e-2"
+        second["source_ref"] = "fixture:copy"
+        refs["e-2"] = second
+        e["evidence_clusters"][0]["supporting_evidence_refs"].append("e-2")
+        e["evidence_clusters"][0]["independent_source_count"] = 2
+        with self.assertRaises(ContractViolation):
+            validate_research_execution(e, evidence_by_id=refs)
+        e["evidence_clusters"][0]["independent_source_count"] = 1
+        validate_research_execution(e, evidence_by_id=refs)
+
+    def test_metric_or_ranking_cannot_use_evidence_omitted_from_clusters(self):
+        e, refs = fixture()
+        e["evidence_clusters"] = []
+        with self.assertRaises(ContractViolation):
+            validate_research_execution(e, evidence_by_id=refs)
+        e, refs = fixture()
+        e["intelligence"]["metric_observations"] = []
+        e["evidence_clusters"] = []
+        with self.assertRaises(ContractViolation):
+            validate_research_execution(e, evidence_by_id=refs)
+
     def test_no_results_source_cannot_claim_evidence(self):
         e, refs = fixture()
         e["source_outcomes"][0]["outcome"] = "NO_RESULTS"
@@ -362,6 +386,13 @@ class SourcePreflightTests(unittest.TestCase):
         result = policy(rec=rec)
         self.assertEqual("BLOCKED", result["outcome"])
         self.assertIn("REAL_SOURCE_NOT_AUTHORIZED_IN_S2", result["reasons"])
+
+    def test_source_operation_mismatch_blocks_even_synthetic_use(self):
+        rec = source()
+        rec["operation"] = "OTHER_OPERATION"
+        result = policy(rec=rec)
+        self.assertEqual("BLOCKED", result["outcome"])
+        self.assertIn("OPERATION_OR_ADAPTER_UNVERIFIED", result["reasons"])
 
     def test_missing_verification_fails_closed(self):
         rec = source()
