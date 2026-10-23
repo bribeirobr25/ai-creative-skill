@@ -166,6 +166,7 @@ def validate_research_execution(
                  "invalid Evidence strength")
 
     used_clusters: set[str] = set()
+    clustered_evidence: set[str] = set()
     for raw in _list(data["evidence_clusters"], "evidence_clusters"):
         cluster = _obj(raw, "Evidence Cluster")
         cluster_id = _id(cluster.get("cluster_id"), "cluster_id")
@@ -178,6 +179,11 @@ def validate_research_execution(
                  "cluster points to unknown Evidence")
         _require(len(refs + counters) == len(set(refs + counters)),
                  "repeated/contradictory Evidence in cluster")
+        independent = {registry[ref]["independence_key"] for ref in refs}
+        _require(type(cluster.get("independent_source_count")) is int and
+                 cluster["independent_source_count"] == len(independent),
+                 "cluster independent source count does not match provenance")
+        clustered_evidence.update(refs + counters)
 
     intelligence = _obj(data.get("intelligence"), "intelligence extension")
     _require(intelligence.get("external_calls_performed") is False,
@@ -196,6 +202,8 @@ def validate_research_execution(
                  "metric research_execution_id does not match envelope")
         ev_id = _id(m.get("evidence_id"), "metric.evidence_id")
         _require(ev_id in registry, "metric refers to nonexistent Evidence")
+        _require(ev_id in clustered_evidence,
+                 "metric Evidence is not included in a canonical cluster")
         _require(m.get("source_outcome_ref") == registry[ev_id]["source_outcome_ref"],
                  "metric source attempt disagrees with Evidence")
         _id(m.get("subject_id"), "metric.subject_id")
@@ -217,8 +225,8 @@ def validate_research_execution(
                  (type(value) in (int, float) and isfinite(value) and value >= 0),
                  "metric value must be finite nonnegative or UNKNOWN")
     ranked = _list(intelligence.get("ranked_evidence_refs"), "ranked_evidence_refs")
-    _require(all(type(ref) is str and ref in registry for ref in ranked),
-             "ranking uses unverified Evidence")
+    _require(all(type(ref) is str and ref in clustered_evidence for ref in ranked),
+             "ranking uses unclustered or unverified Evidence")
     _require(len(ranked) == len(set(ranked)),
              "ranking repeats Evidence")
     if coverage.get("requested_national_top") is True and data["status"] == "COMPLETE":
