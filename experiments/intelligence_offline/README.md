@@ -6,6 +6,10 @@
 
 Este experimento testa **apenas lógica matemático-estatística e invariantes sobre dados artificiais**. Não usa a YouTube Data API, Meta, TikTok, vidIQ, Orthogonal, web scraping, APIs, credenciais, dados pessoais, imagens, vídeo, armazenamento persistente ou modelos de IA. Também não é parte do runtime da skill em `src/ai-creative-skill/`.
 
+## Revisão cruzada antes de expandir
+
+O [checklist de revisão](cross-review-checklist-2026-10-23.md) registra dez pontos trazidos pelo Claude Code e pelo planejamento de segurança: semântica de resultado vazio, snapshots, parâmetro de limite, ranking nacional, deduplicação e Monte Carlo. São tarefas **pendentes**, não bugs corrigidos por este README. A nova regra de **pré-publicação sem segredos** está detalhada no [roadmap do PR #18](https://github.com/bribeirobr25/ai-creative-skill/blob/proposal/intelligence-architecture-pre-v0-1-20261023/docs/research/intelligence/revised-roadmap-security-gate-2026-10-23.md) e ainda precisa de implementação técnica.
+
 ## Atualização: adaptador experimental de pesquisa
 
 - `research_bridge.py`: converte fixtures sintéticas em um *envelope lógico* compatível com os campos documentados por `RESEARCH_EVIDENCE_SYNTHESIS`: `research_execution_id`, `query_plan`, `source_outcomes`, `coverage`, `evidence_clusters`, `counterevidence`, `freshness_verdicts`, `status` e `unknowns`. Métricas e ranking permanecem em extensão `intelligence`, com ligações por `evidence_id`.
