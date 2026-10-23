@@ -65,7 +65,8 @@ def validate_request(raw: Mapping) -> Mapping:
     storage = q.get("storage_mode")
     require(type(storage) is str and storage in STORAGE_MODES, "INVALID_STORAGE_MODE")
     retention = q.get("retention_days")
-    require(type(retention) is int and retention >= 0, "INVALID_RETENTION_DAYS")
+    require(type(retention) is int and 0 <= retention <= 36500,
+            "INVALID_RETENTION_DAYS")
     if storage == "NONE":
         require(retention == 0, "NONE_CANNOT_RETAIN")
     if storage == "TRANSIENT_ONLY":
@@ -97,7 +98,7 @@ def validate_capability(raw: Mapping) -> Mapping:
         actions = string_list(g.get("actions"), "GRANT_ACTIONS")
         require(set(actions) <= ACTIONS, "INVALID_GRANT_ACTION")
         ttl = g.get("max_retention_days")
-        require(type(ttl) is int and ttl >= 0, "INVALID_GRANT_TTL")
+        require(type(ttl) is int and 0 <= ttl <= 36500, "INVALID_GRANT_TTL")
         if "PERSIST" in actions:
             require(ttl > 0, "PERSIST_GRANT_REQUIRES_TTL")
     for key in ("reviewed_at", "expires_at"):
@@ -186,7 +187,7 @@ def retention_verdict(*, recorded_at: str, ttl_days: int, now: str,
     created = aware_instant(recorded_at, "RECORDED_AT")
     current = aware_instant(now, "NOW")
     require(current >= created, "TIME_TRAVEL_NOT_ALLOWED")
-    require(type(ttl_days) is int and ttl_days >= 0, "INVALID_TTL")
+    require(type(ttl_days) is int and 0 <= ttl_days <= 36500, "INVALID_TTL")
     require(type(revoked) is bool, "INVALID_REVOKED")
     expired = (current >= created + timedelta(days=ttl_days))
     outcome = "PURGE_REQUIRED" if revoked or expired else "SIMULATED_VALID"
