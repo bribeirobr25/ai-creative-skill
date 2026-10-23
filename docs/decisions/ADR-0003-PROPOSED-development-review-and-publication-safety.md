@@ -1,68 +1,29 @@
-# ADR-0003-PROPOSED · Revisão contínua e proteção do repositório público
+# ADR-0003 · Segurança de publicação no repositório público · CANDIDATE
 
-**Data:** 2026-10-23  
-**Status:** PROPOSTA, NÃO CANÔNICA, NÃO APROVADA PARA MERGE  
-**Aplicação pretendida:** transversal à AI Creative Skill, em consonância com ADR-0001 e ADR-0002.
+**Data:** 2026-10-24
+**Status:** PROPOSED, awaiting owner approval; not accepted or merged.
+**Authority:** complements ADR-0001 (separation of public source and private assets) and ADR-0002 (minimum sufficient bounded path). Neither is superseded.
 
-## Contexto e aprendizado
+## Proposed decision
 
-As revisões independentes dos PRs #18 e #19 encontraram inconsistências de estados, cobertura, snapshots, limites, documentação e significado dos testes. Também mostraram risco de publicar URLs de acesso, dados de projetos e informações sensíveis num repositório público. Esses aprendizados não devem ficar apenas numa memória de sessão ou checklist específico de Intelligence.
+1. **Before every public write**, including local Git pushes and GitHub connector writes, check the complete proposed content and affected filenames for secrets, personal information, private projects, signed URLs and media distribution rights. CI cannot undo a secret leaked by the first push.
+2. Classify as **PUBLIC_OK**, **REVIEW_REQUIRED**, or **NEVER_PUBLIC**. A public brand name does not automatically make a document confidential; a link to a private resource does not automatically grant access. Unknown rights require targeted review, not invented certainty.
+3. Provide a local preflight and a second-layer PR scanner. Any recognized credential or safely unparseable file/patch must **BLOCK**. Ambiguous public Drive links, media or non-secret personal indicators produce **REVIEW** to be handled explicitly. The scanner never emits sensitive values or raw filenames.
+4. Check **the PR's final diff and all its commits** for material added and later removed. A global, all-branch historical audit is a separate **manual/advisory** process, never a required status check of unrelated PRs.
+5. In any confirmed disclosure of access-granting material, **revoke/rotate at its source first**, review scope and logs, and consider Git history/forks/caches cleanup only with separate explicit owner approval. Public reports contain sanitized categories and status, never raw values.
+6. PR and release approval remain governed by their established owners, acceptance criteria, context-specific QA and user authorization. Passing the publication scanner **does not** authorize API access, source reuse, paid operations, merging or release.
 
-## Decisão proposta
+## Boundaries
 
-Adotar o ciclo **PLAN → IMPLEMENT → VERIFY → REVIEW → LEARN** para mudanças materiais:
+This ADR governs publication safety, **not a universal project-management lifecycle**. Proportional testing and learning follow ADR-0002 and the existing implementation methodology. No new Work Profile, policy adjudicator, expense ledger or security override is introduced.
 
-1. **Plan:** recuperar baseline e owners canônicos, definir escopo/autorização, superfícies protegidas, fontes/direitos, riscos e critérios de aceite.
-2. **Implement:** mudanças pequenas em branch dedicada e vinculadas ao responsável. Não alterar PR #17 de Web Experience sem coordenação com a sessão que o conduz.
-3. **Verify:** testes positivos e negativos, metamórficos e fault injection quando relevantes, revisão de direitos, custos, segurança e host. Simulações Monte Carlo complementam os testes determinísticos, com premissas documentadas, nunca como “prova de mercado”.
-4. **Review:** revisão independente do diff, dos contratos, da evidência real de testes, dos efeitos colaterais e das informações que serão publicadas; registrar PASS, FAIL, BLOCKED, NOT_RUN e UNVERIFIED conforme a execução.
-5. **Learn:** persistir defeito, causa, correção, teste preventivo, alcance do aprendizado e limites de generalização. Nunca converter improvisação criativa em licença para alterar fatos, cânone, direitos, autorização, métricas ou custo.
+The S0 historical triage was **administratively closed by owner attestation**, with limited automated coverage and residual uncertainties. This does not certify AI-tool/media licenses, likenesses, external third-party elements, EXIF text, current/historical ACLs or unreachable forks. Investigate a newly evidenced exposure as a bounded case, not by reopening the entire S0 survey.
 
-## Classificação antes de publicar
+A single historical Drive folder reference remains embedded in three current media documentation/registry files under `src/`; current ACL was previously reported restricted, not a guarantee of prior access. Replace those public locators with approved logical asset references in a **separate versioned candidate**, respecting the protected source inventory and the PR #17 owner. Do not alter protected `src/` files under this ADR proposal.
 
-| Classe | Critério |
-|---|---|
-| PUBLIC_OK | Código próprio, fixtures totalmente fictícias, documentação genérica e referências públicas autorizadas |
-| REVIEW_REQUIRED | URLs de Drive/Docs, nomes de clientes em contexto privado, arquivos de fornecedor, IDs de projeto, screenshots, transcrições, caminhos privados, materiais sem licença de redistribuição esclarecida |
-| NEVER_PUBLIC | API keys, tokens, cookies, credenciais, URLs assinadas de acesso, secrets, mídia/cânone privado de clientes, dados pessoais confidenciais e dumps de contas |
+## Required before acceptance
 
-Um nome de marca ou URL de Drive não é necessariamente segredo por si só: é preciso classificar escopo e permissões. Contudo, remover um segredo do snapshot atual não elimina automaticamente cópias em commits, forks, caches e logs.
-
-## Novo controle preventivo
-
-- Antes de qualquer escrita no GitHub, inspecionar **todo o conteúdo** a publicar. Para commits locais, revisar diff staged; para GitHub connector, realizar preflight antes da chamada.
-- Usar um guard estático de linhas adicionadas e arquivos suspeitos como camada auxiliar; não expor o valor do segredo em logs.
-- No CI, verificar diffs da branch e executar testes de falso positivo/negativo. **CI após push não previne a primeira publicação**; exigir preflight local/manual antes do push.
-- Analisar arquivos binários, URLs estáveis e documentação sensível manualmente; um scanner regex não certifica segurança completa.
-- Antes de merge, revisar resultados, status da fonte, direitos, segurança, regressões e autorização. Nunca promover release porque os testes existentes ficaram verdes.
-
-## Tratamento de exposição real
-
-Não republicar conteúdo comprometido. Para credencial ou URL que concede acesso, revogar/rotacionar na origem antes de tratar histórico; investigar impacto em acessos/logs, forks/caches e registrar somente status e categoria em documentos públicos. Detalhes e dados privados ficam fora do Git público.
-
-## Aprendizado adicional: confirmação de links e redução de falsos positivos
-
-O scanner de diff e a auditoria histórica encontram **padrões**, não necessariamente vazamentos. A revisão S0 dos PRs de Intelligence identificou que três strings diferentes do Drive no histórico correspondiam a uma pasta com identificador efetivo e duas referências de testes que não possuíam identificadores de arquivo. A pasta pôde ter suas **permissões atuais verificadas** pelo conector Drive autorizado; este dado não certifica as permissões passadas. Links genéricos de download foram classificados por domínio, evitando tratá-los automaticamente como credenciais.
-
-Regras permanentes propostas:
-
-- Contar **blobs, ocorrências e URLs distintas** separadamente: uma URL repetida em versões ou caminhos não vira novos recursos.
-- Classificar referências incompletas/fixtures sem ID, sem as equiparar a links de acesso reais.
-- Usar, quando permitido, o conector da **fonte proprietária do recurso** para confirmar a permissão real; não inferir ACL por URL, aparência ou resultado de HTTP.
-- Separar claramente `CURRENT_PERMISSIONS_VERIFIED` de `HISTORICAL_ACCESS_UNKNOWN`.
-- Preservar o relatório público estritamente sanitizado, sem URLs, IDs, e-mails, nomes de pastas privadas ou valores de metadados EXIF.
-- Não alterar compartilhamento, revogar link ou reescrever Git por inferência automatizada; mudanças na origem precisam de decisão explícita e análise de impacto.
-- Uma auditoria de links concluída não aprova automaticamente arquivos binários, direitos de uso, EXIF, commit author metadata ou forks/caches fora do alcance.
-
-## Aplicação aos trabalhos atuais
-
-- PR #17: permanecer sob a sessão Claude Code de website.
-- PR #18: revisar contratos e privacidade; documentação de Intelligence continua Draft.
-- PR #19: revisar semântica de busca vazia, seleção de snapshots, filtros repetidos, limites antecipados, escopo nacional, testes e Monte Carlo, preservando o isolamento sintético.
-- Novos projetos: aplicar o mesmo gate de segurança, aprendizado, QA e revisão independentemente da capacidade.
-
-## Limites desta proposta
-
-A ADR não autoriza alteração da main, instalação da skill, chamada paga, compartilhamento de dados reais, remoção de histórico ou acesso a material privado. Uma ferramenta de varredura é apenas defesa em profundidade, não declaração de que o repositório foi auditado integralmente.
-
-**Critério de promoção:** aprovação explícita do proprietário, revisão de conflitos com as ADRs existentes e testes de segurança do guard.
+- Cross-check with ADR-0001/ADR-0002.
+- Real-Git tests covering UTF-8/accented filenames, whitespace, non-UTF-8 patches, binary paths and unusual line separators.
+- PR guard testing against the PR #17 diff, without modifying its branch.
+- Explicit owner approval of this ADR and merge; status remains PROPOSED until then.
