@@ -8,7 +8,7 @@ from contextlib import redirect_stdout
 from unittest.mock import patch
 
 from publication_guard import scan_added_line, scan_unified_diff, main
-from history_audit import audit_text_blob, _verified_branch_coverage, classify_binary_metadata
+from history_audit import audit_text_blob, _verified_branch_coverage, classify_binary_metadata, _scope_bucket
 
 
 def fake_patch(line: str, path: str = "docs/example.md") -> str:
@@ -226,6 +226,12 @@ class SecretRulesTests(unittest.TestCase):
 
     def test_unrecognized_binary_type(self):
         self.assertIn("BINARY_UNKNOWN_OR_OTHER", classify_binary_metadata(b"\x00\x01\x02"))
+
+    def test_origin_scope_buckets_do_not_reveal_private_paths(self):
+        self.assertEqual("RESEARCH", _scope_bucket("docs/research/brand-private/report.md"))
+        self.assertEqual("MIGRATION", _scope_bucket("docs/migration/client-folder.md"))
+        self.assertEqual("VALIDATION", _scope_bucket("validation/fixtures/test.json"))
+        self.assertEqual("OTHER", _scope_bucket("unknown/secret-resource.txt"))
 
     def test_history_scan_detects_categories_without_content(self):
         synthetic = "https://" + "drive.google.com/file/d/" + "1" * 32 + "/view"
