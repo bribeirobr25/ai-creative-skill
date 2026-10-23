@@ -185,7 +185,21 @@ class SecretRulesTests(unittest.TestCase):
         flags = classify_binary_metadata(b"\xff\xd8\xff" + exif)
         self.assertIn("BINARY_EXIF_GPS_POINTER", flags)
         self.assertIn("BINARY_EXIF_POTENTIAL_IDENTIFYING_TAG", flags)
+        self.assertIn("BINARY_EXIF_ARTIST_TAG", flags)
         self.assertTrue(all("88" not in f for f in flags))
+
+    def test_exif_image_description_separates_from_serial_and_owner(self):
+        tiff = (
+            b"Exif\x00\x00" + b"II\x2a\x00" + (8).to_bytes(4, "little")
+            + (1).to_bytes(2, "little")
+            + (0x010E).to_bytes(2, "little") + (2).to_bytes(2, "little")
+            + (1).to_bytes(4, "little") + (88).to_bytes(4, "little")
+            + (0).to_bytes(4, "little")
+        )
+        flags = classify_binary_metadata(b"\xff\xd8\xff" + tiff)
+        self.assertIn("BINARY_EXIF_IMAGE_DESCRIPTION_TAG", flags)
+        self.assertNotIn("BINARY_EXIF_CAMERA_SERIAL_TAG", flags)
+        self.assertNotIn("BINARY_EXIF_CAMERA_OWNER_TAG", flags)
 
     def test_malformed_exif_gets_review_classification(self):
         flags = classify_binary_metadata(b"\xff\xd8\xff" + b"Exif\x00\x00" + b"broken")
