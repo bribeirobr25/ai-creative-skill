@@ -142,9 +142,9 @@ class SecretRulesTests(unittest.TestCase):
     def test_remote_branch_coverage_exact_match(self):
         def fake_git(args, stdin=None):
             if args[:2] == ["ls-remote", "--heads"]:
-                return b"a" * 40 + b"\\trefs/heads/main\\n" + b"b" * 40 + b"\\trefs/heads/feature/example\\n"
+                return b"a" * 40 + b"\trefs/heads/main\n" + b"b" * 40 + b"\trefs/heads/feature/example\n"
             if args and args[0] == "for-each-ref":
-                return b"main " + b"a" * 40 + b"\\nfeature/example " + b"b" * 40 + b"\\n"
+                return b"main " + b"a" * 40 + b"\nfeature/example " + b"b" * 40 + b"\n"
             raise AssertionError("Unexpected git command")
         with patch("history_audit.git", side_effect=fake_git):
             self.assertEqual(2, _verified_branch_coverage())
@@ -152,9 +152,9 @@ class SecretRulesTests(unittest.TestCase):
     def test_remote_branch_missing_blocks_audit(self):
         def fake_git(args, stdin=None):
             if args[:2] == ["ls-remote", "--heads"]:
-                return b"a" * 40 + b"\\trefs/heads/main\\n" + b"b" * 40 + b"\\trefs/heads/secret-branch\\n"
+                return b"a" * 40 + b"\trefs/heads/main\n" + b"b" * 40 + b"\trefs/heads/secret-branch\n"
             if args and args[0] == "for-each-ref":
-                return b"main " + b"a" * 40 + b"\\n"
+                return b"main " + b"a" * 40 + b"\n"
             raise AssertionError("Unexpected git command")
         with patch("history_audit.git", side_effect=fake_git):
             with self.assertRaisesRegex(RuntimeError, "incomplete"):
@@ -163,9 +163,9 @@ class SecretRulesTests(unittest.TestCase):
     def test_stale_branch_head_blocks_audit(self):
         def fake_git(args, stdin=None):
             if args[:2] == ["ls-remote", "--heads"]:
-                return b"a" * 40 + b"\\trefs/heads/main\\n"
+                return b"a" * 40 + b"\trefs/heads/main\n"
             if args and args[0] == "for-each-ref":
-                return b"main " + b"b" * 40 + b"\\n"
+                return b"main " + b"b" * 40 + b"\n"
             raise AssertionError("Unexpected git command")
         with patch("history_audit.git", side_effect=fake_git):
             with self.assertRaisesRegex(RuntimeError, "incomplete"):
