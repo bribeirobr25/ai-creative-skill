@@ -1,47 +1,7 @@
-# S0 · EXIF, inspeção visual amostral e precauções de mídia · 23/10/2026
+# Historical S0 working note (superseded)
 
-**Estado atual:** S0 encerrada por decisão do proprietário, com limites técnicos e riscos residuais registrados no §5; a inspeção visual exaustiva e a leitura completa de metadados NÃO foram executadas.  
-**Branch:** PR #20, proposta não canônica. Nenhum arquivo de imagem ou permissão foi alterado.  
-**Fonte:** auditor histórico nos 21 heads públicos alcançáveis, binários examinados por assinatura e tags EXIF sem revelar valores. [Evidência de execução e testes](https://github.com/bribeirobr25/ai-creative-skill/actions/runs/39994741760/job/120555222613) (associar resultados ao SHA efetivamente testado).
+**Status:** ARCHIVED / reference-only. The current sanitized closure decision, limits and next actions are in [S0-STATUS.md](S0-STATUS.md).
 
-## 1. Categorias observadas
+This document previously held intermediate S0 analysis. Repetitions, candidate matches and automated scanner counts were not certifications of exposure, attribution or licensing. No confidential links, IDs, email values or source paths should be added here.
 
-| Categoria | Ocorrências em versões históricas |
-|---|---:|
-| JPEG | 256 |
-| JPEG com marca EXIF | 30 |
-| JPEG com Artist | 27 |
-| JPEG com Copyright | 27 |
-| JPEG com ImageDescription | 27 |
-| JPEG com GPS pointer reconhecido | Nenhum sinalizado pelo classificador atual |
-| JPEG com CameraOwnerName/CameraSerial reconhecidos | Nenhum sinalizado pelo classificador atual |
-| URLs em cabeçalho JPEG classificadas como namespaces padronizados | 3 |
-
-As contagens são de blobs/versionamentos históricos, não indivíduos, imagens correntes ou segredos. Os 27 caminhos identificados até aqui não implicam 27 exposições distintas. O parser lê IDs de tags EXIF; **não interpreta nem publica os valores de autor, copyright e descrição**. As tags podem representar autoria de ferramentas, crédito legítimo, pessoas ou outra documentação.
-
-## 2. Amostra visual efetivamente examinada
-
-Foi possível abrir três imagens públicas via GitHub como base64 numa sessão de inspeção, sem copiá-las ao repositório ou gerar novos arquivos distribuídos. As amostras representam comparações de layout de sites/protótipos e **não mostraram, à primeira vista, chaves, e-mails, documentos privados ou dados pessoais diretamente visíveis**. Esta observação é restrita às três imagens examinadas.
-
-**Não atribuir esse resultado aos demais arquivos:** fotografias ou screenshots podem revelar texto, rostos, direitos de imagem e informações comerciais sem que EXIF ou regex identifiquem.
-
-## 3. Controle preventivo adicional
-
-O exemplo `security/pre-commit.example` passou a utilizar a modalidade **estrita** (`--fail-on-warning`) do `publication_guard.py`: arquivos binários, referências de Drive e conteúdos suspeitos exigem decisão humana antes de um commit/push local. O workflow de PR registra avisos e não substitui o preflight.
-
-Não apagar automaticamente campos `Artist` e `Copyright`: alguns podem ser atribuição necessária a direitos de uso. Antes de publicar material com metadados, resolver licenciamento, proveniência e finalidade, e escolher tratamento apropriado. Uma remoção cega de EXIF não substitui avaliação de privacidade e pode comprometer rastreabilidade de licença.
-
-## 4. Itens ainda não encerrados
-
-- Revisão **privada dos valores** EXIF de Artist/Copyright/Description em mídia relevante, sem publicar conteúdo sensível no relatório.
-- Conferência de conteúdo visual dos arquivos fora da amostra, principalmente capturas com dados, logos/identidades de clientes, rostos, QR codes, identificadores ou tokens.
-- Revisão de direitos de mídia e disponibilização pública dos conjuntos de pesquisa.
-- Definir aceitação da ADR-0003 e instalação de gate local antes de liberar merge; o pre-commit fornecido é apenas exemplo, não hook instalado.
-
-**Veredito:** a auditoria automatizada e a amostra visual reduzem incertezas, mas **S0 ainda não recebeu clearance geral**.
-
-## 5. Adendo de decisão do proprietário · 23/10/2026
-
-O proprietário confirmou que as mídias sob sua responsabilidade no projeto são produzidas com IA ou fotografadas/filmadas por ele, e que também é o autor dos textos. Solicitou o **encerramento da fase S0**. O fechamento é administrativo, por atestação de origem: `OWNER_ATTESTED / S0_CLOSED_WITH_DOCUMENTED_RESIDUALS`.
-
-**Importante:** os itens de revisão técnica enumerados na seção 4 permanecem historicamente **não verificados por inspeção exaustiva**, embora deixem de ser bloqueios para o encerramento desta fase por decisão do proprietário. Não declarar clearance per-file, aprovação de licenças de ferramentas de IA, ausência de dados em pixels/EXIF ou direitos de eventuais terceiros. Novas mídias continuam sujeitas ao guard e à classificação pré-publicação. O PR #20 e a adoção da ADR-0003 seguem sujeitos a gates próprios.
+Owner closed S0 administratively on 2026-10-23. Any new confirmed incident receives a separate private investigation. Git history remains untouched; historical revisions may still be reachable.
