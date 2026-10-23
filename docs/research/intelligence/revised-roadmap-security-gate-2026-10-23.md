@@ -1,8 +1,14 @@
 # Ordem revisada de desenvolvimento e Security Gate · Intelligence · v0.1
 
 **Data:** 2026-10-23  
-**Estado:** PLANO DE CONTROLE PREVENTIVO · PROPOSTA NÃO CANÔNICA · SCANNER CANDIDATO NO PR #20 (AINDA NÃO INTEGRADO À MAIN)  
+**Estado:** PLANO DE CONTROLE PREVENTIVO · PROPOSTA NÃO CANÔNICA · S0 ENCERRADA POR DECLARAÇÃO DO PROPRIETÁRIO · SCANNER CANDIDATO NO PR #20 (AINDA NÃO INTEGRADO À MAIN)  
 **Escopo:** PRs #18 e #19 e todos os futuros commits públicos da AI Creative Skill; alinhamento com ADR-0001 (código/documentação públicos, materiais privados fora do Git). O PR #17 pertence à sessão Claude Code de Web Experience e não deve ser modificado por esta frente.
+
+## Atualização operacional: fase S0 encerrada por decisão do proprietário (23/10/2026)
+
+O proprietário confirmou que os materiais de mídia sob sua responsabilidade foram **gerados com IA ou captados em fotografia/vídeo por ele**, e que os **textos são de sua autoria**. Solicitou o encerramento desta fase. A auditoria S0 fica `CLOSED_BY_OWNER_ATTESTATION_WITH_RESIDUAL_LIMITATIONS`, registrada no [relatório S0 do PR #20](https://github.com/bribeirobr25/ai-creative-skill/blob/proposal/reusable-development-security-gate-20261023/docs/security/S0-consolidated-text-exif-email-triage-2026-10-23.md). Isso não declara inspeção técnica integral, licença de eventuais materiais de terceiros, nem decisão específica de tornar público endereço de autoria Git.
+
+A tabela abaixo preserva **a sequência planejada originalmente**, inclusive o trabalho que S0 exigia. Sua pendência administrativa de mídia/textos foi encerrada por atestação; a implantação de controles pré-publicação, adoção da ADR-0003 e Gate 0 de contratos/permissões **não foram aprovados automaticamente**. Para a frente Intelligence, a próxima execução é **S1/S2 (revisão técnica dos PRs #19/#18)** e o contrato `SOURCE_PERMISSION_PREFLIGHT`, sem fonte real/paid API. PR #17 permanece independente.
 
 ## 1. Decisão de sequenciamento
 
@@ -69,4 +75,4 @@ Um nome público de marca **não é automaticamente** dado secreto, e uma URL do
 
 A sequência revisada é válida como **plano**, não como implementação concluída. Antes de seguir ao primeiro conector real é necessário demonstrar: auditoria S0 registrada em local apropriado; controles pré-publicação ativos e testados; PR #19 revisado, invariantes de autoridade/cobertura corrigidos; PR #18 harmonizado; fonte/permissão estabelecida para cada operação planejada.
 
-**Nenhuma exposição específica foi verificada por este documento**, e nenhum segredo foi pesquisado ou reproduzido aqui. A auditoria S0 requer execução própria com resultado tratado de forma privada.
+**Este plano não reproduz nem valida segredos ou dados privados.** A auditoria S0 foi executada em etapa separada e, posteriormente, encerrada administrativamente por declaração do proprietário, com limitações e riscos residuais documentados no PR #20. Não equivale a certificação de privacidade geral.
