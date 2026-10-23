@@ -8,7 +8,7 @@ from contextlib import redirect_stdout
 from unittest.mock import patch
 
 from publication_guard import scan_added_line, scan_unified_diff, main
-from history_audit import audit_text_blob, _verified_branch_coverage, classify_binary_metadata, _scope_bucket, classify_link_metadata
+from history_audit import audit_text_blob, _verified_branch_coverage, classify_binary_metadata, _scope_bucket, classify_link_metadata, _reachable_blobs
 
 
 def fake_patch(line: str, path: str = "docs/example.md") -> str:
@@ -226,6 +226,35 @@ class SecretRulesTests(unittest.TestCase):
 
     def test_unrecognized_binary_type(self):
         self.assertIn("BINARY_UNKNOWN_OR_OTHER", classify_binary_metadata(b"\x00\x01\x02"))
+
+    def test_history_preserves_all_paths_for_identical_blob_versions(self):
+        sha = b"c" * 40
+        commit1 = b"a" * 40
+        commit2 = b"b" * 40
+
+        def fake_git(args, stdin=None):
+            if args == ["rev-list", "--all"]:
+                return commit1 + b"\n" + commit2 + b"\n"
+            if args[:3] == ["ls-tree", "-r", "-z"]:
+                path = b"docs/research/public-reference.md" if args[3] == commit1.decode() else b"src/references/old-path.md"
+                return b"100644 blob " + sha + b"\t" + path + b"\x00"
+            if args and args[0] == "cat-file":
+                self.assertEqual(sha + b"\n", stdin)
+                return sha + b" blob 12\n"
+            raise AssertionError("Unexpected Git command")
+
+        with patch("history_audit.git", side_effect=fake_git):
+            paths, sizes = _reachable_blobs()
+        self.assertEqual(12, sizes[sha.decode()])
+        self.assertEqual({
+            "docs/research/public-reference.md",
+            "src/references/old-path.md"
+        }, paths[sha.decode()])
+
+    def test_history_rejects_empty_commit_list(self):
+        with patch("history_audit.git", return_value=b""):
+            with self.assertRaises(RuntimeError):
+                _reachable_blobs()
 
     def test_drive_link_classification_redacts_identifier(self):
         u = "https://" + "drive.google.com/drive/folders/" + "F" * 33
