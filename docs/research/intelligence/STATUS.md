@@ -3,7 +3,7 @@
 **SINGLE ACTIVE STATUS:** `GATE_0_CONDITIONAL / NO_CANONICAL_INTEGRATION / SOURCE_AUTHORIZATION_PENDING / NO_RELEASE`.
 **Authority:** existing SKILL.md, Current Design Manifest, Research Work Profile, Research Evidence Synthesis, Ad/Funnel Intelligence, Product/Marketplace, Execution Contracts and ADR-0001/0002. This document is a **candidate**, not an approval.
 
-**Current source of architectural proposal:** [architecture-v0.3.md](architecture-v0.3.md). Historical v0.1/v0.2, older audits, stages and the PR descriptions are preserved as **historical research**, not parallel current governance. In particular, obsolete claims in older documents such as “S0 open” and “YouTube categorically prohibited” do **not** override this status.
+**Current candidate documents:** [architecture-v0.3.md](architecture-v0.3.md) and [acceptance-v0.3.md](acceptance-v0.3.md), with this STATUS as the single current stage/authority verdict. Historical v0.1/v0.2, older audits, stages and the PR descriptions are preserved as **historical research**, not parallel current governance. In particular, obsolete claims in older documents such as “S0 open” and “YouTube categorically prohibited” do **not** override this status.
 
 ## Single sequence
 
