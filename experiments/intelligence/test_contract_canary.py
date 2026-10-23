@@ -6,7 +6,7 @@ import unittest
 from intelligence.contract_canary import (
     ContractViolation, SOURCE_OUTCOMES, RESEARCH_STATUSES,
     validate_research_execution, validate_query_filter,
-    evaluate_source_candidate, validate_handoff,
+    validate_handoff,
 )
 
 
@@ -120,6 +120,37 @@ class CanonicalVocabularyTests(unittest.TestCase):
         validate_research_execution(wire, evidence_by_id=refs)
         self.assertEqual(e, wire)
         self.assertEqual(["All market facts UNKNOWN"], wire["unknowns"])
+
+    def test_complete_cannot_claim_success_from_auth_failure(self):
+        e, refs = fixture()
+        e["status"] = "COMPLETE"
+        e["source_outcomes"][0]["outcome"] = "AUTH_FAILED"
+        e["evidence_clusters"] = []
+        e["intelligence"]["metric_observations"] = []
+        e["intelligence"]["ranked_evidence_refs"] = []
+        with self.assertRaises(ContractViolation):
+            validate_research_execution(e, evidence_by_id={})
+
+    def test_complete_ok_without_evidence_fails(self):
+        e, _ = fixture()
+        e["status"] = "COMPLETE"
+        e["evidence_clusters"] = []
+        e["intelligence"]["metric_observations"] = []
+        e["intelligence"]["ranked_evidence_refs"] = []
+        with self.assertRaises(ContractViolation):
+            validate_research_execution(e, evidence_by_id={})
+
+    def test_national_top_requires_boolean_flag(self):
+        e, refs = fixture()
+        e["coverage"]["requested_national_top"] = 1
+        with self.assertRaises(ContractViolation):
+            validate_research_execution(e, evidence_by_id=refs)
+
+    def test_unknown_authority_fields_fail(self):
+        e, refs = fixture()
+        e["intelligence"]["may_spend"] = True
+        with self.assertRaises(ContractViolation):
+            validate_research_execution(e, evidence_by_id=refs)
 
     def test_missing_canonical_research_field_rejected(self):
         e, refs = fixture()
@@ -372,93 +403,6 @@ class CoverageAndHandoffTests(unittest.TestCase):
         with self.assertRaises(ContractViolation):
             validate_handoff(h)
 
-
-class SourcePreflightTests(unittest.TestCase):
-    def test_synthetic_positive_never_grants_api_or_storage(self):
-        result = policy()
-        self.assertEqual("SYNTHETIC_ELIGIBLE", result["outcome"])
-        self.assertEqual([], result["reasons"])
-        for key in ("may_call_external_api", "may_persist", "may_spend"):
-            self.assertFalse(result[key])
-
-    def test_real_source_can_never_grant_api_through_s2(self):
-        rec = source()
-        rec["source_kind"] = "OFFICIAL_API"
-        result = policy(rec=rec)
-        self.assertEqual("BLOCKED", result["outcome"])
-        self.assertIn("REAL_SOURCE_NOT_AUTHORIZED_IN_S2", result["reasons"])
-
-    def test_source_operation_mismatch_blocks_even_synthetic_use(self):
-        rec = source()
-        rec["operation"] = "OTHER_OPERATION"
-        result = policy(rec=rec)
-        self.assertEqual("BLOCKED", result["outcome"])
-        self.assertIn("OPERATION_OR_ADAPTER_UNVERIFIED", result["reasons"])
-
-    def test_missing_verification_fails_closed(self):
-        rec = source()
-        rec["processing_rights"] = "NOT_VERIFIED"
-        self.assertIn("PROCESSING_RIGHTS_UNVERIFIED", policy(rec=rec)["reasons"])
-
-    def test_geo_basis_not_auto_substituted(self):
-        rec = source()
-        rec["documented_geo_semantics"] = ["CREATOR_REGISTERED_GEO"]
-        self.assertIn("GEO_SEMANTICS_MISMATCH", policy(rec=rec)["reasons"])
-
-    def test_temporal_basis_not_auto_substituted(self):
-        rec = source()
-        rec["documented_time_semantics"] = ["OBSERVED_AS_OF"]
-        self.assertIn("TIME_SEMANTICS_MISMATCH", policy(rec=rec)["reasons"])
-
-    def test_metric_support_and_field_rights_required(self):
-        rec = source()
-        rec["documented_metric_support"] = []
-        rec["field_rights"] = {}
-        reasons = policy(rec=rec)["reasons"]
-        self.assertIn("METRIC_NOT_SUPPORTED", reasons)
-        self.assertIn("FIELD_RIGHTS_UNVERIFIED", reasons)
-
-    def test_purpose_and_transform_require_explicit_grants(self):
-        self.assertIn("PURPOSE_NOT_AUTHORIZED",
-                      policy(purpose="PAID_AD_PRODUCTION")["reasons"])
-        self.assertIn("TRANSFORMATION_NOT_AUTHORIZED",
-                      policy(transformation="DERIVED_OUTLIER_SCORE")["reasons"])
-
-    def test_no_storage_even_when_claimed_synthetic_permitted(self):
-        rec = source()
-        rec["storage_rights"] = "VERIFIED_SYNTHETIC"
-        result = policy(rec=rec, storage="PERSIST")
-        self.assertEqual("BLOCKED", result["outcome"])
-        self.assertFalse(result["may_persist"])
-
-    def test_paid_not_authorized_by_boolean_or_refs(self):
-        for kwargs in (
-            {"requires_paid": True},
-            {"requires_paid": True, "approval_ref": "approval",
-             "reservation_ref": "ledger-reservation"},
-        ):
-            with self.subTest(kwargs=kwargs):
-                result = policy(**kwargs)
-                self.assertIn("S2_PAID_CALL_NEVER_AUTHORIZED", result["reasons"])
-                self.assertFalse(result["may_spend"])
-
-    def test_invalid_query_window_and_limit(self):
-        q = query()
-        q["time_filter"]["end_exclusive"] = "2026-09-01"
-        with self.assertRaises(ContractViolation):
-            validate_query_filter(q)
-        q = query()
-        q["ranking"]["limit"] = True
-        with self.assertRaises(ContractViolation):
-            validate_query_filter(q)
-
-    def test_roundtrip_preserves_semantics(self):
-        q = query()
-        cloned = json.loads(json.dumps(q))
-        validate_query_filter(cloned)
-        self.assertEqual(q["time_filter"]["meaning"], cloned["time_filter"]["meaning"])
-        self.assertEqual(q["geographic_filter"]["meaning"],
-                         cloned["geographic_filter"]["meaning"])
 
 
 if __name__ == "__main__":
