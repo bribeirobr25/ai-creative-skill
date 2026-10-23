@@ -104,10 +104,21 @@ def audit_commit_metadata() -> dict[str, int]:
     for message in messages:
         for category in audit_text_blob(message, ""):
             out["COMMIT_" + category] += 1
-        for match in EMAIL_CANDIDATE.finditer(message):
-            address = match.group(0)
-            if has_reviewable_email(address):
-                unique_message_emails.add(address.casefold())
+        for line in message.splitlines():
+            matches = [
+                m.group(0) for m in EMAIL_CANDIDATE.finditer(line)
+                if has_reviewable_email(m.group(0))
+            ]
+            if not matches:
+                continue
+            kind = line.strip().casefold()
+            if kind.startswith("co-authored-by:"):
+                out["REVIEW:COAUTHORSHIP_TRAILER_EMAIL_LINES"] += 1
+            elif kind.startswith("signed-off-by:"):
+                out["REVIEW:SIGNED_OFF_TRAILER_EMAIL_LINES"] += 1
+            else:
+                out["REVIEW:OTHER_COMMIT_MESSAGE_EMAIL_LINES"] += 1
+            unique_message_emails.update(x.casefold() for x in matches)
     out["UNIQUE_COMMIT_MESSAGE_EMAILS_REVIEW"] = len(unique_message_emails)
     authors = git(["log", "--all", "--format=%ae"]).decode("utf-8", "replace").splitlines()
     emails = {v.strip().casefold() for v in authors if v.strip()}
