@@ -10,6 +10,7 @@ import argparse
 import hashlib
 from dataclasses import dataclass
 import re
+import shlex
 import subprocess
 import sys
 from pathlib import PurePosixPath
@@ -77,34 +78,73 @@ def scan_added_line(path: str, line: str, line_number: int) -> list[Finding]:
     return findings
 
 
+def _destination_from_git_header(line: str) -> str | None:
+    """Read the destination even for binary-only diffs with no +++ header.
+
+    Git quotes unusual paths in diff headers. If parsing is ambiguous, the
+    scanner must report REVIEW rather than silently skip the entire file.
+    """
+    try:
+        words = shlex.split(line)
+    except ValueError:
+        return None
+    if (len(words) != 4 or words[:2] != ["diff", "--git"]
+            or not words[2].startswith("a/") or not words[3].startswith("b/")):
+        return None
+    return words[3][2:]
+
+
 def scan_unified_diff(patch: str) -> list[Finding]:
-    """Scan additions only, including new filenames; never echo the match."""
+    """Inspect added lines AND destination paths, including binary-only changes.
+
+    Git does not emit a +++ b/path line for many binary additions, copies and
+    renames. Defer destination-path checking until the end of each file block
+    so deletions alone do not trigger a false new-publication warning.
+    """
     results: list[Finding] = []
     path: str | None = None
+    destination: str | None = None
+    deleted = False
     line_no = 0
     seen_file_checks: set[tuple[str, str]] = set()
+
+    def check_destination(value: str) -> None:
+        if PRIVATE_FILENAME.search(value) and (value, "PRIVATE_FILE_PATH") not in seen_file_checks:
+            results.append(Finding("BLOCK", "PRIVATE_FILE_PATH", value, 0))
+            seen_file_checks.add((value, "PRIVATE_FILE_PATH"))
+        if value.lower().endswith(REVIEW_FILE_SUFFIXES) and (value, "BINARY_OR_MEDIA_REVIEW") not in seen_file_checks:
+            results.append(Finding("REVIEW", "BINARY_OR_MEDIA_REVIEW", value, 0))
+            seen_file_checks.add((value, "BINARY_OR_MEDIA_REVIEW"))
+
     for raw in patch.splitlines():
+        if raw.startswith("diff --git "):
+            if destination is not None and not deleted:
+                check_destination(destination)
+            destination = _destination_from_git_header(raw)
+            if destination is None:
+                results.append(Finding("REVIEW", "UNPARSEABLE_DIFF_HEADER", "<unknown-file>", 0))
+            deleted = False
+            path = None
+            line_no = 0
+            continue
+        if raw.startswith("deleted file mode ") or raw == "+++ /dev/null":
+            deleted = True
+            path = None
+            continue
         m = DIFF_FILE.match(raw)
         if m:
             path = m.group(1)
+            destination = path
             line_no = 0
-            if PRIVATE_FILENAME.search(path) and (path, "PRIVATE_FILE_PATH") not in seen_file_checks:
-                results.append(Finding("BLOCK", "PRIVATE_FILE_PATH", path, 0))
-                seen_file_checks.add((path, "PRIVATE_FILE_PATH"))
-            if path.lower().endswith(REVIEW_FILE_SUFFIXES) and (path, "BINARY_OR_MEDIA_REVIEW") not in seen_file_checks:
-                results.append(Finding("REVIEW", "BINARY_OR_MEDIA_REVIEW", path, 0))
-                seen_file_checks.add((path, "BINARY_OR_MEDIA_REVIEW"))
-            continue
-        if raw.startswith("diff --git "):
-            path = None
             continue
         if raw.startswith("+++ ") or raw.startswith("--- ") or raw.startswith("\\ No newline"):
             continue
         if path and raw.startswith("+"):
             line_no += 1
             results.extend(scan_added_line(path, raw[1:], line_no))
+    if destination is not None and not deleted:
+        check_destination(destination)
     return results
-
 
 def _get_diff(args: argparse.Namespace) -> str:
     if args.staged:
