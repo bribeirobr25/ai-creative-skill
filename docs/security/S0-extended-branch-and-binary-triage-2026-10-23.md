@@ -2,7 +2,7 @@
 
 **Status:** TRIAGEM TÉCNICA AMPLIADA / REVISÃO MANUAL PRIVADA PENDENTE / NÃO CERTIFICADO  
 **Owner:** PR #20, branch `proposal/reusable-development-security-gate-20261023`.  
-**Evidência:** execução da tarefa `scan-publication-diff` no [GitHub Actions](https://github.com/bribeirobr25/ai-creative-skill/actions/runs/39948339311) referente ao commit de código de classificação, com resultados consultados diretamente no log. Números são de versões de objetos, não arquivos únicos, salvo indicação específica.
+**Evidência:** execução da tarefa `scan-publication-diff` no [GitHub Actions](https://github.com/bribeirobr25/ai-creative-skill/actions/runs/39979937710/job/120504269581) referente ao commit de código de classificação, com resultados consultados diretamente no log. Números são de versões de objetos, não arquivos únicos, salvo indicação específica.
 
 ## 1. Correção de cobertura da auditoria
 
