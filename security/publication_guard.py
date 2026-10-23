@@ -7,6 +7,7 @@ Findings deliberately do not print matched secret values.
 from __future__ import annotations
 
 import argparse
+import hashlib
 from dataclasses import dataclass
 import re
 import subprocess
@@ -112,10 +113,11 @@ def main(argv: list[str] | None = None) -> int:
     blockers = sum(f.severity == "BLOCK" for f in findings)
     warnings = sum(f.severity == "REVIEW" for f in findings)
     for item in findings:
-        # Neither source line nor matching secret appears in CI or local logs.
-        # The path is a path already in the public Git diff; users must still
-        # review potentially private filenames before publication.
-        print(f"{item.severity}: {item.rule} in {item.path} (added-line {item.added_line})")
+        # Never echo source line, matched secret OR raw filename: a filename
+        # can contain an email, project identifier or a secret of its own.
+        # Reconcile path_ref against the local diff in a private review.
+        path_ref = hashlib.sha256(item.path.encode("utf-8")).hexdigest()[:12]
+        print(f"{item.severity}: {item.rule} path_ref={path_ref} (added-line {item.added_line})")
     print(f"Publication guard: {blockers} BLOCK, {warnings} REVIEW. "
           "Scan covers added textual diff only; manual review still required.")
     return 1 if blockers or (warnings and ns.fail_on_warning) else 0
