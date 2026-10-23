@@ -176,9 +176,9 @@ class SecretRulesTests(unittest.TestCase):
         def fake_git(args, stdin=None):
             requested.append(args)
             if args == ["log", "--all", "HEAD", "--format=%B%x00"]:
-                return b"example subject\\x00"
+                return b"example subject\x00"
             if args == ["log", "--all", "HEAD", "--format=%ae"]:
-                return b"bot@users.noreply.github.com\\n"
+                return b"bot@users.noreply.github.com\n"
             raise AssertionError("Unexpected Git query")
         with patch("history_audit.git", side_effect=fake_git):
             report = audit_commit_metadata()
