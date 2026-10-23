@@ -26,6 +26,61 @@ def rules(patch_text):
 
 
 class SecretRulesTests(unittest.TestCase):
+    def test_binary_only_new_image_without_plus_header_is_reviewed(self):
+        diff = (
+            "diff --git a/assets/new.jpg b/assets/new.jpg\\n"
+            "new file mode 100644\\n"
+            "index 0000000..123abcd\\n"
+            "Binary files /dev/null and b/assets/new.jpg differ\\n"
+        ).replace("\\n", "\n")
+        self.assertIn(("REVIEW", "BINARY_OR_MEDIA_REVIEW"), rules(diff))
+
+    def test_binary_only_private_filename_without_plus_header_is_blocked(self):
+        diff = (
+            "diff --git a/config/.env.prod b/config/.env.prod\\n"
+            "new file mode 100644\\n"
+            "Binary files /dev/null and b/config/.env.prod differ\\n"
+        ).replace("\\n", "\n")
+        self.assertIn(("BLOCK", "PRIVATE_FILE_PATH"), rules(diff))
+
+    def test_renamed_image_without_text_hunk_is_reviewed(self):
+        diff = (
+            "diff --git a/assets/old.jpg b/assets/new.jpg\\n"
+            "similarity index 100%\\n"
+            "rename from assets/old.jpg\\n"
+            "rename to assets/new.jpg\\n"
+        ).replace("\\n", "\n")
+        self.assertIn(("REVIEW", "BINARY_OR_MEDIA_REVIEW"), rules(diff))
+
+    def test_binary_deletion_does_not_flag_new_publication(self):
+        diff = (
+            "diff --git a/assets/old.jpg b/assets/old.jpg\\n"
+            "deleted file mode 100644\\n"
+            "Binary files a/assets/old.jpg and /dev/null differ\\n"
+        ).replace("\\n", "\n")
+        self.assertNotIn(("REVIEW", "BINARY_OR_MEDIA_REVIEW"), rules(diff))
+
+    def test_quoted_binary_path_with_spaces_is_reviewed(self):
+        diff = (
+            'diff --git "a/assets/my image.jpeg" "b/assets/my image.jpeg"\\n'
+            "new file mode 100644\\n"
+            "Binary files /dev/null and b/assets/my image.jpeg differ\\n"
+        ).replace("\\n", "\n")
+        self.assertIn(("REVIEW", "BINARY_OR_MEDIA_REVIEW"), rules(diff))
+
+    def test_unparseable_diff_header_fails_open_to_manual_review_not_silence(self):
+        diff = "diff --git a/incomplete\\nBinary files differ\\n".replace("\\n", "\n")
+        self.assertIn(("REVIEW", "UNPARSEABLE_DIFF_HEADER"), rules(diff))
+
+    def test_two_binary_files_reviewed_separately(self):
+        diff = (
+            "diff --git a/one.jpg b/one.jpg\\n"
+            "Binary files /dev/null and b/one.jpg differ\\n"
+            "diff --git a/two.png b/two.png\\n"
+            "Binary files /dev/null and b/two.png differ\\n"
+        ).replace("\\n", "\n")
+        self.assertEqual(2, sum(rule == "BINARY_OR_MEDIA_REVIEW" for _, rule in rules(diff)))
+
     def test_github_classic_token(self):
         token = "ghp_" + "X" * 32
         self.assertIn(("BLOCK", "GITHUB_TOKEN"), rules(fake_patch("token=" + token)))
