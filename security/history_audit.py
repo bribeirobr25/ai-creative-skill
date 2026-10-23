@@ -271,6 +271,30 @@ def classify_link_metadata(text: str) -> set[str]:
     return kinds
 
 
+def _link_fingerprints(text: str) -> dict[str, set[str]]:
+    """Return in-memory fingerprints for counting distinct URLs only.
+
+    Never persist or print fingerprints: even digests of guessable URLs may
+    reveal information through a dictionary attack. No actual URL is logged.
+    """
+    import hashlib
+    import re
+    result: dict[str, set[str]] = {"DRIVE": set(), "GENERIC_SHARE": set()}
+    drive = re.findall(
+        r"""https?://(?:drive|docs)\.google\.com/[^\s<>"')]{1,1200}""",
+        text, flags=re.I,
+    )
+    shared = re.findall(
+        r"""https?://[^\s<>"')]{1,1200}/(?:share|sharing|download)/[^\s<>"')]{10,1200}""",
+        text, flags=re.I,
+    )
+    for category, urls in (("DRIVE", drive), ("GENERIC_SHARE", shared)):
+        for url in urls:
+            normalized = url.rstrip(".,;")
+            result[category].add(hashlib.sha256(normalized.encode("utf-8")).hexdigest())
+    return result
+
+
 def _scope_bucket(path: str) -> str:
     """Broad, non-identifying origin bucket for manual review planning."""
     if path.startswith("docs/research/"):
@@ -293,6 +317,7 @@ def scan_history() -> dict:
     summary = Counter()
     summary["VERIFIED_REMOTE_BRANCH_HEADS"] = branch_count
     exif_sensitive_paths: set[str] = set()
+    distinct_links: dict[str, set[str]] = {"DRIVE": set(), "GENERIC_SHARE": set()}
     summary["MULTIPATH_BLOB_VERSIONS"] = sum(len(aliases) > 1 for aliases in paths.values())
     summary["REACHABLE_PATH_ALIASES"] = sum(len(aliases) for aliases in paths.values())
     for oid, aliases in paths.items():
@@ -319,6 +344,9 @@ def scan_history() -> dict:
             summary["SKIPPED_NON_UTF8_BLOB"] += 1
             continue
         summary["SCANNED_TEXT_BLOB"] += 1
+        fingerprints = _link_fingerprints(value)
+        for category, hashes in fingerprints.items():
+            distinct_links[category].update(hashes)
         for flag in classify_link_metadata(value):
             summary[flag] += 1
         for category in audit_text_blob(value, ""):
@@ -328,6 +356,8 @@ def scan_history() -> dict:
                     summary["LINK_SCOPE:" + scope] += 1
     summary["REACHABLE_BLOB_VERSIONS"] = len(paths)
     summary["UNIQUE_PATHS_WITH_EXIF_IDENTIFYING_TAG"] = len(exif_sensitive_paths)
+    summary["UNIQUE_DRIVE_URL_STRINGS"] = len(distinct_links["DRIVE"])
+    summary["UNIQUE_GENERIC_SHARE_URL_STRINGS"] = len(distinct_links["GENERIC_SHARE"])
     summary.update(audit_commit_metadata())
     return dict(sorted(summary.items()))
 
