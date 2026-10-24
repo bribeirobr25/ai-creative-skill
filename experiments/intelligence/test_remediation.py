@@ -104,5 +104,71 @@ class AdversarialFixes(unittest.TestCase):
             rank_sample([synthetic_row()],limit=1,requested_national_top=1)
 
 
+    def test_forged_policy_pass_with_blocking_reasons_is_not_accepted(self):
+        p=fixture_policy()
+        p["reason_codes"]=["POLICY_NOT_CURRENT"]
+        with self.assertRaises(ValidationError):
+            research_request(policy_decision=p)
+        p=fixture_policy()
+        p["rights_scope"]="REAL_SOURCE_GRANTED"
+        with self.assertRaises(ValidationError):
+            research_request(policy_decision=p)
+
+    def test_complete_research_without_explicit_policy_decision_rejected(self):
+        e=research_request()
+        del e["intelligence"]["policy_shape_decision"]
+        with self.assertRaises(ContractViolation):
+            validate_research_execution(e, evidence_by_id=e["fixture_evidence_index"])
+
+    def test_official_source_outcome_in_synthetic_execution_rejected(self):
+        e=research_request()
+        e["source_outcomes"][0]["source_class"]="OFFICIAL_API"
+        with self.assertRaises(ContractViolation):
+            validate_research_execution(e, evidence_by_id=e["fixture_evidence_index"])
+
+    def test_invented_stop_code_rejected(self):
+        e=research_request()
+        e["intelligence"]["stop_code"]="STOP_INVENTED_OK"
+        with self.assertRaises(ContractViolation):
+            validate_research_execution(e, evidence_by_id=e["fixture_evidence_index"])
+
+    def test_real_provider_short_urls_cannot_be_evidence(self):
+        e=research_request()
+        eid=next(iter(e["fixture_evidence_index"]))
+        for source in ("//youtube.com/watch?v=x", "https://youtu.be/x",
+                       "https://tiktok.com/@creator/video/1"):
+            e["fixture_evidence_index"][eid]["source_ref"]=source
+            with self.subTest(source=source), self.assertRaises(ContractViolation):
+                validate_research_execution(e, evidence_by_id=e["fixture_evidence_index"])
+
+    def test_derived_operation_always_requires_derivation_right(self):
+        c=capability(operation="DERIVED_ANALYTICS")
+        q=policy_request(operation="DERIVED_ANALYTICS",
+                         transformations=["DISPLAY_NATIVE"])
+        d=evaluate(q,c,now="2026-10-23T15:00:00+00:00")
+        self.assertEqual("BLOCKED",d["decision"])
+        self.assertIn("DERIVED_OPERATION_REQUIRES_DERIVATION",d["reason_codes"])
+
+    def test_unauthorized_fields_rejected_in_nested_contracts(self):
+        e=research_request()
+        e["coverage"]["may_publish"]=True
+        with self.assertRaises(ContractViolation):
+            validate_research_execution(e,evidence_by_id=e["fixture_evidence_index"])
+        c=capability()
+        c["allowed_project_ids"]=["fixture-project"]
+        with self.assertRaises(InvalidContract):
+            validate_capability(c)
+        c=capability()
+        c["field_grants"]["viewCount"]["approval_ref"]="claimed"
+        with self.assertRaises(InvalidContract):
+            validate_capability(c)
+
+    def test_metric_claimed_derived_but_not_performed_is_rejected(self):
+        e=research_request()
+        e["intelligence"]["metric_observations"][0]["metric_name"]="OUTLIER_RATIO"
+        with self.assertRaises(ContractViolation):
+            validate_research_execution(e,evidence_by_id=e["fixture_evidence_index"])
+
+
 if __name__=="__main__":
     unittest.main()
