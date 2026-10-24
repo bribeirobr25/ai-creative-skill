@@ -49,9 +49,9 @@ class TemplateSafetyTests(unittest.TestCase):
     def test_forged_verified_synthetic_access_state_not_enough(self):
         c = unverified_capability_template("YOUTUBE_DERIVED_ANALYTICS")
         c["authorization_state"] = "SIMULATED_VERIFIED"
-        d = evaluate(fake_request(c), c, now="2026-10-23T15:00:00+00:00")
-        self.assertEqual("BLOCKED", d["decision"])
-        self.assertFalse(d["may_access_real_source"])
+        from experiments.intelligence.policy_gate import InvalidContract
+        with self.assertRaises(InvalidContract):
+            evaluate(fake_request(c), c, now="2026-10-23T15:00:00+00:00")
 
     def test_catalog_returns_independent_copies(self):
         a = planning_templates()
