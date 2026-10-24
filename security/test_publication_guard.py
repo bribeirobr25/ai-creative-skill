@@ -200,6 +200,89 @@ class SecretRulesTests(unittest.TestCase):
                 url="https://" + "drive.google.com/" + route + "D" * 30
                 self.assertIn(("REVIEW", "DRIVE_REFERENCE"), rules(fake_patch(url)))
 
+    def test_ci_cli_blocks_merge_only_added_token(self):
+        import tempfile
+        import subprocess
+        from pathlib import Path
+
+        with tempfile.TemporaryDirectory() as root:
+            def git(*args):
+                return subprocess.run(["git", "-C", root, *args],
+                                      capture_output=True, check=True).stdout
+            git("init", "-q")
+            git("config", "user.email", "test@example.invalid")
+            git("config", "user.name", "Synthetic Reviewer")
+            (Path(root) / "baseline.txt").write_text("base\n")
+            git("add", ".")
+            git("commit", "-qm", "base")
+            base = git("rev-parse", "HEAD").decode().strip()
+            git("checkout", "-qb", "other")
+            (Path(root) / "feature.txt").write_text("safe\n")
+            git("add", ".")
+            git("commit", "-qm", "feature")
+            git("checkout", "-qb", "review", base)
+            (Path(root) / "main-side.txt").write_text("also safe\n")
+            git("add", ".")
+            git("commit", "-qm", "base side")
+            git("merge", "--no-ff", "--no-commit", "other")
+            (Path(root) / "merged-only.txt").write_text("ghp_" + "M" * 35 + "\n")
+            git("add", ".")
+            git("commit", "-qm", "merge with synthetic token")
+            import publication_guard
+            def git_scoped(cmd):
+                return subprocess.run(["git", "-C", root, *cmd[1:]],
+                                      capture_output=True, check=True).stdout
+            with patch("publication_guard._run_git", side_effect=git_scoped):
+                with redirect_stdout(io.StringIO()):
+                    self.assertEqual(1, main([
+                        "--range", base + "...HEAD",
+                        "--history-range", base + "..HEAD"
+                    ]))
+
+    def test_ci_cli_checks_commit_message_and_path_metadata(self):
+        import tempfile
+        import subprocess
+        from pathlib import Path
+        with tempfile.TemporaryDirectory() as root:
+            def git(*args):
+                return subprocess.run(["git", "-C", root, *args],
+                                      capture_output=True, check=True).stdout
+            git("init", "-q")
+            git("config", "user.email", "test@example.invalid")
+            git("config", "user.name", "Synthetic Reviewer")
+            (Path(root) / "base.txt").write_text("base\n")
+            git("add", ".")
+            git("commit", "-qm", "base")
+            base = git("rev-parse", "HEAD").decode().strip()
+            (Path(root) / "safe.txt").write_text("no secret\n")
+            git("add", ".")
+            git("commit", "-qm", "ghp_" + "C" * 35)
+            def git_scoped(cmd):
+                return subprocess.run(["git", "-C", root, *cmd[1:]],
+                                      capture_output=True, check=True).stdout
+            with patch("publication_guard._run_git", side_effect=git_scoped):
+                with redirect_stdout(io.StringIO()):
+                    self.assertEqual(1, main([
+                        "--range", base + "...HEAD",
+                        "--history-range", base + "..HEAD"
+                    ]))
+            # Name-only metadata check when text content is innocuous.
+            git("checkout", "-qb", "path-test", base)
+            (Path(root) / ("ghp_" + "P" * 35 + ".txt")).write_text("safe\n")
+            git("add", ".")
+            git("commit", "-qm", "plain commit")
+            with patch("publication_guard._run_git", side_effect=git_scoped):
+                with redirect_stdout(io.StringIO()):
+                    self.assertEqual(1, main([
+                        "--range", base + "...HEAD",
+                        "--history-range", base + "..HEAD"
+                    ]))
+
+    def test_literal_added_dev_null_line_cannot_hide_token(self):
+        token = "ghp_" + "T" * 34
+        payload = fake_patch("++ /dev/null\n+" + token)
+        self.assertIn(("BLOCK", "GITHUB_TOKEN"), rules(payload))
+
     def test_github_classic_token(self):
         token = "ghp_" + "X" * 32
         self.assertIn(("BLOCK", "GITHUB_TOKEN"), rules(fake_patch("token=" + token)))
