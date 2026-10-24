@@ -191,7 +191,11 @@ class AuthorizationBoundary(unittest.TestCase):
         q = request(requires_paid=True)
         q["approval_ref"] = "simulated-approval"
         q["reservation_ref"] = "simulated-ledger-entry"
-        d = verdict(query=q)
+        # Source-policy fixtures cannot accept approval/ledger references.
+        # Such approvals remain owned by the Execution Contracts.
+        with self.assertRaises(InvalidContract):
+            verdict(query=q)
+        d = verdict(query=request(requires_paid=True))
         self.assertIn("PAID_RESEARCH_NOT_ENABLED_IN_S3", d["reason_codes"])
         self.assertFalse(d["may_spend"])
 
