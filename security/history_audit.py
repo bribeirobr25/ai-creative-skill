@@ -14,7 +14,10 @@ from collections import Counter
 import subprocess
 import sys
 
-from publication_guard import BLOCK_RULES, REVIEW_RULES, PRIVATE_FILENAME, REVIEW_FILE_SUFFIXES, has_reviewable_email, EMAIL_CANDIDATE
+try:
+    from .publication_guard import BLOCK_RULES, REVIEW_RULES, PRIVATE_FILENAME, REVIEW_FILE_SUFFIXES, has_reviewable_email, EMAIL_CANDIDATE
+except ImportError:
+    from publication_guard import BLOCK_RULES, REVIEW_RULES, PRIVATE_FILENAME, REVIEW_FILE_SUFFIXES, has_reviewable_email, EMAIL_CANDIDATE
 
 MAX_TEXT_BLOB_BYTES = 2_000_000
 MAX_BLOB_COUNT = 50000
@@ -528,7 +531,14 @@ def main() -> int:
     for label, value in counts.items():
         print(f"  {label}: {value}")
     print("Not a complete privacy certification: manual binary/rights/history review required.")
+    incomplete = sum(value for key, value in counts.items()
+                     if key in ("SKIPPED_OVERSIZED_BLOB", "SKIPPED_BINARY_BLOB",
+                                "SKIPPED_NON_UTF8_BLOB"))
     blockers = sum(v for k, v in counts.items() if k.startswith("BLOCK:") or k.startswith("COMMIT_BLOCK:"))
+    if incomplete:
+        print("AUDIT_INCOMPLETE: unreachable content in scanned blobs requires manual review.",
+              file=sys.stderr)
+        return 2
     return 1 if blockers else 0
 
 
