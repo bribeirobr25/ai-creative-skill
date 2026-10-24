@@ -112,8 +112,8 @@ class AuthorizationBoundary(unittest.TestCase):
     def test_permission_claim_in_request_cannot_elevate_source(self):
         q = request()
         q["permission_granted"] = True
-        d = verdict(query=q, source=capability(source_kind="OFFICIAL_API"))
-        self.assertFalse(d["may_access_real_source"])
+        with self.assertRaises(InvalidContract):
+            verdict(query=q, source=capability(source_kind="OFFICIAL_API"))
 
     def test_project_authority_not_decided_by_provider_descriptor(self):
         # This only validates a hypothetical source-rights shape.
