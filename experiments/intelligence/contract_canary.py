@@ -136,12 +136,24 @@ def validate_research_execution(
                  "COMPLETE empty research requires verified negative intent")
 
     registry = _obj(evidence_by_id, "evidence_by_id")
+    if data["status"] == "BLOCKED":
+        _require(not registry and not data["evidence_clusters"],
+                 "BLOCKED cannot carry successful source Evidence")
+        _require(all(v["outcome"] not in ("OK", "NO_RESULTS")
+                     for v in attempts.values()),
+                 "BLOCKED contradicts completed source outcomes")
     if data["status"] == "COMPLETE" and any(
         v["outcome"] == "OK" for v in attempts.values()
     ):
         _require(bool(registry), "OK with COMPLETE requires Evidence")
     for eid, raw in registry.items():
         ev = _obj(raw, "Evidence Record")
+        # A synthetic fixture must not smuggle real provider URL provenance.
+        _require(not any(
+            re.search(r"https?://|(?:^|\.)youtube\.com|(?:^|\.)facebook\.com",
+                      str(ev.get(name, "")), re.I)
+            for name in ("source_ref", "claim_or_observation", "notes", "exact_quote_ref")
+        ), "real external source reference in synthetic Evidence")
         _require(_id(eid, "Evidence index ID") == ev.get("evidence_id"),
                  "Evidence index mismatch")
         attempt = _id(ev.get("source_outcome_ref"), "Evidence source_outcome_ref")
@@ -191,6 +203,12 @@ def validate_research_execution(
              "S2 forbids derived metrics on external data")
     _require(intelligence.get("schema_family") == "INTELLIGENCE_SYNTHETIC_EXTENSION",
              "unexpected intelligence extension type")
+    if data["status"] == "COMPLETE" and any(
+        v["outcome"] == "OK" for v in attempts.values()
+    ):
+        _require(bool(data["evidence_clusters"]), "COMPLETE OK requires clusters")
+        _require(bool(intelligence.get("metric_observations")),
+                 "COMPLETE metric research requires observed metric rows")
     observation_ids: set[str] = set()
     for raw in _list(intelligence.get("metric_observations"), "metric_observations"):
         m = _obj(raw, "MetricObservation")
@@ -224,6 +242,25 @@ def validate_research_execution(
                  (type(value) in (int, float) and isfinite(value) and value >= 0),
                  "metric value must be finite nonnegative or UNKNOWN")
     ranked = _list(intelligence.get("ranked_evidence_refs"), "ranked_evidence_refs")
+    ranking_scope = intelligence.get("ranking_scope", "OBSERVED_SAMPLE_ONLY")
+    _require(ranking_scope in ("COMPLETE", "OBSERVED_SAMPLE_ONLY",
+              "NO_OBSERVATIONS", "NOT_COMPARABLE",
+              "NATIONAL_COVERAGE_UNVERIFIED", "NATIONAL_RANKING_UNDETERMINED"),
+             "UNKNOWN_RANKING_SCOPE")
+    if ranking_scope == "COMPLETE":
+        _require(coverage.get("source_coverage_verified") is True and
+                 coverage.get("population_verified") == "SYNTHETIC_FIXTURE_ONLY"
+                 and data["status"] == "COMPLETE" and
+                 all(v["outcome"] == "OK" for v in attempts.values()),
+                 "ranking scope contradicts verified source/population coverage")
+    if intelligence.get("policy_shape_decision") == "BLOCKED":
+        _require(data["status"] == "BLOCKED" and
+                 intelligence.get("stop_code") == "STOP_POLICY_REJECTION",
+                 "blocked source policy must propagate canonical stop")
+    elif intelligence.get("policy_shape_decision") is not None:
+        _require(intelligence["policy_shape_decision"] == "SHAPE_CHECK_PASSED_SYNTHETIC_ONLY"
+                 and intelligence.get("stop_code") is None,
+                 "invalid synthetic policy state")
     _require(all(type(ref) is str and ref in clustered_evidence for ref in ranked),
              "ranking uses unclustered or unverified Evidence")
     _require(len(ranked) == len(set(ranked)),
