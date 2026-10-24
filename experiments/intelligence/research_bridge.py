@@ -13,19 +13,9 @@ from urllib.parse import quote
 from .engine import Observation, ValidationError, InsufficientEvidence, unique_observations, rank_sample
 
 
-SOURCE_OUTCOMES = frozenset({
-    "OK", "NO_RESULTS", "PARTIAL", "RATE_LIMITED", "AUTH_FAILED",
-    "PAYMENT_REQUIRED", "UNREACHABLE", "TIMEOUT", "SCHEMA_DRIFT",
-    "SKIPPED_UNCONFIGURED", "ERROR",
-})
-RESEARCH_STATUSES = frozenset({"COMPLETE", "PARTIAL", "INSUFFICIENT_EVIDENCE", "BLOCKED"})
+from .vocabulary import SOURCE_OUTCOMES, RESEARCH_STATUSES, RESEARCH_REQUIRED
 _ALLOWED_WITH_ROWS = frozenset({"OK", "PARTIAL", "RATE_LIMITED", "TIMEOUT"})
-_REQUIRED_ENVELOPE_KEYS = frozenset({
-    "research_execution_id", "research_intent", "primary_entity", "market",
-    "language", "range_from", "range_to", "generated_at", "query_plan",
-    "source_outcomes", "coverage", "evidence_clusters", "counterevidence",
-    "freshness_verdicts", "status", "unknowns", "reuse_notes"
-})
+_REQUIRED_ENVELOPE_KEYS = RESEARCH_REQUIRED
 
 
 def _nonempty(value: str, name: str) -> str:
@@ -50,6 +40,7 @@ def build_research_execution_fixture(
     requested_national_top: bool = False,
     source_coverage_verified: bool = False,
     negative_coverage_satisfies_request: bool = False,
+    policy_decision: dict,
     generated_at: datetime,
 ) -> dict:
     """Make a synthetic-only contract fixture for a bounded Research result.
@@ -88,6 +79,21 @@ def build_research_execution_fixture(
         raise ValidationError("A ranking request cannot be answered by an absence-only completion rule")
     if negative_coverage_satisfies_request and source_outcome != "NO_RESULTS":
         raise ValidationError("Negative completion intent requires NO_RESULTS outcome")
+    if not isinstance(policy_decision, dict) or policy_decision.get("decision") not in (
+        "SHAPE_CHECK_PASSED_SYNTHETIC_ONLY", "BLOCKED"
+    ):
+        raise ValidationError("An explicit synthetic policy verdict is required")
+    if any(policy_decision.get(k) is not False for k in (
+        "may_access_real_source", "may_spend", "may_store_real_data", "may_publish"
+    )):
+        raise ValidationError("A synthetic policy may not carry action authority")
+    is_policy_blocked = policy_decision["decision"] == "BLOCKED"
+    if is_policy_blocked:
+        source_outcome = "SKIPPED_UNCONFIGURED"
+        # A blocked operation must never consume data or report source success.
+        if list(observation_rows):
+            raise ValidationError("Blocked source may not yield observations")
+        observation_rows = []
     rows = unique_observations(observation_rows)
 
     # To be explicit: "OK with no rows" is NOT a valid full negative scan.
@@ -110,7 +116,9 @@ def build_research_execution_fixture(
         if not (range_from <= pub_date < range_to):
             raise ValidationError("Publication outside declared UTC window")
 
-    if source_outcome == "OK":
+    if is_policy_blocked:
+        status = "BLOCKED"
+    elif source_outcome == "OK":
         status = "COMPLETE"
     elif rows:
         status = "PARTIAL"
@@ -184,7 +192,7 @@ def build_research_execution_fixture(
         try:
             ranked = rank_sample(
                 rows, limit=limit, requested_national_top=requested_national_top,
-                population_coverage_verified=verified_scope if requested_national_top else population_coverage_verified,
+                population_coverage_verified=verified_scope,
             )
             ranked_refs = [
                 evidence_by_publication[(rows[0].platform, result["publication_id"])]
@@ -204,6 +212,8 @@ def build_research_execution_fixture(
             status = "INSUFFICIENT_EVIDENCE"
             ranking_note = "NATIONAL_RANKING_UNDETERMINED"
             ranked_refs = []
+    elif source_outcome != "OK" and ranking_note == "COMPLETE":
+        ranking_note = "OBSERVED_SAMPLE_ONLY"
     elif source_outcome == "OK" and rows:
         if all(r.views is None for r in rows):
             status = "INSUFFICIENT_EVIDENCE"
@@ -263,6 +273,8 @@ def build_research_execution_fixture(
             "metric_observations": metrics,
             "ranked_evidence_refs": ranked_refs,
             "ranking_scope": ranking_note,
+            "policy_shape_decision": policy_decision["decision"],
+            "stop_code": "STOP_POLICY_REJECTION" if is_policy_blocked else None,
             "metric_definition": "RAW_VIEW_COUNT_FIXTURE",
             "derived_metrics_performed": False,
             "external_calls_performed": False,
