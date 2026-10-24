@@ -2,10 +2,10 @@
 import copy
 import unittest
 
-from intelligence.contract_canary import ContractViolation, validate_query_filter
-from intelligence.s2_projection import project_s2_query
-from intelligence.policy_gate import InvalidContract, evaluate
-from intelligence.test_policy_gate import capability
+from experiments.intelligence.contract_canary import ContractViolation, validate_query_filter
+from experiments.intelligence.s2_projection import project_s2_query
+from experiments.intelligence.policy_gate import InvalidContract, evaluate
+from experiments.intelligence.test_policy_gate import capability
 
 NOW = "2026-10-23T15:00:00+00:00"
 
