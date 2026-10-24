@@ -1,7 +1,8 @@
 # ADR-0003 · Segurança de publicação no repositório público · CANDIDATE
 
 **Data:** 2026-10-24
-**Status:** PROPOSED, awaiting owner approval; not accepted or merged.
+**Status:** PROPOSED; acceptance remains a separate owner decision. This text is not itself an approval.
+**Decision owner:** repository maintainer (owner acceptance required; no automatic approval).
 **Authority:** complements ADR-0001 (separation of public source and private assets) and ADR-0002 (minimum sufficient bounded path). Neither is superseded.
 
 ## Proposed decision
@@ -19,11 +20,11 @@ This ADR governs publication safety, **not a universal project-management lifecy
 
 The S0 historical triage was **administratively closed by owner attestation**, with limited automated coverage and residual uncertainties. This does not certify AI-tool/media licenses, likenesses, external third-party elements, EXIF text, current/historical ACLs or unreachable forks. Investigate a newly evidenced exposure as a bounded case, not by reopening the entire S0 survey.
 
-A single historical Drive folder reference remains embedded in three current media documentation/registry files under `src/`; current ACL was previously reported restricted, not a guarantee of prior access. Replace those public locators with approved logical asset references in a **separate versioned candidate**, respecting the protected source inventory and the PR #17 owner. Do not alter protected `src/` files under this ADR proposal.
+A current stable Drive folder locator remains embedded in three current media documentation/registry files under `src/`; current ACL was previously reported restricted, not a guarantee of prior access. Replace those public locators with approved logical asset references in a **separate versioned candidate**, respecting the protected source inventory and the PR #17 owner. Do not alter protected `src/` files under this ADR proposal.
 
 ## Required before acceptance
 
 - Cross-check with ADR-0001/ADR-0002.
 - Real-Git tests covering UTF-8/accented filenames, whitespace, non-UTF-8 patches, binary paths and unusual line separators.
-- PR guard testing against the PR #17 diff, without modifying its branch.
+- PR guard testing against the independent Web 2.6 candidate diff, without changing its branch.
 - Explicit owner approval of this ADR and merge; status remains PROPOSED until then.
