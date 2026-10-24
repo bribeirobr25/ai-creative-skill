@@ -50,6 +50,8 @@ def capability(**changes):
         "reviewed_at": "2026-10-01T00:00:00+00:00",
         "expires_at": "2026-11-01T00:00:00+00:00",
         "revoked": False, "max_calls_per_day": 20,
+        "supported_time_zones": ["UTC", "Europe/Berlin"],
+        "max_results_per_call": 100,
     }
     data.update(changes)
     return data
