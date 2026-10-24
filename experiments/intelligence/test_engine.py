@@ -14,8 +14,8 @@ from intelligence.engine import (
 T0 = datetime(2026, 10, 20, tzinfo=timezone.utc)
 
 
-def obs(video="v0", channel="c1", views=100, hours_old=24, snap=T0,
-        fmt="long", platform="synthetic", kind="SYNTHETIC_FIXTURE"):
+def obs(video="v0", channel="fixture-c1", views=100, hours_old=24, snap=T0,
+        fmt="long", platform="fixture-synthetic", kind="SYNTHETIC_FIXTURE"):
     return Observation(
         publication_id=video, channel_id=channel, platform=platform,
         content_type=fmt, views=views, observed_at=snap,
@@ -55,7 +55,7 @@ class InputAndIdentityTests(unittest.TestCase):
                 })
         with self.assertRaises(ValidationError):
             Observation(
-                publication_id="v", channel_id="c", platform="synthetic",
+                publication_id="v", channel_id="fixture-c", platform="fixture-synthetic",
                 content_type="long", views=5, observed_at="not-a-datetime",
                 published_at=T0 - timedelta(hours=1), source_kind="SYNTHETIC_FIXTURE",
             )
@@ -68,7 +68,7 @@ class InputAndIdentityTests(unittest.TestCase):
             unique_observations([obs(views=10), obs(views=50)])
 
     def test_different_platform_same_id_remains_distinct(self):
-        x = [obs(platform="A"), obs(platform="B")]
+        x = [obs(platform="fixture-a"), obs(platform="fixture-b")]
         self.assertEqual(2, len(unique_observations(x)))
 
 
@@ -89,7 +89,7 @@ class MetricsTests(unittest.TestCase):
         self.assertAlmostEqual(800 / 150, val["ratio"])
 
     def test_exclude_other_channel_format_and_age(self):
-        cases = self.baseline + [obs("bad1", channel="other", views=1),
+        cases = self.baseline + [obs("bad1", channel="fixture-other", views=1),
                                  obs("bad2", fmt="short", views=1),
                                  obs("bad3", hours_old=200, views=1)]
         val = outlier_ratio(self.target, cases, derived_permission=True)
@@ -139,8 +139,8 @@ class MetricsTests(unittest.TestCase):
             outlier_ratio(self.target, [a, b, obs("b"), obs("c")], derived_permission=True)
 
     def test_cross_snapshot_channel_conflict_not_hidden_by_cohort_filter(self):
-        good = obs("repeat", channel="c1", views=100)
-        changed = obs("repeat", channel="other", views=130,
+        good = obs("repeat", channel="fixture-c1", views=100)
+        changed = obs("repeat", channel="fixture-other", views=130,
                       snap=T0 + timedelta(hours=1), hours_old=25)
         with self.assertRaises(ValidationError):
             outlier_ratio(
@@ -149,7 +149,7 @@ class MetricsTests(unittest.TestCase):
             )
 
     def test_target_publication_conflict_cannot_be_silently_excluded(self):
-        contradictory = obs("target", channel="other", views=100,
+        contradictory = obs("target", channel="fixture-other", views=100,
                             snap=T0 - timedelta(hours=1), hours_old=23)
         with self.assertRaises(ValidationError):
             outlier_ratio(
@@ -209,7 +209,7 @@ class MetricsTests(unittest.TestCase):
 
     def test_cannot_mix_platforms(self):
         with self.assertRaises(ValidationError):
-            rank_sample([obs(platform="A"), obs(platform="B")], limit=10)
+            rank_sample([obs(platform="fixture-a"), obs(platform="fixture-b")], limit=10)
 
     def test_cannot_mix_snapshot_times(self):
         with self.assertRaises(ValidationError):
