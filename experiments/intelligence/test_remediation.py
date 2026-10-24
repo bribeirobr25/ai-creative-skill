@@ -7,15 +7,11 @@ from experiments.intelligence.policy_gate import evaluate, validate_capability, 
 from experiments.intelligence.research_bridge import build_research_execution_fixture
 from experiments.intelligence.contract_canary import validate_research_execution, ContractViolation
 from experiments.intelligence.test_policy_gate import request as policy_request, capability
-from experiments.intelligence.test_research_bridge import request as research_request, synthetic_row
+from experiments.intelligence.test_research_bridge import request as research_request, synthetic_row, fixture_policy
 
 
 def synthetic_grant():
-    return {
-        "decision": "SHAPE_CHECK_PASSED_SYNTHETIC_ONLY",
-        "may_access_real_source": False, "may_spend": False,
-        "may_store_real_data": False, "may_publish": False,
-    }
+    return fixture_policy()
 
 
 class AdversarialFixes(unittest.TestCase):
@@ -57,7 +53,7 @@ class AdversarialFixes(unittest.TestCase):
 
     def test_blocked_policy_cannot_become_successful_research(self):
         p=synthetic_grant()
-        p["decision"]="BLOCKED"
+        p=fixture_policy(blocked=True)
         result=research_request(policy_decision=p, observation_rows=[],
                                 source_outcome="OK")
         self.assertEqual("BLOCKED",result["status"])
@@ -67,7 +63,7 @@ class AdversarialFixes(unittest.TestCase):
 
     def test_blocked_policy_cannot_use_old_source_observations(self):
         p=synthetic_grant()
-        p["decision"]="BLOCKED"
+        p=fixture_policy(blocked=True)
         with self.assertRaises(ValidationError):
             research_request(policy_decision=p)
 
