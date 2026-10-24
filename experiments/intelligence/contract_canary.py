@@ -91,6 +91,17 @@ def validate_query_filter(query: Mapping) -> None:
     _require(type(n) is int and 1 <= n <= 100, "ranking.limit must be an integer 1..100")
 
 
+
+def _only_keys(record: Mapping, allowed: set[str], name: str) -> None:
+    _require(set(record) <= allowed, name + " includes unknown/authority-like fields")
+
+
+def _fixture_ref(value: object, name: str) -> None:
+    _id(value, name)
+    _require(normalize("NFKC", value) == value and value.startswith("fixture:"),
+             name + " must be an explicit synthetic fixture reference")
+
+
 def validate_research_execution(
     envelope: Mapping, *, evidence_by_id: Mapping
 ) -> None:
@@ -115,6 +126,12 @@ def validate_research_execution(
     for key in ("query_plan", "counterevidence", "freshness_verdicts", "unknowns", "reuse_notes"):
         _list(data[key], key)
     coverage = _obj(data["coverage"], "coverage")
+    _only_keys(coverage, {
+        "actual_scope", "source_attempts", "observed_publication_count",
+        "geography_basis", "population_verified", "report_is_real_market_research",
+        "source_coverage_verified", "requested_national_top",
+        "negative_coverage_satisfies_request",
+    }, "coverage")
     _require(coverage.get("report_is_real_market_research") is False,
              "S2 cannot validate or approve a real market report")
     for flag in ("requested_national_top", "source_coverage_verified"):
@@ -123,7 +140,11 @@ def validate_research_execution(
     attempts: dict[str, Mapping] = {}
     for raw in _list(data["source_outcomes"], "source_outcomes"):
         s = _obj(raw, "source_outcome")
-        ref = _id(s.get("source_ref"), "source_ref")
+        _only_keys(s, {"source_ref", "source_class", "outcome", "checked_at"}, "source outcome")
+        _require(s.get("source_class") == "SYNTHETIC_FIXTURE",
+                 "synthetic result cannot contain real-source attempts")
+        _fixture_ref(s.get("source_ref"), "source_ref")
+        ref = s["source_ref"]
         _require(ref not in attempts, "duplicate source attempt")
         _require(type(s.get("outcome")) is str and s["outcome"] in SOURCE_OUTCOMES,
                  "source outcome is not canonical")
@@ -150,6 +171,15 @@ def validate_research_execution(
         _require(bool(registry), "OK with COMPLETE requires Evidence")
     for eid, raw in registry.items():
         ev = _obj(raw, "Evidence Record")
+        _only_keys(ev, {
+            "evidence_id", "source_ref", "source_class", "retrieved_at",
+            "published_at", "date_confidence", "entity_scope",
+            "claim_or_observation", "exact_quote_ref", "relevance",
+            "evidence_strength", "engagement_observed", "independence_key",
+            "source_outcome_ref", "notes",
+        }, "Evidence Record")
+        _fixture_ref(ev.get("source_ref"), "Evidence source_ref")
+        _fixture_ref(ev.get("evidence_id"), "Evidence evidence_id")
         # A synthetic fixture must not smuggle real provider URL provenance.
         _require(not any(
             re.search(r"https?://|(?:^|\.)youtube\.com|(?:^|\.)facebook\.com",
@@ -179,8 +209,13 @@ def validate_research_execution(
 
     used_clusters: set[str] = set()
     clustered_evidence: set[str] = set()
+    supporting_evidence: set[str] = set()
     for raw in _list(data["evidence_clusters"], "evidence_clusters"):
         cluster = _obj(raw, "Evidence Cluster")
+        _only_keys(cluster, {
+            "cluster_id", "question_or_theme", "supporting_evidence_refs",
+            "counterevidence_refs", "independent_source_count", "uncertainty",
+        }, "Evidence Cluster")
         cluster_id = _id(cluster.get("cluster_id"), "cluster_id")
         _require(cluster_id not in used_clusters, "duplicate cluster_id")
         used_clusters.add(cluster_id)
@@ -197,6 +232,7 @@ def validate_research_execution(
                  cluster["independent_source_count"] == len(independent),
                  "cluster independent source count does not match provenance")
         clustered_evidence.update(refs + counters)
+        supporting_evidence.update(refs)
 
     intelligence = _obj(data.get("intelligence"), "intelligence extension")
     _require(set(intelligence) <= {
@@ -220,6 +256,16 @@ def validate_research_execution(
     observation_ids: set[str] = set()
     for raw in _list(intelligence.get("metric_observations"), "metric_observations"):
         m = _obj(raw, "MetricObservation")
+        _only_keys(m, {
+            "observation_id", "research_execution_id", "evidence_id",
+            "source_outcome_ref", "subject_id", "metric_name", "metric_value",
+            "observation_basis", "measurement_window", "geography_meaning",
+            "population_coverage", "license_policy_ref", "unit", "observed_at",
+            "provenance", "storage_disposition",
+        }, "MetricObservation")
+        _require(m.get("metric_name") in ("PUBLIC_VIEW_COUNT", "PUBLIC_VIEW_COUNT_FIXTURE")
+                 or intelligence.get("derived_metrics_performed") is True,
+                 "derived metric cannot be reported with derived_metrics_performed=False")
         mid = _id(m.get("observation_id"), "observation_id")
         _require(mid not in observation_ids, "duplicate observation_id")
         observation_ids.add(mid)
@@ -261,6 +307,17 @@ def validate_research_execution(
                  and data["status"] == "COMPLETE" and
                  all(v["outcome"] == "OK" for v in attempts.values()),
                  "ranking scope contradicts verified source/population coverage")
+    _require(intelligence.get("policy_shape_decision") in (
+        "BLOCKED", "SHAPE_CHECK_PASSED_SYNTHETIC_ONLY"
+    ), "research result requires an explicit synthetic source policy decision")
+    if data["status"] == "BLOCKED":
+        _require(intelligence.get("stop_code") in (
+            "STOP_POLICY_REJECTION", "STOP_REQUIRED_AUTHORITY_MISSING",
+            "STOP_REQUIRED_VERIFICATION_UNAVAILABLE"
+        ), "blocked research requires a canonical STOP code")
+    else:
+        _require(intelligence.get("stop_code") is None,
+                 "non-blocked research cannot carry a STOP code")
     if intelligence.get("policy_shape_decision") == "BLOCKED":
         _require(data["status"] == "BLOCKED" and
                  intelligence.get("stop_code") == "STOP_POLICY_REJECTION",
@@ -269,8 +326,10 @@ def validate_research_execution(
         _require(intelligence["policy_shape_decision"] == "SHAPE_CHECK_PASSED_SYNTHETIC_ONLY"
                  and intelligence.get("stop_code") is None,
                  "invalid synthetic policy state")
-    _require(all(type(ref) is str and ref in clustered_evidence for ref in ranked),
-             "ranking uses unclustered or unverified Evidence")
+    _require(all(type(ref) is str and ref in supporting_evidence for ref in ranked),
+             "ranking uses counterevidence-only or unverified Evidence")
+    if intelligence.get("ranking_scope") == "NO_OBSERVATIONS":
+        _require(not ranked, "NO_OBSERVATIONS cannot carry ranked references")
     _require(len(ranked) == len(set(ranked)),
              "ranking repeats Evidence")
     if coverage.get("requested_national_top") is True and data["status"] == "COMPLETE":
