@@ -844,6 +844,19 @@ class SecretRulesTests(unittest.TestCase):
     def test_history_scan_allows_safe_text(self):
         self.assertEqual(set(), audit_text_blob("ordinary public method", "docs/safe.md"))
 
+    def test_history_audit_incomplete_is_not_reported_as_success(self):
+        from history_audit import main as history_main
+        with patch("history_audit.scan_history",
+                   return_value={"SKIPPED_BINARY_BLOB": 2,
+                                 "SCANNED_TEXT_BLOB": 11}):
+            with redirect_stdout(io.StringIO()):
+                with patch("sys.stderr", new_callable=io.StringIO):
+                    self.assertEqual(2, history_main())
+        with patch("history_audit.scan_history",
+                   return_value={"SCANNED_TEXT_BLOB": 11}):
+            with redirect_stdout(io.StringIO()):
+                self.assertEqual(0, history_main())
+
     def test_git_error_not_success(self):
         with patch("publication_guard._get_diff", side_effect=RuntimeError("Git diff unavailable")):
             with patch("sys.stderr", new_callable=io.StringIO):
