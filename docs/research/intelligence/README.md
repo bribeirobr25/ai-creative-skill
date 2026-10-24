@@ -10,9 +10,9 @@
 
 ## Histórico de concepção, NÃO corrente
 
-Arquitetura [v0.1](architecture-preimplementation-v0.1.md) e [v0.2](architecture-preimplementation-v0.2.md); matrizes [v0.1](acceptance-and-validation-v0.1.md) e [v0.2](acceptance-and-validation-v0.2.md); [revisão Gate 0](gate0-contract-compatibility-review-v0.1.md); [auditoria forense](forensic-audit-2026-10-23.md); [plano de segurança](revised-roadmap-security-gate-2026-10-23.md); [plano de simulação](simulation-adversarial-plan-v0.1.md). Estes documentos preservam raciocínios históricos e podem conter estados, URLs e esquemas superados. Não são instruções de execução nem fontes atuais de contratos.
+Arquitetura [v0.1](history/architecture-preimplementation-v0.1.md) e [v0.2](history/architecture-preimplementation-v0.2.md); matrizes [v0.1](history/acceptance-and-validation-v0.1.md) e [v0.2](history/acceptance-and-validation-v0.2.md); [revisão Gate 0](history/gate0-contract-compatibility-review-v0.1.md); [auditoria forense](history/forensic-audit-2026-10-23.md); [plano de segurança](history/revised-roadmap-security-gate-2026-10-23.md); [plano de simulação](history/simulation-adversarial-plan-v0.1.md). Estes documentos preservam raciocínios históricos e podem conter estados, URLs e esquemas superados. Não são instruções de execução nem fontes atuais de contratos.
 
-Os documentos de aprovação do YouTube representam somente pesquisa documental e não certificam direitos da aplicação. Modelos pessoais de candidatura, se necessários, pertencem a armazenamento privado.
+Os materiais documentais antigos estão arquivados em [history/](history/README.md) e não definem o estado atual. O roteiro pessoal de candidatura ao YouTube foi excluído do snapshot candidato; commits anteriores da branch pública ainda podem conter versões antigas, motivo adicional para considerar squash merge após revisão. Modelos pessoais de candidatura devem permanecer em armazenamento privado.
 
 ## Pendências antes de considerar merge
 
