@@ -54,7 +54,6 @@ def unverified_capability_template(key: str) -> dict:
         "operation": row["operation"], "source_kind": "OFFICIAL_API",
         "adapter_version": "NOT_IMPLEMENTED",
         "policy_ref": "POLICY_EVIDENCE_NOT_VERIFIED",
-        "authorization_state": "NOT_VERIFIED",
         "purposes": [], "countries": [],
         "geography_bases": [], "time_bases": [],
         "transformations": [], "field_grants": {},
