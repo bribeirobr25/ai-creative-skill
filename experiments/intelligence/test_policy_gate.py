@@ -3,7 +3,7 @@ import copy
 import unittest
 from datetime import datetime, timedelta, timezone
 
-from intelligence.policy_gate import (
+from experiments.intelligence.policy_gate import (
     InvalidContract, evaluate, retention_verdict, validate_capability,
     validate_request,
 )
