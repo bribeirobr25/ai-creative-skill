@@ -102,6 +102,8 @@ def validate_research_execution(
     """
     data = _obj(envelope, "research_execution")
     _require(RESEARCH_REQUIRED <= data.keys(), "missing canonical research envelope keys")
+    _require(set(data) <= (RESEARCH_REQUIRED | {"intelligence", "fixture_evidence_index"}),
+             "unknown research envelope fields (possible authority injection)")
     rid = _id(data["research_execution_id"], "research_execution_id")
     _require(type(data["status"]) is str and data["status"] in RESEARCH_STATUSES,
              "unknown research completion status")
@@ -197,6 +199,12 @@ def validate_research_execution(
         clustered_evidence.update(refs + counters)
 
     intelligence = _obj(data.get("intelligence"), "intelligence extension")
+    _require(set(intelligence) <= {
+        "schema_family", "schema_version", "metric_observations",
+        "ranked_evidence_refs", "ranking_scope", "metric_definition",
+        "derived_metrics_performed", "external_calls_performed",
+        "permissions_carried", "policy_shape_decision", "stop_code"
+    }, "unknown intelligence fields (possible authority injection)")
     _require(intelligence.get("external_calls_performed") is False,
              "S2 cannot verify an external API execution")
     _require(intelligence.get("derived_metrics_performed") is False,
