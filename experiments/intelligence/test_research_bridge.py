@@ -30,6 +30,11 @@ def request(**overrides):
         "generated_at": T + timedelta(seconds=5),
         "observation_rows": [synthetic_row("a"), synthetic_row("b", 100)],
         "source_outcome": "OK",
+        "policy_decision": {
+            "decision": "SHAPE_CHECK_PASSED_SYNTHETIC_ONLY",
+            "may_access_real_source": False, "may_spend": False,
+            "may_store_real_data": False, "may_publish": False,
+        },
     }
     base.update(overrides)
     return build_research_execution_fixture(**base)
