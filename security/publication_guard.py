@@ -144,6 +144,13 @@ def scan_unified_diff(patch: str) -> list[Finding]:
             in_hunk = False
             line_no = 0
             continue
+        # An added literal '+++ /dev/null' inside an active hunk is data.
+        # Check it before interpreting file headers; do not let an attacker
+        # suppress the rest of the hunk with a crafted added line.
+        if in_hunk and line.startswith("+"):
+            line_no += 1
+            results.extend(scan_added_line(destination or "<unknown-file>", line[1:], line_no))
+            continue
         if line.startswith("deleted file mode ") or line == "+++ /dev/null":
             deleted = True
             in_hunk = False
@@ -167,70 +174,121 @@ def scan_unified_diff(patch: str) -> list[Finding]:
         if line.startswith("@@ "):
             in_hunk = True
             continue
-        if in_hunk and line.startswith("+"):
-            line_no += 1
-            results.extend(scan_added_line(destination or "<unknown-file>", line[1:], line_no))
     if destination is not None and not deleted:
         check_destination(destination)
     return results
 
 
-def _get_diff(args: argparse.Namespace) -> str:
-    # core.quotePath=false avoids octal UTF-8 escapes for ordinary accented
-    # names. Quoted names with spaces still require explicit parsing.
-    cmd = ["git", "-c", "core.quotePath=false", "diff"]
-    if args.staged:
-        cmd += ["--cached"]
-    cmd += ["--no-ext-diff", "--no-color", "--unified=0"]
-    if getattr(args, "history_range", None):
-        # Every commit in a PR may have contained a secret even if its final
-        # merged diff no longer does. Scan each patch independently.
-        cmd = ["git", "-c", "core.quotePath=false", "log", "--patch",
-               "--format=", "--no-ext-diff", "--no-color", "--unified=0",
-               args.history_range, "--"]
-    else:
-        if args.range:
-            cmd += [args.range]
-        cmd += ["--"]
+def _run_git(command: list[str]) -> bytes:
+    """Execute a bounded Git read without exposing stdout/stderr on failure."""
     try:
-        raw = subprocess.run(cmd, capture_output=True, check=True, timeout=30).stdout
-        return raw.decode("utf-8", "strict")
-    except (UnicodeDecodeError, subprocess.SubprocessError, OSError) as exc:
-        # Exit 2 is an operational failure. Never report this as a BLOCK scan,
-        # and never echo undecodable bytes from exceptions.
-        raise RuntimeError("Git diff unavailable or not UTF-8; scan NOT performed") from exc
+        return subprocess.run(
+            command, capture_output=True, check=True, timeout=30
+        ).stdout
+    except (subprocess.SubprocessError, OSError) as exc:
+        raise RuntimeError("Git inspection unavailable; scan NOT performed") from exc
+
+
+def _decode_inspected_bytes(raw: bytes, scope: str) -> tuple[str, list[Finding]]:
+    """Recover ASCII secret patterns in mixed-encoding text without skipping scan.
+
+    Invalid UTF-8 is an explicit REVIEW, not a silently successful scan or a
+    subprocess failure. Replacement cannot erase ordinary ASCII token bytes.
+    """
+    decoded = raw.decode("utf-8", errors="replace")
+    issues = [Finding("REVIEW", "NON_UTF8_CONTENT", scope, 0)] if "\ufffd" in decoded else []
+    return decoded, issues
+
+
+def _diff_args(*, staged: bool = False, range_ref: str | None = None) -> list[str]:
+    command = ["git", "-c", "core.quotePath=false", "diff"]
+    if staged:
+        command.append("--cached")
+    command += ["--no-ext-diff", "--no-color", "--unified=0"]
+    if range_ref:
+        command.append(range_ref)
+    return command + ["--"]
+
+
+def _get_diff(args: argparse.Namespace) -> str:
+    # Kept independently callable for local pre-commit hooks and tests.
+    return _decode_inspected_bytes(
+        _run_git(_diff_args(staged=args.staged, range_ref=args.range)),
+        "<git-diff>"
+    )[0]
+
+
+def _metadata_findings(range_ref: str) -> list[Finding]:
+    """Review PR commit messages and new filenames, never echoing raw values."""
+    results: list[Finding] = []
+    base = ["git", "-c", "core.quotePath=false"]
+    messages = _run_git(base + [
+        "log", "--no-patch", "--format=%B%x00", range_ref, "--"
+    ])
+    text, issues = _decode_inspected_bytes(messages, "<git-commit-metadata>")
+    results.extend(issues)
+    for message in text.split("\x00"):
+        if message:
+            results.extend(scan_added_line("<git-commit-metadata>", message, 0))
+
+    # Both final state and each individual commit are scanned. The -z format
+    # makes path handling unambiguous even with tabs and embedded newlines.
+    for command in (
+        base + ["diff", "--name-only", "-z", range_ref.replace("..", "...", 1) if "..." not in range_ref else range_ref, "--"],
+        base + ["log", "--format=", "--name-only", "-z", range_ref, "--"],
+    ):
+        raw = _run_git(command)
+        text, issues = _decode_inspected_bytes(raw, "<git-path-metadata>")
+        results.extend(issues)
+        for path in text.split("\x00"):
+            path = path.strip("\n")
+            if not path:
+                continue
+            results.extend(scan_added_line("<git-path-metadata>", path, 0))
+            if PRIVATE_FILENAME.search(path):
+                results.append(Finding("BLOCK", "PRIVATE_FILE_PATH", "<git-path-metadata>", 0))
+    return results
 
 
 def main(argv: list[str] | None = None) -> int:
-    ap = argparse.ArgumentParser(description="Scan added Git diff lines without revealing matched secret values")
+    ap = argparse.ArgumentParser(description="Scan publication changes without printing values")
     mode = ap.add_mutually_exclusive_group(required=True)
-    mode.add_argument("--staged", action="store_true", help="Pre-commit check staged additions")
-    mode.add_argument("--range", metavar="BASE...HEAD", help="Check all additions in branch compared to base")
-    ap.add_argument("--history-range", metavar="BASE..HEAD",
-                    help="Additionally inspect added lines from every commit in this range")
-    ap.add_argument("--fail-on-warning", action="store_true", help="Manually opt to fail also for REVIEW items")
+    mode.add_argument("--staged", action="store_true")
+    mode.add_argument("--range", metavar="BASE...HEAD")
+    ap.add_argument("--history-range", metavar="BASE..HEAD")
+    ap.add_argument("--fail-on-warning", action="store_true")
     ns = ap.parse_args(argv)
     try:
-        findings = scan_unified_diff(_get_diff(ns))
+        # IMPORTANT: these are two different Git operations. A history range
+        # must never replace the final-tree diff. Merge-only additions are
+        # included by git diff even when log misses them.
+        final_bytes = _run_git(_diff_args(staged=ns.staged, range_ref=ns.range))
+        final_text, findings = _decode_inspected_bytes(final_bytes, "<git-diff>")
+        findings.extend(scan_unified_diff(final_text))
         if ns.history_range:
-            from argparse import Namespace
-            history = _get_diff(Namespace(
-                staged=False, range=None, history_range=ns.history_range
-            ))
-            findings.extend(scan_unified_diff(history))
+            historical_bytes = _run_git([
+                "git", "-c", "core.quotePath=false", "log", "--patch",
+                "--diff-merges=first-parent", "--format=", "--no-ext-diff",
+                "--no-color", "--unified=0", ns.history_range, "--"
+            ])
+            history_text, decode_issues = _decode_inspected_bytes(historical_bytes, "<git-commits>")
+            findings.extend(decode_issues)
+            findings.extend(scan_unified_diff(history_text))
+            findings.extend(_metadata_findings(ns.history_range))
+        elif ns.range:
+            findings.extend(_metadata_findings(ns.range.replace("...", "..", 1)))
     except RuntimeError as exc:
         print(str(exc), file=sys.stderr)
         return 2
+
     blockers = sum(f.severity == "BLOCK" for f in findings)
     warnings = sum(f.severity == "REVIEW" for f in findings)
     for item in findings:
-        # Never echo source line, matched secret OR raw filename: a filename
-        # can contain an email, project identifier or a secret of its own.
-        # Reconcile path_ref against the local diff in a private review.
+        # Never reveal the path or matching value in CI.
         path_ref = hashlib.sha256(item.path.encode("utf-8")).hexdigest()[:12]
         print(f"{item.severity}: {item.rule} path_ref={path_ref} (added-line {item.added_line})")
     print(f"Publication guard: {blockers} BLOCK, {warnings} REVIEW. "
-          "Scan covers added textual diff only; manual review still required.")
+          "Final diff, commit patches and metadata scanned when requested; manual media review still required.")
     return 1 if blockers or (warnings and ns.fail_on_warning) else 0
 
 
