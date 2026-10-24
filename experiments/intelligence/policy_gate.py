@@ -75,6 +75,14 @@ def date_field(value: object, label: str) -> date:
 
 def validate_request(raw: Mapping) -> Mapping:
     q = mapping(raw, "REQUEST")
+    require(set(q) <= {
+        "operation", "platform", "project_id", "purpose", "country",
+        "geography_basis", "time_basis", "time_zone", "result_limit",
+        "requested_metric", "window_start", "window_end", "fields",
+        "transformations", "storage_mode", "retention_days",
+        "redistribute_output", "requires_paid", "requests_raw_media",
+        "background_collection", "estimated_calls",
+    }, "UNEXPECTED_REQUEST_KEYS")
     for key in ("operation", "platform", "project_id", "purpose", "country",
                 "geography_basis", "time_basis"):
         text_field(q, key)
@@ -120,6 +128,14 @@ def validate_request(raw: Mapping) -> Mapping:
 
 def validate_capability(raw: Mapping) -> Mapping:
     c = mapping(raw, "SOURCE_CAPABILITY")
+    require(set(c) <= {
+        "source_id", "source_kind", "platform", "operation", "adapter_version",
+        "policy_ref", "purposes", "countries", "geography_bases",
+        "time_bases", "transformations", "documented_metric_support",
+        "field_grants", "available_from", "available_to",
+        "reviewed_at", "expires_at", "revoked", "max_calls_per_day",
+        "documentation_note", "documentation_links",
+    }, "UNEXPECTED_CAPABILITY_KEYS")
     for key in ("source_id", "source_kind", "platform", "operation",
                 "adapter_version", "policy_ref"):
         text_field(c, key)
@@ -145,6 +161,8 @@ def validate_capability(raw: Mapping) -> Mapping:
     for field, grant in grants.items():
         require(type(field) is str and bool(field.strip()), "INVALID_GRANTED_FIELD")
         g = mapping(grant, "GRANT")
+        require(set(g) <= {"data_class", "retention_policy_ref", "actions",
+                           "max_retention_days"}, "UNEXPECTED_GRANT_KEYS")
         text_field(g, "data_class")
         text_field(g, "retention_policy_ref")
         require(g["data_class"] in _CLASS_TTL, "UNKNOWN_DATA_CLASS")
@@ -203,6 +221,9 @@ def evaluate(request: Mapping, capability: Mapping, *, now: str) -> dict:
            q["requested_metric"] not in c["documented_metric_support"])
     reject("DERIVED_METRIC_REQUIRES_EXPLICIT_TRANSFORM",
            q["requested_metric"] not in _NATIVE_METRICS and
+           "DERIVE_RATIO" not in q["transformations"])
+    reject("DERIVED_OPERATION_REQUIRES_DERIVATION",
+           "DERIVED" in q["operation"].upper() and
            "DERIVE_RATIO" not in q["transformations"])
     reject("POLICY_NOT_CURRENT", reviewed > instant or expires <= reviewed or
            instant >= expires)
