@@ -77,6 +77,11 @@ DIFF_FILE = re.compile(r"^\+\+\+ b/(.+)$")
 
 def scan_added_line(path: str, line: str, line_number: int) -> list[Finding]:
     findings = []
+    # Git --text exposes UTF-16-style data as interleaved NUL bytes. Treat
+    # these as suspicious and also inspect the de-NUL'd ASCII token stream.
+    if "\x00" in line:
+        findings.append(Finding("BLOCK", "NUL_IN_ADDED_CONTENT", path, line_number))
+        line = line.replace("\x00", "").replace("\ufffd", "").replace("\ufeff", "")
     # A Git attribute can hide arbitrary text from the diff renderer. This
     # should not be published without a separate explicit review.
     if path.endswith("/.gitattributes") or path == ".gitattributes":
