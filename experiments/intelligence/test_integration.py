@@ -4,13 +4,13 @@ import unittest
 from datetime import datetime, date, timedelta, timezone
 from zoneinfo import ZoneInfo
 
-from intelligence.engine import Observation, ValidationError, view_velocity
-from intelligence.research_bridge import build_research_execution_fixture
-from intelligence.contract_canary import validate_research_execution
-from intelligence.s2_projection import project_s2_query
-from intelligence.policy_gate import evaluate
-from intelligence.test_policy_gate import capability
-from intelligence.test_s2_projection import s2_query
+from experiments.intelligence.engine import Observation, ValidationError, view_velocity
+from experiments.intelligence.research_bridge import build_research_execution_fixture
+from experiments.intelligence.contract_canary import validate_research_execution
+from experiments.intelligence.s2_projection import project_s2_query
+from experiments.intelligence.policy_gate import evaluate
+from experiments.intelligence.test_policy_gate import capability
+from experiments.intelligence.test_s2_projection import s2_query
 
 UTC = timezone.utc
 AT = datetime(2026, 10, 24, 11, tzinfo=UTC)
@@ -79,7 +79,7 @@ class CrossModuleTests(unittest.TestCase):
         c=capability()
         c["source_id"]="YOUTUBE_DATA_API"
         c["source_kind"]="SYNTHETIC_FIXTURE"
-        from intelligence.policy_gate import InvalidContract
+        from experiments.intelligence.policy_gate import InvalidContract
         with self.assertRaises(InvalidContract):
             evaluate({
             "operation":"PUBLIC_VIDEO_SEARCH","platform":"fixture-platform",
@@ -104,7 +104,7 @@ class CrossModuleTests(unittest.TestCase):
     def test_no_source_permission_propagated_via_intelligence(self):
         env=envelope()
         env["intelligence"]["may_spend"]=True
-        from intelligence.contract_canary import ContractViolation
+        from experiments.intelligence.contract_canary import ContractViolation
         with self.assertRaises(ContractViolation):
             validate_research_execution(env,evidence_by_id=env["fixture_evidence_index"])
 
