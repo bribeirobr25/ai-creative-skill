@@ -16,4 +16,4 @@ A auditoria automatizada anterior percorreu referências públicas alcançáveis
 - Antes de cada novo push/connector write, fazer preflight; CI é segunda barreira, não previne publicação inicial.
 - Direitos de elementos de terceiros, licença de ferramenta IA, EXIF, metadados Git, ACLs passadas e objetos externos permanecem limites não certificados.
 - Auditoria de todo o histórico é **manual/advisory**, separada do check obrigatório de diff/commits de um PR.
-- ADR-0003 permanece proposta até aceite explícito. PR #20 Draft, sem merge/release.
+- A adoção da ADR-0003 exige decisão explícita do proprietário; esta nota S0 não aprova merge, release ou novos acessos.
