@@ -1,6 +1,6 @@
 # Intelligence Architecture v0.3 · consolidated candidate · 2026-10-24
 
-**Authority status:** DOCUMENTED CANDIDATE / `GATE_0_CONDITIONAL` / NO IMPLEMENTATION APPROVAL / NO RELEASE. See [STATUS.md](STATUS.md) for the single current status and stages S0–S6. Supersedes v0.1/v0.2 for proposed design; those documents remain evidence of historical drafts.
+**Authority status:** DOCUMENTED CANDIDATE / `GATE_0_NOT_PASSED` / OWNER DECISION PENDING / NO RELEASE. See [STATUS.md](STATUS.md) for the single current status and stages S0–S6. Supersedes v0.1/v0.2 for proposed design; those documents remain evidence of historical drafts.
 
 ## Goal and modality
 
@@ -15,8 +15,8 @@ In-house provider-neutral **Content, Product and Advertising Intelligence** for 
 | Ad observations, creative variants and L0–L3 evidence strength | AD_FUNNEL_INTELLIGENCE | Domain ad result references `research_execution_ref`; not nested competing ad authority |
 | Product/listing/seller identity | PRODUCT_MARKETPLACE_INTELLIGENCE | Link IDs only with provenance, never by visual resemblance alone |
 | Creative publication and campaign performance lineage | Execution Contracts §23.1 and Architecture §11.1 | Reuse publication_id / asset_id / post_or_ad_id rather than duplicate them |
-| Deterministic performance statistics | **Proposed specialised analytics helper** subordinate to the owning method | Versioned age cohorts, velocity, outlier, coverage and uncertainty; no implicit amendment to Research Method. Growth Rule and owner acceptance before formal specialist method |
-| Source documentation, field-level policy facts | DATA-SOURCE CONNECTORS / Execution Contracts §24 onboarding | Registry describes source facts and rights **only**; never decides project autonomy, approves source usage or grants credits |
+| Deterministic performance statistics | **UNRESOLVED METHOD OWNER** | Proposed age cohorts, velocity, outlier, coverage and uncertainty need either a versioned Research Evidence Synthesis amendment (including existing `engagement_observed`) or a newly approved Specialist Method under the Growth Rule; do not invent a third unregistered category |
+| Source documentation, field-level policy facts | Execution Contracts §24 Provider Onboarding · LATER | Future adapter registry describes source facts and rights only. Architecture §24.1 DATA-SOURCE CONNECTORS is explicitly NOT CURRENT CAPABILITIES; enable via separate acceptance |
 | Paid sources and approvals | Execution Contracts §3–4.1, §26 stop semantics | Approval+Budget Ledger+operation-binding, never `derived_permission` or access-token alone |
 | Handoff | Execution Contracts V2.3 HANDOFF_PACKET | `permissions_carried: NONE`, `action_authority_recheck_required: true` |
 | Publication safety | ADR-0001, proposed ADR-0003 / PR #20 | Prepublication guard, distinct from Intelligence policy |
@@ -29,7 +29,7 @@ User intent → Stage 0/Research Work Profile → canonical research_execution �
 
 ## Policy and method contracts
 
-- One SourceCapability schema under Execution Contracts §24; no competing `evaluate_source_candidate` and `evaluate` policy authorities.
+- One proposed `SourceCapabilityRecord` is pending an owner-controlled §24 amendment; there is currently no accepted live field schema. Candidate descriptive fields: `source_id`, `provider`, `operation`, `source_kind`, `policy_ref`, `fields`, `transformations`, `geography_basis`, `time_basis`, `retention_limit_by_data_class`, `redistribution_rights`, `verification_evidence_ref`, `reviewed_at`, `expires_at`, `revoked`. Project scopes, approval status and execution authority belong to AUTONOMY_ENVELOPE and the Project Profile, NOT this record.
 - Separate source factual rights (endpoint, operation, fields, transformation, geo/time meaning, retention/TTL, redistribution, status/expiry) from user/project authorization (Project Profile + AUTONOMY_ENVELOPE) and paid approval/ledger.
 - Unknown rights, missing rights evidence or unapproved Analytics & Reporting amendment => no derived real analytics; request can remain PARTIAL/BLOCKED through existing research/stop status owner. No free-form `NOT_PERMITTED` source enum until an explicit owner-controlled spec amendment.
 - `viewCount` cumulative isn't delta; creator locale isn't audience locale; active advertisement isn't sale or return on ad spend.
@@ -45,10 +45,10 @@ User intent → Stage 0/Research Work Profile → canonical research_execution �
 **G0-04:** field/purpose/operation rights, storage/expiry/revocation with authoritative verification.
 **G0-05:** typed country basis, time basis, comparable snapshots and population/coverage.
 
-Canary lab may exercise synthetic formulas without G0 promotion if it states NO-CANON/NO-API. Code under src/ requires inventory/Manifest/validation governance change, coordinated after PR #17's 2.6 candidate. CC final review must verify a consolidated, single lab package based on main before approval.
+Existing isolated, synthetic-only experiments remain research evidence, NOT accepted formulas or canonical functionality. Further experiments and production promotion remain under the owner's explicit scope decision. Code under src/ requires inventory/Manifest/validation governance change, coordinated with the independent 2.6 candidate. Importing experiments from src/ is prohibited.
 
 ## Decisions not assumed
 
 Owner account-first is an attractive first live path, not an automatic license or final decision. Product/Ads third-party discovery remains a separate research route. API-key possession != Analytics-derived permission; model creativity != evidence confidence. S4 starts after consolidated lab with testable resilience hypotheses.
 
-**No merge, payments, provider calls, source storage, release or PR #17 modification authorized by this proposal.**
+**No merge, payments, provider calls, source storage, release or changes to PR #17 are authorized by this proposal.**
