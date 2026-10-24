@@ -239,7 +239,8 @@ def validate_research_execution(
         "schema_family", "schema_version", "metric_observations",
         "ranked_evidence_refs", "ranking_scope", "metric_definition",
         "derived_metrics_performed", "external_calls_performed",
-        "permissions_carried", "policy_shape_decision", "stop_code"
+        "permissions_carried", "policy_shape_decision", "stop_code",
+        "time_zone", "requested_metric"
     }, "unknown intelligence fields (possible authority injection)")
     _require(intelligence.get("external_calls_performed") is False,
              "S2 cannot verify an external API execution")
@@ -247,6 +248,14 @@ def validate_research_execution(
              "S2 forbids derived metrics on external data")
     _require(intelligence.get("schema_family") == "INTELLIGENCE_SYNTHETIC_EXTENSION",
              "unexpected intelligence extension type")
+    if "time_zone" in intelligence:
+        try:
+            ZoneInfo(_id(intelligence["time_zone"], "intelligence.time_zone"))
+        except (ZoneInfoNotFoundError, ValueError, KeyError) as exc:
+            raise ContractViolation("invalid intelligence time zone") from exc
+    if "requested_metric" in intelligence:
+        _require(intelligence["requested_metric"] == "PUBLIC_VIEW_COUNT",
+                 "raw count ranking cannot claim to satisfy derived metric request")
     if data["status"] == "COMPLETE" and any(
         v["outcome"] == "OK" for v in attempts.values()
     ):
