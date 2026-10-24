@@ -3,7 +3,7 @@ import copy
 import json
 import unittest
 
-from intelligence.contract_canary import (
+from experiments.intelligence.contract_canary import (
     ContractViolation, SOURCE_OUTCOMES, RESEARCH_STATUSES,
     validate_research_execution, validate_query_filter,
     validate_handoff,
