@@ -63,7 +63,10 @@ def has_reviewable_email(text: str) -> bool:
 
 
 PRIVATE_FILENAME = re.compile(
-    r"(?i)(?:^|/)(?:\.env(?:\.[\w-]+)?|id_(?:rsa|ed25519)|credentials?\.(?:json|ya?ml)|"
+    r"(?i)(?:^|/)(?:\.env(?:\.(?!example$|sample$|template$|dist$)[\w-]+)?|"
+    r"\.npmrc|\.netrc|\.git-credentials|id_(?:rsa|ed25519)|"
+    r"(?:client_secret[^/]*|credentials?)\.(?:json|ya?ml)|"
+    r"[^/]+\.tfstate(?:\.backup)?|"
     r"(?:secrets?|private|credentials?)/[^/]+\.(?:p12|pfx|pem|key|db|sqlite)|"
     r"[^/]*(?:private|secret|credential|token)[^/]*\.(?:p12|pfx|pem|key|db|sqlite)|"
     r"[^/]+\.(?:p12|pfx))$"
@@ -74,6 +77,12 @@ DIFF_FILE = re.compile(r"^\+\+\+ b/(.+)$")
 
 def scan_added_line(path: str, line: str, line_number: int) -> list[Finding]:
     findings = []
+    # A Git attribute can hide arbitrary text from the diff renderer. This
+    # should not be published without a separate explicit review.
+    if path.endswith("/.gitattributes") or path == ".gitattributes":
+        rule = re.search(r"(?i)(?:^|\s)(?:-diff|binary|diff=[^\s]+)(?:\s|$)", line)
+        if rule:
+            findings.append(Finding("BLOCK", "DIFF_ATTRIBUTE_HIDES_CONTENT", path, line_number))
     for name, rx in BLOCK_RULES:
         if rx.search(line):
             findings.append(Finding("BLOCK", name, path, line_number))
@@ -174,6 +183,11 @@ def scan_unified_diff(patch: str) -> list[Finding]:
         if line.startswith("@@ "):
             in_hunk = True
             continue
+        if (line.startswith("Binary files ") or line.startswith("GIT binary patch")
+                or line.startswith("literal ") or line.startswith("delta ")):
+            results.append(Finding("BLOCK", "UNINSPECTED_BINARY_DIFF",
+                                   destination or "<binary-file>", 0))
+            continue
     if destination is not None and not deleted:
         check_destination(destination)
     return results
@@ -204,7 +218,7 @@ def _diff_args(*, staged: bool = False, range_ref: str | None = None) -> list[st
     command = ["git", "-c", "core.quotePath=false", "diff"]
     if staged:
         command.append("--cached")
-    command += ["--no-ext-diff", "--no-color", "--unified=0"]
+    command += ["--text", "--no-textconv", "--no-ext-diff", "--no-color", "--unified=0"]
     if range_ref:
         command.append(range_ref)
     return command + ["--"]
@@ -269,8 +283,8 @@ def main(argv: list[str] | None = None) -> int:
         if ns.history_range:
             historical_bytes = _run_git([
                 "git", "-c", "core.quotePath=false", "log", "--patch",
-                "--diff-merges=first-parent", "--format=", "--no-ext-diff",
-                "--no-color", "--unified=0", ns.history_range, "--"
+                "--diff-merges=remerge", "--text", "--no-textconv", "--format=",
+                "--no-ext-diff", "--no-color", "--unified=0", ns.history_range, "--"
             ])
             history_text, decode_issues = _decode_inspected_bytes(historical_bytes, "<git-commits>")
             findings.extend(decode_issues)
