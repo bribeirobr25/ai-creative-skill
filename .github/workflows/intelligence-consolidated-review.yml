@@ -1,10 +1,8 @@
 name: Intelligence unified offline lab
 on:
+  # Required candidate boundaries must also run when a PR changes only src/,
+  # validation/ or packaging/. A path-filtered check can silently be absent.
   pull_request:
-    paths:
-      - 'experiments/intelligence/**'
-      - 'experiments/__init__.py'
-      - '.github/workflows/intelligence-consolidated-review.yml'
   workflow_dispatch:
 permissions:
   contents: read
