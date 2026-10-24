@@ -285,6 +285,78 @@ class SecretRulesTests(unittest.TestCase):
         payload = fake_patch("++ /dev/null\n+" + token)
         self.assertIn(("BLOCK", "GITHUB_TOKEN"), rules(payload))
 
+    def test_binary_hidden_text_with_gitattributes_real_cli(self):
+        """End-to-end: a committed -diff attribute cannot make a token invisible."""
+        import subprocess
+        import tempfile
+        from pathlib import Path
+        from publication_guard import __file__ as guard
+        with tempfile.TemporaryDirectory() as d:
+            def git(*args):
+                return subprocess.run(["git", "-C", d, *args],
+                                      capture_output=True, check=True).stdout
+            git("init", "-q")
+            git("config", "user.email", "test@example.invalid")
+            git("config", "user.name", "Synthetic")
+            (Path(d) / "base.txt").write_text("baseline\n")
+            git("add", ".")
+            git("commit", "-qm", "base")
+            base = git("rev-parse", "HEAD").decode().strip()
+            (Path(d) / ".gitattributes").write_text("*.md -diff\n")
+            (Path(d) / "notes.md").write_text("ghp_" + "D" * 38 + "\n")
+            git("add", ".")
+            git("commit", "-qm", "hidden token test")
+            cmd = [
+                "python", str(Path(guard).resolve()),
+                "--range", base + "...HEAD",
+                "--history-range", base + "..HEAD",
+            ]
+            result = subprocess.run(cmd, cwd=d, capture_output=True, text=True)
+            self.assertEqual(1, result.returncode, result.stdout)
+            self.assertIn("GITHUB_TOKEN", result.stdout)
+            self.assertIn("DIFF_ATTRIBUTE_HIDES_CONTENT", result.stdout)
+            self.assertNotIn("ghp_" + "D" * 38, result.stdout)
+
+    def test_null_byte_text_is_scanned_not_ignored(self):
+        import tempfile
+        import subprocess
+        from pathlib import Path
+        from publication_guard import __file__ as guard
+        with tempfile.TemporaryDirectory() as d:
+            def git(*args):
+                return subprocess.run(["git", "-C", d, *args],
+                                      capture_output=True, check=True).stdout
+            git("init", "-q")
+            git("config", "user.email", "test@example.invalid")
+            git("config", "user.name", "Synthetic")
+            (Path(d) / "base.txt").write_text("base\n")
+            git("add", ".")
+            git("commit", "-qm", "base")
+            base = git("rev-parse", "HEAD").decode().strip()
+            (Path(d) / "notes.txt").write_bytes(b"\x00ghp_" + b"F" * 36 + b"\n")
+            git("add", ".")
+            git("commit", "-qm", "NUL token test")
+            result = subprocess.run(
+                ["python", str(Path(guard).resolve()), "--range", base + "...HEAD",
+                 "--history-range", base + "..HEAD"],
+                cwd=d, capture_output=True, text=True,
+            )
+            self.assertEqual(1, result.returncode, result.stdout)
+            self.assertIn("GITHUB_TOKEN", result.stdout)
+
+    def test_gitattributes_binary_marker_alone_blocks(self):
+        self.assertIn(("BLOCK", "DIFF_ATTRIBUTE_HIDES_CONTENT"),
+                      rules(fake_patch("*.json binary", ".gitattributes")))
+        self.assertIn(("BLOCK", "UNINSPECTED_BINARY_DIFF"),
+                      rules("diff --git a/data.json b/data.json\n"
+                            "Binary files a/data.json and b/data.json differ\n"))
+
+    def test_env_example_not_blocked_as_private_env(self):
+        out = rules(fake_patch("DOCUMENTED=PLACEHOLDER", ".env.example"))
+        self.assertNotIn(("BLOCK", "PRIVATE_FILE_PATH"), out)
+        self.assertIn(("BLOCK", "PRIVATE_FILE_PATH"),
+                      rules(fake_patch("LIVE=1", ".env.production")))
+
     def test_github_classic_token(self):
         token = "ghp_" + "X" * 32
         self.assertIn(("BLOCK", "GITHUB_TOKEN"), rules(fake_patch("token=" + token)))
