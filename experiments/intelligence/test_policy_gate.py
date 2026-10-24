@@ -33,7 +33,6 @@ def capability(**changes):
         "source_id": "fixture-source-01", "source_kind": "SYNTHETIC_FIXTURE",
         "platform": "fixture-platform", "operation": "PUBLIC_VIDEO_SEARCH",
         "adapter_version": "canary-0.1", "policy_ref": "synthetic-policy-01",
-        "authorization_state": "SIMULATED_VERIFIED",
         "purposes": ["RESEARCH_ONLY"],
         "countries": ["DE"], "geography_bases": ["SEARCH_RESULT_LOCALE"],
         "time_bases": ["PUBLISHED_DURING_WINDOW"],
@@ -106,9 +105,9 @@ class AuthorizationBoundary(unittest.TestCase):
         d = verdict(source=capability(source_kind="LICENSED_THIRD_PARTY"))
         self.assertEqual("BLOCKED", d["decision"])
 
-    def test_unknown_access_authorization_denied(self):
-        d = verdict(source=capability(authorization_state="NOT_VERIFIED"))
-        self.assertIn("ACCESS_NOT_GRANTED_FOR_FIXTURE", d["reason_codes"])
+    def test_authorization_claim_is_rejected_as_non_source_field(self):
+        with self.assertRaises(InvalidContract):
+            verdict(source=capability(authorization_state="NOT_VERIFIED"))
 
     def test_permission_claim_in_request_cannot_elevate_source(self):
         q = request()
