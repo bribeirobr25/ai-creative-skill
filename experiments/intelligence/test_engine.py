@@ -6,7 +6,7 @@ No third-party dependencies or network calls.
 import unittest
 from datetime import datetime, timedelta, timezone
 
-from intelligence.engine import (
+from experiments.intelligence.engine import (
     Observation, ValidationError, InsufficientEvidence, unique_observations,
     outlier_ratio, view_velocity, rank_sample, simulate_operational_resilience
 )
