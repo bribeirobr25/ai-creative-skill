@@ -271,7 +271,13 @@ def build_research_execution_fixture(
             "ranked_evidence_refs": ranked_refs,
             "ranking_scope": ranking_note,
             "policy_shape_decision": policy_decision["decision"],
-            "stop_code": "STOP_POLICY_REJECTION" if is_policy_blocked else None,
+            "stop_code": (
+                "STOP_POLICY_REJECTION" if is_policy_blocked
+                else ("STOP_REQUIRED_AUTHORITY_MISSING" if status == "BLOCKED"
+                      and source_outcome in ("AUTH_FAILED", "PAYMENT_REQUIRED")
+                      else ("STOP_REQUIRED_VERIFICATION_UNAVAILABLE"
+                            if status == "BLOCKED" else None))
+            ),
             "metric_definition": "RAW_VIEW_COUNT_FIXTURE",
             "derived_metrics_performed": False,
             "external_calls_performed": False,
