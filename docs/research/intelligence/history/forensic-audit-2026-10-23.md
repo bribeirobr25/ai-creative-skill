@@ -1,3 +1,5 @@
+> **ARQUIVO HISTÓRICO, NÃO CANÔNICO.** Documento preservado para rastreabilidade da pesquisa; seus estados, procedimentos, links e permissões não constituem instruções atuais. Consulte [STATUS v0.3](../STATUS.md), [arquitetura atual proposta](../architecture-v0.3.md) e [matriz de aceitação](../acceptance-v0.3.md). Nenhum acesso a provedores ou merge é autorizado por este documento.
+
 # Auditoria independente do PR #18 · Design, lacunas e efeitos colaterais · 2026-10-23
 
 **Tipo:** revisão crítica adicional, não aceite.  
