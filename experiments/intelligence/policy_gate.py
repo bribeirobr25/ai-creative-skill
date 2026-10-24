@@ -135,6 +135,7 @@ def validate_capability(raw: Mapping) -> Mapping:
         "field_grants", "available_from", "available_to",
         "reviewed_at", "expires_at", "revoked", "max_calls_per_day",
         "documentation_note", "documentation_links",
+        "supported_time_zones", "max_results_per_call",
     }, "UNEXPECTED_CAPABILITY_KEYS")
     for key in ("source_id", "source_kind", "platform", "operation",
                 "adapter_version", "policy_ref"):
@@ -181,6 +182,17 @@ def validate_capability(raw: Mapping) -> Mapping:
     require(type(c.get("revoked")) is bool, "INVALID_REVOKED")
     quota = c.get("max_calls_per_day")
     require(type(quota) is int and quota >= 0, "INVALID_QUOTA")
+    if "supported_time_zones" in c:
+        zones = string_list(c["supported_time_zones"], "SOURCE_TIME_ZONES")
+        for zone in zones:
+            try:
+                ZoneInfo(zone)
+            except (ZoneInfoNotFoundError, ValueError, KeyError) as exc:
+                raise InvalidContract("INVALID_SOURCE_TIME_ZONE") from exc
+    if "max_results_per_call" in c:
+        require(type(c["max_results_per_call"]) is int
+                and 1 <= c["max_results_per_call"] <= 10000,
+                "INVALID_MAX_RESULTS_PER_CALL")
     return c
 
 
@@ -210,6 +222,12 @@ def evaluate(request: Mapping, capability: Mapping, *, now: str) -> dict:
     reject("GEOGRAPHY_SEMANTICS_MISMATCH",
            q["geography_basis"] not in c["geography_bases"])
     reject("TIME_SEMANTICS_MISMATCH", q["time_basis"] not in c["time_bases"])
+    if "time_zone" in q:
+        reject("SOURCE_TIME_ZONE_UNVERIFIED",
+               q["time_zone"] not in c.get("supported_time_zones", []))
+    if "result_limit" in q:
+        reject("SOURCE_RESULT_LIMIT_UNVERIFIED",
+               q["result_limit"] > c.get("max_results_per_call", 0))
     reject("TIME_WINDOW_OUTSIDE_DECLARED_SCOPE",
            date_field(q["window_start"], "WINDOW_START") <
            date_field(c["available_from"], "AVAILABLE_FROM") or
@@ -316,7 +334,11 @@ def retention_verdict(*, recorded_at: str, ttl_days: int, now: str,
     require(current >= created, "TIME_TRAVEL_NOT_ALLOWED")
     require(type(ttl_days) is int and 0 <= ttl_days <= 36500, "INVALID_TTL")
     require(type(revoked) is bool, "INVALID_REVOKED")
-    expired = (current >= created + timedelta(days=ttl_days))
+    try:
+        expiry = created + timedelta(days=ttl_days)
+    except (OverflowError, ValueError) as exc:
+        raise InvalidContract("TTL_OVERFLOW") from exc
+    expired = current >= expiry
     outcome = "PURGE_REQUIRED" if revoked or expired else "SIMULATED_VALID"
     return {
         "decision": outcome, "simulated_only": True,
