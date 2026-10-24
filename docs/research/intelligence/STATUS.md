@@ -1,39 +1,33 @@
-# Intelligence · STATUS / Decision Ledger · 2026-10-24
+# Intelligence · STATUS canônico de *proposta* · 2026-10-24
 
-**SINGLE ACTIVE STATUS:** `GATE_0_CONDITIONAL / NO_CANONICAL_INTEGRATION / SOURCE_AUTHORIZATION_PENDING / NO_RELEASE`.
-**Authority:** existing SKILL.md, Current Design Manifest, Research Work Profile, Research Evidence Synthesis, Ad/Funnel Intelligence, Product/Marketplace, Execution Contracts and ADR-0001/0002. This document is a **candidate**, not an approval.
+**Estado de Gate 0: `GATE_0_NOT_PASSED / OWNER_ACCEPTANCE_PENDING`.**
+**Estado de implementação: `SYNTHETIC_LAB_REVIEW_ONLY / NO_CANONICAL_INTEGRATION / NO_RELEASE`.**
+Estes são registros de revisão, não autorização formal. A versão v0.3 é uma proposta de harmonização, não um contrato adotado.
 
-**Current candidate documents:** [architecture-v0.3.md](architecture-v0.3.md) and [acceptance-v0.3.md](acceptance-v0.3.md), with this STATUS as the single current stage/authority verdict. Historical v0.1/v0.2, older audits, stages and the PR descriptions are preserved as **historical research**, not parallel current governance. In particular, obsolete claims in older documents such as “S0 open” and “YouTube categorically prohibited” do **not** override this status.
+## Sequência S0–S6
 
-## Single sequence
+| Fase | Resultado e situação |
+|---|---|
+| S0 | Encerrada administrativamente por atestação do proprietário, com limites residuais. O link Drive em `src/` ainda precisa de migração versionada |
+| S1 | Motor estatístico anterior #19: histórico; substituição proposta no PR #23 |
+| S2 | Validador de contratos anterior #21: histórico; substituição proposta no PR #23 |
+| S3 | Preflight de permissões anterior #22: histórico; substituição proposta no PR #23 |
+| S1–S3 consolidados | [PR #23](https://github.com/bribeirobr25/ai-creative-skill/pull/23), laboratório sintético de revisão; número de testes e estado devem ser conferidos no HEAD atual de CI |
+| S4 | Resiliência avançada, hipóteses e testes por planejar; não iniciada |
+| S5 | Primeiro canário real somente após direitos, credenciais privadas e autorização específica; NÃO autorizado |
+| S6 | Integração em `src/` e release: NÃO autorizado; exige coordenação com versão do PR #17 e Manifest |
 
-| Phase | Meaning | State |
-|---|---|---|
-| S0 | Historic repository safety triage | **CLOSED_BY_OWNER_ATTESTATION_WITH_LIMITS**. New incidents are separate |
-| S1 | Synthetic metric invariants PR #19 | TESTED (68 cases) / architecture integration BLOCKED |
-| S2 | Contract shapes PR #21 | TESTED (42 cases) / canonical acceptance BLOCKED |
-| S3 | Source-policy shape PR #22 | TESTED (71 cases) / real authorization NOT VERIFIED |
-| S4 | Fault injection and resilience | NOT STARTED; pause until reconciled lab |
-| S5 | Authenticated read-only canary | NOT APPROVED; no tokens/provider calls |
-| S6 | Canonical skill integration and release | NOT APPROVED |
+## Decisões sob controle do proprietário
 
-**CI GREEN != MERGE READY.** The CC independent review found defects including status/evidence inconsistencies, DST, derived-metric loss across S2→S3, self-declared synthetic source identities, and security scanning blind spots. The PR #19/#21/#22 lab should be replaced by one dedicated, unstacked lab PR based on `main`. No branch is merged simply to reach a green check.
+- Aprovar ou rejeitar Gate 0, versão v0.3 e entrada do laboratório isolado no histórico da `main`; não presumir `CONDITIONAL` como aceito.
+- Definir owner de métricas: emenda versionada do Research Evidence Synthesis versus novo Specialist Method sob a Growth Rule. `engagement_observed` já existe e deve ser reconciliado.
+- Confirmar SourceCapabilityRecord sob §24, aliases da §1.1, vínculo a `MetricObservation`, `STOP_POLICY_REJECTION` e `STOP_REQUIRED_AUTHORITY_MISSING`.
+- A ativação futura de §24.1 DATA-SOURCE CONNECTORS é Gate separado. A seção é `NOT CURRENT CAPABILITIES`; citá-la não a implementa.
+- Fonte real inicial, licenças/permissões de dados próprios e externos, host das credenciais, histórico permitido e custos.
+- Adoção do Security Gate/ADR-0003 proposta no PR #20 e regras de proteção da branch principal.
 
-## Owner decisions pending
+## Guardrails permanentes
 
-1. First live data scope: owner-authorized accounts versus third-party public discoveries. Preserve both as distinct future routes, not as interchangeable rights.
-2. Host: local private adapter and credentials vs public distributable skill. Default to **private credentials outside Git**, no built-in runtime secrets.
-3. Canonical method ownership for deterministic performance metrics and watchlists. Do not silently mutate Research Evidence Synthesis or Ad/Funnel outputs.
-4. Alias and provider onboarding amendments: explicit version through Execution Contracts, Design Manifest and appropriate validation gate.
-5. Formal acceptance of minimal publication-safety ADR-0003 (#20), after independent review.
+A `main`/V2.5 ficam intocados até merge autorizado. PR #17 é independente. O laboratório #23 é offline e não implementa API real, armazenamento real, publicação ou autorização financeira. Um retorno `SHAPE_CHECK_PASSED_SYNTHETIC_ONLY` jamais autoriza execução. As versões v0.1/v0.2 e referências PR #19/#21/#22 são história, não status vigente.
 
-## Hard boundaries
-
-- Don't touch PR #17's branch.
-- Keep V2.5 immutable and main untouched until explicit, separately reviewed merge.
-- No data from YouTube/Meta or other third-party sources in synthetic lab.
-- Never interpret `SIMULATION_ELIGIBLE` or `derived_permission=True` as real rights, authorization, spend or storage.
-- Do not infer national audience ranking, revenue, conversion or performance from partial counters.
-- S0 closed does not resolve licensing of media elements, current Drive links in `src/`, forks or metadata.
-
-**Review requirement:** CC independently evaluates corrected PR heads, integration effects and the final merge plan. All PRs remain Draft until owner acceptance.
+**Evidência de testes sintéticos não equivale a direitos de fonte nem a aprovação do Gate 0.**
