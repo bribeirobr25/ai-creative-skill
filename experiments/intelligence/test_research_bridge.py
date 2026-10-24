@@ -3,8 +3,8 @@ import unittest
 from dataclasses import replace
 from datetime import date, datetime, timedelta, timezone
 
-from intelligence.engine import Observation, ValidationError
-from intelligence.research_bridge import build_research_execution_fixture, SOURCE_OUTCOMES, _REQUIRED_ENVELOPE_KEYS
+from experiments.intelligence.engine import Observation, ValidationError
+from experiments.intelligence.research_bridge import build_research_execution_fixture, SOURCE_OUTCOMES, _REQUIRED_ENVELOPE_KEYS
 
 T = datetime(2026, 10, 23, 10, 0, tzinfo=timezone.utc)
 
