@@ -351,6 +351,36 @@ class SecretRulesTests(unittest.TestCase):
                       rules("diff --git a/data.json b/data.json\n"
                             "Binary files a/data.json and b/data.json differ\n"))
 
+    def test_utf16_nul_obfuscation_blocks_and_detects_synthetic_token(self):
+        import tempfile
+        import subprocess
+        from pathlib import Path
+        from publication_guard import __file__ as guard
+        with tempfile.TemporaryDirectory() as d:
+            def git(*args):
+                return subprocess.run(["git", "-C", d, *args],
+                                      capture_output=True, check=True).stdout
+            git("init", "-q")
+            git("config", "user.email", "test@example.invalid")
+            git("config", "user.name", "Synthetic")
+            (Path(d) / "base.txt").write_text("base\n")
+            git("add", ".")
+            git("commit", "-qm", "base")
+            base = git("rev-parse", "HEAD").decode().strip()
+            synthetic = "ghp_" + "U" * 36
+            (Path(d) / "notes.txt").write_bytes((synthetic + "\n").encode("utf-16le"))
+            git("add", ".")
+            git("commit", "-qm", "UTF16-style binary text")
+            result = subprocess.run(
+                ["python", str(Path(guard).resolve()), "--range", base + "...HEAD",
+                 "--history-range", base + "..HEAD"],
+                cwd=d, capture_output=True, text=True,
+            )
+            self.assertEqual(1, result.returncode, result.stdout)
+            self.assertIn("NUL_IN_ADDED_CONTENT", result.stdout)
+            self.assertIn("GITHUB_TOKEN", result.stdout)
+            self.assertNotIn(synthetic, result.stdout)
+
     def test_env_example_not_blocked_as_private_env(self):
         out = rules(fake_patch("DOCUMENTED=PLACEHOLDER", ".env.example"))
         self.assertNotIn(("BLOCK", "PRIVATE_FILE_PATH"), out)
