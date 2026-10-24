@@ -136,7 +136,7 @@ class AuthorizationBoundary(unittest.TestCase):
     def test_operation_or_platform_mismatch(self):
         for rec in (
             capability(operation="ANOTHER_OPERATION"),
-            capability(platform="different-platform"),
+            capability(platform="fixture-different-platform"),
         ):
             with self.subTest(rec=rec["operation"]):
                 self.assertIn("OPERATION_MISMATCH", verdict(source=rec)["reason_codes"])
