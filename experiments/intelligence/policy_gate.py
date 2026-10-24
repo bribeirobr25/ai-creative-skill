@@ -121,7 +121,7 @@ def validate_request(raw: Mapping) -> Mapping:
 def validate_capability(raw: Mapping) -> Mapping:
     c = mapping(raw, "SOURCE_CAPABILITY")
     for key in ("source_id", "source_kind", "platform", "operation",
-                "adapter_version", "policy_ref", "authorization_state"):
+                "adapter_version", "policy_ref"):
         text_field(c, key)
     require(c["source_kind"] in SOURCE_KINDS, "UNKNOWN_SOURCE_KIND")
     if c["source_kind"] == "SYNTHETIC_FIXTURE":
@@ -132,7 +132,8 @@ def validate_capability(raw: Mapping) -> Mapping:
         require(not ({"documentation_links", "documentation_note", "api_base_url",
                       "endpoint", "provider_id", "policy_documentation"} & set(c)),
                 "SYNTHETIC_PROVIDER_DOCUMENTATION_NOT_ALLOWED")
-    require("projects" not in c, "SOURCE_CAPABILITY_MUST_NOT_OWN_PROJECT_AUTHORITY")
+    require(not ({"projects", "allowed_projects", "authorization_state", "approval_ref"} & set(c)),
+            "SOURCE_CAPABILITY_MUST_NOT_OWN_PROJECT_AUTHORITY")
     for key in ("purposes", "countries", "geography_bases",
                 "time_bases", "transformations", "documented_metric_support"):
         string_list(c.get(key), key.upper())
@@ -181,8 +182,7 @@ def evaluate(request: Mapping, capability: Mapping, *, now: str) -> dict:
     reject("REAL_SOURCE_NOT_AUTHORIZED", c["source_kind"] != "SYNTHETIC_FIXTURE")
     # Synthetic identities and provider provenance were checked at input
     # validation. No blocklist of selected real names can be complete.
-    reject("ACCESS_NOT_GRANTED_FOR_FIXTURE",
-           c["authorization_state"] != "SIMULATED_VERIFIED")
+    # This checker has no project or account execution authority.
     reject("OPERATION_MISMATCH", (c["operation"], c["platform"]) !=
            (q["operation"], q["platform"]))
     # Project-specific authority belongs to Project Profile/AUTONOMY_ENVELOPE,
