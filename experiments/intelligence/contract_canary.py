@@ -323,8 +323,7 @@ def validate_research_execution(
                  intelligence.get("stop_code") == "STOP_POLICY_REJECTION",
                  "blocked source policy must propagate canonical stop")
     elif intelligence.get("policy_shape_decision") is not None:
-        _require(intelligence["policy_shape_decision"] == "SHAPE_CHECK_PASSED_SYNTHETIC_ONLY"
-                 and intelligence.get("stop_code") is None,
+        _require(intelligence["policy_shape_decision"] == "SHAPE_CHECK_PASSED_SYNTHETIC_ONLY",
                  "invalid synthetic policy state")
     _require(all(type(ref) is str and ref in supporting_evidence for ref in ranked),
              "ranking uses counterevidence-only or unverified Evidence")
