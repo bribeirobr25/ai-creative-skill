@@ -1,8 +1,8 @@
 """Every real-platform planning template is denied until verified outside S3."""
 import unittest
 
-from intelligence.provider_templates import planning_templates, unverified_capability_template
-from intelligence.policy_gate import evaluate, validate_capability
+from experiments.intelligence.provider_templates import planning_templates, unverified_capability_template
+from experiments.intelligence.policy_gate import evaluate, validate_capability
 
 
 def fake_request(cap):
