@@ -3,7 +3,7 @@ import re
 import unittest
 from pathlib import Path
 
-from intelligence.vocabulary import SOURCE_OUTCOMES, RESEARCH_STATUSES, RESEARCH_REQUIRED
+from experiments.intelligence.vocabulary import SOURCE_OUTCOMES, RESEARCH_STATUSES, RESEARCH_REQUIRED
 
 ROOT = Path(__file__).resolve().parents[2]
 RESEARCH = ROOT / "src/ai-creative-skill/references/AI_Creative_Skill_Method_Research_Evidence_Synthesis_Pre-v0.3.md"
