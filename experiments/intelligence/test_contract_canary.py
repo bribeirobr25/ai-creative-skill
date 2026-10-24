@@ -13,15 +13,15 @@ from experiments.intelligence.contract_canary import (
 def fixture():
     stamp = "2026-10-23T09:00:00+00:00"
     evidence = {
-        "e-1": {
-            "evidence_id": "e-1", "source_ref": "fixture:publication:one",
+        "fixture:e-1": {
+            "evidence_id": "fixture:e-1", "source_ref": "fixture:publication:one",
             "source_class": "SYNTHETIC_FIXTURE", "retrieved_at": stamp,
             "published_at": "2026-10-20T09:00:00+00:00",
             "date_confidence": "HIGH", "entity_scope": "synthetic:one",
             "claim_or_observation": "Synthetic counter", "exact_quote_ref": None,
             "relevance": "DIRECT", "evidence_strength": "INDETERMINATE",
             "engagement_observed": False, "independence_key": "synthetic:one",
-            "source_outcome_ref": "attempt-1", "notes": "made-up data",
+            "source_outcome_ref": "fixture:attempt-1", "notes": "made-up data",
         },
     }
     envelope = {
@@ -29,7 +29,7 @@ def fixture():
         "primary_entity": "fictional topic", "market": "DE", "language": "de",
         "range_from": "2026-10-01", "range_to": "2026-10-24",
         "generated_at": stamp, "query_plan": [], "source_outcomes": [{
-            "source_ref": "attempt-1", "source_class": "SYNTHETIC_FIXTURE",
+            "source_ref": "fixture:attempt-1", "source_class": "SYNTHETIC_FIXTURE",
             "outcome": "OK", "checked_at": stamp,
         }],
         "coverage": {
@@ -39,8 +39,8 @@ def fixture():
             "population_verified": False,
         },
         "evidence_clusters": [{
-            "cluster_id": "cluster-1", "question_or_theme": "fictional views",
-            "supporting_evidence_refs": ["e-1"], "counterevidence_refs": [],
+            "cluster_id": "fixture:cluster-1", "question_or_theme": "fictional views",
+            "supporting_evidence_refs": ["fixture:e-1"], "counterevidence_refs": [],
             "independent_source_count": 1, "uncertainty": "synthetic-only",
         }],
         "counterevidence": [], "freshness_verdicts": [], "status": "PARTIAL",
@@ -51,7 +51,7 @@ def fixture():
             "metric_observations": [{
                 "observation_id": "obs-1",
                 "research_execution_id": "research-1",
-                "evidence_id": "e-1", "source_outcome_ref": "attempt-1",
+                "evidence_id": "fixture:e-1", "source_outcome_ref": "fixture:attempt-1",
                 "subject_id": "synthetic:one", "metric_name": "PUBLIC_VIEW_COUNT",
                 "metric_value": 200, "observed_at": stamp,
                 "observation_basis": "PLATFORM_REPORTED_CUMULATIVE",
@@ -60,8 +60,10 @@ def fixture():
                 "provenance": "SYNTHETIC_FIXTURE",
                 "storage_disposition": "IN_MEMORY_EXPERIMENT_ONLY",
             }],
-            "ranked_evidence_refs": ["e-1"], "ranking_scope": "OBSERVED_SAMPLE_ONLY",
+            "ranked_evidence_refs": ["fixture:e-1"], "ranking_scope": "OBSERVED_SAMPLE_ONLY",
             "external_calls_performed": False, "derived_metrics_performed": False,
+            "policy_shape_decision": "SHAPE_CHECK_PASSED_SYNTHETIC_ONLY",
+            "stop_code": None,
         },
     }
     return envelope, evidence
@@ -165,6 +167,11 @@ class CanonicalVocabularyTests(unittest.TestCase):
                 e, _ = fixture()
                 e["source_outcomes"][0]["outcome"] = outcome
                 e["status"] = "BLOCKED"
+                e["intelligence"]["stop_code"] = (
+                    "STOP_REQUIRED_AUTHORITY_MISSING"
+                    if outcome in ("AUTH_FAILED", "PAYMENT_REQUIRED")
+                    else "STOP_REQUIRED_VERIFICATION_UNAVAILABLE"
+                )
                 e["evidence_clusters"] = []
                 e["intelligence"]["metric_observations"] = []
                 e["intelligence"]["ranked_evidence_refs"] = []
@@ -208,12 +215,12 @@ class EvidenceOwnershipTests(unittest.TestCase):
     def test_evidence_records_and_clusters_are_separate(self):
         e, refs = fixture()
         validate_research_execution(e, evidence_by_id=refs)
-        self.assertEqual("cluster-1", e["evidence_clusters"][0]["cluster_id"])
+        self.assertEqual("fixture:cluster-1", e["evidence_clusters"][0]["cluster_id"])
         self.assertNotIn("evidence_id", e["evidence_clusters"][0])
 
     def test_legacy_bridge_shape_is_not_a_cluster(self):
         e, refs = fixture()
-        e["evidence_clusters"] = [copy.deepcopy(refs["e-1"])]
+        e["evidence_clusters"] = [copy.deepcopy(refs["fixture:e-1"])]
         with self.assertRaises(ContractViolation):
             validate_research_execution(e, evidence_by_id=refs)
 
@@ -223,7 +230,7 @@ class EvidenceOwnershipTests(unittest.TestCase):
         with self.assertRaises(ContractViolation):
             validate_research_execution(e, evidence_by_id=refs)
         e, refs = fixture()
-        refs["e-1"]["retrieved_at"] = "2026-10-24T00:00:00+00:00"
+        refs["fixture:e-1"]["retrieved_at"] = "2026-10-24T00:00:00+00:00"
         with self.assertRaises(ContractViolation):
             validate_research_execution(e, evidence_by_id=refs)
 
@@ -261,13 +268,13 @@ class EvidenceOwnershipTests(unittest.TestCase):
         with self.assertRaises(ContractViolation):
             validate_research_execution(e, evidence_by_id=refs)
         e, refs = fixture()
-        e["evidence_clusters"][0]["supporting_evidence_refs"].append("e-1")
+        e["evidence_clusters"][0]["supporting_evidence_refs"].append("fixture:e-1")
         with self.assertRaises(ContractViolation):
             validate_research_execution(e, evidence_by_id=refs)
 
     def test_independence_count_cannot_treat_copies_as_corroboration(self):
         e, refs = fixture()
-        second = copy.deepcopy(refs["e-1"])
+        second = copy.deepcopy(refs["fixture:e-1"])
         second["evidence_id"] = "e-2"
         second["source_ref"] = "fixture:copy"
         refs["e-2"] = second
@@ -323,7 +330,7 @@ class EvidenceOwnershipTests(unittest.TestCase):
 
     def test_real_source_and_storage_never_accepted(self):
         e, refs = fixture()
-        refs["e-1"]["source_class"] = "YOUTUBE_DATA_API"
+        refs["fixture:e-1"]["source_class"] = "YOUTUBE_DATA_API"
         with self.assertRaises(ContractViolation):
             validate_research_execution(e, evidence_by_id=refs)
         e, refs = fixture()
