@@ -14,11 +14,11 @@
 | INT-C08 | Existing §3–4.1 Approval+Budget Ledger owns paid research | Synthetic candidate has `may_spend=false` | Live paid gate NOT IMPLEMENTED and NOT AUTHORIZED |
 | INT-C09 | Storage TTL, data class, field rights, deletion and revocation | PR #23 fixture-only checks | Real policy proof + durable purge integration NOT RUN |
 | INT-C10 | Owner-channel and external market discovery have distinct data rights | Documented, not implemented | Decide initial route; verify YouTube/Meta scopes |
-| INT-C11 | No implicit creative production, handoff carries no permission | Synthetic HANDOFF_PACKET checks | ADR-0002 T1–T7 host conformance NOT RUN |
-| INT-C12 | Independent security scan and publication safety | PR #20 candidate regressions | CC review, accepted ADR-0003 and prepush controls |
+| INT-C11 | No implicit creative production, handoff carries no permission | Synthetic HANDOFF_PACKET checks only | [ADR-0002](../../decisions/ADR-0002-capability-bounded-invocation.md) T1–T7 and [Issue #1](https://github.com/bribeirobr25/ai-creative-skill/issues/1): host conformance NOT RUN |
+| INT-C12 | Independent security scan and publication safety | PR #20 synthetic and Git regression tests | Independent reviewer validation, accepted ADR-0003 and prepush controls, owner acceptance NOT RUN |
 | INT-C13 | No conflict with PR #17 Web/2.6 candidate and immutable V2.5 | CI baseline tests; no src changes | Independent combined-worktree comparison, CC/owner acceptance |
 | INT-C14 | Resilience: correlated failures, quota, retries, TTL 29/30/31, cost | S4 NOT RUN | Hypotheses and deterministic oracles first |
-| INT-C15 | Real YouTube/Meta read-only collection and documented costs/coverage | S5 NOT RUN | Account/API access, policies, explicit approval before use |
+| INT-C15 | Real external provider read-only collection and documented costs/coverage | S5 NOT RUN (no calls) | Distinguish documented account access from field-level legal rights, policy, cost and owner authorization before use |
 
 **Scope of green CI:** offline fixture correctness only. This matrix never certifies real analytics rights, platform rate limits, national rankings, market coverage, GDPR compliance, real persistence, approval or release.
 
