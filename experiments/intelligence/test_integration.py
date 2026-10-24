@@ -10,6 +10,7 @@ from experiments.intelligence.contract_canary import validate_research_execution
 from experiments.intelligence.s2_projection import project_s2_query
 from experiments.intelligence.policy_gate import evaluate
 from experiments.intelligence.test_policy_gate import capability
+from experiments.intelligence.test_research_bridge import fixture_policy
 from experiments.intelligence.test_s2_projection import s2_query
 
 UTC = timezone.utc
@@ -33,11 +34,7 @@ def envelope(outcome="OK", rows=None, **kwargs):
         range_to=date(2026,10,26), generated_at=AT+timedelta(seconds=1),
         observation_rows=rows if rows is not None else [row()],
         source_outcome=outcome,
-        policy_decision=kwargs.pop("policy_decision", {
-            "decision": "SHAPE_CHECK_PASSED_SYNTHETIC_ONLY",
-            "may_access_real_source": False, "may_spend": False,
-            "may_store_real_data": False, "may_publish": False,
-        }), **kwargs,
+        policy_decision=kwargs.pop("policy_decision", fixture_policy()), **kwargs,
     )
 
 
