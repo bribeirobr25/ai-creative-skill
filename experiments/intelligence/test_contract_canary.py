@@ -275,10 +275,10 @@ class EvidenceOwnershipTests(unittest.TestCase):
     def test_independence_count_cannot_treat_copies_as_corroboration(self):
         e, refs = fixture()
         second = copy.deepcopy(refs["fixture:e-1"])
-        second["evidence_id"] = "e-2"
+        second["evidence_id"] = "fixture:e-2"
         second["source_ref"] = "fixture:copy"
-        refs["e-2"] = second
-        e["evidence_clusters"][0]["supporting_evidence_refs"].append("e-2")
+        refs["fixture:e-2"] = second
+        e["evidence_clusters"][0]["supporting_evidence_refs"].append("fixture:e-2")
         e["evidence_clusters"][0]["independent_source_count"] = 2
         with self.assertRaises(ContractViolation):
             validate_research_execution(e, evidence_by_id=refs)
