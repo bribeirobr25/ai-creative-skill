@@ -43,8 +43,13 @@ class Observation:
             self.publication_id, self.channel_id, self.platform
         )):
             raise ValidationError("Stable source identities must be nonempty strings")
-        if self.platform.strip().casefold() in ("youtube", "meta", "facebook", "instagram", "tiktok"):
-            raise ValidationError("Real platform not accepted as synthetic fixture")
+        import re
+        from unicodedata import normalize as unicode_normalize
+        for field in ("channel_id", "platform"):
+            value = getattr(self, field).strip()
+            if (value != unicode_normalize("NFKC", value) or
+                    re.fullmatch(r"fixture-[a-z0-9]+(?:-[a-z0-9]+)*", value) is None):
+                raise ValidationError("Only explicit ASCII fixture identities are accepted")
         for field in ("publication_id", "channel_id", "platform"):
             object.__setattr__(self, field, normalize("NFC", getattr(self, field).strip()))
         if self.content_type not in ("short", "long"):
@@ -213,6 +218,8 @@ def rank_sample(
     """Sort reported counters, not a derived cross-platform viral score."""
     if type(limit) is not int or not 1 <= limit <= 100:
         raise ValidationError("Limit must be an integer from 1 to 100")
+    if type(requested_national_top) is not bool or type(population_coverage_verified) is not bool:
+        raise ValidationError("Coverage flags must be explicit booleans")
     rows = unique_observations(observations)
     if requested_national_top and not population_coverage_verified:
         raise InsufficientEvidence("National Top N cannot be inferred from an observed sample")
