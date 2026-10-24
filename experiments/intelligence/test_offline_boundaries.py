@@ -9,7 +9,39 @@ PROHIBITED_ROOTS = frozenset({
     "requests", "httpx", "urllib.request", "socket", "subprocess", "http", "ftplib",
     "aiohttp", "boto3", "sqlite3", "psycopg2", "sqlalchemy"
 })
-PROHIBITED_NAME_CALLS = frozenset({"eval", "exec", "__import__"})
+PROHIBITED_NAME_CALLS = frozenset({"eval", "exec", "__import__", "open"})  # pure lab
+DYNAMIC_MODULE_FUNCTIONS = frozenset({"import_module"})
+PROHIBITED_ATTRIBUTE_CALLS = frozenset({"connect", "urlopen", "Popen", "run", "system",
+                                        "write_text", "write_bytes", "unlink", "mkdir", "open"})
+
+
+def _imports_experiments(tree):
+    for node in ast.walk(tree):
+        if isinstance(node, ast.Import) and any(
+            a.name == "experiments" or a.name.startswith("experiments.")
+            for a in node.names
+        ):
+            return True
+        if isinstance(node, ast.ImportFrom) and (
+            (node.module or "") == "experiments"
+            or (node.module or "").startswith("experiments.")
+        ):
+            return True
+        if isinstance(node, ast.Call) and isinstance(node.func, ast.Attribute):
+            if node.func.attr in DYNAMIC_MODULE_FUNCTIONS and node.args:
+                arg = node.args[0]
+                if isinstance(arg, ast.Constant) and type(arg.value) is str and (
+                    arg.value == "experiments" or arg.value.startswith("experiments.")
+                ):
+                    return True
+        if isinstance(node, ast.Call) and isinstance(node.func, ast.Name):
+            if node.func.id == "__import__" and node.args:
+                arg = node.args[0]
+                if isinstance(arg, ast.Constant) and type(arg.value) is str and (
+                    arg.value == "experiments" or arg.value.startswith("experiments.")
+                ):
+                    return True
+    return False
 
 
 class S3IsolationTests(unittest.TestCase):
@@ -24,7 +56,11 @@ class S3IsolationTests(unittest.TestCase):
                     imported = [item.module]
                 for name in imported:
                     with self.subTest(filename=filename, module=name):
-                        self.assertNotIn(name, PROHIBITED_ROOTS)
+                        self.assertFalse(
+                            any(name == p or name.startswith(p + ".")
+                                for p in PROHIBITED_ROOTS),
+                            "unsafe module in synthetic-only lab: " + name,
+                        )
 
     def test_candidate_modules_do_not_call_dynamic_code_evaluation(self):
         for filename in CANDIDATE_MODULES:
@@ -35,19 +71,26 @@ class S3IsolationTests(unittest.TestCase):
                 and node.func.id in PROHIBITED_NAME_CALLS
             ]
             self.assertEqual([], calls, filename)
+            attributed = [
+                node.func.attr for node in ast.walk(tree)
+                if isinstance(node, ast.Call) and isinstance(node.func, ast.Attribute)
+                and node.func.attr in PROHIBITED_ATTRIBUTE_CALLS
+            ]
+            self.assertEqual([], attributed, filename)
 
     def test_production_src_never_imports_experimental_package(self):
         production = ROOT.parents[1] / "src"
         for py in production.rglob("*.py"):
             with self.subTest(path=str(py.relative_to(production))):
                 tree = ast.parse(py.read_text(encoding="utf-8"))
-                for node in ast.walk(tree):
-                    if isinstance(node, ast.Import):
-                        self.assertFalse(any(alias.name.startswith("experiments.")
-                                             or alias.name == "experiments"
-                                             for alias in node.names))
-                    if isinstance(node, ast.ImportFrom):
-                        self.assertFalse((node.module or "").startswith("experiments"))
+                self.assertFalse(_imports_experiments(tree))
+
+    def test_detects_dynamic_import_in_synthetic_module(self):
+        self.assertTrue(_imports_experiments(
+            ast.parse('import importlib\nimportlib.import_module("experiments.intelligence.engine")')))
+        self.assertTrue(_imports_experiments(
+            ast.parse('import experiments.intelligence.engine')))
+        self.assertFalse(_imports_experiments(ast.parse('import json')))
 
     def test_no_provider_credentials_or_payload_files_in_candidate_folder(self):
         permitted = {".py", ".md"}
