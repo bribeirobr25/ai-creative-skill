@@ -11,6 +11,7 @@ from typing import Mapping
 import re
 import unicodedata
 from .vocabulary import GEO_MEANINGS, TIME_MEANINGS
+from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 
 TRANSFORMATIONS = frozenset({"DISPLAY_NATIVE", "DERIVE_RATIO", "SUMMARIZE"})
 ACTIONS = frozenset({"READ", "PROCESS", "DERIVE", "PERSIST", "REDISTRIBUTE"})
@@ -80,6 +81,15 @@ def validate_request(raw: Mapping) -> Mapping:
     start = date_field(q.get("window_start"), "WINDOW_START")
     end = date_field(q.get("window_end"), "WINDOW_END")
     require(start < end, "INVALID_REQUEST_WINDOW")
+    if "time_zone" in q:
+        require(type(q["time_zone"]) is str, "INVALID_TIME_ZONE")
+        try:
+            ZoneInfo(q["time_zone"])
+        except (ZoneInfoNotFoundError, ValueError, KeyError) as exc:
+            raise InvalidContract("INVALID_TIME_ZONE") from exc
+    if "result_limit" in q:
+        require(type(q["result_limit"]) is int and 1 <= q["result_limit"] <= 100,
+                "INVALID_RESULT_LIMIT")
     require(q["geography_basis"] in GEO_MEANINGS, "UNRECOGNIZED_GEO_BASIS")
     require(q["time_basis"] in TIME_MEANINGS, "UNRECOGNIZED_TIME_BASIS")
     text_field(q, "requested_metric")
