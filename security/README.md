@@ -1,6 +1,6 @@
 # Publication Safety Guard · experimental candidate
 
-**Status:** PR #20 DRAFT. ADR-0003 proposed, not accepted or merged. `main`, V2.5 and PR #17 unchanged.
+**Scope:** Publication Safety Guard candidate. The acceptance state belongs to the reviewed ADR and repository owner; this README is not an operative merge decision. Historical V2.5 is immutable and Web 2.6 is maintained separately.
 
 ## The active S0 result
 
@@ -10,9 +10,9 @@ See [S0-STATUS](../docs/security/S0-STATUS.md) for the single sanitized closure 
 
 - `publication_guard.py` scans text **added** by a PR's final diff AND each commit in its range. Thus a token introduced and removed in a later commit is still detectable.
 - It does not require a successfully parsed `+++ b/file` header to inspect added hunk lines. Handles accented and whitespace-containing paths, binary-only file names and unusual Unicode line separators; an unparseable destination is BLOCK, not silently skipped.
-- Undecodable diff bytes are **operational failure (exit 2)**, distinct from a detected BLOCK (exit 1). No filenames, token values, URLs or source lines are shown in guard findings.
+- Invalid UTF-8 produces a sanitized **REVIEW** while ASCII token patterns are still inspected. A Git subprocess failure returns **exit 2**; recognized secrets or dangerous diff-hiding attributes/NUL additions return **exit 1**. No token values or raw filenames appear in findings.
 - `BLOCK`: recognizable secrets, signed URLs, private key material and private-file naming. `REVIEW`: ambiguous Drive links, potentially personal email or binary/media provenance needing classification. REVIEW does not automatically mean exposure.
-- This is defense in depth, **not** safe handling of all malware, secrets, media frames, encoded payloads or contractual rights. Binary payloads remain a manual review requirement.
+- Text diffs use `--text --no-textconv` to prevent Git attributes and NUL bytes from hiding token patterns. Any residual uninspected binary patch is blocked. Media pixels, EXIF, licensing, malformed encodings and hidden source history still require manual review. This is defense in depth, not a security certification.
 
 ## Local preflight before committing
 
@@ -40,7 +40,7 @@ git fetch --no-tags --prune origin '+refs/heads/*:refs/remotes/origin/*'
 python security/history_audit.py
 ```
 
-The global historical scan runs **only on explicit workflow_dispatch/manual use**, not as a blocking dependency of unrelated PRs. Full coverage of unreachable commits, forks, caches, media pixels, historical permissions and rights is not claimed. Private link/media triage remains `private_triage.py`, local only, never GitHub Actions.
+The global historical scan runs **only on explicit workflow_dispatch/manual use**, not as a blocking dependency of unrelated PRs. It reports **audit incomplete (exit 2)** when it encounters skipped oversized, binary or non-UTF8 blobs; a zero exit code must not be claimed in that case. Full coverage of unreachable commits, forks, caches, media pixels, historical permissions and rights is not claimed. Private link/media triage remains local only.
 
 ## Follow-up required before merging PR #20
 
