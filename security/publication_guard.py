@@ -262,8 +262,9 @@ def main(argv: list[str] | None = None) -> int:
         # IMPORTANT: these are two different Git operations. A history range
         # must never replace the final-tree diff. Merge-only additions are
         # included by git diff even when log misses them.
-        final_bytes = _run_git(_diff_args(staged=ns.staged, range_ref=ns.range))
-        final_text, findings = _decode_inspected_bytes(final_bytes, "<git-diff>")
+        final_text = _get_diff(ns)
+        findings = ([Finding("REVIEW", "NON_UTF8_CONTENT", "<git-diff>", 0)]
+                    if "\ufffd" in final_text else [])
         findings.extend(scan_unified_diff(final_text))
         if ns.history_range:
             historical_bytes = _run_git([
