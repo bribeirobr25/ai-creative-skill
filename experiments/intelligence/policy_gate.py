@@ -252,6 +252,41 @@ def evaluate(request: Mapping, capability: Mapping, *, now: str) -> dict:
     }
 
 
+
+def validate_fixture_verdict(raw: Mapping) -> Mapping:
+    """Validate a complete S3 synthetic *shape* verdict, never real authority."""
+    v = mapping(raw, "SYNTHETIC_POLICY_VERDICT")
+    required = {
+        "decision", "reason_codes", "rights_scope", "clock_basis",
+        "may_access_real_source", "may_spend", "may_store_real_data",
+        "may_publish", "simulated_transient_processing",
+        "simulated_retention_days", "policy_ref_class",
+    }
+    require(set(v) == required, "INVALID_POLICY_VERDICT_SCHEMA")
+    require(v["decision"] in ("BLOCKED", "SHAPE_CHECK_PASSED_SYNTHETIC_ONLY"),
+            "INVALID_POLICY_DECISION")
+    reasons = v["reason_codes"]
+    require(type(reasons) is list and all(type(x) is str and x for x in reasons)
+            and len(reasons) == len(set(reasons)), "INVALID_REASON_CODES")
+    passed = v["decision"] == "SHAPE_CHECK_PASSED_SYNTHETIC_ONLY"
+    require((not reasons) == passed, "POLICY_VERDICT_REASON_CONTRADICTION")
+    require(v["rights_scope"] == "SYNTHETIC_FIXTURE_ONLY" and
+            v["clock_basis"] == "CALLER_INJECTED_TEST_CLOCK_NOT_PRODUCTION_AUTHORITY" and
+            v["policy_ref_class"] == "SYNTHETIC_POLICY_TEST_ONLY",
+            "POLICY_VERDICT_SCOPE_NOT_SYNTHETIC")
+    require(all(v[key] is False for key in (
+        "may_access_real_source", "may_spend",
+        "may_store_real_data", "may_publish"
+    )), "POLICY_VERDICT_MUST_NOT_CARRY_AUTHORITY")
+    require(v["simulated_transient_processing"] is passed,
+            "POLICY_VERDICT_PROCESSING_MISMATCH")
+    require(type(v["simulated_retention_days"]) is int and
+            0 <= v["simulated_retention_days"] <= 30 and
+            (passed or v["simulated_retention_days"] == 0),
+            "INVALID_SIMULATED_RETENTION")
+    return v
+
+
 def retention_verdict(*, recorded_at: str, ttl_days: int, now: str,
                       revoked: bool = False) -> dict:
     """Compute a fixture cleanup decision; no data is actually stored/deleted."""
