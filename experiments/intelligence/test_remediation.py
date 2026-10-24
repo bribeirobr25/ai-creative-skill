@@ -170,5 +170,46 @@ class AdversarialFixes(unittest.TestCase):
             validate_research_execution(e,evidence_by_id=e["fixture_evidence_index"])
 
 
+    def test_local_berlin_publication_window_is_not_utc_window(self):
+        from datetime import date, datetime
+        from zoneinfo import ZoneInfo
+        berlin=ZoneInfo("Europe/Berlin")
+        pub=datetime(2026,10,25,0,30,tzinfo=berlin)
+        seen=datetime(2026,10,25,3,30,tzinfo=berlin)
+        row=Observation(
+            publication_id="local-first-hour",channel_id="fixture-creator",
+            platform="fixture-synthetic",content_type="long",views=40,
+            observed_at=seen,published_at=pub,source_kind="SYNTHETIC_FIXTURE"
+        )
+        request_args=dict(
+            range_from=date(2026,10,25),range_to=date(2026,10,26),
+            observation_rows=[row],generated_at=datetime(2026,10,25,5,tzinfo=berlin),
+        )
+        valid=research_request(**request_args,time_zone="Europe/Berlin")
+        self.assertEqual("COMPLETE",valid["status"])
+        self.assertEqual("Europe/Berlin",valid["intelligence"]["time_zone"])
+        with self.assertRaises(ValidationError):
+            research_request(**request_args,time_zone="UTC")
+
+    def test_bridge_rejects_metric_it_does_not_implement(self):
+        with self.assertRaises(ValidationError):
+            research_request(requested_metric="OUTLIER_RATIO")
+
+    def test_preflight_rejects_unverified_timezone_and_source_result_limit(self):
+        c=capability(max_results_per_call=5,
+                     supported_time_zones=["UTC"])
+        q=policy_request(time_zone="Europe/Berlin",result_limit=20)
+        d=evaluate(q,c,now="2026-10-23T15:00:00+00:00")
+        self.assertEqual("BLOCKED",d["decision"])
+        self.assertIn("SOURCE_TIME_ZONE_UNVERIFIED",d["reason_codes"])
+        self.assertIn("SOURCE_RESULT_LIMIT_UNVERIFIED",d["reason_codes"])
+
+    def test_date_overflow_fails_as_contract_violation(self):
+        from experiments.intelligence.policy_gate import retention_verdict
+        with self.assertRaises(InvalidContract):
+            retention_verdict(recorded_at="9999-12-31T00:00:00+00:00",
+                              ttl_days=30,now="9999-12-31T00:00:00+00:00")
+
+
 if __name__=="__main__":
     unittest.main()
