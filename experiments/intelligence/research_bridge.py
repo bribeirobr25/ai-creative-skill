@@ -11,6 +11,7 @@ from typing import Iterable
 from urllib.parse import quote
 
 from .engine import Observation, ValidationError, InsufficientEvidence, unique_observations, rank_sample
+from .policy_gate import validate_fixture_verdict, InvalidContract
 
 
 from .vocabulary import SOURCE_OUTCOMES, RESEARCH_STATUSES, RESEARCH_REQUIRED
@@ -79,14 +80,10 @@ def build_research_execution_fixture(
         raise ValidationError("A ranking request cannot be answered by an absence-only completion rule")
     if negative_coverage_satisfies_request and source_outcome != "NO_RESULTS":
         raise ValidationError("Negative completion intent requires NO_RESULTS outcome")
-    if not isinstance(policy_decision, dict) or policy_decision.get("decision") not in (
-        "SHAPE_CHECK_PASSED_SYNTHETIC_ONLY", "BLOCKED"
-    ):
-        raise ValidationError("An explicit synthetic policy verdict is required")
-    if any(policy_decision.get(k) is not False for k in (
-        "may_access_real_source", "may_spend", "may_store_real_data", "may_publish"
-    )):
-        raise ValidationError("A synthetic policy may not carry action authority")
+    try:
+        policy_decision = validate_fixture_verdict(policy_decision)
+    except (InvalidContract, TypeError, ValueError) as exc:
+        raise ValidationError("Explicit complete synthetic policy verdict required") from exc
     is_policy_blocked = policy_decision["decision"] == "BLOCKED"
     if is_policy_blocked:
         source_outcome = "SKIPPED_UNCONFIGURED"
@@ -143,7 +140,7 @@ def build_research_execution_fixture(
         subject = f"{quote(row.platform, safe='')}:{quote(row.publication_id, safe='')}"
         reference = f"fixture:{subject}:{iso}"
         evidence_by_publication[(row.platform, row.publication_id)] = reference
-        source_attempt = "synthetic-source-attempt:001"
+        source_attempt = "fixture:source-attempt:001"
         evidence.append({
             "evidence_id": reference,
             "source_ref": reference,
@@ -243,7 +240,7 @@ def build_research_execution_fixture(
             "source_constraints": "OFFLINE_NO_NETWORK",
         }],
         "source_outcomes": [{
-            "source_ref": "synthetic-source-attempt:001",
+            "source_ref": "fixture:source-attempt:001",
             "source_class": "SYNTHETIC_FIXTURE",
             "outcome": source_outcome,
             "checked_at": generated_at.astimezone(timezone.utc).isoformat(),
