@@ -9,9 +9,9 @@ from intelligence.research_bridge import build_research_execution_fixture, SOURC
 T = datetime(2026, 10, 23, 10, 0, tzinfo=timezone.utc)
 
 
-def synthetic_row(id="a", views=200, obs_at=T, pub_at=None, platform="synthetic"):
+def synthetic_row(id="a", views=200, obs_at=T, pub_at=None, platform="fixture-synthetic"):
     return Observation(
-        publication_id=id, channel_id="creator",
+        publication_id=id, channel_id="fixture-creator",
         platform=platform, content_type="long", views=views,
         observed_at=obs_at,
         published_at=pub_at or T - timedelta(days=2), source_kind="SYNTHETIC_FIXTURE",
@@ -60,8 +60,8 @@ class SyntheticBridgeTests(unittest.TestCase):
 
     def test_composite_evidence_ids_cannot_collide_when_source_ids_have_colons(self):
         x = request(observation_rows=[
-            synthetic_row("c", platform="a:b"),
-            synthetic_row("b:c", platform="a"),
+            synthetic_row("c", platform="fixture-a-b"),
+            synthetic_row("b:c", platform="fixture-a"),
         ])
         ids = [e["evidence_id"] for e in x["fixture_evidence_index"].values()]
         self.assertEqual(2, len(set(ids)))
@@ -85,8 +85,8 @@ class SyntheticBridgeTests(unittest.TestCase):
 
     def test_ok_source_with_incompatible_platforms_is_partial(self):
         x = request(observation_rows=[
-            synthetic_row("a", platform="A"),
-            synthetic_row("b", platform="B")
+            synthetic_row("a", platform="fixture-a"),
+            synthetic_row("b", platform="fixture-b")
         ])
         self.assertEqual("PARTIAL", x["status"])
         self.assertEqual("NOT_COMPARABLE", x["intelligence"]["ranking_scope"])
@@ -185,7 +185,7 @@ class SyntheticBridgeTests(unittest.TestCase):
         for x in [0, True, -1, 101]:
             with self.subTest(limit=x), self.assertRaises(ValidationError):
                 request(limit=x, observation_rows=[
-                    synthetic_row("a", platform="A"), synthetic_row("b", platform="B")
+                    synthetic_row("a", platform="fixture-a"), synthetic_row("b", platform="fixture-b")
                 ])
 
     def test_reject_unhashable_source_outcome_cleanly(self):
@@ -208,7 +208,7 @@ class SyntheticBridgeTests(unittest.TestCase):
     def test_no_third_party_observations(self):
         with self.assertRaises(ValidationError):
             Observation(
-                publication_id="x", channel_id="c", platform="youtube",
+                publication_id="x", channel_id="fixture-c", platform="youtube",
                 content_type="long", views=30, observed_at=T,
                 published_at=T-timedelta(days=1), source_kind="YOUTUBE_DATA_API"
             )
@@ -233,7 +233,7 @@ class SyntheticBridgeTests(unittest.TestCase):
                 request(source_outcome=source)
 
     def test_different_platform_rank_ref_not_unjustified(self):
-        x = request(observation_rows=[synthetic_row("a", platform="A"),synthetic_row("b", platform="B")])
+        x = request(observation_rows=[synthetic_row("a", platform="fixture-a"),synthetic_row("b", platform="fixture-b")])
         self.assertEqual("NOT_COMPARABLE", x["intelligence"]["ranking_scope"])
         self.assertEqual([], x["intelligence"]["ranked_evidence_refs"])
 
