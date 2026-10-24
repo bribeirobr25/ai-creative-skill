@@ -36,6 +36,19 @@ class S3IsolationTests(unittest.TestCase):
             ]
             self.assertEqual([], calls, filename)
 
+    def test_production_src_never_imports_experimental_package(self):
+        production = ROOT.parents[1] / "src"
+        for py in production.rglob("*.py"):
+            with self.subTest(path=str(py.relative_to(production))):
+                tree = ast.parse(py.read_text(encoding="utf-8"))
+                for node in ast.walk(tree):
+                    if isinstance(node, ast.Import):
+                        self.assertFalse(any(alias.name.startswith("experiments.")
+                                             or alias.name == "experiments"
+                                             for alias in node.names))
+                    if isinstance(node, ast.ImportFrom):
+                        self.assertFalse((node.module or "").startswith("experiments"))
+
     def test_no_provider_credentials_or_payload_files_in_candidate_folder(self):
         permitted = {".py", ".md"}
         for path in ROOT.iterdir():
