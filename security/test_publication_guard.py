@@ -109,8 +109,10 @@ class SecretRulesTests(unittest.TestCase):
                    return_value=SimpleNamespace(stdout=b"\\xffbroken".replace(b"\\xff", b"\xff"))):
             from publication_guard import _get_diff
             from argparse import Namespace
-            with self.assertRaises(RuntimeError):
-                _get_diff(Namespace(staged=True, range=None))
+            decoded = _get_diff(Namespace(staged=True, range=None))
+            self.assertIn("\ufffd", decoded)
+            # Undecodable bytes are reviewable content, not an operational
+            # Git failure or a silently dropped entire patch.
 
     def test_real_git_accented_path_and_binary_name(self):
         import tempfile
