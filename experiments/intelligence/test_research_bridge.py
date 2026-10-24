@@ -18,6 +18,24 @@ def synthetic_row(id="a", views=200, obs_at=T, pub_at=None, platform="fixture-sy
     )
 
 
+
+def fixture_policy(*, blocked=False):
+    return {
+        "decision": ("BLOCKED" if blocked else "SHAPE_CHECK_PASSED_SYNTHETIC_ONLY"),
+        "reason_codes": ["SYNTHETIC_TEST_BLOCK"] if blocked else [],
+        "rights_scope": "SYNTHETIC_FIXTURE_ONLY",
+        "clock_basis": "CALLER_INJECTED_TEST_CLOCK_NOT_PRODUCTION_AUTHORITY",
+        "may_access_real_source": False,
+        "may_spend": False,
+        "may_store_real_data": False,
+        "may_publish": False,
+        "simulated_transient_processing": not blocked,
+        "simulated_retention_days": 0,
+        "policy_ref_class": "SYNTHETIC_POLICY_TEST_ONLY",
+    }
+
+
+
 def request(**overrides):
     base = {
         "research_execution_id": "research:synthetic:001",
@@ -30,11 +48,7 @@ def request(**overrides):
         "generated_at": T + timedelta(seconds=5),
         "observation_rows": [synthetic_row("a"), synthetic_row("b", 100)],
         "source_outcome": "OK",
-        "policy_decision": {
-            "decision": "SHAPE_CHECK_PASSED_SYNTHETIC_ONLY",
-            "may_access_real_source": False, "may_spend": False,
-            "may_store_real_data": False, "may_publish": False,
-        },
+        "policy_decision": fixture_policy(),
     }
     base.update(overrides)
     return build_research_execution_fixture(**base)
