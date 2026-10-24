@@ -70,8 +70,8 @@ class CrossModuleTests(unittest.TestCase):
         first=datetime(2026,10,24,12,tzinfo=local)
         second=datetime(2026,10,25,12,tzinfo=local)
         self.assertEqual(25,(second.astimezone(UTC)-first.astimezone(UTC)).total_seconds()/3600)
-        old=Observation("v","c","fixture-platform","long",100,first,first-timedelta(days=1),"SYNTHETIC_FIXTURE")
-        new=Observation("v","c","fixture-platform","long",150,second,first-timedelta(days=1),"SYNTHETIC_FIXTURE")
+        old=Observation("v","fixture-c","fixture-platform","long",100,first,first-timedelta(days=1),"SYNTHETIC_FIXTURE")
+        new=Observation("v","fixture-c","fixture-platform","long",150,second,first-timedelta(days=1),"SYNTHETIC_FIXTURE")
         self.assertEqual(25,(new.observed_at-old.observed_at).total_seconds()/3600)
         self.assertAlmostEqual(2,view_velocity(old,new,derived_permission=True)["views_per_hour"])
 
@@ -79,7 +79,9 @@ class CrossModuleTests(unittest.TestCase):
         c=capability()
         c["source_id"]="YOUTUBE_DATA_API"
         c["source_kind"]="SYNTHETIC_FIXTURE"
-        e=evaluate({
+        from intelligence.policy_gate import InvalidContract
+        with self.assertRaises(InvalidContract):
+            evaluate({
             "operation":"PUBLIC_VIDEO_SEARCH","platform":"fixture-platform",
             "project_id":"fixture-project","purpose":"RESEARCH_ONLY","country":"DE",
             "geography_basis":"SEARCH_RESULT_LOCALE","time_basis":"PUBLISHED_DURING_WINDOW",
@@ -88,9 +90,7 @@ class CrossModuleTests(unittest.TestCase):
             "transformations":["DISPLAY_NATIVE"],"storage_mode":"TRANSIENT_ONLY",
             "retention_days":0,"requires_paid":False,"requests_raw_media":False,
             "background_collection":False,"estimated_calls":1,
-        },c,now="2026-10-23T15:00:00Z")
-        self.assertEqual("BLOCKED",e["decision"])
-        self.assertFalse(e["may_access_real_source"])
+            },c,now="2026-10-23T15:00:00Z")
 
     def test_derived_metric_cannot_be_hidden_by_native_display_transform(self):
         q=s2_query()
