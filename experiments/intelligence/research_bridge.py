@@ -7,6 +7,7 @@ there is NO network, API client, source storage, publication or billing.
 from __future__ import annotations
 
 from datetime import date, datetime, timezone
+from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 from typing import Iterable
 from urllib.parse import quote
 
@@ -43,6 +44,8 @@ def build_research_execution_fixture(
     negative_coverage_satisfies_request: bool = False,
     policy_decision: dict,
     generated_at: datetime,
+    time_zone: str = "UTC",
+    requested_metric: str = "PUBLIC_VIEW_COUNT",
 ) -> dict:
     """Make a synthetic-only contract fixture for a bounded Research result.
 
@@ -65,6 +68,14 @@ def build_research_execution_fixture(
         raise ValidationError("Date window requires plain date objects")
     if range_from >= range_to:
         raise ValidationError("End exclusive must follow start")
+    if type(time_zone) is not str:
+        raise ValidationError("IANA time zone required")
+    try:
+        requested_zone = ZoneInfo(time_zone)
+    except (ZoneInfoNotFoundError, ValueError, KeyError) as exc:
+        raise ValidationError("Invalid time zone") from exc
+    if requested_metric != "PUBLIC_VIEW_COUNT":
+        raise ValidationError("This raw-count lab cannot satisfy a derived metric request")
     if not isinstance(generated_at, datetime) or generated_at.tzinfo is None or generated_at.utcoffset() is None:
         raise ValidationError("Generated-at timestamp must be timezone-aware")
     if type(source_outcome) is not str or source_outcome not in SOURCE_OUTCOMES:
@@ -108,8 +119,9 @@ def build_research_execution_fixture(
             raise ValidationError("Real data is forbidden")
         if x.observed_at > generated_at:
             raise ValidationError("Cannot cite future observations")
-        # Time window is a publication window for this narrowly-scoped fixture.
-        pub_date = x.published_at.astimezone(timezone.utc).date()
+        # Publication dates are interpreted in the explicitly requested
+        # IANA time zone, not silently truncated to UTC.
+        pub_date = x.published_at.astimezone(requested_zone).date()
         if not (range_from <= pub_date < range_to):
             raise ValidationError("Publication outside declared UTC window")
 
@@ -270,6 +282,8 @@ def build_research_execution_fixture(
             "metric_observations": metrics,
             "ranked_evidence_refs": ranked_refs,
             "ranking_scope": ranking_note,
+            "time_zone": time_zone,
+            "requested_metric": requested_metric,
             "policy_shape_decision": policy_decision["decision"],
             "stop_code": (
                 "STOP_POLICY_REJECTION" if is_policy_blocked
