@@ -8,12 +8,21 @@ from __future__ import annotations
 
 from datetime import date, datetime, timedelta, timezone
 from typing import Mapping
+import re
+import unicodedata
 from .vocabulary import GEO_MEANINGS, TIME_MEANINGS
 
 TRANSFORMATIONS = frozenset({"DISPLAY_NATIVE", "DERIVE_RATIO", "SUMMARIZE"})
 ACTIONS = frozenset({"READ", "PROCESS", "DERIVE", "PERSIST", "REDISTRIBUTE"})
 STORAGE_MODES = frozenset({"NONE", "TRANSIENT_ONLY", "PERSIST"})
 SOURCE_KINDS = frozenset({"SYNTHETIC_FIXTURE", "OFFICIAL_API", "LICENSED_THIRD_PARTY"})
+_FIXTURE_ID = re.compile(r"fixture-[a-z0-9]+(?:-[a-z0-9]+)*\Z")
+_NATIVE_METRICS = frozenset({"PUBLIC_VIEW_COUNT"})
+# Strict synthetic defaults; any expanded real retention belongs to a
+# separately reviewed source-policy/approval contract, never this test gate.
+_CLASS_TTL = {"TITLE": 30, "COMMENT": 30, "CREATOR_NAME": 30,
+              "DESCRIPTION": 30, "STATISTICS": 30}
+
 
 class InvalidContract(ValueError):
     """Invalid configuration cannot quietly become authorization."""
@@ -105,6 +114,14 @@ def validate_capability(raw: Mapping) -> Mapping:
                 "adapter_version", "policy_ref", "authorization_state"):
         text_field(c, key)
     require(c["source_kind"] in SOURCE_KINDS, "UNKNOWN_SOURCE_KIND")
+    if c["source_kind"] == "SYNTHETIC_FIXTURE":
+        for key in ("source_id", "platform"):
+            value = unicodedata.normalize("NFKC", c[key])
+            require(c[key] == value and _FIXTURE_ID.fullmatch(value) is not None,
+                    "SYNTHETIC_IDENTITY_FORGED")
+        require(not ({"documentation_links", "documentation_note", "api_base_url",
+                      "endpoint", "provider_id", "policy_documentation"} & set(c)),
+                "SYNTHETIC_PROVIDER_DOCUMENTATION_NOT_ALLOWED")
     require("projects" not in c, "SOURCE_CAPABILITY_MUST_NOT_OWN_PROJECT_AUTHORITY")
     for key in ("purposes", "countries", "geography_bases",
                 "time_bases", "transformations", "documented_metric_support"):
@@ -119,10 +136,12 @@ def validate_capability(raw: Mapping) -> Mapping:
         g = mapping(grant, "GRANT")
         text_field(g, "data_class")
         text_field(g, "retention_policy_ref")
+        require(g["data_class"] in _CLASS_TTL, "UNKNOWN_DATA_CLASS")
         actions = string_list(g.get("actions"), "GRANT_ACTIONS")
         require(set(actions) <= ACTIONS, "INVALID_GRANT_ACTION")
         ttl = g.get("max_retention_days")
-        require(type(ttl) is int and 0 <= ttl <= 36500, "INVALID_GRANT_TTL")
+        require(type(ttl) is int and 0 <= ttl <= _CLASS_TTL[g["data_class"]],
+                "GRANT_EXCEEDS_SYNTHETIC_CLASS_RETENTION_CAP")
         if "PERSIST" in actions:
             require(ttl > 0, "PERSIST_GRANT_REQUIRES_TTL")
     available_start = date_field(c.get("available_from"), "AVAILABLE_FROM")
@@ -150,11 +169,8 @@ def evaluate(request: Mapping, capability: Mapping, *, now: str) -> dict:
             reasons.append(reason)
 
     reject("REAL_SOURCE_NOT_AUTHORIZED", c["source_kind"] != "SYNTHETIC_FIXTURE")
-    reject("SYNTHETIC_IDENTITY_FORGED", not c["source_id"].startswith("fixture-") or
-           c["platform"].strip().casefold() in
-           ("youtube", "meta", "facebook", "instagram", "tiktok") or
-           c["source_id"].strip().upper() in
-           ("YOUTUBE_DATA_API", "META_AD_LIBRARY", "META_ADS", "TIKTOK"))
+    # Synthetic identities and provider provenance were checked at input
+    # validation. No blocklist of selected real names can be complete.
     reject("ACCESS_NOT_GRANTED_FOR_FIXTURE",
            c["authorization_state"] != "SIMULATED_VERIFIED")
     reject("OPERATION_MISMATCH", (c["operation"], c["platform"]) !=
@@ -176,8 +192,7 @@ def evaluate(request: Mapping, capability: Mapping, *, now: str) -> dict:
     reject("METRIC_NOT_SUPPORTED",
            q["requested_metric"] not in c["documented_metric_support"])
     reject("DERIVED_METRIC_REQUIRES_EXPLICIT_TRANSFORM",
-           q["requested_metric"] in
-           ("OUTLIER_RATIO", "VIEW_VELOCITY", "DERIVED_OUTLIER_SCORE") and
+           q["requested_metric"] not in _NATIVE_METRICS and
            "DERIVE_RATIO" not in q["transformations"])
     reject("POLICY_NOT_CURRENT", reviewed > instant or expires <= reviewed or
            instant >= expires)
@@ -213,6 +228,7 @@ def evaluate(request: Mapping, capability: Mapping, *, now: str) -> dict:
         "decision": "SHAPE_CHECK_PASSED_SYNTHETIC_ONLY" if not reasons else "BLOCKED",
         "reason_codes": reasons,
         "rights_scope": "SYNTHETIC_FIXTURE_ONLY",
+        "clock_basis": "CALLER_INJECTED_TEST_CLOCK_NOT_PRODUCTION_AUTHORITY",
         "may_access_real_source": False,
         "may_spend": False,
         "may_store_real_data": False,
