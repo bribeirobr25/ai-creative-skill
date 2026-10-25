@@ -302,8 +302,8 @@ def _get_diff(args: argparse.Namespace) -> str:
 def _scan_path_list(raw: bytes, scope: str) -> list[Finding]:
     decoded, issues = _decode_inspected_bytes(raw, scope)
     out = list(issues)
-    for path in decoded.split("\\x00"):
-        path = path.strip("\\n")
+    for path in decoded.split("\x00"):
+        path = path.strip("\n")
         if not path:
             continue
         out.extend(scan_added_line(scope, path, 0))
