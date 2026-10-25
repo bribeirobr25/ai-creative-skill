@@ -904,6 +904,27 @@ class ClosedScopeCliRegressions(unittest.TestCase):
             self.assertEqual(1, result.returncode, result.stdout)
             self.assertIn("GITHUB_TOKEN", result.stdout)
 
+    def test_two_parent_merge_added_then_removed_is_caught_by_cli(self):
+        """Removing --diff-merges=remerge must break this real-Git regression."""
+        tmp, root, git, base = self._repo()
+        with tmp:
+            git("checkout", "-qb", "side", base)
+            (root / "side.md").write_text("ordinary side\n")
+            git("add", "-A"); git("commit", "-qm", "side")
+            git("checkout", "-qb", "review", base)
+            (root / "review.md").write_text("ordinary review\n")
+            git("add", "-A"); git("commit", "-qm", "review")
+            git("merge", "--no-ff", "--no-commit", "side")
+            injected = root / "merged_only.md"
+            injected.write_text("ghp_" + "K" * 36 + "\n")
+            git("add", "-A"); git("commit", "-qm", "merge-only addition")
+            injected.unlink()
+            git("add", "-A"); git("commit", "-qm", "remove merge-only addition")
+            result = self._cli(root, "--range", base + "...HEAD",
+                               "--history-range", base + "..HEAD")
+            self.assertEqual(1, result.returncode, result.stdout)
+            self.assertIn("GITHUB_TOKEN", result.stdout)
+
     def test_invalid_base_ref_exits_incomplete(self):
         tmp, root, git, base = self._repo()
         with tmp:
