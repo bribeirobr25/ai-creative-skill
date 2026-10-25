@@ -865,3 +865,86 @@ class SecretRulesTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class ClosedScopeCliRegressions(unittest.TestCase):
+    """Real-Git CLI tests: guard behavior, not isolated rules()."""
+
+    def _repo(self):
+        import tempfile
+        import pathlib
+        import subprocess
+        tmp = tempfile.TemporaryDirectory()
+        root = pathlib.Path(tmp.name)
+        def git(*args):
+            return subprocess.run(["git", "-C", str(root), *args], check=True,
+                                  capture_output=True).stdout
+        git("init", "-q")
+        git("config", "user.email", "review@example.invalid")
+        git("config", "user.name", "Fixture reviewer")
+        git("commit", "-qm", "base", "--allow-empty")
+        base = git("rev-parse", "HEAD").decode().strip()
+        return tmp, root, git, base
+
+    def _cli(self, root, *args):
+        import subprocess
+        from pathlib import Path
+        from publication_guard import __file__ as guard_file
+        return subprocess.run(["python", str(Path(guard_file).resolve()), *args],
+                              cwd=root, capture_output=True, text=True)
+
+    def test_history_added_then_removed_is_not_clean(self):
+        tmp, root, git, base = self._repo()
+        with tmp:
+            p = root / "once.md"
+            p.write_text("ghp_" + "Q" * 36)
+            git("add", "-A"); git("commit", "-qm", "add")
+            p.unlink(); git("add", "-A"); git("commit", "-qm", "remove")
+            result = self._cli(root, "--range", base + "...HEAD",
+                               "--history-range", base + "..HEAD")
+            self.assertEqual(1, result.returncode, result.stdout)
+            self.assertIn("GITHUB_TOKEN", result.stdout)
+
+    def test_invalid_base_ref_exits_incomplete(self):
+        tmp, root, git, base = self._repo()
+        with tmp:
+            result = self._cli(root, "--range", "does-not-exist...HEAD",
+                               "--history-range", "does-not-exist..HEAD")
+            self.assertEqual(2, result.returncode)
+
+    def test_staged_path_must_be_scanned(self):
+        tmp, root, git, base = self._repo()
+        with tmp:
+            filename = "ghp_" + "M" * 35 + ".md"
+            (root / filename).write_text("ordinary text")
+            git("add", "-A")
+            result = self._cli(root, "--staged")
+            self.assertEqual(1, result.returncode, result.stdout)
+            self.assertIn("GITHUB_TOKEN", result.stdout)
+
+    def test_octopus_history_fails_closed(self):
+        tmp, root, git, base = self._repo()
+        with tmp:
+            for b in ("b1", "b2", "b3"):
+                git("checkout", "-qb", b, base)
+                (root / (b + ".md")).write_text(b)
+                git("add", "-A"); git("commit", "-qm", b)
+            git("checkout", "-qb", "review", base)
+            git("merge", "--no-ff", "--no-commit", "b1", "b2", "b3")
+            (root / "evil.md").write_text("ghp_" + "E" * 36)
+            git("add", "-A"); git("commit", "-qm", "octopus")
+            git("rm", "-q", "evil.md"); git("commit", "-qm", "remove")
+            result = self._cli(root, "--range", base + "...HEAD",
+                               "--history-range", base + "..HEAD")
+            self.assertEqual(1, result.returncode, result.stdout)
+            self.assertIn("OCTOPUS_MERGE_UNINSPECTED", result.stdout)
+
+    def test_provider_families_and_placeholder(self):
+        import publication_guard as guard
+        for token in ("GOCSPX-" + "A" * 28, "ya29." + "a0B" * 30,
+                      "EAA" + "Bw" * 40,
+                      'client_secret = "' + "q7" * 16 + '"'):
+            with self.subTest(family=token[:4]):
+                self.assertTrue(any(x.severity == "BLOCK" for x in guard.scan_added_line("fixture.md", token, 1)))
+        self.assertFalse(any(x.severity == "BLOCK" for x in guard.scan_added_line(
+            "fixture.md", "https://drive.google.com/file/d/FILE_ID", 1)))

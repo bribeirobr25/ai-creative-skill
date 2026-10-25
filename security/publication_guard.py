@@ -25,7 +25,7 @@ class Finding:
 
 
 BLOCK_RULES = (
-    ("GITHUB_TOKEN", re.compile(r"\b(?:ghp_|gho_|ghu_|ghs_|ghr_)[A-Za-z0-9]{30,}\b|\bgithub_pat_[A-Za-z0-9_]{40,}\b")),
+    ("GITHUB_TOKEN", re.compile(r"(?<![A-Za-z0-9])(?:ghp_|gho_|ghu_|ghs_|ghr_)[A-Za-z0-9]{30,}\b|\bgithub_pat_[A-Za-z0-9_]{40,}\b")),
     ("SECRET_KEY", re.compile(r"\bsk-(?:proj-)?[A-Za-z0-9_-]{24,}\b")),
     ("GOOGLE_API_KEY", re.compile(r"\bAIza[A-Za-z0-9_-]{35}\b")),
     ("STRIPE_LIVE_KEY", re.compile(r"\b(?:sk|rk)_live_[A-Za-z0-9]{20,}\b")),
@@ -33,6 +33,11 @@ BLOCK_RULES = (
     ("HUGGINGFACE_TOKEN", re.compile(r"\bhf_[A-Za-z0-9]{30,}\b")),
     ("NPM_TOKEN", re.compile(r"\bnpm_[A-Za-z0-9]{30,}\b")),
 
+    ("GOOGLE_OAUTH_CLIENT_SECRET", re.compile(r"(?<![A-Za-z0-9])GOCSPX-[A-Za-z0-9_-]{20,}")),
+    ("GOOGLE_OAUTH_ACCESS_TOKEN", re.compile(r"(?<![A-Za-z0-9])ya29\\.[A-Za-z0-9._~-]{30,}")),
+    ("GOOGLE_OAUTH_REFRESH_TOKEN", re.compile(r"(?<![A-Za-z0-9])1//[A-Za-z0-9._~-]{35,}")),
+    ("META_ACCESS_TOKEN", re.compile(r"(?<![A-Za-z0-9])EAA[A-Za-z0-9]{45,}")),
+    ("GENERIC_SECRET_ASSIGNMENT", re.compile(r"(?i)(?:client_secret|api_secret|refresh_token|access_token|password)\\s*[:=]\\s*['\\\"]?[A-Za-z0-9._/+~-]{24,}")),
     ("AWS_ACCESS_ID", re.compile(r"\b(?:AKIA|ASIA)[A-Z0-9]{16}\b")),
     ("BEARER_CREDENTIAL", re.compile(r"(?i)\bauthorization\s*[:=]\s*bearer\s+[A-Za-z0-9._~+/-]{24,}")),
     ("PRIVATE_KEY_PEM", re.compile(r"-----BEGIN (?:RSA |EC |DSA |OPENSSH )?PRIVATE KEY-----")),
@@ -64,7 +69,7 @@ def has_reviewable_email(text: str) -> bool:
 
 PRIVATE_FILENAME = re.compile(
     r"(?i)(?:^|/)(?:\.env(?:\.(?!example$|sample$|template$|dist$)[\w-]+)?|"
-    r"\.npmrc|\.netrc|\.git-credentials|id_(?:rsa|ed25519)|"
+    r"\.npmrc|\.netrc|\.git-credentials|id_(?:rsa|ed25519|ecdsa)|token\.(?:json|pickle)|(?:\.aws/)?credentials|"
     r"(?:client_secret[^/]*|credentials?)\.(?:json|ya?ml)|"
     r"[^/]+\.tfstate(?:\.backup)?|"
     r"(?:secrets?|private|credentials?)/[^/]+\.(?:p12|pfx|pem|key|db|sqlite)|"
@@ -93,7 +98,14 @@ def scan_added_line(path: str, line: str, line_number: int) -> list[Finding]:
             findings.append(Finding("BLOCK", name, path, line_number))
     for name, rx in REVIEW_RULES:
         if rx.search(line):
-            findings.append(Finding("REVIEW", name, path, line_number))
+            if name == "DRIVE_REFERENCE":
+                # Only unmistakable placeholders may be committed as fixtures.
+                if re.search(r"(?i)(?:EXAMPLE|PLACEHOLDER|FILE_ID|FOLDER_ID|YOUR_|FAKE_)", line):
+                    findings.append(Finding("REVIEW", "LINK_INCOMPLETE_OR_PLACEHOLDER_IDENTIFIER", path, line_number))
+                else:
+                    findings.append(Finding("BLOCK", "DRIVE_RESOURCE_REFERENCE", path, line_number))
+            else:
+                findings.append(Finding("REVIEW", name, path, line_number))
     if has_reviewable_email(line):
         findings.append(Finding("REVIEW", "EMAIL_ADDRESS", path, line_number))
     return findings
@@ -237,6 +249,25 @@ def _get_diff(args: argparse.Namespace) -> str:
     )[0]
 
 
+def _scan_path_list(raw: bytes, scope: str) -> list[Finding]:
+    decoded, issues = _decode_inspected_bytes(raw, scope)
+    out = list(issues)
+    for path in decoded.split("\\x00"):
+        path = path.strip("\\n")
+        if not path:
+            continue
+        out.extend(scan_added_line(scope, path, 0))
+        if PRIVATE_FILENAME.search(path):
+            out.append(Finding("BLOCK", "PRIVATE_FILE_PATH", scope, 0))
+    return out
+
+
+def _octopus_findings(range_ref: str) -> list[Finding]:
+    commits = _run_git(["git", "rev-list", "--min-parents=3", range_ref, "--"])
+    return ([Finding("BLOCK", "OCTOPUS_MERGE_UNINSPECTED", "<git-history>", 0)]
+            if commits.strip() else [])
+
+
 def _metadata_findings(range_ref: str) -> list[Finding]:
     """Review PR commit messages and new filenames, never echoing raw values."""
     results: list[Finding] = []
@@ -285,7 +316,13 @@ def main(argv: list[str] | None = None) -> int:
         findings = ([Finding("REVIEW", "NON_UTF8_CONTENT", "<git-diff>", 0)]
                     if "\ufffd" in final_text else [])
         findings.extend(scan_unified_diff(final_text))
+        if ns.staged:
+            # Staged paths are not necessarily present in a text hunk.
+            findings.extend(_scan_path_list(_run_git([
+                "git", "diff", "--cached", "--name-only", "-z", "--"
+            ]), "<staged-git-paths>"))
         if ns.history_range:
+            findings.extend(_octopus_findings(ns.history_range))
             historical_bytes = _run_git([
                 "git", "-c", "core.quotePath=false", "log", "--patch",
                 "--diff-merges=remerge", "--text", "--no-textconv", "--format=",
