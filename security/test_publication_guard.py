@@ -952,24 +952,24 @@ class ClosedScopeCliRegressions(unittest.TestCase):
 class RecognizedMediaRegressionTests(unittest.TestCase):
     def test_magic_and_extension_both_required(self):
         import publication_guard as guard
-        good = b"\\x89PNG\\r\\n\\x1a\\n" + bytes(range(256))
+        good = b"\x89PNG\r\n\x1a\n" + bytes(range(256))
         self.assertTrue(guard._has_valid_media_magic("fixture.png", good))
         self.assertFalse(guard._has_valid_media_magic("fixture.md", good))
-        self.assertFalse(guard._has_valid_media_magic("fixture.png", b"\\xff\\xfe" + b"secret"))
+        self.assertFalse(guard._has_valid_media_magic("fixture.png", b"\xff\xfe" + b"secret"))
         self.assertIn(("BLOCK", "NUL_IN_ADDED_CONTENT"),
-                      [(v.severity, v.rule) for v in guard.scan_added_line("fixture.md", "x\\x00y", 1)])
+                      [(v.severity, v.rule) for v in guard.scan_added_line("fixture.md", "x\x00y", 1)])
         self.assertNotIn(("BLOCK", "NUL_IN_ADDED_CONTENT"),
                          [(v.severity, v.rule) for v in guard.scan_added_line(
-                             "fixture.png", "x\\x00y", 1, verified_media=True)])
+                             "fixture.png", "x\x00y", 1, verified_media=True)])
         token = "ghp_" + "X" * 36
-        rules = guard.scan_added_line("fixture.png", "\\x00" + token, 1, verified_media=True)
+        rules = guard.scan_added_line("fixture.png", "\x00" + token, 1, verified_media=True)
         self.assertTrue(any(v.rule == "GITHUB_TOKEN" and v.severity == "BLOCK" for v in rules))
 
     def test_staged_real_png_review_but_disguised_utf16_blocks(self):
         tmp, root, git, base = ClosedScopeCliRegressions()._repo()
         with tmp:
             # A structurally identified PNG is a review item, not a fake text exception.
-            (root / "image.png").write_bytes(b"\\x89PNG\\r\\n\\x1a\\n" + bytes(range(256)))
+            (root / "image.png").write_bytes(b"\x89PNG\r\n\x1a\n" + bytes(range(256)))
             git("add", "-A")
             result = ClosedScopeCliRegressions()._cli(root, "--staged")
             self.assertEqual(0, result.returncode, result.stdout)

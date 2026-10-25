@@ -77,7 +77,7 @@ PRIVATE_FILENAME = re.compile(
     r"[^/]+\.(?:p12|pfx))$"
 )
 REVIEW_FILE_SUFFIXES = (".zip", ".pdf", ".png", ".jpg", ".jpeg", ".webp", ".heic", ".heif", ".mov", ".mp4", ".key", ".pem", ".db", ".sqlite")
-DIFF_FILE = re.compile(r"^\\+\\+\\+ b/(.+)$")
+DIFF_FILE = re.compile(r"^\+\+\+ b/(.+)$")
 # The suffix alone is never enough to exempt NUL-containing content.
 RECOGNIZED_MEDIA_SUFFIXES = (".png", ".jpg", ".jpeg", ".gif", ".webp", ".pdf", ".mp4", ".mov", ".heic")
 
@@ -85,9 +85,9 @@ RECOGNIZED_MEDIA_SUFFIXES = (".png", ".jpg", ".jpeg", ".gif", ".webp", ".pdf", "
 def _has_valid_media_magic(path: str, data: bytes) -> bool:
     suffix = PurePosixPath(path.lower()).suffix
     if suffix == ".png":
-        return data.startswith(b"\\x89PNG\\r\\n\\x1a\\n")
+        return data.startswith(b"\x89PNG\r\n\x1a\n")
     if suffix in (".jpg", ".jpeg"):
-        return data.startswith(b"\\xff\\xd8\\xff")
+        return data.startswith(b"\xff\xd8\xff")
     if suffix == ".gif":
         return data.startswith((b"GIF87a", b"GIF89a"))
     if suffix == ".webp":
@@ -111,7 +111,7 @@ def _verified_media_paths(ns: argparse.Namespace) -> set[str]:
     command.append("--")
     names = _run_git(command)
     valid = set()
-    for raw in names.split(b"\\x00"):
+    for raw in names.split(b"\x00"):
         if not raw:
             continue
         name = raw.decode("utf-8", errors="replace")
