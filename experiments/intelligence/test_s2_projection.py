@@ -108,3 +108,23 @@ class S2S3CompatibilityTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class RedistributionIntentTests(unittest.TestCase):
+    def test_explicit_redistribution_reaches_preflight(self):
+        from experiments.intelligence.policy_gate import evaluate
+        from experiments.intelligence.test_policy_gate import capability
+        q = s2_query()
+        base = dict(project_id="fixture-project", purpose="RESEARCH_ONLY",
+                    fields=["viewCount"], transformations=["DISPLAY_NATIVE"])
+        private = project_s2_query(q, **base)
+        sharing = project_s2_query(q, redistribute_output=True, **base)
+        self.assertIs(private["redistribute_output"], False)
+        self.assertIs(sharing["redistribute_output"], True)
+        c = capability()
+        c["field_grants"]["viewCount"]["actions"] = ["READ", "PROCESS"]
+        out = evaluate(sharing, c, now="2026-10-23T15:00:00+00:00")
+        self.assertEqual("BLOCKED", out["decision"])
+        self.assertIn("FIELD_REDISTRIBUTION_NOT_GRANTED", out["reason_codes"])
+        out_private = evaluate(private, c, now="2026-10-23T15:00:00+00:00")
+        self.assertNotIn("FIELD_REDISTRIBUTION_NOT_GRANTED", out_private["reason_codes"])

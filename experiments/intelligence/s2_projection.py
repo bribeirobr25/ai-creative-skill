@@ -18,6 +18,7 @@ def project_s2_query(
     retention_days: int = 0, estimated_calls: int = 1,
     requires_paid: bool = False, requests_raw_media: bool = False,
     background_collection: bool = False,
+    redistribute_output: bool = False,
 ) -> dict:
     validate_query_filter(query)
     platforms = query["platforms"]
@@ -40,6 +41,7 @@ def project_s2_query(
         "requires_paid": requires_paid,
         "requests_raw_media": requests_raw_media,
         "background_collection": background_collection,
+        "redistribute_output": redistribute_output,
         "estimated_calls": estimated_calls,
     }
     validate_request(projected)

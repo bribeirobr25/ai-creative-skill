@@ -33,3 +33,9 @@ Nenhum armazenamento persistente, purga real, OAuth, Google/TikTok/Meta/YouTube 
 A arquitetura proposta está em `docs/research/intelligence/architecture-v0.3.md` no candidato documental correspondente; somente após aprovação e testes T1–T7 da Issue #1 uma capacidade pode ser integrada à skill. Código de produção em `src/` **não** deve importar `experiments/`.
 
 Esta documentação é uma descrição técnica de laboratório, não um pedido de ação para agentes, plano de merge nem declaração de aceite.
+
+## Before any real-source integration (S5)
+
+The synthetic `validate_fixture_verdict` is a shape validator only. It does not bind the decision to the actual query or source capability. A real authorization decision must be bound to the exact request, source, operation, purpose and capability through canonical authority, and the fixture validator must never be reused as production permission.
+
+`redistribute_output` describes the intent to distribute provider-derived results externally; private transient analysis is not automatically redistribution. Rights are checked per provider and operation. No current synthetic fixture grants redistribution or real execution.

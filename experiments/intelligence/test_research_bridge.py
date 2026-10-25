@@ -274,3 +274,32 @@ class SyntheticBridgeTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class ClosedScopeBridgeAcceptanceTests(unittest.TestCase):
+    def test_no_ranking_without_request(self):
+        from experiments.intelligence.contract_canary import validate_research_execution
+        x = request(ranking_requested=False)
+        self.assertEqual([], x["intelligence"]["ranked_evidence_refs"])
+        self.assertEqual("NOT_REQUESTED", x["intelligence"]["ranking_scope"])
+        validate_research_execution(x, evidence_by_id=x["fixture_evidence_index"])
+
+    def test_two_snapshots_of_same_publication_share_cluster(self):
+        from experiments.intelligence.contract_canary import validate_research_execution
+        later = T + timedelta(seconds=1)
+        x = request(observation_rows=[synthetic_row("snap", obs_at=T), synthetic_row("snap", obs_at=later)],
+                    generated_at=later + timedelta(seconds=1))
+        self.assertEqual(1, len(x["evidence_clusters"]))
+        self.assertEqual(2, len(x["evidence_clusters"][0]["supporting_evidence_refs"]))
+        validate_research_execution(x, evidence_by_id=x["fixture_evidence_index"])
+
+    def test_berlin_end_exclusive_second(self):
+        from zoneinfo import ZoneInfo
+        zone = ZoneInfo("Europe/Berlin")
+        end = datetime(2026, 10, 25, 0, 0, tzinfo=zone)
+        included = synthetic_row("edge", obs_at=T, pub_at=(end - timedelta(seconds=1)))
+        excluded = synthetic_row("edge", obs_at=T, pub_at=end)
+        base = dict(range_to=date(2026,10,25), time_zone="Europe/Berlin")
+        request(**base, observation_rows=[included])
+        with self.assertRaises(ValidationError):
+            request(**base, observation_rows=[excluded])
