@@ -258,7 +258,7 @@ class SyntheticBridgeTests(unittest.TestCase):
         x = request()
         values = x["intelligence"]["ranked_evidence_refs"]
         self.assertEqual(2, len(values))
-        self.assertIn("synthetic:a", values[0])
+        self.assertIn("fixture-synthetic:fixture-a", values[0])
 
     def test_non_string_identity_rejected(self):
         with self.assertRaises(ValidationError):

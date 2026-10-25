@@ -71,7 +71,7 @@ class CrossModuleTests(unittest.TestCase):
         second=datetime(2026,10,25,12,tzinfo=local)
         self.assertEqual(25,(second.astimezone(UTC)-first.astimezone(UTC)).total_seconds()/3600)
         old=Observation("fixture-v","fixture-c","fixture-platform","long",100,first,first-timedelta(days=1),"SYNTHETIC_FIXTURE")
-        new=Observation("v","fixture-c","fixture-platform","long",150,second,first-timedelta(days=1),"SYNTHETIC_FIXTURE")
+        new=Observation("fixture-v","fixture-c","fixture-platform","long",150,second,first-timedelta(days=1),"SYNTHETIC_FIXTURE")
         self.assertEqual(25,(new.observed_at-old.observed_at).total_seconds()/3600)
         self.assertAlmostEqual(2,view_velocity(old,new,derived_permission=True)["views_per_hour"])
 
