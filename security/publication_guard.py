@@ -128,6 +128,60 @@ def _verified_media_paths(ns: argparse.Namespace) -> set[str]:
     return valid
 
 
+def _verified_media_paths_at_commit(commit: str) -> frozenset[str]:
+    """Media exemptions in history belong to the exact historical blob.
+
+    HEAD's current signature does not validate an older version of a file.
+    A missing or undecodable historical blob gets no NUL exemption.
+    """
+    names = _run_git([
+        "git", "-c", "core.quotePath=false", "show", "--format=",
+        "--name-only", "-z", "--diff-merges=remerge", commit, "--",
+    ])
+    valid: set[str] = set()
+    for raw in names.split(b"\\x00"):
+        if not raw:
+            continue
+        try:
+            name = raw.decode("utf-8").strip("\\n")
+        except UnicodeDecodeError:
+            continue
+        if PurePosixPath(name.lower()).suffix not in RECOGNIZED_MEDIA_SUFFIXES:
+            continue
+        try:
+            blob = _run_git(["git", "show", commit + ":" + name])
+        except RuntimeError:
+            # Deleted files or inaccessible blobs never acquire exemptions.
+            continue
+        if _has_valid_media_magic(name, blob):
+            valid.add(name)
+    return frozenset(valid)
+
+
+def _scan_commit_history(range_ref: str) -> list[Finding]:
+    """Inspect every commit patch with media verified at that commit, not HEAD."""
+    commits = _run_git(["git", "rev-list", "--reverse", range_ref, "--"])
+    findings: list[Finding] = []
+    for raw in commits.splitlines():
+        try:
+            commit = raw.decode("ascii")
+        except UnicodeDecodeError as exc:
+            raise RuntimeError("Invalid Git commit identifier; inspection incomplete") from exc
+        if re.fullmatch(r"[0-9a-f]{40,64}", commit) is None:
+            raise RuntimeError("Invalid Git commit identifier; inspection incomplete")
+        patch_bytes = _run_git([
+            "git", "-c", "core.quotePath=false", "show", "--format=",
+            "--diff-merges=remerge", "--text", "--no-textconv",
+            "--no-ext-diff", "--no-color", "--unified=0", commit, "--",
+        ])
+        patch, issues = _decode_inspected_bytes(patch_bytes, "<git-commits>")
+        findings.extend(issues)
+        findings.extend(scan_unified_diff(
+            patch, verified_media_paths=_verified_media_paths_at_commit(commit)
+        ))
+    return findings
+
+
 def scan_added_line(path: str, line: str, line_number: int, *, verified_media: bool = False) -> list[Finding]:
     findings = []
     # Git --text exposes UTF-16-style data as interleaved NUL bytes. Treat
@@ -146,10 +200,21 @@ def scan_added_line(path: str, line: str, line_number: int, *, verified_media: b
         if rx.search(line):
             findings.append(Finding("BLOCK", name, path, line_number))
     for name, rx in REVIEW_RULES:
-        if rx.search(line):
+        match = rx.search(line)
+        if match:
             if name == "DRIVE_REFERENCE":
-                # Only unmistakable placeholders may be committed as fixtures.
-                if re.search(r"(?i)(?:EXAMPLE|PLACEHOLDER|FILE_ID|FOLDER_ID|YOUR_|FAKE_)", line):
+                # A placeholder elsewhere on the line must never excuse a real link.
+                # Inspect the matched resource identifier, not surrounding prose.
+                identifier_match = re.search(
+                    r"(?i)(?:/(?:d|folders)/|[?&]id=)([A-Za-z0-9_-]+)",
+                    match.group(0),
+                )
+                identifier = identifier_match.group(1) if identifier_match else ""
+                is_placeholder = re.fullmatch(
+                    r"(?i)(?:EXAMPLE|PLACEHOLDER|FILE_ID|FOLDER_ID|YOUR|FAKE)"
+                    r"(?:[_-][A-Z0-9_-]+)?", identifier,
+                ) is not None
+                if is_placeholder:
                     findings.append(Finding("REVIEW", "LINK_INCOMPLETE_OR_PLACEHOLDER_IDENTIFIER", path, line_number))
                 else:
                     findings.append(Finding("BLOCK", "DRIVE_RESOURCE_REFERENCE", path, line_number))
@@ -374,14 +439,8 @@ def main(argv: list[str] | None = None) -> int:
             ]), "<staged-git-paths>"))
         if ns.history_range:
             findings.extend(_octopus_findings(ns.history_range))
-            historical_bytes = _run_git([
-                "git", "-c", "core.quotePath=false", "log", "--patch",
-                "--diff-merges=remerge", "--text", "--no-textconv", "--format=",
-                "--no-ext-diff", "--no-color", "--unified=0", ns.history_range, "--"
-            ])
-            history_text, decode_issues = _decode_inspected_bytes(historical_bytes, "<git-commits>")
-            findings.extend(decode_issues)
-            findings.extend(scan_unified_diff(history_text, verified_media_paths=verified_media_paths))
+            # Never re-use HEAD's media signature to exempt historical NUL.
+            findings.extend(_scan_commit_history(ns.history_range))
             findings.extend(_metadata_findings(ns.history_range))
         elif ns.range:
             findings.extend(_metadata_findings(ns.range.replace("...", "..", 1)))
