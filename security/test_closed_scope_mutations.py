@@ -47,7 +47,14 @@ class ClosedScopeMutationAcceptance(unittest.TestCase):
         for name, (target, replacement) in changes.items():
             with self.subTest(mutation=name):
                 self.assertEqual(1, original.count(target), name)
-                modified = original.replace(target, replacement, 1)
+                if name in ("google_oauth_rule_removed", "generic_secret_rule_removed"):
+                    rule_line = next(
+                        line for line in original.splitlines(keepends=True)
+                        if target in line
+                    )
+                    modified = original.replace(rule_line, "", 1)
+                else:
+                    modified = original.replace(target, replacement, 1)
                 with tempfile.TemporaryDirectory(prefix="guard-mutation-") as scratch:
                     root = Path(scratch)
                     for basename in ("test_publication_guard.py", "history_audit.py"):
