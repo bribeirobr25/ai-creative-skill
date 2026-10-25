@@ -23,6 +23,18 @@ class CanonicalParity(unittest.TestCase):
         self.assertIn("COMPLETE | PARTIAL | INSUFFICIENT_EVIDENCE | BLOCKED", section)
         self.assertEqual(4, len(RESEARCH_STATUSES))
 
+    def test_evidence_cluster_fields_match_canonical_section_nine(self):
+        text = RESEARCH.read_text(encoding="utf-8")
+        block = text.split("# 9. Evidence Clusters and Counterevidence", 1)[1].split("```yaml", 1)[1].split("```", 1)[0]
+        expected = {"what_is_observed", "what_is_inferred", "creative_or_decision_implication"}
+        keys = {line.split(":", 1)[0].strip() for line in block.splitlines() if ":" in line}
+        self.assertTrue(expected <= keys)
+        from experiments.intelligence.test_research_bridge import request
+        from experiments.intelligence.contract_canary import validate_research_execution
+        env = request()
+        self.assertTrue(expected <= set(env["evidence_clusters"][0]))
+        validate_research_execution(env, evidence_by_id=env["fixture_evidence_index"])
+
     def test_required_envelope_fields_reference_existing_method(self):
         text = RESEARCH.read_text(encoding="utf-8")
         section = text.split("# 14. Output", 1)[1].split("```yaml", 1)[1].split("```", 1)[0]

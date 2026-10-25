@@ -360,3 +360,16 @@ class RetentionTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class RestoredContractBoundaryRegressions(unittest.TestCase):
+    def test_unsupported_metric_is_rejected_by_preflight(self):
+        q = request(requested_metric="NOT_A_SUPPORTED_METRIC")
+        d = evaluate(q, capability(), now=NOW)
+        self.assertEqual("BLOCKED", d["decision"])
+        self.assertIn("METRIC_NOT_SUPPORTED", d["reason_codes"])
+
+    def test_request_window_must_be_increasing(self):
+        for a, b in (("2026-10-24", "2026-10-24"), ("2026-10-25", "2026-10-24")):
+            with self.subTest(start=a, end=b), self.assertRaises(InvalidContract):
+                validate_request(request(window_start=a, window_end=b))

@@ -416,3 +416,14 @@ class CoverageAndHandoffTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class RestoredQueryWindowRegressions(unittest.TestCase):
+    def test_query_filter_rejects_end_before_or_at_start(self):
+        from experiments.intelligence.contract_canary import validate_query_filter
+        for start, end in (("2026-10-24", "2026-10-24"), ("2026-10-25", "2026-10-24")):
+            q = query()
+            q["time_filter"]["start_inclusive"] = start
+            q["time_filter"]["end_exclusive"] = end
+            with self.subTest(start=start, end=end), self.assertRaises(ContractViolation):
+                validate_query_filter(q)
