@@ -979,3 +979,47 @@ class RecognizedMediaRegressionTests(unittest.TestCase):
             git("add", "-A")
             result = ClosedScopeCliRegressions()._cli(root, "--staged")
             self.assertEqual(1, result.returncode, result.stdout)
+
+
+class HistoricalMediaAndDriveAcceptance(unittest.TestCase):
+    def test_a_placeholder_word_outside_real_drive_identifier_cannot_exempt_link(self):
+        from publication_guard import scan_added_line
+        real = "https://drive.google.com/drive/folders/" + "Ab3" * 11
+        findings = scan_added_line("notes.md", "EXAMPLE: " + real, 1)
+        self.assertIn(("BLOCK", "DRIVE_RESOURCE_REFERENCE"),
+                      [(finding.severity, finding.rule) for finding in findings])
+        placeholder = "https://drive.google.com/drive/folders/EXAMPLE_" + "A" * 25
+        findings = scan_added_line("notes.md", placeholder, 1)
+        self.assertFalse(any(finding.severity == "BLOCK" for finding in findings))
+        self.assertIn("LINK_INCOMPLETE_OR_PLACEHOLDER_IDENTIFIER",
+                      [finding.rule for finding in findings])
+
+    def test_historical_media_exemption_uses_each_commit_blob(self):
+        test = ClosedScopeCliRegressions()
+        tmp, root, git, base = test._repo()
+        with tmp:
+            image_path = root / "history.png"
+            authentic = b"\x89PNG\r\n\x1a\n" + bytes(range(256))
+            image_path.write_bytes(authentic)
+            git("add", "-A"); git("commit", "-qm", "valid synthetic image")
+            image_path.write_bytes("ordinary synthetic text".encode("utf-16"))
+            git("add", "-A"); git("commit", "-qm", "disguised synthetic text")
+            image_path.write_bytes(authentic)
+            git("add", "-A"); git("commit", "-qm", "restore valid synthetic image")
+            run = test._cli(root, "--range", base + "...HEAD",
+                            "--history-range", base + "..HEAD")
+            self.assertEqual(1, run.returncode, run.stdout)
+            self.assertIn("NUL_IN_ADDED_CONTENT", run.stdout)
+
+    def test_valid_historical_png_requires_review_without_false_nul_block(self):
+        test = ClosedScopeCliRegressions()
+        tmp, root, git, base = test._repo()
+        with tmp:
+            (root / "original.png").write_bytes(
+                b"\x89PNG\r\n\x1a\n" + bytes(range(256)))
+            git("add", "-A"); git("commit", "-qm", "add valid synthetic image")
+            run = test._cli(root, "--range", base + "...HEAD",
+                            "--history-range", base + "..HEAD")
+            self.assertEqual(0, run.returncode, run.stdout)
+            self.assertIn("BINARY_OR_MEDIA_REVIEW", run.stdout)
+            self.assertNotIn("NUL_IN_ADDED_CONTENT", run.stdout)
