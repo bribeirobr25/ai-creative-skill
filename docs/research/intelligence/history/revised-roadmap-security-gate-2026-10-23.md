@@ -4,13 +4,13 @@
 
 **Data:** 2026-10-23  
 **Estado:** PLANO DE CONTROLE PREVENTIVO · PROPOSTA NÃO CANÔNICA · S0 ENCERRADA POR DECLARAÇÃO DO PROPRIETÁRIO · SCANNER CANDIDATO NO PR #20 (AINDA NÃO INTEGRADO À MAIN)  
-**Escopo:** PRs #18 e #19 e todos os futuros commits públicos da AI Creative Skill; alinhamento com ADR-0001 (código/documentação públicos, materiais privados fora do Git). O PR #17 pertence à sessão Claude Code de Web Experience e não deve ser modificado por esta frente.
+**Escopo:** PRs #18 e #19 e todos os futuros commits públicos da AI Creative Skill; alinhamento com ADR-0001 (código/documentação públicos, materiais privados fora do Git). O PR #17 tem desenvolvimento e controle de mudanças próprios, independentes desta frente.
 
 ## Atualização operacional: fase S0 encerrada por decisão do proprietário (23/10/2026)
 
 O proprietário confirmou que os materiais de mídia sob sua responsabilidade foram **gerados com IA ou captados em fotografia/vídeo por ele**, e que os **textos são de sua autoria**. Solicitou o encerramento desta fase. A auditoria S0 fica `CLOSED_BY_OWNER_ATTESTATION_WITH_RESIDUAL_LIMITATIONS`, registrada no [relatório S0 do PR #20](https://github.com/bribeirobr25/ai-creative-skill/blob/proposal/reusable-development-security-gate-20261023/docs/security/S0-consolidated-text-exif-email-triage-2026-10-23.md). Isso não declara inspeção técnica integral, licença de eventuais materiais de terceiros, nem decisão específica de tornar público endereço de autoria Git.
 
-A tabela abaixo preserva **a sequência planejada originalmente**, inclusive o trabalho que S0 exigia. Sua pendência administrativa de mídia/textos foi encerrada por atestação; a implantação de controles pré-publicação, adoção da ADR-0003 e Gate 0 de contratos/permissões **não foram aprovados automaticamente**. Para a frente Intelligence, a próxima execução é **S1/S2 (revisão técnica dos PRs #19/#18)** e o contrato `SOURCE_PERMISSION_PREFLIGHT`, sem fonte real/paid API. PR #17 permanece independente.
+A tabela abaixo preserva **a sequência planejada originalmente**, inclusive o trabalho que S0 exigia. Sua pendência administrativa de mídia/textos foi encerrada por atestação; a implantação de controles pré-publicação, adoção da ADR-0003 e Gate 0 de contratos/permissões **não foram aprovados automaticamente**. O roteiro abaixo é um registro histórico da ordem proposta naquela data; não se aplica como execução corrente. O estado atual permanece no STATUS v0.3.
 
 ## 1. Decisão de sequenciamento
 
@@ -26,7 +26,7 @@ A tabela abaixo preserva **a sequência planejada originalmente**, inclusive o t
 | **S5: depois de S0–S4** | Preparar contrato executável mínimo/host adapter (reutilizar core), canary permitido e QA no host escolhido | Branch candidata separada; autorização aplicável antes de dados reais | Passar Gate 0 + direitos + testes |
 | **S6: depois de canaries** | Integração regressiva, auditabilidade de resultados, revisão de privacidade e release gate; MCP continua opcional | Candidate/release sujeito a aceite | Nunca inferir release de PR draft |
 
-**Dependência crítica:** S0 e controles preventivos devem existir antes de qualquer publicação/merge futuro. O levantamento de exposição pode ocorrer paralelamente à revisão de código, mas uma exposição efetiva de credencial é incidente que exige resposta imediata. O PR #17 fica na sua linha independente até o retorno planejado da sessão responsável em 27/10, salvo incidente de segurança.
+**Dependência crítica:** S0 e controles preventivos devem existir antes de qualquer publicação/merge futuro. O levantamento de exposição pode ocorrer paralelamente à revisão de código, mas uma exposição efetiva de credencial é incidente que exige resposta imediata. O PR #17 segue controle de integração independente, sem data de retorno vinculante para os demais componentes.
 
 ## 2. Classificação de informação antes de publicar
 

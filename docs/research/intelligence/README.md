@@ -14,10 +14,6 @@ Arquitetura [v0.1](history/architecture-preimplementation-v0.1.md) e [v0.2](hist
 
 Os materiais documentais antigos estão arquivados em [history/](history/README.md) e não definem o estado atual. O roteiro pessoal de candidatura ao YouTube foi excluído do snapshot candidato; commits anteriores da branch pública ainda podem conter versões antigas, motivo adicional para considerar squash merge após revisão. Modelos pessoais de candidatura devem permanecer em armazenamento privado.
 
-## Pendências antes de considerar merge
+## Limites permanentes da proposta
 
-- Aprovação expressa do proprietário do Gate 0 e dos donos de novos contratos.
-- Revisão independente do HEAD dos PRs #18/#20/#23 e checks de integração em conjunto.
-- Migração versionada e autorização das entidades de SourceCapabilityRecord, métrica/engagement e stop codes.
-- Proibição de importações de `experiments/` por componentes de produção em `src/`.
-- PR #17 permanece sob sua sessão responsável. Nenhuma alteração, merge ou release foi autorizada aqui.
+Gate 0 e integração canônica exigem decisões explícitas do proprietário e reconciliação versionada dos contratos. O laboratório offline não transfere autoridade para `src/` e não autoriza APIs reais, gasto ou publicação. O PR #17 mantém sua própria governança e inventário, independente desta pesquisa.

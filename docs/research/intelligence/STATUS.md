@@ -25,9 +25,20 @@ Estes são registros de revisão, não autorização formal. A versão v0.3 é u
 - A ativação futura de §24.1 DATA-SOURCE CONNECTORS é Gate separado. A seção é `NOT CURRENT CAPABILITIES`; citá-la não a implementa.
 - Fonte real inicial, licenças/permissões de dados próprios e externos, host das credenciais, histórico permitido e custos.
 - Adoção do Security Gate/ADR-0003 proposta no PR #20 e regras de proteção da branch principal.
+- Decidir, antes de S6, quem governa a identidade de criadores, canais e publicações de terceiros; não confundir com `publication_id` das próprias campanhas.
+- Confirmar direitos por operação/campo/fonte para comparações com YouTube, métricas derivadas e redistribuição; aprovação específica de Analytics & Reporting permanece não demonstrada.
 
 ## Guardrails permanentes
 
 A `main`/V2.5 ficam intocados até merge autorizado. PR #17 é independente. O laboratório #23 é offline e não implementa API real, armazenamento real, publicação ou autorização financeira. Um retorno `SHAPE_CHECK_PASSED_SYNTHETIC_ONLY` jamais autoriza execução. As versões v0.1/v0.2 e referências PR #19/#21/#22 são história, não status vigente.
 
 **Evidência de testes sintéticos não equivale a direitos de fonte nem a aprovação do Gate 0.** A entrada independente e conclusão da futura capacidade exigem [ADR-0002](../../decisions/ADR-0002-capability-bounded-invocation.md) e seus cenários T1–T7, vinculados à [Issue #1](https://github.com/bribeirobr25/ai-creative-skill/issues/1).
+
+## Limites documentados de cobertura (consulta de referência · outubro de 2026)
+
+- Meta Ad Library: a descoberta oficial de anúncios comerciais de terceiros está vinculada à cobertura de transparência na UE/Reino Unido; anúncios comerciais exibidos apenas no Brasil não ficam disponíveis como catálogo comercial geral. Campos de gastos, impressões e estimativas variam por tipo de anúncio e região; verificar o endpoint e a documentação atual antes de afirmar cobertura.
+- TikTok Commercial Content API: a cobertura é centrada no território europeu e varia segundo endpoint/região. Não assumir gastos ou impressões exatas como disponíveis; o acesso aprovado à API não prova direitos para todo campo, país ou transformação.
+- YouTube: a política geral limita criação de métricas próprias e combinação de dados; determinados usos de Analytics & Reporting e retenção ampliada dependem de aprovação específica. `search.list` utiliza cota própria documentada de 100 chamadas/dia na configuração padrão, sujeita a alterações.
+- Alemanha oferece fontes oficiais parciais para pesquisa de anúncios comerciais; Brasil não dispõe, nessas APIs de biblioteca, de cobertura geral para anúncios comerciais de terceiros exibidos exclusivamente no país. Dados próprios autorizados são uma categoria distinta.
+
+Esses fatos de cobertura são referências de planejamento verificadas em outubro de 2026, não autorizações operacionais, garantias de disponibilidade ou contratos de direitos para S5.

@@ -22,4 +22,4 @@
 
 **Scope of green CI:** offline fixture correctness only. This matrix never certifies real analytics rights, platform rate limits, national rankings, market coverage, GDPR compliance, real persistence, approval or release.
 
-**Priority:** CC independent audit of #20, #18 and consolidated #23; after that owner selects explicit acceptance/merge. #19/#21/#22 are not merged independently and remain historical until reviewed.
+**Governance:** Independent review and owner acceptance are separate prerequisites for promotion. Historical #19/#21/#22 experiments are superseded by the consolidated #23 candidate and are not production modules.
