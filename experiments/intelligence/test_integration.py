@@ -111,3 +111,85 @@ class CrossModuleTests(unittest.TestCase):
 
 if __name__=="__main__":
     unittest.main()
+
+
+class SeededBridgeCanaryPropertyTests(unittest.TestCase):
+    def test_bridge_output_is_accepted_by_canonical_canary_across_1200_fixtures(self):
+        """Closed-scope I-A9: accepted synthetic envelopes always pass the canary."""
+        import random
+        from datetime import date, datetime, timedelta, timezone
+
+        from experiments.intelligence.engine import (
+            Observation, ValidationError, InsufficientEvidence,
+        )
+        from experiments.intelligence.research_bridge import build_research_execution_fixture
+        from experiments.intelligence.contract_canary import validate_research_execution
+        from experiments.intelligence.vocabulary import SOURCE_OUTCOMES
+        from experiments.intelligence.test_research_bridge import fixture_policy
+
+        rng = random.Random(20261025)
+        zones = (
+            "UTC", "Europe/Berlin", "America/Sao_Paulo",
+            "Asia/Kathmandu", "Pacific/Kiritimati",
+        )
+        possible_outcomes = tuple(sorted(SOURCE_OUTCOMES))
+        seen_outcomes, seen_zones = set(), set()
+        accepted = 0
+        for index in range(1200):
+            observed_base = datetime(2026, 10, 10, tzinfo=timezone.utc)
+            snapshots = [
+                observed_base + timedelta(days=rng.randint(0, 14),
+                                          hours=rng.randint(0, 23))
+                for _ in range(2)
+            ]
+            observations = []
+            for _ in range(rng.randint(0, 6)):
+                observation_time = rng.choice(snapshots)
+                observations.append(Observation(
+                    publication_id=rng.choice(
+                        ("fixture-a", "fixture-b", "fixture-c")),
+                    channel_id="fixture-channel",
+                    platform=rng.choice(("fixture-platform-a", "fixture-platform-b")),
+                    content_type=rng.choice(("short", "long")),
+                    views=rng.choice((None, 0, 5, 1000)),
+                    observed_at=observation_time,
+                    published_at=observation_time - timedelta(
+                        hours=rng.randint(0, 400)),
+                    source_kind="SYNTHETIC_FIXTURE",
+                ))
+            outcome = possible_outcomes[index % len(possible_outcomes)]
+            zone = zones[index % len(zones)]
+            seen_outcomes.add(outcome)
+            seen_zones.add(zone)
+            params = {
+                "research_execution_id": "fixture-research-property",
+                "research_intent": "MARKET_SCAN",
+                "primary_entity": "synthetic items",
+                "market": "DE",
+                "language": "de",
+                "range_from": date(2026, 9, 1),
+                "range_to": date(2026, 11, 1),
+                "observation_rows": observations,
+                "source_outcome": outcome,
+                "limit": rng.choice((1, 2, 10, 100)),
+                "population_coverage_verified": bool(rng.getrandbits(1)),
+                "requested_national_top": bool(rng.getrandbits(1)),
+                "source_coverage_verified": bool(rng.getrandbits(1)),
+                "negative_coverage_satisfies_request": bool(rng.getrandbits(1)),
+                "ranking_requested": bool(rng.getrandbits(1)),
+                "time_zone": zone,
+                "policy_decision": fixture_policy(blocked=bool(rng.getrandbits(1))),
+                "generated_at": datetime(2026, 10, 30, tzinfo=timezone.utc),
+            }
+            try:
+                report = build_research_execution_fixture(**params)
+            except (ValidationError, InsufficientEvidence):
+                continue
+            validate_research_execution(
+                report, evidence_by_id=report["fixture_evidence_index"])
+            accepted += 1
+
+        self.assertEqual(set(possible_outcomes), seen_outcomes)
+        self.assertEqual(set(zones), seen_zones)
+        self.assertGreaterEqual(accepted, 100,
+            "The seeded generator must cover at least 100 accepted outputs")
