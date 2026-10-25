@@ -935,8 +935,8 @@ class ClosedScopeCliRegressions(unittest.TestCase):
             git("rm", "-q", "evil.md"); git("commit", "-qm", "remove")
             result = self._cli(root, "--range", base + "...HEAD",
                                "--history-range", base + "..HEAD")
-            self.assertEqual(1, result.returncode, result.stdout)
-            self.assertIn("OCTOPUS_MERGE_UNINSPECTED", result.stdout)
+            self.assertEqual(2, result.returncode, result.stderr)
+            self.assertIn("OCTOPUS_MERGE_UNINSPECTED", result.stderr)
 
     def test_provider_families_and_placeholder(self):
         import publication_guard as guard
