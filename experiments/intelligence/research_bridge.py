@@ -44,7 +44,8 @@ def build_research_execution_fixture(
     negative_coverage_satisfies_request: bool = False,
     policy_decision: dict,
     generated_at: datetime,
-    time_zone: str = "UTC",
+    time_zone: str,
+    ranking_requested: bool = False,
     requested_metric: str = "PUBLIC_VIEW_COUNT",
 ) -> dict:
     """Make a synthetic-only contract fixture for a bounded Research result.
@@ -85,8 +86,11 @@ def build_research_execution_fixture(
     if any(type(x) is not bool for x in (
         population_coverage_verified, requested_national_top,
         source_coverage_verified, negative_coverage_satisfies_request,
+        ranking_requested,
     )):
         raise ValidationError("Coverage and intent flags must be booleans")
+    if requested_national_top and not ranking_requested:
+        raise ValidationError("National ranking requires ranking_requested")
     if requested_national_top and negative_coverage_satisfies_request:
         raise ValidationError("A ranking request cannot be answered by an absence-only completion rule")
     if negative_coverage_satisfies_request and source_outcome != "NO_RESULTS":
@@ -197,7 +201,7 @@ def build_research_execution_fixture(
         population_coverage_verified and source_coverage_verified
         and source_outcome == "OK"
     )
-    if rows and any(row.views is not None for row in rows):
+    if ranking_requested and rows and any(row.views is not None for row in rows):
         try:
             ranked = rank_sample(
                 rows, limit=limit, requested_national_top=requested_national_top,
@@ -210,6 +214,8 @@ def build_research_execution_fixture(
             ranking_note = ranked["population"]
         except (InsufficientEvidence, ValidationError):
             ranking_note = "NOT_COMPARABLE"
+    if not ranking_requested:
+        ranking_note = "NOT_REQUESTED"
     # A source attempt can be OK yet the research conclusion insufficient.
     # Separate source retrieval outcome from the ranking deliverable status.
     if requested_national_top and rows:
@@ -229,14 +235,25 @@ def build_research_execution_fixture(
         elif ranking_note == "NOT_COMPARABLE" or any(r.views is None for r in rows):
             status = "PARTIAL"
 
-    clusters = [{
-        "cluster_id": "cluster:" + e["entity_scope"],
-        "question_or_theme": "Synthetic publication metric",
-        "supporting_evidence_refs": [e["evidence_id"]],
-        "counterevidence_refs": [],
-        "independent_source_count": 1,
-        "uncertainty": "SYNTHETIC_FIXTURE_ONLY",
-    } for e in evidence]
+    clusters_by_subject: dict[str, dict] = {}
+    for e in evidence:
+        subject = e["entity_scope"]
+        if subject not in clusters_by_subject:
+            clusters_by_subject[subject] = {
+                "cluster_id": "cluster:" + subject,
+                "question_or_theme": "Synthetic publication metric",
+                "supporting_evidence_refs": [],
+                "counterevidence_refs": [],
+                "independent_source_count": 1,
+                "uncertainty": "SYNTHETIC_FIXTURE_ONLY",
+                "what_is_observed": "Synthetic view-count observation",
+                "what_is_inferred": "UNKNOWN",
+                "creative_or_decision_implication": "UNKNOWN",
+            }
+        clusters_by_subject[subject]["supporting_evidence_refs"].append(e["evidence_id"])
+    clusters = list(clusters_by_subject.values())
+    if status != "COMPLETE" and ranking_note == "COMPLETE":
+        ranking_note = "OBSERVED_SAMPLE_ONLY"
     result = {
         "research_execution_id": research_execution_id,
         "research_intent": research_intent,

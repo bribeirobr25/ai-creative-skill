@@ -49,6 +49,8 @@ def request(**overrides):
         "observation_rows": [synthetic_row("a"), synthetic_row("b", 100)],
         "source_outcome": "OK",
         "policy_decision": fixture_policy(),
+        "time_zone": "UTC",
+        "ranking_requested": True,
     }
     base.update(overrides)
     return build_research_execution_fixture(**base)

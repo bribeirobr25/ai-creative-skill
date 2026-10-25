@@ -215,7 +215,10 @@ def validate_research_execution(
         _only_keys(cluster, {
             "cluster_id", "question_or_theme", "supporting_evidence_refs",
             "counterevidence_refs", "independent_source_count", "uncertainty",
+            "what_is_observed", "what_is_inferred", "creative_or_decision_implication",
         }, "Evidence Cluster")
+        for key in ("what_is_observed", "what_is_inferred", "creative_or_decision_implication"):
+            _id(cluster.get(key), "cluster." + key)
         cluster_id = _id(cluster.get("cluster_id"), "cluster_id")
         _require(cluster_id not in used_clusters, "duplicate cluster_id")
         used_clusters.add(cluster_id)
@@ -307,9 +310,11 @@ def validate_research_execution(
     ranked = _list(intelligence.get("ranked_evidence_refs"), "ranked_evidence_refs")
     ranking_scope = intelligence.get("ranking_scope", "OBSERVED_SAMPLE_ONLY")
     _require(ranking_scope in ("COMPLETE", "OBSERVED_SAMPLE_ONLY",
-              "NO_OBSERVATIONS", "NOT_COMPARABLE",
+              "NO_OBSERVATIONS", "NOT_COMPARABLE", "NOT_REQUESTED",
               "NATIONAL_COVERAGE_UNVERIFIED", "NATIONAL_RANKING_UNDETERMINED"),
              "UNKNOWN_RANKING_SCOPE")
+    if ranking_scope == "NOT_REQUESTED":
+        _require(not ranked, "unrequested ranking may not carry references")
     if ranking_scope == "COMPLETE":
         _require(coverage.get("source_coverage_verified") is True and
                  coverage.get("population_verified") == "SYNTHETIC_FIXTURE_ONLY"

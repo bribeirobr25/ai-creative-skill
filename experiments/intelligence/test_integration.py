@@ -34,7 +34,9 @@ def envelope(outcome="OK", rows=None, **kwargs):
         range_to=date(2026,10,26), generated_at=AT+timedelta(seconds=1),
         observation_rows=rows if rows is not None else [row()],
         source_outcome=outcome,
-        policy_decision=kwargs.pop("policy_decision", fixture_policy()), **kwargs,
+        policy_decision=kwargs.pop("policy_decision", fixture_policy()),
+        time_zone=kwargs.pop("time_zone", "UTC"),
+        ranking_requested=kwargs.pop("ranking_requested", True), **kwargs,
     )
 
 
