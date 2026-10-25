@@ -286,6 +286,17 @@ text_finding_ref:
 
 If the source is already exact approved/canonical text, naturalness review is diagnostic only unless authority explicitly reopens wording.
 
+# 6.2 Text on a product (labels, tags, marks)
+
+When generated product imagery garbles text that belongs to the product, such as a woven label, the default repair is a composite from a real photo of that label, not a new generation of the image:
+
+1. Take the real label from an authorized photo and rectify it.
+2. Fit it in perspective to the generated label's corners.
+3. Replace only the label's interior; keep the generated edge, stitching, shading and light, matched in tone and sharpness.
+4. Check the text letter by letter at 3× zoom and record provenance: the source photo, the four corners, and before/after crops.
+
+The repaired image is a derived asset of the generated one; label it as such. Regenerating the whole image to fix label text is a fallback only when no usable real label photo exists. In one photoshoot this composite fixed 14 of 14 garbled labels across 5 images without new generations.
+
 ---
 
 # 7. Dependent Assets
