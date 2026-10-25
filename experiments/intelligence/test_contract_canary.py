@@ -42,6 +42,8 @@ def fixture():
             "cluster_id": "fixture:cluster-1", "question_or_theme": "fictional views",
             "supporting_evidence_refs": ["fixture:e-1"], "counterevidence_refs": [],
             "independent_source_count": 1, "uncertainty": "synthetic-only",
+            "what_is_observed": "Synthetic count", "what_is_inferred": "UNKNOWN",
+            "creative_or_decision_implication": "UNKNOWN",
         }],
         "counterevidence": [], "freshness_verdicts": [], "status": "PARTIAL",
         "unknowns": ["All market facts UNKNOWN"], "reuse_notes": [],
