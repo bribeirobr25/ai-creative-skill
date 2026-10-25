@@ -139,11 +139,11 @@ def _verified_media_paths_at_commit(commit: str) -> frozenset[str]:
         "--name-only", "-z", "--diff-merges=remerge", commit, "--",
     ])
     valid: set[str] = set()
-    for raw in names.split(b"\\x00"):
+    for raw in names.split(b"\x00"):
         if not raw:
             continue
         try:
-            name = raw.decode("utf-8").strip("\\n")
+            name = raw.decode("utf-8").strip("\n")
         except UnicodeDecodeError:
             continue
         if PurePosixPath(name.lower()).suffix not in RECOGNIZED_MEDIA_SUFFIXES:
