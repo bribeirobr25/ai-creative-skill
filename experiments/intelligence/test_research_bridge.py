@@ -297,9 +297,11 @@ class ClosedScopeBridgeAcceptanceTests(unittest.TestCase):
         from zoneinfo import ZoneInfo
         zone = ZoneInfo("Europe/Berlin")
         end = datetime(2026, 10, 25, 0, 0, tzinfo=zone)
-        included = synthetic_row("edge", obs_at=T, pub_at=(end - timedelta(seconds=1)))
-        excluded = synthetic_row("edge", obs_at=T, pub_at=end)
-        base = dict(range_to=date(2026,10,25), time_zone="Europe/Berlin")
+        observed = datetime(2026, 10, 25, 12, tzinfo=zone)
+        included = synthetic_row("edge", obs_at=observed, pub_at=(end - timedelta(seconds=1)))
+        excluded = synthetic_row("edge", obs_at=observed, pub_at=end)
+        base = dict(range_to=date(2026,10,25), time_zone="Europe/Berlin",
+                    generated_at=observed + timedelta(seconds=5))
         request(**base, observation_rows=[included])
         with self.assertRaises(ValidationError):
             request(**base, observation_rows=[excluded])
