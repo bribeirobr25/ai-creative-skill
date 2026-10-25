@@ -200,7 +200,7 @@ class SecretRulesTests(unittest.TestCase):
         for route in ("open?id=", "uc?id="):
             with self.subTest(route=route):
                 url="https://" + "drive.google.com/" + route + "D" * 30
-                self.assertIn(("REVIEW", "DRIVE_REFERENCE"), rules(fake_patch(url)))
+                self.assertIn(("BLOCK", "DRIVE_RESOURCE_REFERENCE"), rules(fake_patch(url)))
 
     def test_ci_cli_blocks_merge_only_added_token(self):
         import tempfile
@@ -426,14 +426,13 @@ class SecretRulesTests(unittest.TestCase):
     def test_nonsecret_documentation_is_clear(self):
         self.assertEqual([], rules(fake_patch("The GitHub provider requires tokens.")))
 
-    def test_drive_link_requires_review_not_automatic_block(self):
+    def test_drive_resource_link_blocks_by_default(self):
         link = "https://" + "drive.google.com/file/d/" + "1" * 30 + "/view"
-        self.assertIn(("REVIEW", "DRIVE_REFERENCE"), rules(fake_patch(link)))
-        self.assertFalse(any(x[0] == "BLOCK" for x in rules(fake_patch(link))))
+        self.assertIn(("BLOCK", "DRIVE_RESOURCE_REFERENCE"), rules(fake_patch(link)))
 
-    def test_docs_link_requires_review(self):
+    def test_docs_link_requires_block(self):
         link = "https://" + "docs.google.com/document/d/" + "a" * 30 + "/edit"
-        self.assertIn(("REVIEW", "DRIVE_REFERENCE"), rules(fake_patch(link)))
+        self.assertIn(("BLOCK", "DRIVE_RESOURCE_REFERENCE"), rules(fake_patch(link)))
 
     def test_email_in_public_text_requires_review_but_not_autoblock(self):
         candidate = "person@" + "company.org"
@@ -552,13 +551,13 @@ class SecretRulesTests(unittest.TestCase):
             self.assertIn("path_ref=", buf.getvalue())
 
     def test_warning_default_does_not_break(self):
-        link = "https://" + "docs.google.com/document/d/" + "D" * 31 + "/edit"
+        link = "https://" + "docs.google.com/document/d/EXAMPLE_DOCUMENT_ID/edit"
         with patch("publication_guard._get_diff", return_value=fake_patch(link)):
             with redirect_stdout(io.StringIO()):
                 self.assertEqual(0, main(["--staged"]))
 
     def test_warning_can_be_strict(self):
-        link = "https://" + "docs.google.com/document/d/" + "D" * 31 + "/edit"
+        link = "https://" + "docs.google.com/document/d/EXAMPLE_DOCUMENT_ID/edit"
         with patch("publication_guard._get_diff", return_value=fake_patch(link)):
             with redirect_stdout(io.StringIO()):
                 self.assertEqual(1, main(["--staged", "--fail-on-warning"]))

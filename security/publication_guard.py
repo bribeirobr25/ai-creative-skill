@@ -25,7 +25,7 @@ class Finding:
 
 
 BLOCK_RULES = (
-    ("GITHUB_TOKEN", re.compile(r"(?<![A-Za-z0-9])(?:ghp_|gho_|ghu_|ghs_|ghr_)[A-Za-z0-9]{30,}\b|\bgithub_pat_[A-Za-z0-9_]{40,}\b")),
+    ("GITHUB_TOKEN", re.compile(r"(?<![A-Za-z0-9])(?:ghp_|gho_|ghu_|ghs_|ghr_)[A-Za-z0-9]{30,}(?![A-Za-z0-9])|(?<![A-Za-z0-9])github_pat_[A-Za-z0-9_]{40,}(?![A-Za-z0-9])")),
     ("SECRET_KEY", re.compile(r"\bsk-(?:proj-)?[A-Za-z0-9_-]{24,}\b")),
     ("GOOGLE_API_KEY", re.compile(r"\bAIza[A-Za-z0-9_-]{35}\b")),
     ("STRIPE_LIVE_KEY", re.compile(r"\b(?:sk|rk)_live_[A-Za-z0-9]{20,}\b")),
@@ -34,11 +34,11 @@ BLOCK_RULES = (
     ("NPM_TOKEN", re.compile(r"\bnpm_[A-Za-z0-9]{30,}\b")),
 
     ("GOOGLE_OAUTH_CLIENT_SECRET", re.compile(r"(?<![A-Za-z0-9])GOCSPX-[A-Za-z0-9_-]{20,}")),
-    ("GOOGLE_OAUTH_ACCESS_TOKEN", re.compile(r"(?<![A-Za-z0-9])ya29\\.[A-Za-z0-9._~-]{30,}")),
+    ("GOOGLE_OAUTH_ACCESS_TOKEN", re.compile(r"(?<![A-Za-z0-9])ya29\.[A-Za-z0-9._~-]{30,}")),
     ("GOOGLE_OAUTH_REFRESH_TOKEN", re.compile(r"(?<![A-Za-z0-9])1//[A-Za-z0-9._~-]{35,}")),
     ("META_ACCESS_TOKEN", re.compile(r"(?<![A-Za-z0-9])EAA[A-Za-z0-9]{45,}")),
-    ("GENERIC_SECRET_ASSIGNMENT", re.compile(r"(?i)(?:client_secret|api_secret|refresh_token|access_token|password)\\s*[:=]\\s*['\\\"]?[A-Za-z0-9._/+~-]{24,}")),
-    ("AWS_ACCESS_ID", re.compile(r"\b(?:AKIA|ASIA)[A-Z0-9]{16}\b")),
+    ("GENERIC_SECRET_ASSIGNMENT", re.compile(r"(?i)(?:client_secret|api_secret|refresh_token|access_token|password)\s*[:=]\s*['\\\"]?[A-Za-z0-9._/+~-]{24,}")),
+    ("AWS_ACCESS_ID", re.compile(r"(?<![A-Za-z0-9])(?:AKIA|ASIA)[A-Z0-9]{16}(?![A-Za-z0-9])")),
     ("BEARER_CREDENTIAL", re.compile(r"(?i)\bauthorization\s*[:=]\s*bearer\s+[A-Za-z0-9._~+/-]{24,}")),
     ("PRIVATE_KEY_PEM", re.compile(r"-----BEGIN (?:RSA |EC |DSA |OPENSSH )?PRIVATE KEY-----")),
     ("SIGNED_ACCESS_URL", re.compile(r"(?i)(?:X-Amz-Signature|X-Goog-Signature)=[A-Za-z0-9%]{32,}")),
