@@ -19,7 +19,8 @@ AT = datetime(2026, 10, 24, 11, tzinfo=UTC)
 
 def row(name="one", count=100):
     return Observation(
-        publication_id=name, channel_id="fixture-channel",
+        publication_id=("fixture-" + name if not name.startswith("fixture-") else name),
+        channel_id="fixture-channel",
         platform="fixture-platform", content_type="long",
         views=count, observed_at=AT,
         published_at=AT-timedelta(days=2), source_kind="SYNTHETIC_FIXTURE",
@@ -69,7 +70,7 @@ class CrossModuleTests(unittest.TestCase):
         first=datetime(2026,10,24,12,tzinfo=local)
         second=datetime(2026,10,25,12,tzinfo=local)
         self.assertEqual(25,(second.astimezone(UTC)-first.astimezone(UTC)).total_seconds()/3600)
-        old=Observation("v","fixture-c","fixture-platform","long",100,first,first-timedelta(days=1),"SYNTHETIC_FIXTURE")
+        old=Observation("fixture-v","fixture-c","fixture-platform","long",100,first,first-timedelta(days=1),"SYNTHETIC_FIXTURE")
         new=Observation("v","fixture-c","fixture-platform","long",150,second,first-timedelta(days=1),"SYNTHETIC_FIXTURE")
         self.assertEqual(25,(new.observed_at-old.observed_at).total_seconds()/3600)
         self.assertAlmostEqual(2,view_velocity(old,new,derived_permission=True)["views_per_hour"])

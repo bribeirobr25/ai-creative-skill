@@ -11,7 +11,8 @@ T = datetime(2026, 10, 23, 10, 0, tzinfo=timezone.utc)
 
 def synthetic_row(id="a", views=200, obs_at=T, pub_at=None, platform="fixture-synthetic"):
     return Observation(
-        publication_id=id, channel_id="fixture-creator",
+        publication_id=("fixture-" + id.replace(":", "-") if not id.startswith("fixture-") else id),
+        channel_id="fixture-creator",
         platform=platform, content_type="long", views=views,
         observed_at=obs_at,
         published_at=pub_at or T - timedelta(days=2), source_kind="SYNTHETIC_FIXTURE",
@@ -83,7 +84,7 @@ class SyntheticBridgeTests(unittest.TestCase):
         self.assertEqual(2, len(set(ids)))
         subjects = [m["subject_id"] for m in x["intelligence"]["metric_observations"]]
         self.assertEqual(2, len(set(subjects)))
-        self.assertTrue(any("%3A" in v for v in ids))
+        self.assertTrue(all("fixture-" in v for v in ids))
         self.assertEqual("PARTIAL", x["status"])  # mixed platforms, no mixed rank
 
     def test_unknown_metric_not_zero(self):
@@ -305,3 +306,13 @@ class ClosedScopeBridgeAcceptanceTests(unittest.TestCase):
         request(**base, observation_rows=[included])
         with self.assertRaises(ValidationError):
             request(**base, observation_rows=[excluded])
+
+
+class PublicationFixtureIdentityTests(unittest.TestCase):
+    def test_reject_real_or_unmarked_publication_id(self):
+        for bad in ("https://youtu.be/xxxxxxxxxxx", "dQw4w9WgXcQ", "fixture-A"):
+            with self.subTest(bad=bad), self.assertRaises(ValidationError):
+                Observation(publication_id=bad, channel_id="fixture-c", platform="fixture-p",
+                            content_type="long", views=3, observed_at=T,
+                            published_at=T-timedelta(days=1), source_kind="SYNTHETIC_FIXTURE")
+        self.assertEqual("fixture-pub-1", synthetic_row("fixture-pub-1").publication_id)

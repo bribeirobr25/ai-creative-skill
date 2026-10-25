@@ -177,7 +177,7 @@ class AdversarialFixes(unittest.TestCase):
         pub=datetime(2026,10,25,0,30,tzinfo=berlin)
         seen=datetime(2026,10,25,3,30,tzinfo=berlin)
         row=Observation(
-            publication_id="local-first-hour",channel_id="fixture-creator",
+            publication_id="fixture-local-first-hour",channel_id="fixture-creator",
             platform="fixture-synthetic",content_type="long",views=40,
             observed_at=seen,published_at=pub,source_kind="SYNTHETIC_FIXTURE"
         )

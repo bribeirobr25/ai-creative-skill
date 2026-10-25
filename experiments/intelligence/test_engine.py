@@ -17,7 +17,8 @@ T0 = datetime(2026, 10, 20, tzinfo=timezone.utc)
 def obs(video="v0", channel="fixture-c1", views=100, hours_old=24, snap=T0,
         fmt="long", platform="fixture-synthetic", kind="SYNTHETIC_FIXTURE"):
     return Observation(
-        publication_id=video, channel_id=channel, platform=platform,
+        publication_id=("fixture-" + video if not video.startswith("fixture-") else video),
+        channel_id=channel, platform=platform,
         content_type=fmt, views=views, observed_at=snap,
         published_at=snap - timedelta(hours=hours_old), source_kind=kind,
     )
@@ -203,7 +204,7 @@ class MetricsTests(unittest.TestCase):
 
     def test_sample_rank_stable_ties_and_missing(self):
         ranked = rank_sample([obs("b", views=10), obs("a", views=10), obs("c", views=None)], limit=5)
-        self.assertEqual(["a", "b"], [x["publication_id"] for x in ranked["results"]])
+        self.assertEqual(["fixture-a", "fixture-b"], [x["publication_id"] for x in ranked["results"]])
         self.assertEqual(1, ranked["missing_count"])
         self.assertEqual("OBSERVED_SAMPLE_ONLY", ranked["population"])
 

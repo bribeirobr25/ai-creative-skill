@@ -45,7 +45,7 @@ class Observation:
             raise ValidationError("Stable source identities must be nonempty strings")
         import re
         from unicodedata import normalize as unicode_normalize
-        for field in ("channel_id", "platform"):
+        for field in ("publication_id", "channel_id", "platform"):
             value = getattr(self, field).strip()
             if (value != unicode_normalize("NFKC", value) or
                     re.fullmatch(r"fixture-[a-z0-9]+(?:-[a-z0-9]+)*", value) is None):
