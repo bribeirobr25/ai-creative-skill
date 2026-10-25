@@ -438,7 +438,10 @@ def main(argv: list[str] | None = None) -> int:
                 "git", "diff", "--cached", "--name-only", "-z", "--"
             ]), "<staged-git-paths>"))
         if ns.history_range:
-            findings.extend(_octopus_findings(ns.history_range))
+            if _octopus_findings(ns.history_range):
+                # An uninspectable merge is incomplete, not proof of a leaked secret.
+                print("OCTOPUS_MERGE_UNINSPECTED: Git history inspection incomplete", file=sys.stderr)
+                return 2
             # Never re-use HEAD's media signature to exempt historical NUL.
             findings.extend(_scan_commit_history(ns.history_range))
             findings.extend(_metadata_findings(ns.history_range))
