@@ -77,15 +77,64 @@ PRIVATE_FILENAME = re.compile(
     r"[^/]+\.(?:p12|pfx))$"
 )
 REVIEW_FILE_SUFFIXES = (".zip", ".pdf", ".png", ".jpg", ".jpeg", ".webp", ".heic", ".heif", ".mov", ".mp4", ".key", ".pem", ".db", ".sqlite")
-DIFF_FILE = re.compile(r"^\+\+\+ b/(.+)$")
+DIFF_FILE = re.compile(r"^\\+\\+\\+ b/(.+)$")
+# The suffix alone is never enough to exempt NUL-containing content.
+RECOGNIZED_MEDIA_SUFFIXES = (".png", ".jpg", ".jpeg", ".gif", ".webp", ".pdf", ".mp4", ".mov", ".heic")
 
 
-def scan_added_line(path: str, line: str, line_number: int) -> list[Finding]:
+def _has_valid_media_magic(path: str, data: bytes) -> bool:
+    suffix = PurePosixPath(path.lower()).suffix
+    if suffix == ".png":
+        return data.startswith(b"\\x89PNG\\r\\n\\x1a\\n")
+    if suffix in (".jpg", ".jpeg"):
+        return data.startswith(b"\\xff\\xd8\\xff")
+    if suffix == ".gif":
+        return data.startswith((b"GIF87a", b"GIF89a"))
+    if suffix == ".webp":
+        return data.startswith(b"RIFF") and data[8:12] == b"WEBP"
+    if suffix == ".pdf":
+        return data.startswith(b"%PDF-")
+    if suffix in (".mp4", ".mov", ".heic"):
+        return len(data) >= 12 and data[4:8] == b"ftyp" and (
+            suffix != ".heic" or data[8:12] in (b"heic", b"heix", b"hevc", b"mif1"))
+    return False
+
+
+def _verified_media_paths(ns: argparse.Namespace) -> set[str]:
+    # Read the actual staged/HEAD blob, not a filename or a Git diff rendering.
+    command = ["git", "diff"]
+    if ns.staged:
+        command.append("--cached")
+    command += ["--name-only", "-z"]
+    if ns.range:
+        command.append(ns.range)
+    command.append("--")
+    names = _run_git(command)
+    valid = set()
+    for raw in names.split(b"\\x00"):
+        if not raw:
+            continue
+        name = raw.decode("utf-8", errors="replace")
+        if PurePosixPath(name.lower()).suffix not in RECOGNIZED_MEDIA_SUFFIXES:
+            continue
+        blobref = ":" + name if ns.staged else "HEAD:" + name
+        try:
+            content = _run_git(["git", "show", blobref])
+        except RuntimeError:
+            # A claimed media filename without inspectable bytes gets NO exception.
+            continue
+        if _has_valid_media_magic(name, content):
+            valid.add(name)
+    return valid
+
+
+def scan_added_line(path: str, line: str, line_number: int, *, verified_media: bool = False) -> list[Finding]:
     findings = []
     # Git --text exposes UTF-16-style data as interleaved NUL bytes. Treat
     # these as suspicious and also inspect the de-NUL'd ASCII token stream.
     if "\x00" in line:
-        findings.append(Finding("BLOCK", "NUL_IN_ADDED_CONTENT", path, line_number))
+        if not verified_media:
+            findings.append(Finding("BLOCK", "NUL_IN_ADDED_CONTENT", path, line_number))
         line = line.replace("\x00", "").replace("\ufffd", "").replace("\ufeff", "")
     # A Git attribute can hide arbitrary text from the diff renderer. This
     # should not be published without a separate explicit review.
@@ -133,7 +182,7 @@ def _destination_from_git_header(line: str) -> str | None:
     return None
 
 
-def scan_unified_diff(patch: str) -> list[Finding]:
+def scan_unified_diff(patch: str, *, verified_media_paths: frozenset[str] = frozenset()) -> list[Finding]:
     """Scan every added hunk line, even if a filename cannot be decoded.
 
     Git textual diffs quote unusual paths, sometimes using octal byte escapes.
@@ -175,7 +224,8 @@ def scan_unified_diff(patch: str) -> list[Finding]:
         # suppress the rest of the hunk with a crafted added line.
         if in_hunk and line.startswith("+"):
             line_no += 1
-            results.extend(scan_added_line(destination or "<unknown-file>", line[1:], line_no))
+            results.extend(scan_added_line(destination or "<unknown-file>", line[1:], line_no,
+                                           verified_media=destination in verified_media_paths))
             continue
         if line.startswith("deleted file mode ") or line == "+++ /dev/null":
             deleted = True
@@ -315,7 +365,8 @@ def main(argv: list[str] | None = None) -> int:
         final_text = _get_diff(ns)
         findings = ([Finding("REVIEW", "NON_UTF8_CONTENT", "<git-diff>", 0)]
                     if "\ufffd" in final_text else [])
-        findings.extend(scan_unified_diff(final_text))
+        verified_media_paths = frozenset(_verified_media_paths(ns))
+        findings.extend(scan_unified_diff(final_text, verified_media_paths=verified_media_paths))
         if ns.staged:
             # Staged paths are not necessarily present in a text hunk.
             findings.extend(_scan_path_list(_run_git([
@@ -330,7 +381,7 @@ def main(argv: list[str] | None = None) -> int:
             ])
             history_text, decode_issues = _decode_inspected_bytes(historical_bytes, "<git-commits>")
             findings.extend(decode_issues)
-            findings.extend(scan_unified_diff(history_text))
+            findings.extend(scan_unified_diff(history_text, verified_media_paths=verified_media_paths))
             findings.extend(_metadata_findings(ns.history_range))
         elif ns.range:
             findings.extend(_metadata_findings(ns.range.replace("...", "..", 1)))
