@@ -45,7 +45,7 @@ BLOCK_RULES = (
     ("SIGNED_QUERY_TOKEN", re.compile(r"(?i)(?:https?://[^\s<>'\"]{1,900}[?&](?:token|access_token|signature|sig|auth)=)[A-Za-z0-9%._~-]{24,}")),
 )
 REVIEW_RULES = (
-    ("DRIVE_REFERENCE", re.compile(r"https?://(?:drive|docs)\.google\.com/(?:(?:file|drive|document|spreadsheets|presentation|u)/|(?:open|uc)\?id=)", re.I)),
+    ("DRIVE_REFERENCE", re.compile(r"https?://(?:drive|docs)\.google\.com/(?:(?:(?:file/d|drive/folders|document/d|spreadsheets/d|presentation/d)/[A-Za-z0-9_-]{18,})|(?:(?:open|uc)\?id=[A-Za-z0-9_-]{18,}))", re.I)),
     ("SHAREABLE_STORAGE_LINK", re.compile(r"https?://[^\s<>'\"]{1,300}/(?:share|sharing|download)/[^\s<>'\"]{10,}", re.I)),
 )
 
