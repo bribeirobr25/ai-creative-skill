@@ -100,6 +100,23 @@ class SyntheticBridgeTests(unittest.TestCase):
         x = request(observation_rows=[synthetic_row("a", views=100), synthetic_row("b", views=None)])
         self.assertEqual("PARTIAL", x["status"])
 
+    def test_partial_observed_counter_cannot_claim_complete_ranking_scope(self):
+        # I-A2 regression: this must fail if the final ranking-scope downgrade is removed.
+        from experiments.intelligence.contract_canary import validate_research_execution
+        result = request(
+            observation_rows=[
+                synthetic_row("a", views=100),
+                synthetic_row("b", views=None),
+            ],
+            population_coverage_verified=True,
+            source_coverage_verified=True,
+            ranking_requested=True,
+        )
+        self.assertEqual("PARTIAL", result["status"])
+        self.assertEqual("OBSERVED_SAMPLE_ONLY", result["intelligence"]["ranking_scope"])
+        validate_research_execution(
+            result, evidence_by_id=result["fixture_evidence_index"])
+
     def test_ok_source_with_incompatible_platforms_is_partial(self):
         x = request(observation_rows=[
             synthetic_row("a", platform="fixture-a"),
