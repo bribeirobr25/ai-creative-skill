@@ -1044,3 +1044,104 @@ class HistoricalMediaAndDriveAcceptance(unittest.TestCase):
             self.assertEqual(0, run.returncode, run.stdout)
             self.assertIn("BINARY_OR_MEDIA_REVIEW", run.stdout)
             self.assertNotIn("NUL_IN_ADDED_CONTENT", run.stdout)
+
+
+class AccountScopedDriveAndGifAcceptance(unittest.TestCase):
+    """Closed S-A6/S-A7 acceptance, with synthetic identifiers only."""
+
+    def test_drive_resource_paths_require_block(self):
+        root = "https://" + "drive.google.com/"
+        docs = "https://" + "docs.google.com/"
+        paths = (
+            (root, "drive/folders/"),
+            (root, "drive/u/0/folders/"),
+            (root, "drive/u/1/folders/"),
+            (root, "drive/mobile/folders/"),
+            (root, "file/d/"),
+            (root, "file/u/0/d/"),
+            (docs, "document/d/"),
+            (docs, "document/u/0/d/"),
+            (docs, "spreadsheets/d/"),
+            (docs, "spreadsheets/u/0/d/"),
+            (docs, "presentation/d/"),
+            (docs, "presentation/u/0/d/"),
+            (root, "open?id="),
+            (root, "uc?id="),
+        )
+        for host, route in paths:
+            with self.subTest(route=route):
+                link = host + route + "Ab3" * 11
+                self.assertIn(
+                    ("BLOCK", "DRIVE_RESOURCE_REFERENCE"),
+                    rules(fake_patch(link)),
+                )
+
+    def test_short_and_long_placeholder_identifiers_stay_nonblocking(self):
+        from publication_guard import scan_added_line
+        host = "https://" + "drive.google.com/"
+        examples = (
+            host + "drive/u/0/folders/EXAMPLE_" + "A" * 24,
+            host + "file/u/0/d/FILE_ID",
+            host + "drive/mobile/folders/PLACEHOLDER_" + "B" * 20,
+        )
+        for link in examples:
+            with self.subTest(route=link.split(host)[1][:28]):
+                findings = scan_added_line("fixture.md", link, 1)
+                self.assertFalse(any(f.severity == "BLOCK" for f in findings))
+
+    def test_real_resource_after_placeholder_on_same_line_blocks(self):
+        from publication_guard import scan_added_line
+        host = "https://" + "drive.google.com/"
+        placeholder = host + "file/d/EXAMPLE_" + "A" * 23
+        real = host + "drive/u/0/folders/" + "Ab3" * 11
+        matches = scan_added_line("fixture.md", placeholder + " and " + real, 1)
+        self.assertIn(
+            ("BLOCK", "DRIVE_RESOURCE_REFERENCE"),
+            [(m.severity, m.rule) for m in matches],
+        )
+        self.assertIn(
+            ("REVIEW", "LINK_INCOMPLETE_OR_PLACEHOLDER_IDENTIFIER"),
+            [(m.severity, m.rule) for m in matches],
+        )
+
+    def test_account_scoped_drive_url_blocks_in_real_git_cli(self):
+        test = ClosedScopeCliRegressions()
+        tmp, root, git, base = test._repo()
+        with tmp:
+            link = ("https://" + "drive.google.com/drive/u/0/folders/"
+                    + "Ab3" * 11)
+            (root / "note.md").write_text(link)
+            git("add", "-A")
+            git("commit", "-qm", "synthetic resource reference")
+            result = test._cli(root, "--range", base + "...HEAD",
+                               "--history-range", base + "..HEAD")
+            self.assertEqual(1, result.returncode, result.stdout)
+            self.assertIn("DRIVE_RESOURCE_REFERENCE", result.stdout)
+            self.assertNotIn(link, result.stdout)
+
+    def test_recognized_gif_is_reviewed_without_nul_block(self):
+        import publication_guard as guard
+        self.assertTrue(guard._has_valid_media_magic(
+            "synthetic.gif", b"GIF89a" + bytes(range(256))))
+        test = ClosedScopeCliRegressions()
+        tmp, root, git, base = test._repo()
+        with tmp:
+            path = root / "synthetic.gif"
+            path.write_bytes(b"GIF89a" + bytes(range(256)))
+            git("add", "-A")
+            clean = test._cli(root, "--staged")
+            self.assertEqual(0, clean.returncode, clean.stdout)
+            self.assertIn("BINARY_OR_MEDIA_REVIEW", clean.stdout)
+            self.assertNotIn("NUL_IN_ADDED_CONTENT", clean.stdout)
+
+            path.write_bytes(("ghp_" + "S" * 36).encode("utf-16"))
+            git("add", "-A")
+            disguised = test._cli(root, "--staged")
+            self.assertEqual(1, disguised.returncode, disguised.stdout)
+            self.assertIn("NUL_IN_ADDED_CONTENT", disguised.stdout)
+
+            path.write_bytes(b"GIF89a" + b"ghp_" + b"R" * 36)
+            git("add", "-A")
+            inside = test._cli(root, "--staged")
+            self.assertEqual(1, inside.returncode, inside.stdout)
+            self.assertIn("GITHUB_TOKEN", inside.stdout)
