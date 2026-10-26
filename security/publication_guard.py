@@ -45,7 +45,7 @@ BLOCK_RULES = (
     ("SIGNED_QUERY_TOKEN", re.compile(r"(?i)(?:https?://[^\s<>'\"]{1,900}[?&](?:token|access_token|signature|sig|auth)=)[A-Za-z0-9%._~-]{24,}")),
 )
 REVIEW_RULES = (
-    ("DRIVE_REFERENCE", re.compile(r"https?://(?:drive|docs)\.google\.com/(?:(?:(?:file/d|drive/folders|document/d|spreadsheets/d|presentation/d)/[A-Za-z0-9_-]{18,})|(?:(?:open|uc)\?id=[A-Za-z0-9_-]{18,}))", re.I)),
+    ("DRIVE_REFERENCE", re.compile(r"https?://(?:drive|docs)\.google\.com/(?:(?:file(?:/u/\d+)?/d|drive(?:(?:/u/\d+|/mobile))?/folders|document(?:/u/\d+)?/d|spreadsheets(?:/u/\d+)?/d|presentation(?:/u/\d+)?/d)/[A-Za-z0-9_-]{18,}|(?:open|uc)\?id=[A-Za-z0-9_-]{18,})", re.I)),
     ("SHAREABLE_STORAGE_LINK", re.compile(r"https?://[^\s<>'\"]{1,300}/(?:share|sharing|download)/[^\s<>'\"]{10,}", re.I)),
 )
 
@@ -76,7 +76,7 @@ PRIVATE_FILENAME = re.compile(
     r"[^/]*(?:private|secret|credential|token)[^/]*\.(?:p12|pfx|pem|key|db|sqlite)|"
     r"[^/]+\.(?:p12|pfx))$"
 )
-REVIEW_FILE_SUFFIXES = (".zip", ".pdf", ".png", ".jpg", ".jpeg", ".webp", ".heic", ".heif", ".mov", ".mp4", ".key", ".pem", ".db", ".sqlite")
+REVIEW_FILE_SUFFIXES = (".zip", ".pdf", ".png", ".jpg", ".jpeg", ".gif", ".webp", ".heic", ".heif", ".mov", ".mp4", ".key", ".pem", ".db", ".sqlite")
 DIFF_FILE = re.compile(r"^\+\+\+ b/(.+)$")
 # The suffix alone is never enough to exempt NUL-containing content.
 RECOGNIZED_MEDIA_SUFFIXES = (".png", ".jpg", ".jpeg", ".gif", ".webp", ".pdf", ".mp4", ".mov", ".heic")
@@ -200,11 +200,11 @@ def scan_added_line(path: str, line: str, line_number: int, *, verified_media: b
         if rx.search(line):
             findings.append(Finding("BLOCK", name, path, line_number))
     for name, rx in REVIEW_RULES:
-        match = rx.search(line)
-        if match:
+        # Check every matched resource: a harmless fixture must not hide
+        # a real Drive link later on the same added line.
+        for match in rx.finditer(line):
             if name == "DRIVE_REFERENCE":
-                # A placeholder elsewhere on the line must never excuse a real link.
-                # Inspect the matched resource identifier, not surrounding prose.
+                # Only the matched identifier may qualify as a placeholder.
                 identifier_match = re.search(
                     r"(?i)(?:/(?:d|folders)/|[?&]id=)([A-Za-z0-9_-]+)",
                     match.group(0),
