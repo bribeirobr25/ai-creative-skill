@@ -1,0 +1,41 @@
+name: Publication Safety Guard (candidate)
+on:
+  pull_request:
+    paths:
+      - '**'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  scan-publication-diff:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Test redaction and detection rules
+        run: python -m unittest discover -s security -p 'test_*.py' -v
+      - name: Inspect final PR diff AND all commit additions
+        if: github.event_name == 'pull_request'
+        run: |
+          python security/publication_guard.py \
+            --range "origin/$GITHUB_BASE_REF...HEAD" \
+            --history-range "origin/$GITHUB_BASE_REF..HEAD"
+      - name: Fetch public heads for MANUAL history audit
+        if: github.event_name == 'workflow_dispatch'
+        run: |
+          git fetch --no-tags --prune origin '+refs/heads/*:refs/remotes/origin/*' > /dev/null 2>&1 || {
+            echo "Manual history audit blocked: public heads unavailable"
+            exit 2
+          }
+      - name: Manual advisory audit of public branch history
+        if: github.event_name == 'workflow_dispatch'
+        run: python security/history_audit.py
+      - name: Manual audit notice
+        if: github.event_name == 'workflow_dispatch'
+        run: echo "Manual history audit was executed as a separate advisory check."
