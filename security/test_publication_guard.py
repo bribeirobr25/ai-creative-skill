@@ -1140,7 +1140,7 @@ class AccountScopedDriveAndGifAcceptance(unittest.TestCase):
             self.assertEqual(1, disguised.returncode, disguised.stdout)
             self.assertIn("NUL_IN_ADDED_CONTENT", disguised.stdout)
 
-            path.write_bytes(b"GIF89a" + b"ghp_" + b"R" * 36)
+            path.write_bytes(b"GIF89a\n" + b"ghp_" + b"R" * 36)
             git("add", "-A")
             inside = test._cli(root, "--staged")
             self.assertEqual(1, inside.returncode, inside.stdout)
