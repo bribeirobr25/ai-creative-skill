@@ -1,0 +1,295 @@
+"""Offline, synthetic-data-only intelligence experiment.
+
+NO network, API calls, credentials, third-party data, source media or billing.
+NO integration with the canonical skill runtime. No YouTube data is permitted here.
+Python stdlib only; all observations must carry SYNTHETIC_FIXTURE provenance.
+"""
+from __future__ import annotations
+
+from dataclasses import dataclass
+from datetime import datetime, timezone
+from math import isfinite, isclose
+from unicodedata import normalize
+from statistics import median
+from typing import Iterable
+import json
+import random
+
+
+class ValidationError(ValueError):
+    """Input breaks an invariant: fail closed rather than invent a metric."""
+
+
+class InsufficientEvidence(ValueError):
+    """No mathematically defensible result for the supplied synthetic sample."""
+
+
+@dataclass(frozen=True)
+class Observation:
+    publication_id: str
+    channel_id: str
+    platform: str
+    content_type: str  # 'short' or 'long'
+    views: int | None
+    observed_at: datetime
+    published_at: datetime
+    source_kind: str
+    geographic_basis: str = "UNKNOWN"
+
+    def __post_init__(self) -> None:
+        if self.source_kind != "SYNTHETIC_FIXTURE":
+            raise ValidationError("Explicit synthetic provenance required")
+        if any(type(v) is not str or not v.strip() for v in (
+            self.publication_id, self.channel_id, self.platform
+        )):
+            raise ValidationError("Stable source identities must be nonempty strings")
+        import re
+        from unicodedata import normalize as unicode_normalize
+        for field in ("publication_id", "channel_id", "platform"):
+            value = getattr(self, field).strip()
+            if (value != unicode_normalize("NFKC", value) or
+                    re.fullmatch(r"fixture-[a-z0-9]+(?:-[a-z0-9]+)*", value) is None):
+                raise ValidationError("Only explicit ASCII fixture identities are accepted")
+        for field in ("publication_id", "channel_id", "platform"):
+            object.__setattr__(self, field, normalize("NFC", getattr(self, field).strip()))
+        if self.content_type not in ("short", "long"):
+            raise ValidationError("Unknown content type")
+        for d in (self.observed_at, self.published_at):
+            if not isinstance(d, datetime) or d.tzinfo is None or d.utcoffset() is None:
+                raise ValidationError("Timezones are required")
+        # UTC-normalize before arithmetic: ZoneInfo datetimes with the same
+        # tzinfo otherwise ignore the real DST offset transition.
+        object.__setattr__(self, "observed_at", self.observed_at.astimezone(timezone.utc))
+        object.__setattr__(self, "published_at", self.published_at.astimezone(timezone.utc))
+        if self.observed_at < self.published_at:
+            raise ValidationError("Observation cannot predate publication")
+        if self.views is not None and (isinstance(self.views, bool) or not isinstance(self.views, int) or not 0 <= self.views <= 2**63 - 1):
+            raise ValidationError("Views must fit nonnegative signed 64-bit counter or None")
+
+    @property
+    def age_hours(self) -> float:
+        return (self.observed_at - self.published_at).total_seconds() / 3600
+
+
+def unique_observations(rows: Iterable[Observation]) -> list[Observation]:
+    """Deduplicate an exact observation, never conflate reposted publications.
+
+    Same platform/publication/time with inconsistent metadata or views is a
+    conflict, not an invitation to choose the more flattering number.
+    """
+    index: dict[tuple[str, str, datetime], Observation] = {}
+    for item in rows:
+        key = (item.platform, item.publication_id, item.observed_at)
+        old = index.get(key)
+        if old is not None and old != item:
+            raise ValidationError("Conflicting duplicate for same publication and time")
+        index[key] = item
+    return sorted(index.values(), key=lambda v: (v.platform, v.publication_id, v.observed_at))
+
+
+def _require_derived_permission(allowed: bool) -> None:
+    if allowed is not True:
+        raise ValidationError("Derived metric permission not established; synthetic algorithms are gated")
+
+
+def outlier_ratio(
+    video: Observation,
+    baseline: Iterable[Observation],
+    *,
+    derived_permission: bool = False,
+    min_baseline: int = 3,
+    age_tolerance: float = 0.20,
+) -> dict:
+    """Age-matched creator baseline; all data MUST be synthetic.
+
+    No YouTube- or vidIQ-specific scoring is implemented or reverse-engineered.
+    Video and baseline must have the same channel, platform, format and similar
+    age. The median is undefined for zero-only baselines.
+    """
+    _require_derived_permission(derived_permission)
+    if type(min_baseline) is not int or min_baseline < 2:
+        raise ValidationError("Baseline minimum must be an integer >= 2")
+    if type(age_tolerance) not in (float, int) or not isfinite(age_tolerance) or not 0 <= age_tolerance <= 1:
+        raise ValidationError("Age tolerance must be finite and between 0 and 1")
+    if video.views is None or video.age_hours <= 0:
+        raise InsufficientEvidence("Missing target views or invalid video age")
+    dedup = unique_observations(baseline)
+    # Validate all snapshots of a stable publication identity BEFORE cohort
+    # filtering. Otherwise changed channel/format metadata could be silently
+    # discarded and leave a deceptively clean comparator group.
+    identities: dict[tuple[str, str], tuple[str, str, datetime]] = {}
+    for sample in dedup:
+        key = (sample.platform, sample.publication_id)
+        identity = (sample.channel_id, sample.content_type, sample.published_at)
+        previous = identities.get(key)
+        if previous is not None and previous != identity:
+            raise ValidationError("Conflicting metadata across publication snapshots")
+        identities[key] = identity
+    target_key = (video.platform, video.publication_id)
+    target_identity = (video.channel_id, video.content_type, video.published_at)
+    if target_key in identities and identities[target_key] != target_identity:
+        raise ValidationError("Baseline disagrees with target publication identity")
+    # One independent publication contributes at most one count.
+    # Compare snapshots of the same creator/format near the target's age.
+    # The nearest age-matched snapshot is selected; equal-distance ties
+    # choose the earlier observation time for deterministic behavior.
+    groups: dict[str, list[Observation]] = {}
+    for item in dedup:
+        if item.publication_id == video.publication_id:
+            continue
+        if (item.platform, item.channel_id, item.content_type) != (
+            video.platform, video.channel_id, video.content_type
+        ):
+            continue
+        groups.setdefault(item.publication_id, []).append(item)
+
+    selected: list[int] = []
+    for publication_id in sorted(groups):
+        candidates = groups[publication_id]
+        identity = {(x.published_at, x.channel_id, x.content_type) for x in candidates}
+        if len(identity) != 1:
+            raise ValidationError("Conflicting metadata for baseline publication")
+        eligible = [
+            x for x in candidates
+            if x.age_hours > 0 and x.views is not None
+            and (abs(x.age_hours - video.age_hours) <= age_tolerance * video.age_hours
+                 or isclose(abs(x.age_hours - video.age_hours),
+                            age_tolerance * video.age_hours, rel_tol=1e-12, abs_tol=1e-9))
+        ]
+        if not eligible:
+            continue
+        chosen = min(eligible, key=lambda x: (abs(x.age_hours - video.age_hours), x.observed_at))
+        selected.append(chosen.views)
+
+    if len(selected) < min_baseline:
+        raise InsufficientEvidence("Insufficient comparable baseline sample")
+    typical = median(selected)
+    if typical <= 0:
+        raise InsufficientEvidence("Zero baseline median; ratio undefined")
+    ratio = video.views / typical
+    if not isfinite(ratio):
+        raise ValidationError("Nonfinite ratio")
+    return {
+        "metric": "OUTLIER_RATIO",
+        "metric_version": "offline-exp-0.1",
+        "ratio": ratio,
+        "median_comparable_views": typical,
+        "baseline_n": len(selected),
+        "age_hours": video.age_hours,
+        "population": "SYNTHETIC_AGE_MATCHED_CHANNEL_BASELINE",
+        "scope": "FIXTURE_ONLY_NOT_PLATFORM_RANKING",
+    }
+
+
+def view_velocity(earlier: Observation, later: Observation, *, derived_permission: bool = False) -> dict:
+    _require_derived_permission(derived_permission)
+    if (
+        earlier.platform, earlier.publication_id, earlier.channel_id,
+        earlier.content_type, earlier.published_at
+    ) != (
+        later.platform, later.publication_id, later.channel_id,
+        later.content_type, later.published_at
+    ):
+        raise ValidationError("Incompatible publication observations")
+    if earlier.views is None or later.views is None:
+        raise InsufficientEvidence("A view counter is missing")
+    elapsed = (later.observed_at - earlier.observed_at).total_seconds() / 3600
+    if elapsed <= 0:
+        raise InsufficientEvidence("Need observations at strictly increasing times")
+    delta = later.views - earlier.views
+    if delta < 0:
+        raise InsufficientEvidence("Decreasing counter; correction cannot represent growth")
+    return {
+        "metric": "VIEW_VELOCITY",
+        "metric_version": "offline-exp-0.1",
+        "views_delta": delta,
+        "hours": elapsed,
+        "views_per_hour": delta / elapsed,
+        "scope": "SYNTHETIC_OBSERVED_INTERVAL_ONLY",
+    }
+
+
+def rank_sample(
+    observations: Iterable[Observation], *,
+    limit: int,
+    requested_national_top: bool = False,
+    population_coverage_verified: bool = False,
+) -> dict:
+    """Sort reported counters, not a derived cross-platform viral score."""
+    if type(limit) is not int or not 1 <= limit <= 100:
+        raise ValidationError("Limit must be an integer from 1 to 100")
+    if type(requested_national_top) is not bool or type(population_coverage_verified) is not bool:
+        raise ValidationError("Coverage flags must be explicit booleans")
+    rows = unique_observations(observations)
+    if requested_national_top and not population_coverage_verified:
+        raise InsufficientEvidence("National Top N cannot be inferred from an observed sample")
+    if not rows:
+        raise InsufficientEvidence("No verified synthetic sample")
+    platforms = {r.platform for r in rows}
+    if len(platforms) != 1:
+        raise ValidationError("Different platforms require separate rankings")
+    with_count = [r for r in rows if r.views is not None]
+    if not with_count:
+        raise InsufficientEvidence("No available counters")
+    if requested_national_top and len(with_count) != len(rows):
+        raise InsufficientEvidence("Unknown counters can change the national top N")
+    if len({r.observed_at for r in with_count}) != 1:
+        raise ValidationError("Mixed observation moments: choose a comparable snapshot")
+    ranked = sorted(with_count, key=lambda v: (-v.views, v.publication_id))
+    return {
+        "metric": "RAW_VIEW_COUNT",
+        "population": "COMPLETE" if population_coverage_verified else "OBSERVED_SAMPLE_ONLY",
+        "missing_count": len(rows) - len(with_count),
+        "ties_excluded_at_cutoff": (
+            sum(x.views == ranked[limit - 1].views for x in ranked[limit:])
+            if len(ranked) > limit else 0
+        ),
+        "results": [{"publication_id": x.publication_id, "views": x.views} for x in ranked[:limit]],
+    }
+
+
+def simulate_operational_resilience(
+    *, trials: int = 2000, seed: int = 20261023,
+    common_outage_probability: float = 0.10,
+    independent_failure_probability: float = 0.15,
+) -> dict:
+    """Assumption-driven simulation; NOT a forecast of real provider reliability.
+
+    Two hypothetical sources with correlated common-mode outages.
+    No input/output links to real APIs. Simple fixed-seed Monte Carlo.
+    """
+    if type(trials) is not int or not 1 <= trials <= 100000:
+        raise ValidationError("Trial count must be an integer from 1 to 100000")
+    if type(seed) is not int:
+        raise ValidationError("Seed must be an integer")
+    for p in (common_outage_probability, independent_failure_probability):
+        if type(p) not in (int, float) or not isfinite(p) or not 0 <= p <= 1:
+            raise ValidationError("Probability must be a finite number in [0,1]")
+    rng = random.Random(seed)
+    complete = partial = blocked = 0
+    for _ in range(trials):
+        common_down = rng.random() < common_outage_probability
+        if common_down:
+            working = 0
+        else:
+            working = sum(rng.random() >= independent_failure_probability for _ in range(2))
+        if working == 2:
+            complete += 1
+        elif working == 1:
+            partial += 1
+        else:
+            blocked += 1
+    return {
+        "status": "SYNTHETIC_SCENARIO_ONLY",
+        "seed": seed, "trials": trials,
+        "assumptions": {
+            "common_outage_probability": common_outage_probability,
+            "independent_failure_probability": independent_failure_probability,
+            "sources": 2
+        },
+        "counts": {"COMPLETE": complete, "PARTIAL": partial, "BLOCKED": blocked}
+    }
+
+
+if __name__ == "__main__":
+    print(json.dumps(simulate_operational_resilience(), sort_keys=True))
