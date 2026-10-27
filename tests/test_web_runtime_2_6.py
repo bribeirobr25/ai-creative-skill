@@ -111,6 +111,26 @@ class StaticAudit(unittest.TestCase):
         self.assertEqual(qa.redact('at file:///home/u/p/x.js:3 failed'),'at <path> failed')
         self.assertEqual(qa.redact('C:/Users/someone/a.js'),'<path>')
 
+    def test_redact_keeps_home_named_folders_and_words(self):
+        for text in ('assets/root/big.png','https://example.com/root/a.png','profile:/x','myfile:abc'):
+            self.assertEqual(qa.redact(text,'/root'),text)
+        self.assertEqual(qa.redact('/root/x/y.png','/root'),'./x/y.png')
+        self.assertEqual(qa.redact('see /root','/root'),'see .')
+
+    def test_needs_http_ignores_comments_and_data_scripts(self):
+        with tempfile.TemporaryDirectory() as td:
+            site=make_site(Path(td))
+            (site/'app.js').write_text("// We avoid fetch() so the page works offline\n/* import(x) */ const u='https://x.com/a';")
+            (site/'index.html').write_text((site/'index.html').read_text().replace('<script','<script type="application/ld+json">{"d":"fetch( import(x)"}</script><script'))
+            self.assertEqual(qa.static_audit(site)['needs_http'],[])
+            (site/'app.js').write_text("const u='https://x.com/a'; fetch('data.json')")
+            self.assertEqual(qa.static_audit(site)['needs_http'],['fetch()'])
+
+    def test_srcset_parsing_skips_data_urls(self):
+        self.assertEqual(qa.srcset_urls('data:image/png;base64,iVBORw0KGgo= 1x, assets/big.png 2x'),['assets/big.png'])
+        self.assertEqual(qa.srcset_urls('a.png 1x, b.png 2x'),['a.png','b.png'])
+        self.assertEqual(qa.srcset_urls('a.png,b.png'),['a.png','b.png'])
+
     def test_static_only_is_honoured_with_url(self):
         with tempfile.TemporaryDirectory() as td:
             project=Path(td);site=make_site(project)
@@ -277,6 +297,37 @@ class BrowserAudit(unittest.TestCase):
                         '<div style="display:flex;overflow:hidden;width:300px"><img src="assets/big.png" style="width:300px;flex-shrink:0" alt="1"><img src="assets/big.png" style="width:300px;flex-shrink:0" alt="2"></div>'):
             _,checks,_=self.audit_variant(snippet)
             self.assertEqual(checks['images_rendered']['result'],'PASS',(snippet,checks['images_rendered'].get('reason')))
+
+    def test_closed_panels_are_not_collapsed_but_unlabelled_collapse_is(self):
+        img='<img src="assets/big.png" style="width:300px" alt="p">'
+        for snippet in ('<button aria-expanded="false" aria-controls="p1">More</button><div id="p1" style="max-height:0;overflow:hidden">'+img+'</div>',
+                        '<div role="tabpanel" aria-hidden="true" style="height:0;overflow:hidden">'+img+'</div>',
+                        '<button aria-expanded="false" aria-controls="acc">More</button><div id="acc" style="display:grid;grid-template-rows:0fr"><div style="overflow:hidden">'+img+'</div></div>'):
+            _,checks,_=self.audit_variant(snippet)
+            self.assertEqual(checks['images_rendered']['result'],'PASS',(snippet,checks['images_rendered'].get('reason')))
+        # The DQB-03 style-test defect carried no ARIA state: a 0-height box (or a 0fr grid track) without it still fails.
+        for snippet in ('<div style="display:grid;grid-template-rows:0fr"><div style="overflow:hidden">'+img+'</div></div>',
+                        '<a href="#/p" style="display:block"><div style="height:0"><img src="assets/big.png" style="width:100%;height:100%" alt="tile"></div></a>'):
+            _,checks,_=self.audit_variant(snippet)
+            self.assertEqual(checks['images_rendered']['result'],'FAIL',snippet)
+
+    def test_decorative_clip_path_does_not_hide_a_collapse(self):
+        _,checks,_=self.audit_variant('<section style="clip-path:polygon(0 0,100% 0,100% 90%,0 100%)"><div style="height:0">'
+                                      '<img src="assets/big.png" style="width:100%;height:100%" alt="hero"></div></section>')
+        self.assertEqual(checks['images_rendered']['result'],'FAIL')
+
+    def test_canvas_svg_or_video_page_is_not_blank(self):
+        td=tempfile.TemporaryDirectory();self.addCleanup(td.cleanup)
+        project=Path(td.name);root=project/'site';root.mkdir()
+        for body in ('<canvas width="800" height="600"></canvas>','<svg width="400" height="300"><rect width="400" height="300"/></svg>'):
+            (root/'index.html').write_text('<!doctype html><title>x</title>'+body)
+            checks={c['check_id']:c for c in qa.audit(root,project/'qa',self.serve(root),project_root=project)['checks']}
+            self.assertEqual(checks['browser_render']['result'],'PASS',body)
+
+    def test_failing_srcset_candidate_is_named_over_http(self):
+        _,checks,_=self.audit_variant('<img src="assets/big.png" srcset="assets/nope-1x.png 1x" alt="x">')
+        self.assertEqual(checks['images_rendered']['result'],'FAIL')
+        self.assertIn('assets/nope-1x.png',checks['images_rendered']['reason'])
 
     def test_sized_image_inside_collapsed_container_fails(self):
         _,checks,_=self.audit_variant('<div style="height:0;overflow:hidden"><img src="assets/big.png" style="width:300px;height:200px" alt="card"></div>')

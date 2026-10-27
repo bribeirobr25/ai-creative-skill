@@ -10,20 +10,34 @@ def check(id,requirement,criticality,result,mode,evidence,hash,viewport=None,rea
     return c
 
 ABSOLUTE_PATH=re.compile(r'(?<![\w:/.])(?:[A-Za-z]:[\\/]|/)(?:[^\s:\'"()<>]+[/\\])+[^\s:\'"()<>]*')
-FILE_URI=re.compile(r'file:(?://)?[^\s\'"<>()]*',re.I)
+FILE_URI=re.compile(r'(?<![\w-])file:(?://)?[^\s\'"<>()]*',re.I)
 
 def redact(text,*roots):
     """Evidence must not carry local directory names: known roots become '.', other absolute paths and file: URIs '<path>'."""
     text=str(text)
     names=sorted({str(x) for x in roots if x}|{pathlib.PurePath(str(x)).as_posix() for x in roots if x},key=len,reverse=True)
-    def strip(t):
-        for r in names:t=t.replace(r,'.')
+    def strip(t):  # a root counts only as a whole absolute-path prefix, never inside a relative path or URL
+        for r in names:t=re.sub(r'(?<![\w/.:-])'+re.escape(r)+r'(?=[/\\\s\'"<>()]|$)','.',t)
         return t
     def uri(m):  # file:///C:/x%20y/a.png -> C:/x y/a.png; inside a known root -> ./a.png, otherwise <path>
         path=urllib.parse.unquote(urllib.parse.urlsplit(m.group(0)).path)
         path=path[1:] if re.match(r'/[A-Za-z]:/',path) else path
         out=strip(path);return out if out!=path else '<path>'
     return ABSOLUTE_PATH.sub('<path>',strip(FILE_URI.sub(uri,text)))
+
+JS_COMMENT=re.compile(r'/\*.*?\*/|(?:^|(?<=[\s;{}(),]))//[^\n]*',re.S|re.M)
+def strip_js_comments(text):
+    """Remove /* */ and // comments (a // right after ':' as in a URL is kept); approximate, enough to ignore mentions."""
+    return JS_COMMENT.sub(' ',text)
+
+def srcset_urls(value):
+    """URLs of a srcset; data: URLs may contain commas, so a candidate ends at whitespace or at a comma that ends the URL."""
+    out=[]
+    for m in re.finditer(r'\s*([^\s]+)(?:\s+[^,]*)?(?:,|$)',value or ''):
+        url=m.group(1)
+        if url.startswith('data:'):continue
+        out+=[u for u in url.split(',') if u] if not re.search(r'\s',url) and ',' in url and not url.startswith('data:') else [url]
+    return [u for u in out if u]
 
 def project_files(root,project_root,files):
     """Express site files relative to the project root used by validate.check."""
@@ -57,7 +71,10 @@ def static_audit(root,project_root=None):
             except (OSError,subprocess.TimeoutExpired) as e:js_errors.append(js+': '+type(e).__name__)
     css='\n'.join((root/p).read_text(errors='replace') for p in css_files if (root/p).exists())
     # ES modules, fetch/XHR and dynamic import do not work from file://: such pages need an HTTP preview to be judged.
-    scripts=[x.get_text() for x in soup.find_all('script') if not x.get('src')]+[(root/j).read_text(errors='replace') for j in js_files if (root/j).is_file()]
+    # Executable scripts only (no type, a JavaScript type or module; JSON-LD and templates are data), comments removed.
+    runnable=lambda x:(x.get('type') or 'text/javascript').strip().lower() in ('text/javascript','application/javascript','module','')
+    scripts=[strip_js_comments(t) for t in [x.get_text() for x in soup.find_all('script') if not x.get('src') and runnable(x)]
+        +[(root/j).read_text(errors='replace') for j in js_files if (root/j).is_file() and j.lower().endswith(('.js','.mjs'))]]
     needs_http=sorted({'ES module script' for x in soup.find_all('script') if (x.get('type') or '').strip().lower()=='module'}
         |{name for name,rx in (('fetch()',r'\bfetch\s*\('),('XMLHttpRequest',r'\bXMLHttpRequest\b'),('dynamic import()',r'\bimport\s*\(')) if any(re.search(rx,t) for t in scripts)})
     files=project_files(root,project_root,['index.html']+css_files+js_files)
@@ -78,20 +95,30 @@ SETTLE_JS='''async () => {
 }'''
 # Laid out (has client rects, so not display:none), visible, decoded at a real size, yet drawn under 16 px: a collapsed box.
 # Image source as authored (src or first srcset URL); currentSrc only as a last resort, made relative to the page.
-IMG_SRC_JS=r'''const srcOf = i => { const a = i.getAttribute('src') || (i.getAttribute('srcset') || '').trim().split(/\s+/)[0];
-  if (a) return a; try { const u = new URL(i.currentSrc, location.href), b = new URL('.', location.href);
-  return u.href.startsWith(b.href) ? decodeURIComponent(u.href.slice(b.href.length)) : (u.protocol === 'file:' ? '<path>' : u.href); } catch (e) { return '<path>'; } };'''
+# Name of the image as the page loads it: over HTTP the resolved currentSrc (relative to the page when same-origin, so the
+# srcset candidate that actually loaded or failed is named); under file:// the authored src or first srcset URL, so no
+# local path is ever produced.
+IMG_SRC_JS=r'''const srcOf = i => { const authored = i.getAttribute('src') || ((i.getAttribute('srcset') || '').trim().split(/\s+/)[0] || '').replace(/,$/, '');
+  try { const u = new URL(i.currentSrc || authored, location.href), b = new URL('.', location.href);
+    if (u.protocol !== 'file:' && i.currentSrc) return u.origin === b.origin && u.href.startsWith(b.href) ? decodeURIComponent(u.href.slice(b.href.length)) : u.href;
+  } catch (e) {}
+  return authored || '<path>'; };'''
 # Real collapse only: a drawn side under 2 px, or a side under 16 px with the aspect distorted more than 2x, or a sized image
-# clipped by a collapsed overflow container. Hidden (display/visibility/opacity), clipped sr-only and small icons drawn at
-# their own aspect are not collapsed.
-COLLAPSED_IMAGES_JS='''() => { '''+IMG_SRC_JS+'''
-  const hiddenOrClipped = i => { if (i.checkVisibility && !i.checkVisibility({opacityProperty: true, visibilityProperty: true})) return true;
-    for (let e = i.parentElement; e && e !== document.body; e = e.parentElement) { const cs = getComputedStyle(e);
-      if (cs.clip !== 'auto' || (cs.clipPath && cs.clipPath !== 'none')) return true; } return false; };
+# clipped by a collapsed overflow container. Not collapsed: images hidden by display/visibility/opacity, by sr-only style
+# zero-area clipping, inside panels the page declares closed (hidden, inert, aria-hidden="true", role="tabpanel", or the
+# target of aria-controls on an element with aria-expanded="false"), and small icons drawn at their own aspect.
+COLLAPSED_IMAGES_JS='''() => { '''+IMG_SRC_JS+r'''
+  const nums = t => (t.match(/-?[\d.]+/g) || []).map(Number);
+  const srOnlyClip = cs => { if (cs.clip && cs.clip.startsWith('rect(')) { const [t, r, b, l] = nums(cs.clip); if (b - t <= 1 || r - l <= 1) return true; }
+    const cp = cs.clipPath || 'none'; return /inset\(\s*(50|100)%/.test(cp) || /circle\(\s*0(px|%)?\s/.test(cp + ' '); };
+  const closedPanel = e => e.hidden || e.inert || e.getAttribute('aria-hidden') === 'true' || e.getAttribute('role') === 'tabpanel'
+    || (e.id && document.querySelector('[aria-expanded="false"][aria-controls~="' + CSS.escape(e.id) + '"]'));
+  const exempt = i => { if (i.checkVisibility && !i.checkVisibility({opacityProperty: true, visibilityProperty: true})) return true;
+    for (let e = i; e && e !== document.body; e = e.parentElement) { if (closedPanel(e) || srOnlyClip(getComputedStyle(e))) return true; } return false; };
   const collapsedParent = i => { for (let e = i.parentElement; e && e !== document.body; e = e.parentElement) {
       const cs = getComputedStyle(e), r = e.getBoundingClientRect();
       if ((cs.overflowX !== 'visible' && r.width < 2) || (cs.overflowY !== 'visible' && r.height < 2)) return true; } return false; };
-  return [...document.images].filter(i => i.complete && i.naturalWidth >= 64 && i.naturalHeight >= 64 && i.getClientRects().length > 0 && !hiddenOrClipped(i))
+  return [...document.images].filter(i => i.complete && i.naturalWidth >= 64 && i.naturalHeight >= 64 && i.getClientRects().length > 0 && !exempt(i))
     .filter(i => { const r = i.getBoundingClientRect(), w = r.width, h = r.height;
       if (Math.min(w, h) < 2) return true;
       const distortion = Math.max((w / h) / (i.naturalWidth / i.naturalHeight), (i.naturalWidth / i.naturalHeight) / (w / h));
@@ -99,8 +126,11 @@ COLLAPSED_IMAGES_JS='''() => { '''+IMG_SRC_JS+'''
     .map(srcOf); }'''
 BROKEN_IMAGES_JS='''() => { '''+IMG_SRC_JS+'''
   return [...document.images].filter(i => (i.currentSrc || i.getAttribute('src')) && i.complete && i.naturalWidth === 0).map(srcOf); }'''
-CONTENT_JS='''() => ({text: (document.body && document.body.innerText || '').trim().length,
-  images: [...document.images].filter(i => i.naturalWidth > 0 && i.getClientRects().length).length})'''
+# Visible content: text, decoded images, or drawn canvas, svg and video (WebGL, illustration or video-only pages).
+CONTENT_JS='''() => { const shown = e => { const r = e.getBoundingClientRect(); return r.width >= 2 && r.height >= 2 && (!e.checkVisibility || e.checkVisibility({opacityProperty: true, visibilityProperty: true})); };
+  return {text: (document.body && document.body.innerText || '').trim().length,
+    images: [...document.images].filter(i => i.naturalWidth > 0 && i.getClientRects().length).length
+      + [...document.querySelectorAll('canvas, svg, video')].filter(shown).length}; }'''
 FILE_BLOCK=re.compile(r'CORS|cross[- ]origin|origin .null.|module|Failed to fetch|XMLHttpRequest',re.I)
 FONT_CORS=re.compile(r'\bfont\b|woff2?\b|\.ttf\b|\.otf\b',re.I)
 CAPTURE_MAX=16000  # px; a capture of an endlessly growing page must not exhaust the time budget
@@ -132,7 +162,7 @@ def browser_pass(root,out,rel,h,target,file_mode,static,redact_):
                     shots[width]=rel(e);failed=overflow>1
                     checks.append(check(check_id,f'Page rendered at {width} without horizontal overflow','ESSENTIAL','FAIL' if failed else 'PASS','BROWSER_OBSERVED',rel(e),h,str(width),reason=f'Horizontal overflow of {overflow}px observed' if failed else None))
                     if width in (1440,390):
-                        collapsed+=[f'{redact_(c)} at {width}' for c in page.evaluate(COLLAPSED_IMAGES_JS)];observed.append(str(width))
+                        collapsed+=[f'{redact_(c)[:120]} at {width}' for c in page.evaluate(COLLAPSED_IMAGES_JS)];observed.append(str(width))
                     if width==1440:
                         blank=content['text']<20 and content['images']==0
                         checks.append(check('browser_render','Actual HTML opened with visible content','ESSENTIAL','FAIL' if blank else 'PASS','BROWSER_OBSERVED',rel(e),h,'1440',reason='Page rendered no visible text or images' if blank else None))
@@ -144,7 +174,7 @@ def browser_pass(root,out,rel,h,target,file_mode,static,redact_):
                 finally:page.close()
         finally:browser.close()
     if observed:
-        if broken:notes.insert(0,'Images failed to load: '+', '.join(redact_(b) for b in broken[:8]))
+        if broken:notes.insert(0,'Images failed to load: '+', '.join(redact_(b)[:120] for b in broken[:8]))
         if collapsed:notes.insert(0,'Images collapsed: '+', '.join(collapsed[:8]))
         checks.append(check('images_rendered','Referenced images decoded after scrolling and not collapsed','ESSENTIAL','FAIL' if broken or collapsed else 'PASS','BROWSER_OBSERVED',shots.get(1440) or shots.get(390),h,','.join(observed),reason='; '.join(notes) or None))
     page_errors=[redact_(x) for x in dict.fromkeys(errors)][:8]
@@ -201,7 +231,7 @@ def draft_record(root,qa_matrix,project_root=None,project=None):
     prefix=root.relative_to(project_root)
     soup=BeautifulSoup((root/'index.html').read_text(),'html.parser')
     # <img src>, every srcset URL and <source srcset>; root-relative URLs ('/assets/x') resolve against the site root.
-    urls=[x.get('src') for x in soup.find_all('img')]+[part.strip().split()[0] for x in soup.find_all(['img','source']) for part in (x.get('srcset') or '').split(',') if part.strip()]
+    urls=[x.get('src') for x in soup.find_all('img')]+[u for x in soup.find_all(['img','source']) for u in srcset_urls(x.get('srcset'))]
     images=sorted({u.lstrip('/') for u in urls if u and not u.startswith(('http:','https:','data:','//'))})
     checks=q['checks'];browser=any(c['check_id']=='browser_render' and c['result']=='PASS' for c in checks)
     verdict='BLOCKED' if any(c['criticality']=='CRITICAL' and c['result']=='FAIL' for c in checks) else 'PARTIAL'
