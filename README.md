@@ -4,9 +4,10 @@
 `39a0bfa39270ea4b685b0f862e7dbf647cf81d77`. Não é release, não tem certificação de qualidade de produção nem de host limpo.
 Metadados do plugin: versão `0.3.0`.
 
-O `main` já contém a candidata de boundary hardening (`validate_deliverable`, preview, router, revision, validate e schema `0.2.1-candidate`).
-A fonte em `src/ai-creative-skill/` difere da V2.5 por esses seis arquivos, por isso o builder original recusa a fonte
-atual por design; a V2.5 continua verificável byte a byte pelo gate de integridade.
+A fonte em `src/ai-creative-skill/` corresponde à candidata ativa [web-runtime-2.6-v1](validation/candidates/web-runtime-2.6-v1/README.md),
+que acumula o boundary hardening (preview, router, revision, validate, schema `0.2.1-candidate`) e as correções de runtime
+observadas no DQB-02 (router com pedidos naturais, QA com evidência fora do site, rotas `#/`, 320 px, imagens lazy).
+O builder original recusa essa fonte por design; a V2.5 continua verificável byte a byte pelo gate de integridade.
 
 This is the public, provider-neutral source of the AI Creative Skill. The only canonical implementation tree is `src/ai-creative-skill/`. The Agent Skill and OpenAI Portable Plugin ZIPs are **generated artifacts**, not source trees that should be edited independently.
 
@@ -19,8 +20,8 @@ python -m validation.candidate_integrity    # fonte atual = inventário revisado
 python -m validation.candidate_tests        # testes de regressão e Web Experience da fonte atual
 ```
 
-Uma nova mudança em `src/` exige um novo inventário revisado de candidata (veja
-[boundary-hardening-v1](validation/candidates/boundary-hardening-v1/README.md)); os hashes históricos nunca são reescritos.
+Uma nova mudança em `src/` exige uma nova candidata: escopo revisado em `CANDIDATE_SCOPES`, manifesto e
+`validation/candidates/ACTIVE.json`. Candidatas anteriores e hashes históricos nunca são reescritos.
 Runtime tests require optional local packages described in the source installation guide. No paid providers or GPU inference are called by repository CI.
 
 ## Governance
