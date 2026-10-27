@@ -1,0 +1,610 @@
+{
+ "label": "d84-r0",
+ "brief": "D1",
+ "site": "/tmp/dqb3/frozen/d84-r0",
+ "collected_utc": "2026-10-21T13:29:48Z",
+ "pass": 88,
+ "total": 88,
+ "checks": [
+  {
+   "check": "images decoded, none broken",
+   "viewport": "1440x900",
+   "result": "PASS",
+   "detail": "{'count': 16, 'broken': [], 'tiny': [], 'noalt': []}"
+  },
+  {
+   "check": "no collapsed/tiny visible images",
+   "viewport": "1440x900",
+   "result": "PASS",
+   "detail": "[]"
+  },
+  {
+   "check": "all images have alt attribute",
+   "viewport": "1440x900",
+   "result": "PASS",
+   "detail": "[]"
+  },
+  {
+   "check": "no horizontal overflow (home)",
+   "viewport": "1440x900",
+   "result": "PASS",
+   "detail": "0"
+  },
+  {
+   "check": "hero copy preserved",
+   "viewport": "1440x900",
+   "result": "PASS",
+   "detail": ""
+  },
+  {
+   "check": "footer preview notice",
+   "viewport": "1440x900",
+   "result": "PASS",
+   "detail": ""
+  },
+  {
+   "check": "nav-collection opens collection",
+   "viewport": "1440x900",
+   "result": "PASS",
+   "detail": ""
+  },
+  {
+   "check": "filter Print -> croissant, ursinho, limao",
+   "viewport": "1440x900",
+   "result": "PASS",
+   "detail": "['croissant', 'ursinho', 'limao']"
+  },
+  {
+   "check": "filter Terry -> rosa only",
+   "viewport": "1440x900",
+   "result": "PASS",
+   "detail": "['rosa']"
+  },
+  {
+   "check": "filter Embroidered -> branca, azul",
+   "viewport": "1440x900",
+   "result": "PASS",
+   "detail": "['branca', 'azul']"
+  },
+  {
+   "check": "filter All -> 6",
+   "viewport": "1440x900",
+   "result": "PASS",
+   "detail": "['croissant', 'ursinho', 'limao', 'branca', 'azul', 'rosa']"
+  },
+  {
+   "check": "croissant: price to be announced, no numeric price",
+   "viewport": "1440x900",
+   "result": "PASS",
+   "detail": ""
+  },
+  {
+   "check": "croissant: props note",
+   "viewport": "1440x900",
+   "result": "PASS",
+   "detail": ""
+  },
+  {
+   "check": "croissant: >=2 gallery thumbs",
+   "viewport": "1440x900",
+   "result": "PASS",
+   "detail": "6"
+  },
+  {
+   "check": "croissant: thumbnail changes main image",
+   "viewport": "1440x900",
+   "result": "PASS",
+   "detail": ""
+  },
+  {
+   "check": "croissant: thumbnails in one row",
+   "viewport": "1440x900",
+   "result": "PASS",
+   "detail": "[748, 748, 748, 748, 748, 748]"
+  },
+  {
+   "check": "croissant: sticker sheet mentioned",
+   "viewport": "1440x900",
+   "result": "PASS",
+   "detail": ""
+  },
+  {
+   "check": "ursinho: price to be announced, no numeric price",
+   "viewport": "1440x900",
+   "result": "PASS",
+   "detail": ""
+  },
+  {
+   "check": "ursinho: props note",
+   "viewport": "1440x900",
+   "result": "PASS",
+   "detail": ""
+  },
+  {
+   "check": "ursinho: >=2 gallery thumbs",
+   "viewport": "1440x900",
+   "result": "PASS",
+   "detail": "4"
+  },
+  {
+   "check": "limao: price to be announced, no numeric price",
+   "viewport": "1440x900",
+   "result": "PASS",
+   "detail": ""
+  },
+  {
+   "check": "limao: props note",
+   "viewport": "1440x900",
+   "result": "PASS",
+   "detail": ""
+  },
+  {
+   "check": "limao: >=2 gallery thumbs",
+   "viewport": "1440x900",
+   "result": "PASS",
+   "detail": "4"
+  },
+  {
+   "check": "limao: flower, not bow",
+   "viewport": "1440x900",
+   "result": "PASS",
+   "detail": ""
+  },
+  {
+   "check": "branca: price to be announced, no numeric price",
+   "viewport": "1440x900",
+   "result": "PASS",
+   "detail": ""
+  },
+  {
+   "check": "branca: props note",
+   "viewport": "1440x900",
+   "result": "PASS",
+   "detail": ""
+  },
+  {
+   "check": "branca: >=2 gallery thumbs",
+   "viewport": "1440x900",
+   "result": "PASS",
+   "detail": "3"
+  },
+  {
+   "check": "azul: price to be announced, no numeric price",
+   "viewport": "1440x900",
+   "result": "PASS",
+   "detail": ""
+  },
+  {
+   "check": "azul: props note",
+   "viewport": "1440x900",
+   "result": "PASS",
+   "detail": ""
+  },
+  {
+   "check": "azul: >=2 gallery thumbs",
+   "viewport": "1440x900",
+   "result": "PASS",
+   "detail": "4"
+  },
+  {
+   "check": "rosa: price to be announced, no numeric price",
+   "viewport": "1440x900",
+   "result": "PASS",
+   "detail": ""
+  },
+  {
+   "check": "rosa: props note",
+   "viewport": "1440x900",
+   "result": "PASS",
+   "detail": ""
+  },
+  {
+   "check": "rosa: >=2 gallery thumbs",
+   "viewport": "1440x900",
+   "result": "PASS",
+   "detail": "6"
+  },
+  {
+   "check": "no sticker sheet outside croissant",
+   "viewport": "1440x900",
+   "result": "PASS",
+   "detail": ""
+  },
+  {
+   "check": "no 'made in berlin' claim",
+   "viewport": "1440x900",
+   "result": "PASS",
+   "detail": ""
+  },
+  {
+   "check": "interest list has 2 items",
+   "viewport": "1440x900",
+   "result": "PASS",
+   "detail": "2"
+  },
+  {
+   "check": "invalid email -> error, no confirmation",
+   "viewport": "1440x900",
+   "result": "PASS",
+   "detail": ""
+  },
+  {
+   "check": "valid email -> confirmation names croissant and rosa",
+   "viewport": "1440x900",
+   "result": "PASS",
+   "detail": "thank you. your interest is noted on this device.\n\nmodels: croissant, rosa\n\nemail: hello@example.com\n\nthis is a preview: nothing was sent and no account was cre"
+  },
+  {
+   "check": "no-data-sent notice",
+   "viewport": "1440x900",
+   "result": "PASS",
+   "detail": ""
+  },
+  {
+   "check": "remove all -> empty state",
+   "viewport": "1440x900",
+   "result": "PASS",
+   "detail": ""
+  },
+  {
+   "check": "no script/console errors",
+   "viewport": "1440x900",
+   "result": "PASS",
+   "detail": "[]"
+  },
+  {
+   "check": "no external network requests",
+   "viewport": "1440x900",
+   "result": "PASS",
+   "detail": "[]"
+  },
+  {
+   "check": "images decoded, none broken",
+   "viewport": "390x844",
+   "result": "PASS",
+   "detail": "{'count': 16, 'broken': [], 'tiny': [], 'noalt': []}"
+  },
+  {
+   "check": "no collapsed/tiny visible images",
+   "viewport": "390x844",
+   "result": "PASS",
+   "detail": "[]"
+  },
+  {
+   "check": "all images have alt attribute",
+   "viewport": "390x844",
+   "result": "PASS",
+   "detail": "[]"
+  },
+  {
+   "check": "no horizontal overflow (home)",
+   "viewport": "390x844",
+   "result": "PASS",
+   "detail": "0"
+  },
+  {
+   "check": "hero copy preserved",
+   "viewport": "390x844",
+   "result": "PASS",
+   "detail": ""
+  },
+  {
+   "check": "footer preview notice",
+   "viewport": "390x844",
+   "result": "PASS",
+   "detail": ""
+  },
+  {
+   "check": "nav-collection opens collection",
+   "viewport": "390x844",
+   "result": "PASS",
+   "detail": ""
+  },
+  {
+   "check": "filter Print -> croissant, ursinho, limao",
+   "viewport": "390x844",
+   "result": "PASS",
+   "detail": "['croissant', 'ursinho', 'limao']"
+  },
+  {
+   "check": "filter Terry -> rosa only",
+   "viewport": "390x844",
+   "result": "PASS",
+   "detail": "['rosa']"
+  },
+  {
+   "check": "filter Embroidered -> branca, azul",
+   "viewport": "390x844",
+   "result": "PASS",
+   "detail": "['branca', 'azul']"
+  },
+  {
+   "check": "filter All -> 6",
+   "viewport": "390x844",
+   "result": "PASS",
+   "detail": "['croissant', 'ursinho', 'limao', 'branca', 'azul', 'rosa']"
+  },
+  {
+   "check": "croissant: price to be announced, no numeric price",
+   "viewport": "390x844",
+   "result": "PASS",
+   "detail": ""
+  },
+  {
+   "check": "croissant: props note",
+   "viewport": "390x844",
+   "result": "PASS",
+   "detail": ""
+  },
+  {
+   "check": "croissant: >=2 gallery thumbs",
+   "viewport": "390x844",
+   "result": "PASS",
+   "detail": "6"
+  },
+  {
+   "check": "croissant: thumbnail changes main image",
+   "viewport": "390x844",
+   "result": "PASS",
+   "detail": ""
+  },
+  {
+   "check": "croissant: thumbnails in one row",
+   "viewport": "390x844",
+   "result": "PASS",
+   "detail": "[529, 529, 529, 529, 529, 529]"
+  },
+  {
+   "check": "croissant: sticker sheet mentioned",
+   "viewport": "390x844",
+   "result": "PASS",
+   "detail": ""
+  },
+  {
+   "check": "ursinho: price to be announced, no numeric price",
+   "viewport": "390x844",
+   "result": "PASS",
+   "detail": ""
+  },
+  {
+   "check": "ursinho: props note",
+   "viewport": "390x844",
+   "result": "PASS",
+   "detail": ""
+  },
+  {
+   "check": "ursinho: >=2 gallery thumbs",
+   "viewport": "390x844",
+   "result": "PASS",
+   "detail": "4"
+  },
+  {
+   "check": "limao: price to be announced, no numeric price",
+   "viewport": "390x844",
+   "result": "PASS",
+   "detail": ""
+  },
+  {
+   "check": "limao: props note",
+   "viewport": "390x844",
+   "result": "PASS",
+   "detail": ""
+  },
+  {
+   "check": "limao: >=2 gallery thumbs",
+   "viewport": "390x844",
+   "result": "PASS",
+   "detail": "4"
+  },
+  {
+   "check": "limao: flower, not bow",
+   "viewport": "390x844",
+   "result": "PASS",
+   "detail": ""
+  },
+  {
+   "check": "branca: price to be announced, no numeric price",
+   "viewport": "390x844",
+   "result": "PASS",
+   "detail": ""
+  },
+  {
+   "check": "branca: props note",
+   "viewport": "390x844",
+   "result": "PASS",
+   "detail": ""
+  },
+  {
+   "check": "branca: >=2 gallery thumbs",
+   "viewport": "390x844",
+   "result": "PASS",
+   "detail": "3"
+  },
+  {
+   "check": "azul: price to be announced, no numeric price",
+   "viewport": "390x844",
+   "result": "PASS",
+   "detail": ""
+  },
+  {
+   "check": "azul: props note",
+   "viewport": "390x844",
+   "result": "PASS",
+   "detail": ""
+  },
+  {
+   "check": "azul: >=2 gallery thumbs",
+   "viewport": "390x844",
+   "result": "PASS",
+   "detail": "4"
+  },
+  {
+   "check": "rosa: price to be announced, no numeric price",
+   "viewport": "390x844",
+   "result": "PASS",
+   "detail": ""
+  },
+  {
+   "check": "rosa: props note",
+   "viewport": "390x844",
+   "result": "PASS",
+   "detail": ""
+  },
+  {
+   "check": "rosa: >=2 gallery thumbs",
+   "viewport": "390x844",
+   "result": "PASS",
+   "detail": "6"
+  },
+  {
+   "check": "no sticker sheet outside croissant",
+   "viewport": "390x844",
+   "result": "PASS",
+   "detail": ""
+  },
+  {
+   "check": "no 'made in berlin' claim",
+   "viewport": "390x844",
+   "result": "PASS",
+   "detail": ""
+  },
+  {
+   "check": "interest list has 2 items",
+   "viewport": "390x844",
+   "result": "PASS",
+   "detail": "2"
+  },
+  {
+   "check": "invalid email -> error, no confirmation",
+   "viewport": "390x844",
+   "result": "PASS",
+   "detail": ""
+  },
+  {
+   "check": "valid email -> confirmation names croissant and rosa",
+   "viewport": "390x844",
+   "result": "PASS",
+   "detail": "thank you. your interest is noted on this device.\n\nmodels: croissant, rosa\n\nemail: hello@example.com\n\nthis is a preview: nothing was sent and no account was cre"
+  },
+  {
+   "check": "no-data-sent notice",
+   "viewport": "390x844",
+   "result": "PASS",
+   "detail": ""
+  },
+  {
+   "check": "remove all -> empty state",
+   "viewport": "390x844",
+   "result": "PASS",
+   "detail": ""
+  },
+  {
+   "check": "no script/console errors",
+   "viewport": "390x844",
+   "result": "PASS",
+   "detail": "[]"
+  },
+  {
+   "check": "no external network requests",
+   "viewport": "390x844",
+   "result": "PASS",
+   "detail": "[]"
+  },
+  {
+   "check": "no horizontal overflow (home)",
+   "viewport": "768x1024",
+   "result": "PASS",
+   "detail": "0"
+  },
+  {
+   "check": "no horizontal overflow (home)",
+   "viewport": "320x740",
+   "result": "PASS",
+   "detail": "0"
+  },
+  {
+   "check": "reduced motion: no running animations",
+   "viewport": "1440x900/reduce",
+   "result": "PASS",
+   "detail": "0"
+  },
+  {
+   "check": "keyboard Tab reaches controls with visible focus",
+   "viewport": "1440x900",
+   "result": "PASS",
+   "detail": "[{'tag': 'A', 'visible': True}, {'tag': 'A', 'visible': True}, {'tag': 'A', 'visible': True}, {'tag': 'A', 'visible': True}, {'tag': 'A', 'visible': True}, {'tag': 'A', 'visible': True}]"
+  }
+ ],
+ "screenshots": [
+  {
+   "state": "1440-home",
+   "file": "d84-r0-1440-home.jpg",
+   "sha256": "a4faf8fd8bda7799759786043caa668aeaff093ce1dcfca8dcef70b0f2e600ff"
+  },
+  {
+   "state": "1440-home-full",
+   "file": "d84-r0-1440-home-full.jpg",
+   "sha256": "e88ead7d249a913ff5449decaaed7e94f6dec2a178c45eed865d3f885dad4b91"
+  },
+  {
+   "state": "collection",
+   "file": "d84-r0-1440-collection.jpg",
+   "sha256": "484dafc40d1ce34805f0cd4cca7e6a6fdc114b0c3abbddf99616b94b2f61d122"
+  },
+  {
+   "state": "product",
+   "file": "d84-r0-1440-product.jpg",
+   "sha256": "0162e72208e703f86565c177112a3d14bf7033a2978720effbfca5115a0b75b1"
+  },
+  {
+   "state": "interest-error",
+   "file": "d84-r0-1440-interest-error.jpg",
+   "sha256": "a4a27be63fade9066ef5146a7daf7357e1f472386c8cdfa3c62105eaf89aae0c"
+  },
+  {
+   "state": "interest-confirmation",
+   "file": "d84-r0-1440-interest-confirmation.jpg",
+   "sha256": "f4b451a4073e28879f524424a8fc5e75e4c85894c7c3013699bed05f4e0dfc05"
+  },
+  {
+   "state": "390-home",
+   "file": "d84-r0-390-home.jpg",
+   "sha256": "8941f13ade37361219c5b6b9ce2a242d1b75b263af7c8ff818a0722155953cec"
+  },
+  {
+   "state": "390-home-full",
+   "file": "d84-r0-390-home-full.jpg",
+   "sha256": "e98ab20a5b89c25776fe578165231c8cdba9602fd243fc1a8e1f7a5e6dad6120"
+  },
+  {
+   "state": "collection",
+   "file": "d84-r0-390-collection.jpg",
+   "sha256": "a72eb3c3bff4cc582fa894711b9c975f00f6fa0b2e21d583e5bd34a32d80ccd4"
+  },
+  {
+   "state": "product",
+   "file": "d84-r0-390-product.jpg",
+   "sha256": "eeab16519347aa42dba656e1312f01a51ad867e68b06137e39f5548a3e022971"
+  },
+  {
+   "state": "interest-error",
+   "file": "d84-r0-390-interest-error.jpg",
+   "sha256": "5bb816b2795f600734d3a2404e446ff0ed23e3465eb2d119e5f75b962878d46e"
+  },
+  {
+   "state": "interest-confirmation",
+   "file": "d84-r0-390-interest-confirmation.jpg",
+   "sha256": "bbbb0f3b17767536f292865400e44ffb9ebdbbdcadaa0086ed183122d5e46ee3"
+  },
+  {
+   "state": "768-home",
+   "file": "d84-r0-768-home.jpg",
+   "sha256": "5341a9f1be351a53e425d51d376f9b8336ea83ebddb748fdaa8c3eced5f25447"
+  },
+  {
+   "state": "320-home",
+   "file": "d84-r0-320-home.jpg",
+   "sha256": "3e1fe824a6eb6ade87d8482deac37979ebff54cda1e457f102b9ed7a1fc031ec"
+  }
+ ]
+}
