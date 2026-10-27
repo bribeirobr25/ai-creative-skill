@@ -3,27 +3,29 @@
 **Status:** active source candidate (2.6.0-dev). Parent: [web-runtime-2.6-v1](../web-runtime-2.6-v1/README.md), whose records
 stay byte-identical to the commit that reviewed them (`0f7089a`). Release approval: **false**.
 
-v2 adds the items of the 21–22/10/2026 learnings audit (`docs/research/auditoria-aprendizados-2026-10-22.md`, items 2–8)
-that came from direct evidence: the DQB-03 benchmark, the product-photoshoot study and the 18-style site test. It does not
-add new files to the skill, generate media, call paid providers or promote a release.
+v2 adds items 2–8 of the October 2026 learnings audit (a repository research record that lands through the research
+PRs). The evidence comes from the DQB-03 benchmark, a product-photoshoot prompt study and an 18-style site test. v2 adds
+no files to the skill, generates no media, calls no paid provider and promotes no release.
 
 ## Scope added over v1 (cumulative)
 
 | File | Change | Evidence |
 |---|---|---|
-| `web/runtime/qa.py` | `images_rendered` also fails on **collapsed images**: laid out (not `display:none`), visible, decoded at ≥ 64 px, yet drawn under 16 px, checked at 1440 and 390. Without `--url` the browser opens the built `index.html` via `file://`, so browser checks run without a preview server; `opened_via` records how. The file URI never enters evidence. `draft_record()` writes a delivery-record draft from one QA run: derivable fields filled, judgement fields as `TODO:`; refuses a QA matrix from another build. | Style test: a site passed its own 62 checks with six product images collapsed to 0 px on the home page; 17 of 18 executors skipped the record and all 18 skipped the preview server. |
-| `web/runtime/validate.py` | New error `UNFILLED_FIELD` for any value still starting with `TODO`, reported together with schema errors, so a draft cannot validate. | Same. |
-| `web/runtime/cli.py` | `record <site_dir> --qa <qa_matrix.json> --output <record.json> [--project-root] [--project]`; `audit --static-only`. | — |
-| `web/runtime/migrate.py` | The legacy migration scaffold keeps browser checks `NOT_TESTED` (`open_file=False`): an archived build needs a deliberate fresh browser QA. | Keeps the v0.2 migration semantics. |
-| `references/…Work_Profile_Web_Experience_v0.2.md` | Step 6: `file://` is a valid local preview. Step 7: the audit command; per-viewport captures; never change the site to please a capture tool; collapsed images. Step 8: mandatory record, fill every TODO, validate with no errors. QA note on `crossorigin` font preloads under `file://`. | Style test. |
-| `references/…Method_Route_Compilation…md` §7.2 | Derived one-product crops are **mandatory** when the route cannot bind a reference to a region or role. | Blind review: reference selection 4/5 with crops vs 2/5 without. |
-| `references/…Method_Image_Direction…md` §5.1, §9.1, §10 | Declared fact contradicted by the photos is a conflict, not a fact. Marks applied on the product (labels) that render small (≈120 px, inference) get a deterministic composite from a real label photo. §10 points to the crop rule. | 11/11 collection labels and 3/25 single-shot labels garbled, all small; two input errors reached executors. |
-| `references/…Method_Localized_Repair…md` §6.2 | Label text on a product: default repair is the real-label composite; regenerating is a fallback. | 14/14 labels fixed without new generations. |
+| `web/runtime/qa.py` | **Collapsed images** fail `images_rendered` at 1440 and 390: a drawn side under 2 px, a side under 16 px with the aspect distorted more than 2×, or a sized image clipped by a collapsed overflow container. Hidden images (display, visibility, opacity), clipped sr-only images and small icons drawn at their own aspect are not flagged. **file:// audit:** without `--url` the browser opens the built `index.html`; pages that use ES modules, `fetch`/XHR or dynamic `import()`, or that raise file-incompatibility errors, keep the browser checks `NOT_TESTED` with "needs an HTTP preview (--url)". A page with no visible text or images fails `browser_render`. Captures are clipped at 16 000 px and each viewport fails independently, so one slow viewport no longer discards the others. Evidence never carries local paths: image sources are reported as authored (`src` or first `srcset` URL), and `redact` converts `file:` URIs (percent-encoded, Windows drives) before replacing roots. `draft_record()` writes a delivery-record draft from one QA run, refuses a QA matrix from another build, lists `src`, `srcset` and root-relative images, and gives HTTP open instructions when the page needs them. `browser=False` keeps an audit static even with a URL. | Style test: a site passed its own 62 checks with six product images collapsed to 0 px; 17 of 18 executors skipped the record and all 18 skipped the preview server. Review probes: path leaks under `file://`, blank module/fetch pages reported as PASS, icon false positives, flaky long-page capture. |
+| `web/runtime/validate.py` | `UNFILLED_FIELD` for any value that starts with the `TODO:` marker (case-insensitive, ignoring zero-width characters), reported together with schema errors. Words such as "Todos" or a `todo-app` folder are not flagged. | Same. |
+| `web/runtime/cli.py` | `record <site_dir> --qa <qa_matrix.json> --output <record.json> [--project-root] [--project]`; `audit --static-only` (honoured with `--url`). | — |
+| `web/runtime/migrate.py` | The legacy migration scaffold stays static with the reason "Legacy migration: browser checks not re-run". | Keeps the v0.2 migration semantics. |
+| `references/…Work_Profile_Web_Experience_v0.2.md` | Step 6: `file://` is a valid local preview only without modules, `fetch`/XHR or dynamic `import()`. Step 7: the audit command, collapsed-image rule, per-viewport captures, never changing the site to please a capture tool. Step 8: mandatory record with the full `python scripts/creative_web.py` commands. QA note: keep `crossorigin` on font preloads; the `file://` console error is harmless. | Style test. |
+| `references/…Method_Route_Compilation…md` §7.2 | Derived one-product crops are required when the route receives only whole images (e.g. GPT Image through a custom GPT in ChatGPT); capability mismatch only when nothing can be isolated; resampling only for provider input limits, recorded. | Blind review of two prompt packs for the same product photos (October 2026): reference selection 4/5 with crops vs 2/5 without. |
+| `references/…Method_Image_Direction…md` §5.1, §9.1, §10 | Declared fact contradicted by the photos is a conflict, not a fact. Applied labels drawn small (inferred starting threshold ≈120 px in a 1024–1536 px output) get a real-label composite; large generated labels pass only after a 3× zoom check. §10 points to the crop rule. | One photoshoot: 11/11 multi-product labels and 3/25 small single-shot labels garbled, large ones correct; two input errors reached executors. |
+| `references/…Method_Localized_Repair…md` §6.2 | Label text on a product: the real-label composite is the default repair; regenerating is a fallback. | 14/14 garbled labels fixed without new generations. |
+
+Known limit: an image that is fully clipped by a non-collapsed container (for example scrolled out of an overflow area)
+is not reported, by design, so carousels and scroll areas do not produce false failures.
 
 Governance: `CANDIDATE_SCOPES['web-runtime-2.6-v2']` is pinned in code and includes v1's scope. v1 is superseded at
-`0f7089a`; `preserved_history` now byte-checks exactly the record files each superseded candidate had at its reviewing
-commit (v1: `README.md`, `source-manifest.json`; boundary-hardening-v1: all four), and pointing `ACTIVE.json` back to v1
-fails as not the newest in its lineage.
+`0f7089a`; `preserved_history` byte-checks exactly the record files each superseded candidate had at its reviewing
+commit, and pointing `ACTIVE.json` back to v1 fails as not the newest in its lineage.
 
 ## Gates
 
@@ -32,8 +34,8 @@ python -m validation.release_integrity      # V2.5.0 exported from 39a0bfa, unch
 python -m validation.candidate_integrity    # tree == this manifest; scope pinned in CANDIDATE_SCOPES
 python -m validation.candidate_tests
 python -m validation.harness --profile candidate --host --check --output build/validation/candidate.json
+python security/publication_guard.py --range "origin/main...HEAD" --history-range "origin/main..HEAD"
 ```
 
-Local results at authoring time (Playwright and Chromium installed, so browser tests ran): release gate PASS; candidate
-integrity PASS; 83 candidate tests OK (22 in `tests/test_web_runtime_2_6.py`); harness 308 PASS, 0 FAIL, 0 BLOCKED,
-7 NOT_RUN, 2 UNVERIFIED (unchanged). In CI the browser tests skip, as before.
+Local results at authoring time (Playwright and Chromium installed, so browser tests ran) are recorded in the PR.
+In CI the browser tests skip, as before.

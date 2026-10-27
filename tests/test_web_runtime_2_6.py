@@ -104,6 +104,38 @@ class StaticAudit(unittest.TestCase):
             self.assertIn('SyntaxError',r['js_errors'][0])
             self.assertNotIn(str(project.resolve()),json.dumps(r))
 
+    def test_redact_handles_file_uris(self):
+        root='/srv/Área de/proj'
+        self.assertEqual(qa.redact('file:///srv/%C3%81rea%20de/proj/site/a.png',root),'./site/a.png')
+        self.assertEqual(qa.redact('file:///C:/Users/x%20y/a.png'),'<path>')
+        self.assertEqual(qa.redact('at file:///home/u/p/x.js:3 failed'),'at <path> failed')
+        self.assertEqual(qa.redact('C:/Users/someone/a.js'),'<path>')
+
+    def test_static_only_is_honoured_with_url(self):
+        with tempfile.TemporaryDirectory() as td:
+            project=Path(td);site=make_site(project)
+            report=qa.audit(site,project/'qa','http://127.0.0.1:9/',project_root=project,browser=False,skip_reason='Legacy migration: browser checks not re-run')
+            self.assertIsNone(report['opened_via'])
+            self.assertFalse(any(c['evidence_mode']=='BROWSER_OBSERVED' for c in report['checks']))
+            self.assertEqual({c['check_id']:c for c in report['checks']}['browser_render']['reason'],'Legacy migration: browser checks not re-run')
+            rec=qa.draft_record(site,project/'qa/qa_matrix.json',project)
+            self.assertEqual(rec['WEB_QA']['known_limitations'][-1],'Browser checks not completed: Legacy migration: browser checks not re-run')
+
+    def test_todo_marker_only(self):
+        from runtime.validate import todo_paths
+        for text in ('Todos os tamanhos são feitos à mão','Todo visitante vê o preço','site/todo-app/index.html','to do: later','TODOS: x'):
+            self.assertEqual(todo_paths({'a':text}),[],text)
+        for text in ('TODO: fill','  todo : fill','\u200bTODO: x','\ufeffTODO:x'):
+            self.assertEqual(todo_paths({'a':[text]}),['a/0'],text)
+
+    def test_record_lists_srcset_and_root_relative_images(self):
+        with tempfile.TemporaryDirectory() as td:
+            project=Path(td);site=make_site(project)
+            (site/'index.html').write_text((site/'index.html').read_text().replace('<script','<img srcset="assets/a.png 1x, assets/b.png 2x" alt="a"><picture><source srcset="/assets/c.webp"><img src="/assets/d.png" alt="d"></picture><script'))
+            qa.audit(site,project/'qa',project_root=project,browser=False)
+            paths={a['path'] for a in qa.draft_record(site,project/'qa/qa_matrix.json',project)['WEB_ASSET_PLAN']['assets_used']}
+            self.assertTrue({'site/assets/a.png','site/assets/b.png','site/assets/c.webp','site/assets/d.png','site/assets/foto.png'}<=paths,paths)
+
     def test_redact_keeps_urls_and_relative_paths(self):
         self.assertEqual(qa.redact("Executable doesn't exist at /home/someone/.cache/ms-playwright/x/shell"),"Executable doesn't exist at <path>")
         self.assertEqual(qa.redact('C:\\Users\\someone\\a.js:3'),'<path>:3')
@@ -226,6 +258,59 @@ class BrowserAudit(unittest.TestCase):
         self.assertEqual(validate.check(fill(rec),project),[])
         (root/'styles.css').write_text('body{color:red}')
         with self.assertRaisesRegex(ValueError,'another build'):qa.draft_record(root,project/'qa/qa_matrix.json',project)
+
+    def audit_variant(self,snippet,via='url',base=None,js=None):
+        td=tempfile.TemporaryDirectory();self.addCleanup(td.cleanup)
+        project=Path(td.name) if base is None else Path(td.name)/base;project.mkdir(parents=True,exist_ok=True)
+        root=make_site(project);png(root/'assets/big.png',128,128)
+        (root/'assets/icon.svg').write_text('<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512"><circle cx="256" cy="256" r="200"/></svg>')
+        (root/'index.html').write_text((root/'index.html').read_text().replace('<script',snippet+'<script'))
+        if js is not None:(root/'app.js').write_text(js)
+        report=qa.audit(root,project/'qa',self.serve(root) if via=='url' else None,project_root=project)
+        return report,{c['check_id']:c for c in report['checks']},project
+
+    def test_small_icons_inactive_slides_and_sr_only_are_not_collapsed(self):
+        for snippet in ('<footer><img src="assets/big.png" width="14" height="14" alt="icon"></footer>',
+                        '<img src="assets/icon.svg" style="width:14px;height:14px" alt="icon">',
+                        '<div style="display:flex"><img src="assets/big.png" style="width:300px" alt="a"><img src="assets/big.png" style="width:0;opacity:0" alt="b"></div>',
+                        '<span style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)"><img src="assets/big.png" style="width:100%;height:100%" alt="sr"></span>',
+                        '<div style="display:flex;overflow:hidden;width:300px"><img src="assets/big.png" style="width:300px;flex-shrink:0" alt="1"><img src="assets/big.png" style="width:300px;flex-shrink:0" alt="2"></div>'):
+            _,checks,_=self.audit_variant(snippet)
+            self.assertEqual(checks['images_rendered']['result'],'PASS',(snippet,checks['images_rendered'].get('reason')))
+
+    def test_sized_image_inside_collapsed_container_fails(self):
+        _,checks,_=self.audit_variant('<div style="height:0;overflow:hidden"><img src="assets/big.png" style="width:300px;height:200px" alt="card"></div>')
+        self.assertEqual(checks['images_rendered']['result'],'FAIL')
+
+    def test_file_mode_evidence_has_no_local_path(self):
+        # A space and a non-ASCII letter in the project path; srcset-only images report their authored URL.
+        report,checks,project=self.audit_variant('<div style="height:0"><img srcset="assets/big.png 1x" style="width:100%;height:100%" alt="x"></div>'
+                                                  '<img srcset="assets/nope.png 1x" alt="missing">',via='file',base='Área de Trabalho/meu projeto')
+        self.assertEqual(report['opened_via'],'file')
+        self.assertEqual(checks['images_rendered']['result'],'FAIL')
+        self.assertIn('assets/big.png at 1440',checks['images_rendered']['reason'])
+        self.assertIn('assets/nope.png',checks['images_rendered']['reason'])
+        for f in (project/'qa').glob('*.json'):
+            text=f.read_text()
+            for marker in ('Trabalho','projeto','%C3','file:',str(project)):self.assertNotIn(marker,text,(f.name,marker))
+
+    def test_file_mode_needs_http_for_modules_and_fetch(self):
+        for snippet,js,why in (('<main id="app"></main><script type="module" src="mod.js"></script>',None,'ES module'),
+                               ('<main id="app"></main>',"fetch('data.json').then(r=>r.json()).then(d=>{document.getElementById('app').textContent=d.t})",'fetch()')):
+            report,checks,project=self.audit_variant(snippet,via='file',js=js)
+            for k in ('browser_render','desktop_render','images_rendered'):
+                self.assertEqual(checks[k]['result'],'NOT_TESTED',k);self.assertIn('--url',checks[k]['reason'])
+            self.assertIn(why,report['browser_blocker'])
+            rec=qa.draft_record(project/'site',project/'qa/qa_matrix.json',project)
+            self.assertEqual(rec['WEB_PREVIEW_BUILD']['preview_status'],'AVAILABLE_UNVERIFIED')
+            self.assertIn('preview start',rec['WEB_PREVIEW_BUILD']['verified_preview_ref_or_local_open_instructions'])
+
+    def test_blank_page_fails_render(self):
+        td=tempfile.TemporaryDirectory();self.addCleanup(td.cleanup)
+        project=Path(td.name);root=project/'site';root.mkdir()
+        (root/'index.html').write_text('<!doctype html><title>x</title><main id="app"></main>')
+        checks={c['check_id']:c for c in qa.audit(root,project/'qa',self.serve(root),project_root=project)['checks']}
+        self.assertEqual(checks['browser_render']['result'],'FAIL')
 
     def test_broken_image_is_reported(self):
         checks,_=self.run_audit(broken=True)

@@ -8,7 +8,7 @@ def scaffold(site_root,project,kind,output_dir):
     is_fin=project.lower()=='diboas';s=static_audit(site_root);files=s['files'];h=s['source_hash']
     from .qa import audit
     # Legacy migration keeps browser checks NOT_TESTED: the archived build needs a fresh, deliberate browser QA.
-    qr=audit(site_root,site_root/'.web_mvp_v02_qa',open_file=False)
+    qr=audit(site_root,site_root/'.web_mvp_v02_qa',browser=False,skip_reason='Legacy migration: browser checks not re-run')
     assets=[]
     for p in sorted((site_root/'assets').rglob('*')) if (site_root/'assets').exists() else []:
         if p.is_file():assets.append({'path':str(p.relative_to(site_root)),'origin':'reused_asset_from_original_pilot_archive','approval':'LEGACY','rights':'UNKNOWN','use_scope':'private_preview_only'})

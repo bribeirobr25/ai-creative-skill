@@ -229,16 +229,16 @@ This is a compilation boundary, not a ban on multi-shot or continuation routes. 
 
 ## 7.2 Scoped-Reference Compilation
 
-For `SEMANTIC_REGION`, `SPATIAL_REGION`, `SUBJECT` or `PANEL` bindings, compile only the declared surface/meaning into the route request. If the route cannot address the required scope reliably, either create an authorized derived reference/crop or mark capability mismatch. Do not downgrade the binding to `WHOLE_ASSET` merely because the provider API is simpler.
+For `SEMANTIC_REGION`, `SPATIAL_REGION`, `SUBJECT` or `PANEL` bindings, compile only the declared surface/meaning into the route request. If the route cannot address the required scope reliably, create an authorized derived reference/crop; mark capability mismatch only when no crop can isolate the bound subject. Do not downgrade the binding to `WHOLE_ASSET` merely because the provider API is simpler.
 
-**Mandatory derived crops (2.6).** When the target route cannot bind a reference to a region or role (for example GPT Image inside a chat GPT, which receives whole attached images), the derived crop is not optional:
+**Derived crops are required (2.6)** when the target route receives only whole images and cannot bind a reference to a region or role (for example GPT Image used through a custom GPT in ChatGPT):
 
 - one product per reference; crop away third-party brands, props, cosmetics, hands and phone/UI overlays wherever a rectangle allows;
-- whatever cannot be cropped without cutting the product is named in the prompt as "not part of the product";
+- whatever cannot be cropped without cutting the product is named in the prompt as "not part of the product"; if nothing usable can be isolated, mark capability mismatch;
 - each crop records its role, what it may control, what it must not pass on, and its parent photo with the crop box;
-- rectangular crop only: no retouching, resampling or pixel edits; the parent photo stays the authority and the crop adds nothing.
+- rectangular crop only, with no retouching or pixel edits; resample only when needed to meet the provider's input-size limits, and record it. The parent photo stays the authority and the crop adds nothing.
 
-Evidence: in a blind review of two prompt packs for the same real product photos, the pack with one-product crops scored 4/5 on reference selection against 2/5 for uncropped photos carrying third-party brands and overlays (`docs/research/photoshoot-prompts-skill-vs-manual-2026-10-21.md`).
+Evidence: a blind review of two prompt packs for the same real product photos (October 2026, repository research record) scored reference selection 4/5 for the pack with one-product crops and 2/5 for the pack sending uncropped photos with third-party brands and screen overlays.
 
 ---
 

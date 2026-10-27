@@ -1,5 +1,5 @@
 """Web Experience MVP v0.2. Contract and evidence validator, not a design-quality scorer."""
-import hashlib,json,os,pathlib,sys,datetime
+import hashlib,json,os,pathlib,re,sys,datetime
 from jsonschema import Draft202012Validator
 SCHEMA=pathlib.Path(__file__).resolve().parents[1]/'schemas/web_delivery_v0.2.schema.json'
 CANONICAL=json.loads(SCHEMA.read_text())
@@ -20,9 +20,11 @@ def contained_path(root,ref):
     if not target.is_relative_to(pathlib.Path(root).resolve()):return None
     return target
 
+TODO_MARK=re.compile(r'\s*TODO\s*:',re.I)  # only the marker written by the record draft
+
 def todo_paths(node,path=''):
     """Strings still starting with TODO, as left by the record draft."""
-    if isinstance(node,str):return [path] if node.lstrip().upper().startswith('TODO') else []
+    if isinstance(node,str):return [path] if TODO_MARK.match(node.replace('\u200b','').replace('\ufeff','')) else []
     items=node.items() if isinstance(node,dict) else enumerate(node) if isinstance(node,list) else []
     return [p for k,v in items for p in todo_paths(v,f'{path}/{k}' if path else str(k))]
 

@@ -9,13 +9,21 @@ def check(id,requirement,criticality,result,mode,evidence,hash,viewport=None,rea
     if reason:c['reason']=reason
     return c
 
-ABSOLUTE_PATH=re.compile(r'(?<![\w:/.])(?:[A-Za-z]:\\|/)(?:[^\s:\'"()<>]+[/\\])+[^\s:\'"()<>]*')
+ABSOLUTE_PATH=re.compile(r'(?<![\w:/.])(?:[A-Za-z]:[\\/]|/)(?:[^\s:\'"()<>]+[/\\])+[^\s:\'"()<>]*')
+FILE_URI=re.compile(r'file:(?://)?[^\s\'"<>()]*',re.I)
 
 def redact(text,*roots):
-    """Evidence must not carry local directory names: known roots become '.', other absolute paths '<path>'."""
+    """Evidence must not carry local directory names: known roots become '.', other absolute paths and file: URIs '<path>'."""
     text=str(text)
-    for r in sorted({str(x) for x in roots if x},key=len,reverse=True):text=text.replace(r,'.')
-    return ABSOLUTE_PATH.sub('<path>',text)
+    names=sorted({str(x) for x in roots if x}|{pathlib.PurePath(str(x)).as_posix() for x in roots if x},key=len,reverse=True)
+    def strip(t):
+        for r in names:t=t.replace(r,'.')
+        return t
+    def uri(m):  # file:///C:/x%20y/a.png -> C:/x y/a.png; inside a known root -> ./a.png, otherwise <path>
+        path=urllib.parse.unquote(urllib.parse.urlsplit(m.group(0)).path)
+        path=path[1:] if re.match(r'/[A-Za-z]:/',path) else path
+        out=strip(path);return out if out!=path else '<path>'
+    return ABSOLUTE_PATH.sub('<path>',strip(FILE_URI.sub(uri,text)))
 
 def project_files(root,project_root,files):
     """Express site files relative to the project root used by validate.check."""
@@ -48,8 +56,12 @@ def static_audit(root,project_root=None):
                 js_errors.append(js+': '+redact(detail,project_root,root)[:160])
             except (OSError,subprocess.TimeoutExpired) as e:js_errors.append(js+': '+type(e).__name__)
     css='\n'.join((root/p).read_text(errors='replace') for p in css_files if (root/p).exists())
+    # ES modules, fetch/XHR and dynamic import do not work from file://: such pages need an HTTP preview to be judged.
+    scripts=[x.get_text() for x in soup.find_all('script') if not x.get('src')]+[(root/j).read_text(errors='replace') for j in js_files if (root/j).is_file()]
+    needs_http=sorted({'ES module script' for x in soup.find_all('script') if (x.get('type') or '').strip().lower()=='module'}
+        |{name for name,rx in (('fetch()',r'\bfetch\s*\('),('XMLHttpRequest',r'\bXMLHttpRequest\b'),('dynamic import()',r'\bimport\s*\(')) if any(re.search(rx,t) for t in scripts)})
     files=project_files(root,project_root,['index.html']+css_files+js_files)
-    return {'source_hash':build_hash(project_root,files),'files':files,'hash_routes':hash_routes,'assets_found':len(local)-len(missing),'missing_assets':missing,'broken_anchors':bad,'js_errors':js_errors,'reduced_motion_css_declared':'prefers-reduced-motion' in css,'form_count':len(soup.find_all('form')),'external_links':[x['href'] for x in soup.find_all('a',href=True) if x['href'].startswith(('http://','https://'))],'primary_link_candidates':[x.get('href') for x in soup.select('a.button,a.primary,a.nav-cta')]}
+    return {'source_hash':build_hash(project_root,files),'files':files,'hash_routes':hash_routes,'assets_found':len(local)-len(missing),'missing_assets':missing,'broken_anchors':bad,'js_errors':js_errors,'needs_http':needs_http,'reduced_motion_css_declared':'prefers-reduced-motion' in css,'form_count':len(soup.find_all('form')),'external_links':[x['href'] for x in soup.find_all('a',href=True) if x['href'].startswith(('http://','https://'))],'primary_link_candidates':[x.get('href') for x in soup.select('a.button,a.primary,a.nav-cta')]}
 
 VIEWPORTS=[(1440,900,'desktop_render'),(390,844,'mobile_render'),(320,640,'narrow_render')]
 SETTLE_JS='''async () => {
@@ -65,75 +77,116 @@ SETTLE_JS='''async () => {
   return [...document.images].filter(i => !i.complete).length;
 }'''
 # Laid out (has client rects, so not display:none), visible, decoded at a real size, yet drawn under 16 px: a collapsed box.
-COLLAPSED_IMAGES_JS='''() => [...document.images].filter(i => i.complete && i.naturalWidth >= 64 && i.naturalHeight >= 64
-  && i.getClientRects().length > 0 && getComputedStyle(i).visibility !== 'hidden')
-  .filter(i => { const r = i.getBoundingClientRect(); return r.width < 16 || r.height < 16; })
-  .map(i => i.getAttribute('src') || i.currentSrc)'''
-BROKEN_IMAGES_JS='''() => [...document.images].filter(i => (i.currentSrc || i.getAttribute('src')) && i.complete && i.naturalWidth === 0)
-  .map(i => i.getAttribute('src') || i.currentSrc)'''
+# Image source as authored (src or first srcset URL); currentSrc only as a last resort, made relative to the page.
+IMG_SRC_JS=r'''const srcOf = i => { const a = i.getAttribute('src') || (i.getAttribute('srcset') || '').trim().split(/\s+/)[0];
+  if (a) return a; try { const u = new URL(i.currentSrc, location.href), b = new URL('.', location.href);
+  return u.href.startsWith(b.href) ? decodeURIComponent(u.href.slice(b.href.length)) : (u.protocol === 'file:' ? '<path>' : u.href); } catch (e) { return '<path>'; } };'''
+# Real collapse only: a drawn side under 2 px, or a side under 16 px with the aspect distorted more than 2x, or a sized image
+# clipped by a collapsed overflow container. Hidden (display/visibility/opacity), clipped sr-only and small icons drawn at
+# their own aspect are not collapsed.
+COLLAPSED_IMAGES_JS='''() => { '''+IMG_SRC_JS+'''
+  const hiddenOrClipped = i => { if (i.checkVisibility && !i.checkVisibility({opacityProperty: true, visibilityProperty: true})) return true;
+    for (let e = i.parentElement; e && e !== document.body; e = e.parentElement) { const cs = getComputedStyle(e);
+      if (cs.clip !== 'auto' || (cs.clipPath && cs.clipPath !== 'none')) return true; } return false; };
+  const collapsedParent = i => { for (let e = i.parentElement; e && e !== document.body; e = e.parentElement) {
+      const cs = getComputedStyle(e), r = e.getBoundingClientRect();
+      if ((cs.overflowX !== 'visible' && r.width < 2) || (cs.overflowY !== 'visible' && r.height < 2)) return true; } return false; };
+  return [...document.images].filter(i => i.complete && i.naturalWidth >= 64 && i.naturalHeight >= 64 && i.getClientRects().length > 0 && !hiddenOrClipped(i))
+    .filter(i => { const r = i.getBoundingClientRect(), w = r.width, h = r.height;
+      if (Math.min(w, h) < 2) return true;
+      const distortion = Math.max((w / h) / (i.naturalWidth / i.naturalHeight), (i.naturalWidth / i.naturalHeight) / (w / h));
+      return (Math.min(w, h) < 16 && distortion > 2) || (Math.min(w, h) >= 16 && collapsedParent(i)); })
+    .map(srcOf); }'''
+BROKEN_IMAGES_JS='''() => { '''+IMG_SRC_JS+'''
+  return [...document.images].filter(i => (i.currentSrc || i.getAttribute('src')) && i.complete && i.naturalWidth === 0).map(srcOf); }'''
+CONTENT_JS='''() => ({text: (document.body && document.body.innerText || '').trim().length,
+  images: [...document.images].filter(i => i.naturalWidth > 0 && i.getClientRects().length).length})'''
+FILE_BLOCK=re.compile(r'CORS|cross[- ]origin|origin .null.|module|Failed to fetch|XMLHttpRequest',re.I)
+FONT_CORS=re.compile(r'\bfont\b|woff2?\b|\.ttf\b|\.otf\b',re.I)
+CAPTURE_MAX=16000  # px; a capture of an endlessly growing page must not exhaust the time budget
+RENDER_CHECKS=('browser_render','desktop_render','mobile_render','narrow_render','images_rendered')
 
-def audit(root,out_dir,base_url=None,project_root=None,open_file=True):
+def browser_pass(root,out,rel,h,target,file_mode,static,redact_):
+    """Open the page at each viewport. Returns (checks, blocker, page_errors). One failing viewport does not discard the others."""
+    from playwright.sync_api import sync_playwright
+    checks=[];errors=[];collapsed=[];broken=[];notes=[];shots={};observed=[]
+    with sync_playwright() as p:
+        browser=p.chromium.launch(headless=True,executable_path=shutil.which('chromium') or shutil.which('chromium-browser') or None,args=['--no-sandbox'])
+        try:
+            for width,height,check_id in VIEWPORTS:
+                page=browser.new_page(viewport={'width':width,'height':height},reduced_motion='reduce')
+                page.on('pageerror',lambda e:errors.append('pageerror: '+str(e)[:160]))
+                page.on('console',lambda m:errors.append('console: '+m.text[:160]) if m.type=='error' else None)
+                page.on('requestfailed',lambda r:errors.append('requestfailed: '+r.url[:160]))
+                try:
+                    response=page.goto(target,wait_until='load',timeout=12000)
+                    if not file_mode and (response is None or response.status!=200):
+                        checks.append(check(check_id,f'Page rendered at {width} without horizontal overflow','ESSENTIAL','NOT_TESTED','NONE',None,h,str(width),reason=f'HTTP status unavailable or {getattr(response,"status",None)}'));continue
+                    try:pending=page.evaluate(SETTLE_JS)
+                    except Exception as e:pending=None;notes.append(f'Scroll before capture failed at {width}: {type(e).__name__}')
+                    page.wait_for_timeout(200)
+                    full=page.evaluate('document.documentElement.scrollHeight')
+                    e=f'viewport_{width}.png'
+                    page.screenshot(path=str(out/e),full_page=True,clip={'x':0,'y':0,'width':width,'height':max(height,min(full,CAPTURE_MAX))},timeout=12000)
+                    overflow=page.evaluate('document.documentElement.scrollWidth - window.innerWidth');content=page.evaluate(CONTENT_JS)
+                    shots[width]=rel(e);failed=overflow>1
+                    checks.append(check(check_id,f'Page rendered at {width} without horizontal overflow','ESSENTIAL','FAIL' if failed else 'PASS','BROWSER_OBSERVED',rel(e),h,str(width),reason=f'Horizontal overflow of {overflow}px observed' if failed else None))
+                    if width in (1440,390):
+                        collapsed+=[f'{redact_(c)} at {width}' for c in page.evaluate(COLLAPSED_IMAGES_JS)];observed.append(str(width))
+                    if width==1440:
+                        blank=content['text']<20 and content['images']==0
+                        checks.append(check('browser_render','Actual HTML opened with visible content','ESSENTIAL','FAIL' if blank else 'PASS','BROWSER_OBSERVED',rel(e),h,'1440',reason='Page rendered no visible text or images' if blank else None))
+                        broken=page.evaluate(BROKEN_IMAGES_JS)
+                        if pending:notes.append(f'{pending} image(s) not loaded after scrolling (hidden or still pending); not verified')
+                        if full>CAPTURE_MAX:notes.append(f'Capture limited to the first {CAPTURE_MAX}px of a {full}px page')
+                except Exception as ex:
+                    checks.append(check(check_id,f'Page rendered at {width} without horizontal overflow','ESSENTIAL','NOT_TESTED','NONE',None,h,str(width),reason=f'Viewport {width} not completed: {type(ex).__name__}'))
+                finally:page.close()
+        finally:browser.close()
+    if observed:
+        if broken:notes.insert(0,'Images failed to load: '+', '.join(redact_(b) for b in broken[:8]))
+        if collapsed:notes.insert(0,'Images collapsed: '+', '.join(collapsed[:8]))
+        checks.append(check('images_rendered','Referenced images decoded after scrolling and not collapsed','ESSENTIAL','FAIL' if broken or collapsed else 'PASS','BROWSER_OBSERVED',shots.get(1440) or shots.get(390),h,','.join(observed),reason='; '.join(notes) or None))
+    page_errors=[redact_(x) for x in dict.fromkeys(errors)][:8]
+    # Errors that mean the page cannot work from file:// (a font preload CORS message is harmless: the font still loads).
+    file_blocked=[x for x in page_errors if x.startswith('pageerror') or (x.startswith('console') and FILE_BLOCK.search(x) and not FONT_CORS.search(x))]
+    if file_mode and (static['needs_http'] or file_blocked):
+        why=', '.join(static['needs_http']) or 'errors reported by the page'
+        reason=f'Opened via file:// but the page uses {why}; needs an HTTP preview (--url)' if static['needs_http'] else f'Page reported errors under file://; needs an HTTP preview (--url) to confirm'
+        checks=[check(c['check_id'],c['requirement'],c['criticality'],'NOT_TESTED','NONE',None,h,c['viewport'],reason=reason) if c['check_id'] in RENDER_CHECKS else c for c in checks]
+        return checks,reason,page_errors
+    return checks,None,page_errors
+
+def audit(root,out_dir,base_url=None,project_root=None,open_file=True,browser=True,skip_reason=None):
     """QA evidence may live outside the site (so it never ships with it) but must stay inside the project root,
-    which is the root later passed to validate.check. Evidence refs are always relative, never absolute."""
+    which is the root later passed to validate.check. Evidence refs are always relative, never absolute.
+    Without base_url the browser opens index.html via file://; browser=False keeps the audit static."""
     root=pathlib.Path(root).resolve();project_root=pathlib.Path(project_root).resolve() if project_root else root
     out=pathlib.Path(out_dir).resolve()
     if not root.is_relative_to(project_root):raise ValueError('Site root must be inside the project root')
     if not out.is_relative_to(project_root):raise ValueError('QA evidence directory must be under the project root')
     out.mkdir(parents=True,exist_ok=True)
     rel=lambda name: (out/name).relative_to(project_root).as_posix()
+    redact_=lambda x:redact(x,project_root,root,pathlib.Path.home())
     s=static_audit(root,project_root);h=s['source_hash'];(out/'static_audit.json').write_text(json.dumps(s,indent=2,ensure_ascii=False))
     checks=[check('assets_available','Local assets exist','ESSENTIAL','PASS' if not s['missing_assets'] else 'FAIL','STATIC_INSPECTED',rel('static_audit.json'),h),
       check('anchors_static','Local anchors resolve','ADVISORY','PASS' if not s['broken_anchors'] else 'FAIL','STATIC_INSPECTED',rel('static_audit.json'),h,reason=(f"{len(s['hash_routes'])} hash route link(s) not statically checkable" if s['hash_routes'] else None)),
       check('js_syntax','JavaScript syntax','ADVISORY','PASS' if not s['js_errors'] else 'FAIL','STATIC_INSPECTED',rel('static_audit.json'),h),
       check('content_truth','Product facts and rights','CRITICAL','NOT_TESTED','NONE',None,h,reason='Requires authoritative human/project evidence; source inspection alone insufficient')]
-    browser_reason=None;opened_via=None
-    # Without a preview server the browser opens the built index.html itself (file://); the URI never enters evidence.
+    opened_via=None;page_errors=[]
     target=base_url or ((root/'index.html').as_uri() if open_file else None)
-    if not target:browser_reason='Browser not run: static-only audit requested'
+    if not browser or not target:browser_reason=skip_reason or ('Static-only audit requested' if not browser else 'No preview URL and file:// opening disabled')
     else:
         try:
-            from playwright.sync_api import sync_playwright
-            with sync_playwright() as p:
-                browser=p.chromium.launch(headless=True,executable_path=shutil.which('chromium') or shutil.which('chromium-browser') or None,args=['--no-sandbox'])
-                collapsed=[];image_notes=[];broken=[]
-                for width,height,check_id in VIEWPORTS:
-                    page=browser.new_page(viewport={'width':width,'height':height},reduced_motion='reduce')
-                    try:
-                        response=page.goto(target,wait_until='domcontentloaded',timeout=12000)
-                        opened=(response is not None and response.status==200) if base_url else (response is None or response.ok)
-                    except Exception as e:opened,response=False,None;browser_reason='Page did not open: '+type(e).__name__
-                    if opened:
-                        opened_via='url' if base_url else 'file'
-                        # Scroll once so loading="lazy" images load before the capture.
-                        try:pending,settle_error=page.evaluate(SETTLE_JS),None
-                        except Exception as e:pending,settle_error=None,type(e).__name__
-                        page.wait_for_timeout(200)
-                        e=f'viewport_{width}.png';page.screenshot(path=str(out/e),full_page=True,timeout=12000)
-                        overflow=page.evaluate('document.documentElement.scrollWidth - window.innerWidth')
-                        failed=overflow>1
-                        checks.append(check(check_id,f'Page rendered at {width} without horizontal overflow','ESSENTIAL','FAIL' if failed else 'PASS','BROWSER_OBSERVED',rel(e),h,str(width),reason=f'Horizontal overflow of {overflow}px observed' if failed else None))
-                        if width in (1440,390):
-                            collapsed+=[f'{redact(c,project_root,root)} at {width}' for c in page.evaluate(COLLAPSED_IMAGES_JS)]
-                        if width==1440:
-                            checks.append(check('browser_render','Actual HTML opened','ESSENTIAL','PASS','BROWSER_OBSERVED',rel(e),h,'1440'))
-                            broken=page.evaluate(BROKEN_IMAGES_JS);shot=rel(e)
-                            if broken:image_notes.append('Images failed to load: '+', '.join(redact(b,project_root,root) for b in broken[:8]))
-                            if pending:image_notes.append(f'{pending} image(s) not loaded after scrolling (hidden or still pending); not verified')
-                            if settle_error:image_notes.append('Scroll before capture failed: '+settle_error)
-                    elif not browser_reason:browser_reason=f'HTTP status unavailable or {getattr(response,"status",None)}'
-                    page.close()
-                browser.close()
-                if 'browser_render' in {c['check_id'] for c in checks}:
-                    if collapsed:image_notes.append('Images collapsed below 16 px: '+', '.join(collapsed[:8]))
-                    checks.append(check('images_rendered','Referenced images decoded after scrolling and not collapsed','ESSENTIAL','FAIL' if broken or collapsed else 'PASS','BROWSER_OBSERVED',shot,h,'1440,390',reason='; '.join(image_notes) or None))
-        except Exception as e:
-            browser_reason=type(e).__name__+': '+redact(e,project_root,root,pathlib.Path.home())[:250]
+            found,browser_reason,page_errors=browser_pass(root,out,rel,h,target,not base_url,s,redact_)
+            checks+=found
+            if any(c['evidence_mode']=='BROWSER_OBSERVED' for c in found):opened_via='url' if base_url else 'file'
+        except Exception as e:browser_reason=type(e).__name__+': '+redact_(e)[:250]
     present={c['check_id'] for c in checks}
-    rendered=('browser_render','desktop_render','mobile_render','narrow_render','images_rendered')
-    for k in rendered+('cta_interaction','keyboard_interaction','responsive','reduced_motion','form_behavior'):
+    for k in RENDER_CHECKS+('cta_interaction','keyboard_interaction','responsive','reduced_motion','form_behavior'):
         if k not in present:
-            checks.append(check(k,k.replace('_',' '),'ESSENTIAL' if k in rendered+('cta_interaction','keyboard_interaction') else 'ADVISORY','NOT_TESTED','NONE',None,h,reason=browser_reason if k in rendered else 'Requires explicit interaction test and appropriate evidence'))
-    report={'status':'PARTIAL','build_hash':h,'checks':checks,'opened_via':opened_via,'browser_blocker':browser_reason,'limits':['No real conversion or user study','No WCAG certification','No rights clearance','No human brand approval']}
+            checks.append(check(k,k.replace('_',' '),'ESSENTIAL' if k in RENDER_CHECKS+('cta_interaction','keyboard_interaction') else 'ADVISORY','NOT_TESTED','NONE',None,h,reason=browser_reason or 'Not completed' if k in RENDER_CHECKS else 'Requires explicit interaction test and appropriate evidence'))
+    report={'status':'PARTIAL','build_hash':h,'checks':checks,'opened_via':opened_via,'needs_http':s['needs_http'],'page_errors':page_errors,'browser_blocker':browser_reason,'limits':['No real conversion or user study','No WCAG certification','No rights clearance','No human brand approval']}
     (out/'qa_matrix.json').write_text(json.dumps(report,ensure_ascii=False,indent=2))
     return report
 
@@ -147,11 +200,17 @@ def draft_record(root,qa_matrix,project_root=None,project=None):
     if q.get('build_hash')!=h:raise ValueError('QA matrix was produced from another build; run audit again')
     prefix=root.relative_to(project_root)
     soup=BeautifulSoup((root/'index.html').read_text(),'html.parser')
-    images=sorted({x.get('src') for x in soup.find_all('img') if x.get('src') and not x.get('src').startswith(('http:','https:','data:'))})
+    # <img src>, every srcset URL and <source srcset>; root-relative URLs ('/assets/x') resolve against the site root.
+    urls=[x.get('src') for x in soup.find_all('img')]+[part.strip().split()[0] for x in soup.find_all(['img','source']) for part in (x.get('srcset') or '').split(',') if part.strip()]
+    images=sorted({u.lstrip('/') for u in urls if u and not u.startswith(('http:','https:','data:','//'))})
     checks=q['checks'];browser=any(c['check_id']=='browser_render' and c['result']=='PASS' for c in checks)
     verdict='BLOCKED' if any(c['criticality']=='CRITICAL' and c['result']=='FAIL' for c in checks) else 'PARTIAL'
     enum=lambda *v:todo('one of '+' | '.join(v))
-    limits=list(q.get('limits',[]))+([ 'Browser not run: '+q['browser_blocker']] if q.get('browser_blocker') else [])
+    limits=list(q.get('limits',[]))+(['Browser checks not completed: '+q['browser_blocker']] if q.get('browser_blocker') else [])
+    index=(prefix/'index.html').as_posix()
+    if q.get('needs_http') or q.get('opened_via')=='url':
+        opening=f'Serve the site over HTTP (python scripts/creative_web.py preview start {prefix.as_posix() or "."}) and open the URL'+(f"; file:// is not enough because the page uses {', '.join(q['needs_http'])}" if q.get('needs_http') else '')
+    else:opening=f'Open {index} in a browser (file://); hash routes work offline.'
     return {'schema_version':'0.2.0','route':'WEB_PREVIEW','mode':'FAST','project':project or root.name,'build_version':h[:12],
       'state':'PREVIEW_DRAFT','verdict':verdict,
       'execution':{'execution_mode':'MANUAL_SPEC_GUIDED','skill_package_version':todo('skill package version used'),
@@ -168,11 +227,11 @@ def draft_record(root,qa_matrix,project_root=None,project=None):
         'claim_and_offer_boundaries':todo('claims and offers not made')},
       'WEB_ASSET_PLAN':{'assets_used':[{'path':(prefix/i).as_posix(),'origin':todo('origin'),'approval':enum('APPROVED_FOR_THIS_USE','PROVISIONAL','LEGACY','UNKNOWN'),
           'rights':enum('CLEARED','UNKNOWN','RESTRICTED'),'use_scope':todo('approved use')} for i in images],
-        'asset_authority_and_rights':todo('who approved the assets; add images set from CSS or JS, which are not listed here'),
+        'asset_authority_and_rights':todo('who approved the assets; add images set from CSS backgrounds or JS and remote images, which are not listed here'),
         'generation_required_decision':todo('was generation needed and authorised'),'product_identity_preservation':todo('how product identity was kept'),
         'provisional_vs_approved_labels':todo('which assets are provisional')},
       'WEB_PREVIEW_BUILD':{'preview_status':'AVAILABLE_VERIFIED' if browser else 'AVAILABLE_UNVERIFIED','source_files':s['files'],
-        'verified_preview_ref_or_local_open_instructions':f'Open {(prefix/"index.html").as_posix()} in a browser (file://); hash routes work offline.',
+        'verified_preview_ref_or_local_open_instructions':opening,
         'responsive_strategy':todo('breakpoints and mobile behaviour'),'working_interactions':[todo('each interaction that works')],
         'primary_cta_behavior':enum('REAL_VERIFIED_LINK','SAFE_LOCAL_DEMO','CONTACT_LINK_VERIFIED','WAITLIST_NOT_CONNECTED','MOCK_FORM_LABELED','DISABLED_PENDING_DESTINATION'),
         'real_vs_mock_integrations':todo('what is real and what is local or mocked'),'version_id':h[:12],
