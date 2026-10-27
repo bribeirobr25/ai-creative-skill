@@ -396,10 +396,25 @@ class CandidateGovernance(unittest.TestCase):
 
     def test_superseded_candidate_records_are_byte_preserved(self):
         self.assertTrue(self.ci.preserved_history())
-        for cid,name in (('boundary-hardening-v1','source-manifest.json'),('boundary-hardening-v1','remediation.json'),
-                         ('web-runtime-2.6-v1','README.md'),('web-runtime-2.6-v1','source-manifest.json')):
-            path=f'validation/candidates/{cid}/{name}'
-            self.assertEqual((self.ci.ROOT/path).read_bytes(),self.ci.git_bytes(self.ci.SUPERSEDED[cid],path))
+        for name in ('source-manifest.json','remediation.json'):
+            path=f'validation/candidates/boundary-hardening-v1/{name}'
+            self.assertEqual((self.ci.ROOT/path).read_bytes(),self.ci.git_bytes(self.ci.SUPERSEDED['boundary-hardening-v1'],path))
+        pinned=self.ci.SUPERSEDED['web-runtime-2.6-v1']['files_sha256']
+        self.assertEqual(set(pinned),{'README.md','source-manifest.json'})
+        for name,digest in pinned.items():
+            self.assertEqual(self.ci.sha((self.ci.ROOT/'validation/candidates/web-runtime-2.6-v1'/name).read_bytes()),digest)
+
+    def test_superseded_pins_detect_changed_or_added_records(self):
+        import copy
+        original=self.ci.SUPERSEDED
+        try:
+            changed=copy.deepcopy(original);changed['web-runtime-2.6-v1']['files_sha256']['README.md']='0'*64
+            self.ci.SUPERSEDED=changed
+            with self.assertRaisesRegex(ValueError,'Historical artifact changed'):self.ci.preserved_history()
+            added=copy.deepcopy(original);added['web-runtime-2.6-v1']['files_sha256']['extra.json']='0'*64
+            self.ci.SUPERSEDED=added
+            with self.assertRaisesRegex(ValueError,'record set'):self.ci.preserved_history()
+        finally:self.ci.SUPERSEDED=original
 
     def test_record_todo_is_reported_even_with_schema_errors(self):
         from runtime import validate

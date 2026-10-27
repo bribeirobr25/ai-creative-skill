@@ -26,8 +26,12 @@ CANDIDATE_ID=ACTIVE['candidate_id']
 CANDIDATE=CANDIDATES/CANDIDATE_ID
 ALLOWED_CHANGES=set(CANDIDATE_SCOPES[CANDIDATE_ID][1])
 # Superseded candidates stay byte-identical to the commit that reviewed them.
+# A superseded candidate is pinned either by a commit on main (its records are compared to that commit's bytes) or,
+# when its reviewing commit is not on main (squash-only history), by the sha256 of every record file it had there.
 SUPERSEDED={'boundary-hardening-v1':'b83b331f552baa22e14f2cf760dcd396b65a5537',
- 'web-runtime-2.6-v1':'0f7089a5b473c0d878ba1cac1efbea27a960ecf1'}
+ 'web-runtime-2.6-v1':{'reviewed_commit':'0f7089a5b473c0d878ba1cac1efbea27a960ecf1','files_sha256':{
+   'README.md':'ddf9bb782366686ab1d8e9dd13ac92f4675241033d387e14101783cc45694898',
+   'source-manifest.json':'30afc1f099a8292fe1c9d5484df70d083581eec6a877abefcd69090ac4249808'}}}
 
 def lineage_valid(active=None):
     active=active or CANDIDATE_ID
@@ -58,6 +62,14 @@ def preserved_history(root=ROOT):
     # Always checked, whichever candidate is active, so pointing ACTIVE back cannot reopen a superseded record.
     # Exactly the record files that existed at the reviewing commit, so candidates with fewer records are still covered.
     for cid,ref in SUPERSEDED.items():
+        if isinstance(ref,dict):
+            folder=root/'validation/candidates'/cid
+            present={p.name for p in folder.iterdir() if p.is_file()} if folder.is_dir() else set()
+            if not ref['files_sha256'] or present!=set(ref['files_sha256']):
+                raise ValueError('Historical artifact changed: superseded record set of '+cid)
+            for name,digest in ref['files_sha256'].items():
+                if sha((folder/name).read_bytes())!=digest:raise ValueError(f'Historical artifact changed: validation/candidates/{cid}/{name}')
+            continue
         names=subprocess.check_output(['git','ls-tree','-r','--name-only',ref,f'validation/candidates/{cid}/'],cwd=ROOT,text=True).split()
         if not names:raise ValueError('Superseded candidate has no records at its reviewed commit: '+cid)
         fixed.setdefault(ref,[]).extend(names)

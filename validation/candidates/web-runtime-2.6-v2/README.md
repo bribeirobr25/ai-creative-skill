@@ -34,8 +34,10 @@ Known limits, by design:
   "Todo: comprar pão") is also reported; rephrase it.
 
 Governance: `CANDIDATE_SCOPES['web-runtime-2.6-v2']` is pinned in code and includes v1's scope. v1 is superseded at
-`0f7089a`; `preserved_history` byte-checks exactly the record files each superseded candidate had at its reviewing
-commit, and pointing `ACTIVE.json` back to v1 fails as not the newest in its lineage.
+`0f7089a`. Because `main` takes squash merges only, that commit is not on `main`, so v1's two records (README and
+source manifest) are pinned by sha256 in `SUPERSEDED`; adding, removing or changing a v1 record fails
+`preserved_history`. boundary-hardening-v1 is still compared to the bytes of its reviewing commit `b83b331`, which is on
+`main`. Pointing `ACTIVE.json` back to v1 fails as not the newest in its lineage.
 
 ## Gates
 
