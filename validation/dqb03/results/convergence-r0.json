@@ -1,0 +1,411 @@
+{
+ "round": "r0",
+ "note": "Descriptors of similarity, not quality. dHash distance: 0 identical, ~0.5 unrelated.",
+ "sites": {
+  "d79": {
+   "h1_font": "Fraunces",
+   "body_font": "Manrope",
+   "families": [
+    "Fraunces",
+    "Manrope"
+   ],
+   "body_bg": "rgb(247, 239, 225)",
+   "hero_images": [
+    "croissant-editorial-cafe.jpg"
+   ],
+   "brief": "D1",
+   "condition": "A",
+   "repetition": 1
+  },
+  "d59": {
+   "h1_font": "Fraunces",
+   "body_font": "Instrument Sans",
+   "families": [
+    "Fraunces",
+    "Instrument Sans"
+   ],
+   "body_bg": "rgb(251, 245, 234)",
+   "hero_images": [
+    "croissant-editorial-cafe.jpg",
+    "making-fabrics-labels-zippers.jpg"
+   ],
+   "brief": "D1",
+   "condition": "A",
+   "repetition": 2
+  },
+  "d84": {
+   "h1_font": "Fraunces",
+   "body_font": "Instrument Sans",
+   "families": [
+    "Fraunces",
+    "Instrument Sans"
+   ],
+   "body_bg": "rgb(247, 240, 228)",
+   "hero_images": [
+    "croissant-editorial-cafe.jpg"
+   ],
+   "brief": "D1",
+   "condition": "B",
+   "repetition": 1
+  },
+  "d11": {
+   "h1_font": "Fraunces",
+   "body_font": "Manrope",
+   "families": [
+    "Fraunces",
+    "IBM Plex Mono",
+    "Manrope"
+   ],
+   "body_bg": "rgb(248, 241, 228)",
+   "hero_images": [
+    "croissant-editorial-cafe.jpg",
+    "croissant-render-three-quarter.jpg"
+   ],
+   "brief": "D1",
+   "condition": "B",
+   "repetition": 2
+  },
+  "f58": {
+   "h1_font": "Fraunces",
+   "body_font": "Inter",
+   "families": [
+    "Fraunces",
+    "Inter",
+    "Space Grotesk"
+   ],
+   "body_bg": "rgb(244, 240, 232)",
+   "hero_images": [
+    "practice-coast-light.jpg"
+   ],
+   "brief": "D2",
+   "condition": "A",
+   "repetition": 1
+  },
+  "f61": {
+   "h1_font": "Fraunces",
+   "body_font": "Inter",
+   "families": [
+    "Fraunces",
+    "Inter",
+    "Space Grotesk"
+   ],
+   "body_bg": "rgb(244, 240, 232)",
+   "hero_images": [
+    "practice-coast-light.jpg"
+   ],
+   "brief": "D2",
+   "condition": "A",
+   "repetition": 2
+  },
+  "f50": {
+   "h1_font": "Fraunces",
+   "body_font": "Inter",
+   "families": [
+    "Fraunces",
+    "Inter",
+    "Space Grotesk"
+   ],
+   "body_bg": "rgb(244, 240, 232)",
+   "hero_images": [
+    "practice-coast-light.jpg"
+   ],
+   "brief": "D2",
+   "condition": "B",
+   "repetition": 1
+  },
+  "f91": {
+   "h1_font": "Fraunces",
+   "body_font": "Inter",
+   "families": [
+    "Arial",
+    "Fraunces",
+    "Inter",
+    "Space Grotesk"
+   ],
+   "body_bg": "rgb(244, 240, 232)",
+   "hero_images": [
+    "practice-coast-light.jpg"
+   ],
+   "brief": "D2",
+   "condition": "B",
+   "repetition": 2
+  }
+ },
+ "font_sets": {
+  "d79": [
+   "Fraunces",
+   "Manrope"
+  ],
+  "d59": [
+   "Fraunces",
+   "Instrument Sans"
+  ],
+  "d84": [
+   "Fraunces",
+   "Instrument Sans"
+  ],
+  "d11": [
+   "Fraunces",
+   "IBM Plex Mono",
+   "Manrope"
+  ],
+  "f58": [
+   "Fraunces",
+   "Inter",
+   "Space Grotesk"
+  ],
+  "f61": [
+   "Fraunces",
+   "Inter",
+   "Space Grotesk"
+  ],
+  "f50": [
+   "Fraunces",
+   "Inter",
+   "Space Grotesk"
+  ],
+  "f91": [
+   "Arial",
+   "Fraunces",
+   "Inter",
+   "Space Grotesk"
+  ]
+ },
+ "distinct_font_sets": 5,
+ "home_pairs": [
+  {
+   "a": "d79",
+   "b": "d59",
+   "kind": "same-brief/within-A",
+   "home_dhash_distance": 0.332
+  },
+  {
+   "a": "d79",
+   "b": "d84",
+   "kind": "same-brief/cross-condition",
+   "home_dhash_distance": 0.395
+  },
+  {
+   "a": "d79",
+   "b": "d11",
+   "kind": "same-brief/cross-condition",
+   "home_dhash_distance": 0.285
+  },
+  {
+   "a": "d79",
+   "b": "f58",
+   "kind": "cross-brief/within-A",
+   "home_dhash_distance": 0.406
+  },
+  {
+   "a": "d79",
+   "b": "f61",
+   "kind": "cross-brief/within-A",
+   "home_dhash_distance": 0.426
+  },
+  {
+   "a": "d79",
+   "b": "f50",
+   "kind": "cross-brief/cross-condition",
+   "home_dhash_distance": 0.395
+  },
+  {
+   "a": "d79",
+   "b": "f91",
+   "kind": "cross-brief/cross-condition",
+   "home_dhash_distance": 0.355
+  },
+  {
+   "a": "d59",
+   "b": "d84",
+   "kind": "same-brief/cross-condition",
+   "home_dhash_distance": 0.398
+  },
+  {
+   "a": "d59",
+   "b": "d11",
+   "kind": "same-brief/cross-condition",
+   "home_dhash_distance": 0.273
+  },
+  {
+   "a": "d59",
+   "b": "f58",
+   "kind": "cross-brief/within-A",
+   "home_dhash_distance": 0.418
+  },
+  {
+   "a": "d59",
+   "b": "f61",
+   "kind": "cross-brief/within-A",
+   "home_dhash_distance": 0.398
+  },
+  {
+   "a": "d59",
+   "b": "f50",
+   "kind": "cross-brief/cross-condition",
+   "home_dhash_distance": 0.375
+  },
+  {
+   "a": "d59",
+   "b": "f91",
+   "kind": "cross-brief/cross-condition",
+   "home_dhash_distance": 0.375
+  },
+  {
+   "a": "d84",
+   "b": "d11",
+   "kind": "same-brief/within-B",
+   "home_dhash_distance": 0.383
+  },
+  {
+   "a": "d84",
+   "b": "f58",
+   "kind": "cross-brief/cross-condition",
+   "home_dhash_distance": 0.379
+  },
+  {
+   "a": "d84",
+   "b": "f61",
+   "kind": "cross-brief/cross-condition",
+   "home_dhash_distance": 0.359
+  },
+  {
+   "a": "d84",
+   "b": "f50",
+   "kind": "cross-brief/within-B",
+   "home_dhash_distance": 0.406
+  },
+  {
+   "a": "d84",
+   "b": "f91",
+   "kind": "cross-brief/within-B",
+   "home_dhash_distance": 0.406
+  },
+  {
+   "a": "d11",
+   "b": "f58",
+   "kind": "cross-brief/cross-condition",
+   "home_dhash_distance": 0.395
+  },
+  {
+   "a": "d11",
+   "b": "f61",
+   "kind": "cross-brief/cross-condition",
+   "home_dhash_distance": 0.383
+  },
+  {
+   "a": "d11",
+   "b": "f50",
+   "kind": "cross-brief/within-B",
+   "home_dhash_distance": 0.383
+  },
+  {
+   "a": "d11",
+   "b": "f91",
+   "kind": "cross-brief/within-B",
+   "home_dhash_distance": 0.352
+  },
+  {
+   "a": "f58",
+   "b": "f61",
+   "kind": "same-brief/within-A",
+   "home_dhash_distance": 0.238
+  },
+  {
+   "a": "f58",
+   "b": "f50",
+   "kind": "same-brief/cross-condition",
+   "home_dhash_distance": 0.371
+  },
+  {
+   "a": "f58",
+   "b": "f91",
+   "kind": "same-brief/cross-condition",
+   "home_dhash_distance": 0.316
+  },
+  {
+   "a": "f61",
+   "b": "f50",
+   "kind": "same-brief/cross-condition",
+   "home_dhash_distance": 0.344
+  },
+  {
+   "a": "f61",
+   "b": "f91",
+   "kind": "same-brief/cross-condition",
+   "home_dhash_distance": 0.281
+  },
+  {
+   "a": "f50",
+   "b": "f91",
+   "kind": "same-brief/within-B",
+   "home_dhash_distance": 0.305
+  }
+ ],
+ "home_distance_by_kind": {
+  "cross-brief/cross-condition": {
+   "n": 8,
+   "mean": 0.377,
+   "values": [
+    0.395,
+    0.355,
+    0.375,
+    0.375,
+    0.379,
+    0.359,
+    0.395,
+    0.383
+   ]
+  },
+  "cross-brief/within-A": {
+   "n": 4,
+   "mean": 0.412,
+   "values": [
+    0.406,
+    0.426,
+    0.418,
+    0.398
+   ]
+  },
+  "cross-brief/within-B": {
+   "n": 4,
+   "mean": 0.387,
+   "values": [
+    0.406,
+    0.406,
+    0.383,
+    0.352
+   ]
+  },
+  "same-brief/cross-condition": {
+   "n": 8,
+   "mean": 0.333,
+   "values": [
+    0.395,
+    0.285,
+    0.398,
+    0.273,
+    0.371,
+    0.316,
+    0.344,
+    0.281
+   ]
+  },
+  "same-brief/within-A": {
+   "n": 2,
+   "mean": 0.285,
+   "values": [
+    0.332,
+    0.238
+   ]
+  },
+  "same-brief/within-B": {
+   "n": 2,
+   "mean": 0.344,
+   "values": [
+    0.383,
+    0.305
+   ]
+  }
+ }
+}

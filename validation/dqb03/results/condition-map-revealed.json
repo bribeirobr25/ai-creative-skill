@@ -1,0 +1,178 @@
+[
+ {
+  "run": "d79",
+  "brief": "D1",
+  "condition": "A",
+  "repetition": 1,
+  "fonts_order": [
+   "Manrope",
+   "Bricolage Grotesque",
+   "Cormorant Garamond",
+   "Space Grotesk",
+   "IBM Plex Mono",
+   "Archivo",
+   "Instrument Sans",
+   "Inter",
+   "Syne",
+   "Playfair Display",
+   "DM Serif Display",
+   "Outfit",
+   "Newsreader",
+   "Fraunces"
+  ]
+ },
+ {
+  "run": "d59",
+  "brief": "D1",
+  "condition": "A",
+  "repetition": 2,
+  "fonts_order": [
+   "Space Grotesk",
+   "Playfair Display",
+   "Cormorant Garamond",
+   "Fraunces",
+   "DM Serif Display",
+   "Inter",
+   "IBM Plex Mono",
+   "Archivo",
+   "Newsreader",
+   "Outfit",
+   "Instrument Sans",
+   "Manrope",
+   "Bricolage Grotesque",
+   "Syne"
+  ]
+ },
+ {
+  "run": "d84",
+  "brief": "D1",
+  "condition": "B",
+  "repetition": 1,
+  "fonts_order": [
+   "Archivo",
+   "Instrument Sans",
+   "Manrope",
+   "Newsreader",
+   "Fraunces",
+   "IBM Plex Mono",
+   "DM Serif Display",
+   "Bricolage Grotesque",
+   "Playfair Display",
+   "Space Grotesk",
+   "Cormorant Garamond",
+   "Inter",
+   "Outfit",
+   "Syne"
+  ]
+ },
+ {
+  "run": "d11",
+  "brief": "D1",
+  "condition": "B",
+  "repetition": 2,
+  "fonts_order": [
+   "IBM Plex Mono",
+   "Manrope",
+   "DM Serif Display",
+   "Fraunces",
+   "Instrument Sans",
+   "Cormorant Garamond",
+   "Outfit",
+   "Space Grotesk",
+   "Newsreader",
+   "Inter",
+   "Bricolage Grotesque",
+   "Syne",
+   "Playfair Display",
+   "Archivo"
+  ]
+ },
+ {
+  "run": "f58",
+  "brief": "D2",
+  "condition": "A",
+  "repetition": 1,
+  "fonts_order": [
+   "Instrument Sans",
+   "IBM Plex Mono",
+   "Syne",
+   "Cormorant Garamond",
+   "Fraunces",
+   "Outfit",
+   "DM Serif Display",
+   "Archivo",
+   "Inter",
+   "Manrope",
+   "Playfair Display",
+   "Bricolage Grotesque",
+   "Space Grotesk",
+   "Newsreader"
+  ]
+ },
+ {
+  "run": "f61",
+  "brief": "D2",
+  "condition": "A",
+  "repetition": 2,
+  "fonts_order": [
+   "Manrope",
+   "Bricolage Grotesque",
+   "Playfair Display",
+   "Newsreader",
+   "IBM Plex Mono",
+   "Cormorant Garamond",
+   "Inter",
+   "Instrument Sans",
+   "Archivo",
+   "DM Serif Display",
+   "Syne",
+   "Outfit",
+   "Fraunces",
+   "Space Grotesk"
+  ]
+ },
+ {
+  "run": "f50",
+  "brief": "D2",
+  "condition": "B",
+  "repetition": 1,
+  "fonts_order": [
+   "Newsreader",
+   "DM Serif Display",
+   "Manrope",
+   "Cormorant Garamond",
+   "IBM Plex Mono",
+   "Fraunces",
+   "Playfair Display",
+   "Archivo",
+   "Outfit",
+   "Inter",
+   "Space Grotesk",
+   "Syne",
+   "Instrument Sans",
+   "Bricolage Grotesque"
+  ]
+ },
+ {
+  "run": "f91",
+  "brief": "D2",
+  "condition": "B",
+  "repetition": 2,
+  "fonts_order": [
+   "Cormorant Garamond",
+   "Playfair Display",
+   "Space Grotesk",
+   "Fraunces",
+   "Newsreader",
+   "DM Serif Display",
+   "Syne",
+   "Archivo",
+   "Instrument Sans",
+   "Inter",
+   "Outfit",
+   "Manrope",
+   "Bricolage Grotesque",
+   "IBM Plex Mono"
+  ]
+ }
+]

@@ -1,0 +1,6 @@
+{"note": "Wall-clock seconds and context tokens from the host task notifications (R0 = first completion; R1 = later completion minus R0 when the notification was cumulative). Includes model latency and CPU contention; both conditions ran concurrently in each batch.",
+ "r0": {"d79": {"cond": "A", "s": 661, "tokens": 177304}, "d59": {"cond": "A", "s": 765, "tokens": 187317}, "f58": {"cond": "A", "s": 446, "tokens": 181143}, "f61": {"cond": "A", "s": 657, "tokens": 181848},
+        "d84": {"cond": "B", "s": 532, "tokens": 183478}, "d11": {"cond": "B", "s": 698, "tokens": 180214}, "f50": {"cond": "B", "s": 526, "tokens": 173427}, "f91": {"cond": "B", "s": 552, "tokens": 163976}},
+ "r1": {"d79": {"cond": "A", "s": 304}, "d59": {"cond": "A", "s": 112}, "f58": {"cond": "A", "s": 214}, "f61": {"cond": "A", "s": 147},
+        "d84": {"cond": "B", "s": 241}, "d11": {"cond": "B", "s": 269}, "f50": {"cond": "B", "s": 177}, "f91": {"cond": "B", "s": 171}},
+ "means": {"r0_s": {"A": 632, "B": 577}, "r0_tokens": {"A": 181903, "B": 175274}, "r1_s": {"A": 194, "B": 215}}}
