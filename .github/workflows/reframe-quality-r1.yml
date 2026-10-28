@@ -29,7 +29,7 @@ jobs:
           python-version: '3.11'
       - name: Install open-source benchmark dependencies
         run: |
-          python -m pip install 'Pillow>=10,<13' 'numpy>=1.24,<3'
+          python -m pip install 'Pillow>=13,<14' 'numpy>=1.24,<3'
           sudo apt-get update -qq
           sudo apt-get install -y -qq ffmpeg
       - name: Generate local synthetic media and assess loss vs aligned reference
