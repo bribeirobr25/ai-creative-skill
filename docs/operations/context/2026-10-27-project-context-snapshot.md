@@ -386,7 +386,7 @@ Also: who owns Track C, and which benchmark comes first (by M1); the transcripti
 3. **"Pilot 01" means two things.** In the A0 memory plan, "Piloto 01" is a small real project (Della was suggested). In the skill canon, Pilot 01 is the recurring-persona project, run by a separate private operations skill and under a documentation freeze. **Recommendation:** rename the memory pilot (for example "Memory Pilot MP-01") before M2.
 4. **The proposal v1.1 is not committed.** ADR-0004 and the register cite it as an owner attachment, and the #30 review asks for that reference to be preserved. This snapshot summarizes it; the full text remains with the owner.
 5. **Two AI tools work on the repo in parallel.** ChatGPT, through a GitHub connector, did the planning, A0 and the review; Claude Code web did #28/#29. The v1.1 inventory was written when only #17 was open. Use the execution register as the single list of open work and update it whenever any tool opens or closes work.
-6. **The skill is not installed in the owner's own agent account** (checked 2026-10-27), so M1 will be its first real host install. A broad-trigger third-party content skill (`higgsfield-content-factory`, which auto-schedules to Meta Ads) is present in the owner's synced skills. Pilot 01 Project Profile §3.1 records that it stays disabled during Pilot work, so check whether it is enabled.
+6. **No host installation of the skill has been verified**, so M1 will be its first real host install.
 7. **The relationship between the AI Creative Skill and the separate Pilot 01 operations skill is undefined.** It must be settled before any Pilot 01 data enters Memory v1.
 8. The publication guard checks PR diffs only. It does not audit history retroactively and does not check EXIF.
 
