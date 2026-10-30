@@ -86,9 +86,14 @@ def problems(rows, root=ROOT, allow_private=False):
     return errs
 
 
-def current(rows):
-    gone = {r.get('supersedes') for _, _, r in rows if r.get('supersedes')}
-    return [r for _, _, r in rows if '_error' not in r and r.get('id') not in gone]
+def current(rows, accepted=None):
+    """Records in force. With `accepted` (ids of decisions whose PR the owner merged), any other decision
+    neither counts nor supersedes: a pending replacement leaves the accepted decision current."""
+    ok = [r for _, _, r in rows if '_error' not in r]
+    if accepted is not None:
+        ok = [r for r in ok if r.get('kind') != 'DECISION_RECORDED' or r.get('id') in accepted]
+    gone = {r.get('supersedes') for r in ok if r.get('supersedes')}
+    return [r for r in ok if r.get('id') not in gone]
 
 
 def gh(*args):
@@ -107,24 +112,65 @@ def gh(*args):
         return None
 
 
-def verify_authority(rows, fetch=None):
-    """A decision counts only if its PR was merged by the repository owner."""
+def pr_files(n):
+    """Paths changed by PR n, or None when GitHub is not reachable."""
+    if not shutil.which('gh'):
+        return None
+    try:
+        out = subprocess.run(['gh', 'api', '--paginate', 'repos/{owner}/{repo}/pulls/%d/files?per_page=100' % n, '--jq', '.[].filename'],
+                             cwd=ROOT, capture_output=True, text=True, timeout=60)
+    except (OSError, subprocess.TimeoutExpired):
+        return None
+    return set(out.stdout.split('\n')) - {''} if out.returncode == 0 else None
+
+
+def authority(rows, fetch=None, files=None):
+    """Classify every decision by its authority PR: {id: (state, reason)}.
+
+    accepted: merged by the repository owner, and the PR changed at least one of the record's evidence files
+              (or brain/records when it cites no file), so a wrong PR number cannot borrow another merge;
+    pending: the PR is still open; unverified: GitHub not reachable; invalid: anything else."""
     fetch = fetch or (lambda n: gh('api', 'repos/{owner}/{repo}/pulls/%d' % n))
-    errs, cache = [], {}
-    for r in current(rows):
+    files = files or pr_files
+    prs, changed, out = {}, {}, {}
+    for _, _, r in rows:
         m = AUTHORITY.match(str(r.get('authority_ref', '')))
         if r.get('kind') != 'DECISION_RECORDED' or not m:
             continue
         n = int(m.group(1))
-        if n not in cache:
-            cache[n] = fetch(n)
-        pr = cache[n]
+        if n not in prs:
+            prs[n] = fetch(n)
+        pr = prs[n]
         if pr is None:
-            errs.append('%s: cannot reach GitHub to verify pr:#%d' % (r['id'], n))
-        elif not pr.get('merged'):
-            errs.append('%s: pr:#%d is not merged, so the decision is not yet the owner\'s' % (r['id'], n))
-        elif (pr.get('merged_by') or {}).get('login') != pr['base']['repo']['owner']['login']:
-            errs.append('%s: pr:#%d was not merged by the repository owner' % (r['id'], n))
+            out[r['id']] = ('unverified', 'cannot reach GitHub to verify pr:#%d' % n)
+            continue
+        if not pr.get('merged'):
+            out[r['id']] = ('pending', 'pr:#%d is open, not merged yet' % n) if pr.get('state') == 'open' else \
+                ('invalid', 'pr:#%d was closed without merge, so it is not the owner\'s decision' % n)
+            continue
+        if (pr.get('merged_by') or {}).get('login') != pr['base']['repo']['owner']['login']:
+            out[r['id']] = ('invalid', 'pr:#%d was not merged by the repository owner' % n)
+            continue
+        if n not in changed:
+            changed[n] = files(n)
+        if changed[n] is None:
+            out[r['id']] = ('unverified', 'cannot reach GitHub to list the files of pr:#%d' % n)
+            continue
+        paths = {e.split('#')[0] for e in r.get('evidence_refs', []) if not str(e).startswith(('pr:', 'issue:', 'commit:'))}
+        hit = paths & changed[n] if paths else {f for f in changed[n] if f.startswith('brain/records/')}
+        out[r['id']] = ('accepted', '') if hit else \
+            ('invalid', 'pr:#%d changed none of the record\'s evidence files; is the PR number right?' % n)
+    return out
+
+
+def verify_authority(rows, fetch=None, files=None):
+    """A decision counts only if its PR was merged by the repository owner and is the PR that carries its evidence."""
+    states = authority(rows, fetch, files)
+    errs = []
+    for r in current(rows):
+        state, reason = states.get(r.get('id'), ('accepted', ''))
+        if r.get('kind') == 'DECISION_RECORDED' and state != 'accepted':
+            errs.append('%s: %s%s' % (r['id'], reason, ', so the decision is not yet the owner\'s' if state == 'pending' else ''))
     return errs
 
 
@@ -229,16 +275,37 @@ def benchmark_checks(path=BENCHMARK_LOG):
     return rows
 
 
-def status(rows, today=None, online=True):
+def status(rows, today=None, online=True, fetch=None, files=None):
     today = today or datetime.date.today().isoformat()
-    cur = current(rows)
     L = ['# Project Brain status (derived %s; not committed)' % today, '']
     errs = problems(rows)
     if errs:
         L += ['**Records have %d problem(s); run `python3 -m brain validate`.**' % len(errs), '']
-    L += ['## Current decisions', '']
-    for r in sorted((r for r in cur if r.get('kind') == 'DECISION_RECORDED'), key=lambda r: r.get('subject', '')):
-        L.append('- **%s** (%s, %s): %s' % (r['subject'], r['occurred_at'], r.get('authority_ref', '?'), r['statement']))
+
+    def line(r, note=''):
+        return '- **%s** (%s, %s): %s%s' % (r['subject'], r['occurred_at'], r.get('authority_ref', '?'), r['statement'], note)
+
+    def decisions(rs):
+        return sorted((r for r in rs if r.get('kind') == 'DECISION_RECORDED'), key=lambda r: r.get('subject', ''))
+
+    states = authority(rows, fetch, files) if (online or fetch) else None
+    if states is None:
+        cur = current(rows)
+        L += ['## Decisions (not verified: GitHub not reachable; none is confirmed as the owner\'s)', '']
+        L += [line(r) for r in decisions(cur)]
+    else:
+        cur = current(rows, {i for i, (st, _) in states.items() if st == 'accepted'})
+        L += ['## Current decisions', '']
+        L += [line(r) for r in decisions(cur)] or ['- none confirmed']
+        by_id = {r.get('id'): r for _, _, r in rows}
+        for state, title in (('pending', 'Pending decisions (their PR is not merged yet; not in force)'),
+                             ('unverified', 'Decisions not verified (GitHub not reachable)'),
+                             ('invalid', 'Decision problems (not in force)')):
+            rs = [by_id[i] for i, (st, _) in states.items() if st == state and by_id[i] in current(rows)]
+            if rs:
+                L += ['', '## ' + title, '']
+                L += [line(r, (' (would replace %s)' % r['supersedes'] if r.get('supersedes') else '') +
+                         (' [%s]' % states[r['id']][1] if state != 'pending' else '')) for r in decisions(rs)]
     obs = [r for r in cur if r.get('kind') != 'DECISION_RECORDED' and not r.get('finding_status')]
     if obs:
         L += ['', '## Observations and requests (not decisions)', '']

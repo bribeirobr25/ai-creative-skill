@@ -72,25 +72,98 @@ class Contract(unittest.TestCase):
             self.assertTrue(any('not valid JSON' in e for e in core.problems(core.load(d))))
 
 
+def pr(merged=True, by='owner', owner='owner', state=None):
+    return {'merged': merged, 'state': state or ('closed' if merged else 'open'),
+            'merged_by': {'login': by} if by and merged else None, 'base': {'repo': {'owner': {'login': owner}}}}
+
+
+EVIDENCE = 'brain/CONTRACT.md'
+CHANGED = lambda n: {EVIDENCE}  # noqa: E731  the authority PR changed the record's evidence file
+
+
 class Authority(unittest.TestCase):
-    def pr(self, merged=True, by='owner', owner='owner'):
-        return {'merged': merged, 'merged_by': {'login': by} if by else None, 'base': {'repo': {'owner': {'login': owner}}}}
+    def verify(self, record, fetch, files=CHANGED):
+        return core.verify_authority(rows(record), fetch=fetch, files=files)
 
     def test_owner_merge_verifies(self):
-        self.assertEqual(core.verify_authority(rows(rec()), fetch=lambda n: self.pr()), [])
+        self.assertEqual(self.verify(rec(evidence_refs=[EVIDENCE]), lambda n: pr()), [])
 
     def test_unmerged_or_other_merger_fails(self):
-        self.assertTrue(core.verify_authority(rows(rec()), fetch=lambda n: self.pr(merged=False)))
-        self.assertTrue(core.verify_authority(rows(rec()), fetch=lambda n: self.pr(by='someone-else')))
+        self.assertTrue(self.verify(rec(evidence_refs=[EVIDENCE]), lambda n: pr(merged=False)))
+        self.assertTrue(self.verify(rec(evidence_refs=[EVIDENCE]), lambda n: pr(by='someone-else')))
 
     def test_unreachable_github_fails(self):
-        self.assertTrue(core.verify_authority(rows(rec()), fetch=lambda n: None))
+        self.assertTrue(self.verify(rec(evidence_refs=[EVIDENCE]), lambda n: None))
+        self.assertTrue(self.verify(rec(evidence_refs=[EVIDENCE]), lambda n: pr(), files=lambda n: None))
+
+    def test_wrong_pr_number_cannot_borrow_another_merge(self):
+        # A record citing a PR that the owner merged but that carries none of its evidence (e.g. a Dependabot PR).
+        errs = self.verify(rec(evidence_refs=[EVIDENCE]), lambda n: pr(), files=lambda n: {'.github/workflows/brain.yml'})
+        self.assertTrue(errs and 'is the PR number right' in errs[0], errs)
+
+    def test_record_without_evidence_files_needs_a_records_change(self):
+        self.assertTrue(self.verify(rec(), lambda n: pr(), files=lambda n: {'README.md'}))
+        self.assertEqual(self.verify(rec(), lambda n: pr(), files=lambda n: {'brain/records/decisions.jsonl'}), [])
+
+    def test_states(self):
+        cases = {'accepted': pr(), 'pending': pr(merged=False), 'unverified': None,
+                 'invalid': pr(merged=False, state='closed')}
+        for want, answer in cases.items():
+            got = core.authority(rows(rec(evidence_refs=[EVIDENCE])), fetch=lambda n: answer, files=CHANGED)['DEC-x'][0]
+            self.assertEqual(got, want)
+
+
+class PendingDecisions(unittest.TestCase):
+    """A decision whose PR is not merged is shown as pending and changes nothing until the owner merges it."""
+
+    OLD = rec(id='DEC-old', authority_ref='pr:#1', statement='old rule', evidence_refs=[EVIDENCE])
+    NEW = rec(id='DEC-new', authority_ref='pr:#2', statement='new rule', supersedes='DEC-old', evidence_refs=[EVIDENCE])
+
+    def status(self, *records, answers):
+        return core.status(rows(*records), today='2026-10-30', online=False, fetch=lambda n: answers.get(n), files=CHANGED)
+
+    @staticmethod
+    def section(out, title):
+        return out.split('## ' + title, 1)[1].split('\n## ', 1)[0] if '## ' + title in out else ''
+
+    def test_pending_is_not_current(self):
+        out = self.status(rec(id='DEC-p', authority_ref='pr:#2', evidence_refs=[EVIDENCE]), answers={2: pr(merged=False)})
+        self.assertNotIn('DEC', self.section(out, 'Current decisions'))
+        self.assertIn('pr:#2', self.section(out, 'Pending decisions'))
+
+    def test_pending_replacement_keeps_accepted_decision_current(self):
+        out = self.status(self.OLD, self.NEW, answers={1: pr(), 2: pr(merged=False)})
+        self.assertIn('old rule', self.section(out, 'Current decisions'))
+        self.assertNotIn('new rule', self.section(out, 'Current decisions'))
+        self.assertIn('new rule (would replace DEC-old)', self.section(out, 'Pending decisions'))
+
+    def test_merged_replacement_takes_over(self):
+        out = self.status(self.OLD, self.NEW, answers={1: pr(), 2: pr()})
+        self.assertIn('new rule', self.section(out, 'Current decisions'))
+        self.assertNotIn('old rule', out)
+
+    def test_closed_or_foreign_merge_is_a_problem_not_a_decision(self):
+        for answer in (pr(merged=False, state='closed'), pr(by='someone-else')):
+            out = self.status(self.OLD, answers={1: answer})
+            self.assertNotIn('old rule', self.section(out, 'Current decisions'))
+            self.assertIn('old rule', self.section(out, 'Decision problems'))
+
+    def test_unreachable_github_confirms_nothing(self):
+        out = self.status(self.OLD, answers={})
+        self.assertNotIn('old rule', self.section(out, 'Current decisions'))
+        self.assertIn('old rule', self.section(out, 'Decisions not verified'))
+        offline = core.status(rows(self.OLD), today='2026-10-30', online=False)
+        self.assertIn('none is confirmed as the owner', offline)
+
+    def test_validate_without_authority_still_accepts_own_pending_records(self):
+        # The PR check runs `validate` without --verify-authority, so a decision PR can pass before its own merge.
+        self.assertEqual(core.problems(rows(self.OLD, self.NEW)), [])
 
 
 class Status(unittest.TestCase):
     def test_status_offline_lists_decisions_and_due_reviews(self):
         out = core.status(rows(rec(review_by='2026-01-01')), today='2026-10-30', online=False)
-        self.assertIn('## Current decisions', out)
+        self.assertIn('## Decisions (not verified', out)
         self.assertIn('DEC-x (review_by 2026-01-01)', out)
         self.assertIn('GitHub not reachable', out)
 

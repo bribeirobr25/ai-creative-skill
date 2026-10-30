@@ -29,6 +29,10 @@ There is one JSON object per line in `brain/records/*.jsonl`.
 ## Rules
 
 1. **The emitter is not the persister.** Agents and people propose records in a PR. A record counts only once the owner merges that PR. For a decision, `authority_ref` names the PR whose merge was the owner's act. `python -m brain validate --verify-authority` checks that on GitHub.
+   - `status` checks each decision on GitHub. **Current** means merged by the owner, by a PR that changed at least one of the record's evidence files (or `brain/records` when it cites none), so a wrong PR number cannot borrow another merge.
+   - A decision whose PR is still open is **pending**: listed apart, and it supersedes nothing until the merge.
+   - A PR closed without merge or merged by someone else makes the decision a **problem**. If GitHub cannot be reached, no decision is shown as confirmed.
+   - The PR check runs `validate` without `--verify-authority`, so a decision PR can pass its own checks before the owner merges it.
 2. **Superseded is never current.** A record named in another record's `supersedes` is history.
 3. **Contradictions fail closed.** Two current decisions on the same subject make `validate` fail. Supersede one; don't edit both.
 4. **No automatic promotion.** An observation or a benchmark result never becomes a decision by itself (ADR-0004 I5, Calibration §1.2).
