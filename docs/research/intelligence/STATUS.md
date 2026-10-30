@@ -12,7 +12,7 @@ Estes são registros de revisão, não autorização formal. A versão v0.3 é u
 
 | Fase | Resultado e situação |
 |---|---|
-| S0 | Encerrada administrativamente por atestação do proprietário, com limites residuais. O link Drive em `src/` ainda precisa de migração versionada |
+| S0 | Encerrada administrativamente por atestação do proprietário, com limites residuais. O link Drive em `src/` foi substituído por ID lógico na candidata `privacy-redaction-v1` (PR #35, 2026-10-30); o histórico Git mantém o texto antigo |
 | S1 | Motor estatístico anterior #19: histórico; substituído pelo laboratório consolidado do PR #23 (integrado em 2026-10-26) |
 | S2 | Validador de contratos anterior #21: histórico; substituído pelo laboratório consolidado do PR #23 (integrado em 2026-10-26) |
 | S3 | Preflight de permissões anterior #22: histórico; substituído pelo laboratório consolidado do PR #23 (integrado em 2026-10-26) |
