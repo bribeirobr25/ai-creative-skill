@@ -34,7 +34,7 @@ It points to current Pilot canonical sources for identity, environment, scripts 
 
 Pre-v0.6 preserves the current Pilot rules and adds an explicit authority category for finalization / delivery / export requirements so finishing parameters can be resolved from current Pilot authority without copying numeric presets into this profile. It also refreshes companion authority pointers while leaving Pilot canon unchanged.
 
-Validator correction round (operator-agreed window, 2026-10-09): Pre-v0.7 records the operator decision of 2026-10-09 that the `higgsfield-content-factory` skill installed in the operator's account stays disabled while Pilot work is active and that no broad-trigger third-party skill orchestrates Pilot work (§3.1), and makes a working Pilot authority binding a precondition of installing the skill package in any host that could receive Pilot work (§2.1). Pilot canon, locks, gates and stop rules are unchanged.
+Validator correction round (operator-agreed window, 2026-10-09): Pre-v0.7 records the operator decision of 2026-10-09 that the `higgsfield-content-factory` skill, if present in the operator's environment, stays disabled while Pilot work is active and that no broad-trigger third-party skill orchestrates Pilot work (§3.1), and makes a working Pilot authority binding a precondition of installing the skill package in any host that could receive Pilot work (§2.1). Pilot canon, locks, gates and stop rules are unchanged.
 
 ---
 
@@ -184,7 +184,7 @@ Operator decision dated 2026-10-09:
 
 ```text
 higgsfield-content-factory
-(installed in the operator's account)
+(if present in the operator's environment)
 =
 DISABLED WHILE PILOT WORK IS ACTIVE
 
@@ -193,7 +193,7 @@ BROAD-TRIGGER THIRD-PARTY SKILL
 ORCHESTRATOR OF PILOT WORK
 ```
 
-The operator disables the installed skill in the account; this profile records the decision and does not perform it. While Pilot work is active, no broad-trigger third-party skill may take orchestration of a Pilot task, select its route, voice, persona or environment, or trigger generation, spend or publication. Re-enabling the skill, or calling a third-party skill by name for an explicitly bounded subtask, is an operator decision. This is the Pilot-specific application of the overlapping third-party activation canary in Runtime Activation and Packaging §13.1; that canary remains the generic package test.
+The operator disables the skill where it is present; this profile records the decision and does not perform it. While Pilot work is active, no broad-trigger third-party skill may take orchestration of a Pilot task, select its route, voice, persona or environment, or trigger generation, spend or publication. Re-enabling the skill, or calling a third-party skill by name for an explicitly bounded subtask, is an operator decision. This is the Pilot-specific application of the overlapping third-party activation canary in Runtime Activation and Packaging §13.1; that canary remains the generic package test.
 
 ---
 

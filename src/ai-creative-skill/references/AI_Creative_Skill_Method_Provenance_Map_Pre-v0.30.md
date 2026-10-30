@@ -18,7 +18,7 @@ Pre-v0.29 adds the official `higgsfield-ai/skills` repository v0.13.0 / commit `
 The user-supplied package:
 
 ```text
-/Google Drive/ai/influencer/utils/higgsfield-marketing-new.skill
+private-archive://influencer/utils/higgsfield-marketing-new.skill
 create-ads-with-agents · v2.1.2
 sha256 = 5f5a849986b52c9d4649865bdd06074f0f5550e910b7d623084a407e692ebfc0
 license = NOT DECLARED IN INSPECTED PACKAGE
@@ -29,7 +29,7 @@ is treated as a research/reference source. It materially influenced early design
 The user-supplied runtime build guide:
 
 ```text
-/Google Drive/ai/influencer/utils/generate-skill-guide.pdf
+private-archive://influencer/utils/generate-skill-guide.pdf
 RoboNuggets · Build Your Own /generate Skill
 ```
 
@@ -39,7 +39,7 @@ is also treated as research/reference only. It contributes execution ergonomics 
 The user-supplied text-editing package:
 
 ```text
-/Google Drive/ai/influencer/utils/humanizer-main.zip
+private-archive://influencer/utils/humanizer-main.zip
 blader/humanizer · v3.1.0
 MIT License · Copyright (c) 2025 Siqi Chen
 ```
@@ -49,7 +49,7 @@ is treated as a writing-method reference. It contributes observable text-natural
 The user-supplied writing/editing package:
 
 ```text
-/Google Drive/ai/influencer/utils/no-ai-slop-main.zip
+private-archive://influencer/utils/no-ai-slop-main.zip
 petergyang/no-ai-slop · v1.0.6
 MIT License · Copyright (c) 2026 Peter Yang
 ```
@@ -59,7 +59,7 @@ is treated as a writing-review reference. It contributes portability/specificity
 The user-supplied research package:
 
 ```text
-/Google Drive/ai/influencer/utils/last30days-skill-main.zip
+private-archive://influencer/utils/last30days-skill-main.zip
 mvanhorn/last30days-skill · v3.26.0
 MIT License · Copyright (c) 2026 Matt Van Horn
 ```
@@ -69,7 +69,7 @@ is treated as a research-method and runtime-architecture reference. Its provider
 The user-supplied video-inspection package:
 
 ```text
-/Google Drive/ai/influencer/utils/claude-video-main.zip
+private-archive://influencer/utils/claude-video-main.zip
 bradautomates/claude-video · v0.3.2
 MIT License · Copyright (c) 2026 Bradley Bonanno
 ```
@@ -80,7 +80,7 @@ is treated as a video-evidence and inspection-mechanics reference. Its provider/
 The user-supplied agent-organization package:
 
 ```text
-/Google Drive/ai/influencer/utils/ai-agent-team.zip
+private-archive://influencer/utils/ai-agent-team.zip
 sha256 = 9380c365fad8242910572fc177f9ee076a02d904a52b6ac2a541fe3a264db9c3
 version = NOT DECLARED
 license = NOT DECLARED
@@ -92,7 +92,7 @@ is treated as a narrow workflow-review reference. Pre-v0.9 adapts only three bou
 The user-supplied video-finishing package:
 
 ```text
-/Google Drive/ai/influencer/utils/hyperframes-main.zip
+private-archive://influencer/utils/hyperframes-main.zip
 heygen-com/hyperframes · v0.8.135
 Apache-2.0
 sha256 = 0b7740cb3f0cda4ecb0e5aa4ee4a39ea7b870f99d288cb4952fd5d8b6e822870
@@ -104,7 +104,7 @@ is treated as a finishing-method reference, not an installed runtime. Its useful
 The user-supplied short-form production package:
 
 ```text
-/Google Drive/ai/influencer/utils/ai-short-form-video-skill-main.zip
+private-archive://influencer/utils/ai-short-form-video-skill-main.zip
 ai-short-form-video · version NOT DECLARED IN PACKAGE
 sha256 = 21a2fbabaf251c1f4acffd1e4a897fccf1fd3113c09bfefa389111323ab4348b
 archive comment = cf50ecfe4f244e7668daa6d428ab06ef27eb00cb
@@ -117,7 +117,7 @@ is treated as a short-form craft/finishing reference, not an installed runtime. 
 The user-supplied deterministic video/compositing package:
 
 ```text
-/Google Drive/ai/influencer/utils/remotion-main.zip
+private-archive://influencer/utils/remotion-main.zip
 Drive ID = 16v0STtI8ugeaNK7WH74k7La7b4CTr8OI
 size = 584836895 bytes
 exact SHA-256 = UNAVAILABLE · connector raw-download limit
@@ -133,7 +133,7 @@ is treated as a deterministic finishing/tooling reference, not an installed runt
 The user-supplied video-to-guide package:
 
 ```text
-/Google Drive/ai/influencer/utils/video-to-guide-main.zip
+private-archive://influencer/utils/video-to-guide-main.zip
 Drive ID = 1RRrcA7mkfZXX-uHRUOwkzowEdCBcR01p
 size = 16774 bytes
 sha256 = e695d0c9b5a721ddba5b992845d61e45f0ac9ed2131e1b6b4f77e15fcd7846d2
@@ -147,7 +147,7 @@ is treated as a narrow video-evidence / privacy-inspection reference, not an ins
 The user-supplied writing / organic-distribution package:
 
 ```text
-/Google Drive/ai/influencer/utils/tvm-3-free-skills.zip
+private-archive://influencer/utils/tvm-3-free-skills.zip
 The Vibe Marketer · 3 Free Skills (v2)
 content-atomizer version = 7.0
 direct-response-copy version = 7.0
@@ -161,7 +161,7 @@ is treated as a method reference, not runtime authority. Its direct-response mat
 The user-supplied standalone atomizer package:
 
 ```text
-/Google Drive/ai/influencer/utils/content-atomizer-SKILL.md.zip
+private-archive://influencer/utils/content-atomizer-SKILL.md.zip
 content-atomizer version = 7.0
 sha256 = b3054ce7b177b43be49a397689a3d41f6130ae94c66452f2767747f40edd65cc
 license = NOT DECLARED IN INSPECTED PACKAGE
@@ -174,7 +174,7 @@ is a distinct supplied source package, but its substantive skill and platform pl
 The user-supplied team skill-distribution guide:
 
 ```text
-/Google Drive/ai/influencer/utils/Multiplayer Skills Guide (doc).pdf
+private-archive://influencer/utils/Multiplayer Skills Guide (doc).pdf
 Drive ID = 1poyxHPVfIKlqk_C4NBZ9rSCu-5h5tpHd
 size = 149432 bytes
 pages = 6
@@ -189,18 +189,18 @@ is treated as a packaging/version-control/team-distribution reference, not as cr
 The user-supplied Motion OS / motion-graphics source group:
 
 ```text
-/Google Drive/ai/influencer/utils/motion-os-main-skill.zip
+private-archive://influencer/utils/motion-os-main-skill.zip
 Motion OS · Jason Lee
 version = NOT DECLARED IN INSPECTED PACKAGE
 archive / upstream commit = 15dc59eb33a1bca4de3436975078a65b9c8e2e95
 MIT License · Copyright (c) 2026 Jason Lee
 sha256 = 720c48b87b16aa0d8f0c96ff25c4193e10e0af39ec9d7811f27c63e24581815a
 
-/Google Drive/ai/influencer/utils/motion-graphics-transcricao.txt
+private-archive://influencer/utils/motion-graphics-transcricao.txt
 sha256 = a9bc91f2d7be5621ee326d4999f9c6ca0d8fd80b92f8273d0c256c68ba5bc11d
 license = NOT DECLARED
 
-/Google Drive/ai/influencer/utils/motion-graphics-instrucoes.txt
+private-archive://influencer/utils/motion-graphics-instrucoes.txt
 sha256 = a672915b03fa61a0c8da6b5a91ac4fd359ee092d972ccdbaee52bbb1ede4d00a
 license = NOT DECLARED
 ```
@@ -297,7 +297,7 @@ AI_Creative_Skill_External_Skill_Analysis_Ledger
 The full source decomposition and comparison lives in:
 
 ```text
-/Google Drive/ai/influencer/analysis/ANALISE_humanizer-main.md
+private-archive://influencer/analysis/ANALISE_humanizer-main.md
 ```
 
 No separate “Humanizer” specialist method was created.
@@ -343,7 +343,7 @@ The source package declares the MIT License. Provenance remains explicit so any 
 Full decomposition:
 
 ```text
-/Google Drive/ai/influencer/analysis/ANALISE_higgsfield-marketing-new.md
+private-archive://influencer/analysis/ANALISE_higgsfield-marketing-new.md
 ```
 
 Auditability note: the package influenced design before the formal report/Ledger workflow existed. The current reconciliation inspected the raw package and distinguishes retained source-derived craft from later internal synthesis, but it does not retroactively claim a contemporaneous pre-integration delta.
@@ -378,7 +378,7 @@ multiagent infrastructure as a prerequisite
 Independent delta evidence:
 
 ```text
-/Google Drive/ai/influencer/utils/integration-deltas/hyperframes-main__INDEPENDENT_DELTA__20261008-0022.md
+private-archive://influencer/utils/integration-deltas/hyperframes-main__INDEPENDENT_DELTA__20261008-0022.md
 ```
 
 The saved analysis report was based on a later GitHub version (`0.8.139`) and explicitly had not opened the Drive ZIP. Current provenance therefore uses the inspected Drive ZIP (`0.8.135`) as source of record for package identity while retaining the report only as a read-only second opinion. A separate Stage-9 specialist and HyperFrames runtime remain deferred.
@@ -395,7 +395,7 @@ The saved analysis report was based on a later GitHub version (`0.8.139`) and ex
 Independent delta evidence:
 
 ```text
-/Google Drive/ai/influencer/utils/integration-deltas/ai-short-form-video-skill-main__INDEPENDENT_DELTA__20261008-0116.md
+private-archive://influencer/utils/integration-deltas/ai-short-form-video-skill-main__INDEPENDENT_DELTA__20261008-0116.md
 ```
 
 The received package declares no version or license. The embedded `.skill` repeats the same `SKILL.md` and playbook semantics. A dedicated Stage-9 finishing specialist remains a separate decision after the remaining video-source cluster and Pilot evidence are considered.
@@ -417,7 +417,7 @@ The received package declares no version or license. The embedded `.skill` repea
 | Remotion 4.0.533 runtime + custom license | Provider Registry | DOCUMENTED / UNTESTED candidate; runtime installation and current license eligibility remain unresolved |
 | fixed safe-area numbers, `small.en` default for non-English, 0.5 s silence threshold, mandatory Studio workflow | none | REJECT as provider-neutral law |
 
-Detailed adjudication lives in `AI_Creative_Skill_External_Skill_Analysis_Ledger` under `remotion-main.zip`. The write-once pre-cross-check record is `/Google Drive/ai/influencer/utils/integration-deltas/remotion-main__INDEPENDENT_DELTA__20261008-0153.md`.
+Detailed adjudication lives in `AI_Creative_Skill_External_Skill_Analysis_Ledger` under `remotion-main.zip`. The write-once pre-cross-check record is `private-archive://influencer/utils/integration-deltas/remotion-main__INDEPENDENT_DELTA__20261008-0153.md`.
 
 ---
 
@@ -434,7 +434,7 @@ Detailed adjudication lives in `AI_Creative_Skill_External_Skill_Analysis_Ledger
 | Hermes/SuperGrok May-2026 model/cost notes | none | REJECT as durable provider truth; current facts belong in Registry research |
 | HTML guide product/template | none | OUTSIDE CURRENT SPECIALIST SCOPE / DEFER |
 
-Detailed adjudication lives in `AI_Creative_Skill_External_Skill_Analysis_Ledger` under `video-to-guide-main.zip`. The write-once pre-cross-check record is `/Google Drive/ai/influencer/utils/integration-deltas/video-to-guide-main__INDEPENDENT_DELTA__20261008-1259.md`.
+Detailed adjudication lives in `AI_Creative_Skill_External_Skill_Analysis_Ledger` under `video-to-guide-main.zip`. The write-once pre-cross-check record is `private-archive://influencer/utils/integration-deltas/video-to-guide-main__INDEPENDENT_DELTA__20261008-1259.md`.
 
 ---
 
@@ -452,7 +452,7 @@ Detailed adjudication lives in `AI_Creative_Skill_External_Skill_Analysis_Ledger
 | SEO production specialist, platform-specific specialist families, publication calendar/scheduler | none | DEFER; not justified by current Pilot/task scope from this source alone |
 | fabricated first-person experience / founder story / social-proof numbers | none | REJECT; evidence/persona authority required |
 
-Detailed adjudication lives in the Ledger under `tvm-3-free-skills.zip`. The write-once pre-cross-check record is `/Google Drive/ai/influencer/utils/integration-deltas/tvm-3-free-skills__INDEPENDENT_DELTA__20261008-1121.md`.
+Detailed adjudication lives in the Ledger under `tvm-3-free-skills.zip`. The write-once pre-cross-check record is `private-archive://influencer/utils/integration-deltas/tvm-3-free-skills__INDEPENDENT_DELTA__20261008-1121.md`.
 
 ---
 
@@ -466,7 +466,7 @@ DISTINCT SOURCE PACKAGE
 INDEPENDENT SUBSTANTIVE CORROBORATION
 ```
 
-Its separate package identity, hash and analysis are retained for auditability. Method-level contributions are adjudicated once through the TVM content-atomizer workstream and are not double-counted. The write-once pre-cross-check record is `/Google Drive/ai/influencer/utils/integration-deltas/content-atomizer-SKILL.md__INDEPENDENT_DELTA__20261008-1121.md`.
+Its separate package identity, hash and analysis are retained for auditability. Method-level contributions are adjudicated once through the TVM content-atomizer workstream and are not double-counted. The write-once pre-cross-check record is `private-archive://influencer/utils/integration-deltas/content-atomizer-SKILL.md__INDEPENDENT_DELTA__20261008-1121.md`.
 
 ---
 
@@ -475,7 +475,7 @@ Its separate package identity, hash and analysis are retained for auditability. 
 Inspected source:
 
 ```text
-/Google Drive/ai/influencer/utils/Multiplayer Skills Guide (doc).pdf
+private-archive://influencer/utils/Multiplayer Skills Guide (doc).pdf
 Drive ID = 1poyxHPVfIKlqk_C4NBZ9rSCu-5h5tpHd
 size = 149432 bytes · pages = 6
 sha256 = 1527e8fe7928a3becb04aabb5223390e09bf213b9f0ad16e4a6b01ea6260b041
@@ -498,7 +498,7 @@ license = NOT DECLARED IN INSPECTED PDF
 Independent delta evidence:
 
 ```text
-/Google Drive/ai/influencer/utils/integration-deltas/Multiplayer-Skills-Guide__INDEPENDENT_DELTA__20261008-1347.md
+private-archive://influencer/utils/integration-deltas/Multiplayer-Skills-Guide__INDEPENDENT_DELTA__20261008-1347.md
 independent_delta_sha256 = 479afaea5dd4dd02ccab8800b02c261a92adc677ddc5d7e1459da44cd38175d4
 baseline = Manifest Pre-v0.17 / Ledger Pre-v0.18 · baseline_checked_at = 2026-10-08T13:47:06+02:00
 ```
@@ -515,8 +515,8 @@ Detailed adjudication lives in External Skill Analysis Ledger §13. The license 
 Inspected source group:
 
 ```text
-/Google Drive/ai/influencer/utils/seedance-25-prompt-builder.skill
-/Google Drive/ai/influencer/utils/music-video-transcript.txt
+private-archive://influencer/utils/seedance-25-prompt-builder.skill
+private-archive://influencer/utils/music-video-transcript.txt
 ```
 
 The `.skill` package contains only `seedance-25-prompt-builder/SKILL.md`; its referenced `references/advanced-techniques.md` is absent. No version or license is declared in the inspected files. No provider action was executed.
@@ -539,7 +539,7 @@ The `.skill` package contains only `seedance-25-prompt-builder/SKILL.md`; its re
 Independent delta evidence:
 
 ```text
-/Google Drive/ai/influencer/utils/integration-deltas/seedance-25-prompt-builder__INDEPENDENT_DELTA__20261008-1444.md
+private-archive://influencer/utils/integration-deltas/seedance-25-prompt-builder__INDEPENDENT_DELTA__20261008-1444.md
 ```
 
 The durable delta was formed against Manifest Pre-v0.18 / Ledger Pre-v0.19. The later cleanup to Pre-v0.19 / Pre-v0.20 did not alter the target method surfaces; the final Ledger records that baseline reconciliation without rewriting the delta.
@@ -563,9 +563,9 @@ later note      ...20261008-1415.md  sha256 = 9e281c856efc1733b6a869f5cd61dc39ba
 Inspected source group:
 
 ```text
-/Google Drive/ai/influencer/utils/motion-os-main-skill.zip
-/Google Drive/ai/influencer/utils/motion-graphics-transcricao.txt
-/Google Drive/ai/influencer/utils/motion-graphics-instrucoes.txt
+private-archive://influencer/utils/motion-os-main-skill.zip
+private-archive://influencer/utils/motion-graphics-transcricao.txt
+private-archive://influencer/utils/motion-graphics-instrucoes.txt
 ```
 
 | Source contribution | Current destination | Transformation / status |
@@ -584,7 +584,7 @@ Inspected source group:
 Primary pre-cross-check delta:
 
 ```text
-/Google Drive/ai/influencer/utils/integration-deltas/motion-os-main-skill__INDEPENDENT_DELTA__20261008-1444.md
+private-archive://influencer/utils/integration-deltas/motion-os-main-skill__INDEPENDENT_DELTA__20261008-1444.md
 ```
 
 A second immutable note (`...20261008-1415.md`) was created after the primary delta despite its earlier filename/baseline time; it is a post-delta note, not an independent reading, and is not substituted for the primary chronology. Detailed adjudication lives in the External Skill Analysis Ledger §16, corrected by §29.2.
@@ -606,8 +606,8 @@ field name `repair_target_locator` (Execution Contracts / Localized Repair) come
 Inspected source group:
 
 ```text
-/Google Drive/ai/influencer/utils/AI Influencer Cheat Sheet.zip
-/Google Drive/ai/influencer/utils/ai-influencer-lazy-way.txt
+private-archive://influencer/utils/AI Influencer Cheat Sheet.zip
+private-archive://influencer/utils/ai-influencer-lazy-way.txt
 ```
 
 Source identity:
@@ -626,13 +626,13 @@ package license = NOT DECLARED IN INSPECTED PACKAGE
 Canonical pre-cross-check delta:
 
 ```text
-/Google Drive/ai/influencer/utils/integration-deltas/ai-influencer-cheat-sheet__INDEPENDENT_DELTA__20261008-1444.md
+private-archive://influencer/utils/integration-deltas/ai-influencer-cheat-sheet__INDEPENDENT_DELTA__20261008-1444.md
 ```
 
 Supplemental immutable note retained separately:
 
 ```text
-/Google Drive/ai/influencer/utils/integration-deltas/ai-influencer-cheat-sheet__INDEPENDENT_DELTA__20261008-1415.md
+private-archive://influencer/utils/integration-deltas/ai-influencer-cheat-sheet__INDEPENDENT_DELTA__20261008-1415.md
 ```
 
 | Source contribution | Current destination | Transformation / status |
@@ -670,7 +670,7 @@ two DOCX, README, four nested skill ZIPs and their SKILL.md files — full list 
 Inspected source:
 
 ```text
-/Google Drive/ai/influencer/utils/ai-realistm.txt
+private-archive://influencer/utils/ai-realistm.txt
 Drive ID = 12GeN67-SR6L-Ydtj5MZLDBt-LXehRo09
 size = 11309 bytes
 sha256 = 9d25715a858ff626c7350bcf36dd1582e4ee1961b34a0e366f67d29c964365e0
@@ -681,7 +681,7 @@ source license = NOT DECLARED
 Canonical pre-cross-check delta:
 
 ```text
-/Google Drive/ai/influencer/utils/integration-deltas/ai-realistm__INDEPENDENT_DELTA__20261008-1444.md
+private-archive://influencer/utils/integration-deltas/ai-realistm__INDEPENDENT_DELTA__20261008-1444.md
 independent_delta_sha256 = 01cc1f6faafaa4ca4f327365a72942286f321ed586c8eb7dd44842224b03898e · created 2026-10-08T12:49:40Z
 source_group_sha256_as_declared_in_delta = 591fffd1c9a4a8c81282fa85782b6cbb21fbbd61cdf37d58794648499d0ba506
   (single-file source: a group hash has no defined meaning; recipe not declared; not reproduced)
@@ -690,7 +690,7 @@ source_group_sha256_as_declared_in_delta = 591fffd1c9a4a8c81282fa85782b6cbb21fbb
 Supplemental immutable note:
 
 ```text
-/Google Drive/ai/influencer/utils/integration-deltas/ai-realistm__INDEPENDENT_DELTA__20261008-1415.md
+private-archive://influencer/utils/integration-deltas/ai-realistm__INDEPENDENT_DELTA__20261008-1415.md
 sha256 = 33f4c982fde83ea801d7b2e6883aab6c6388caaa1ef6ba3f1a751b20ab3265ab · created 2026-10-08T13:38:31Z
 → created after the canonical delta despite its earlier filename/baseline time; post-delta note, not an independent reading
 ```
@@ -719,8 +719,8 @@ Linked blog post `https://higgsfield.ai/@kaye_creatives/blogs/lego` (tracking/re
 Inspected source group:
 
 ```text
-/Google Drive/ai/influencer/utils/brand-kit-2.txt
-/Google Drive/ai/influencer/utils/Marketing-Studio-Skills-Bank.zip
+private-archive://influencer/utils/brand-kit-2.txt
+private-archive://influencer/utils/Marketing-Studio-Skills-Bank.zip
 ```
 
 Source identity:
@@ -738,7 +738,7 @@ package license = NOT DECLARED IN INSPECTED PACKAGE
 Canonical pre-cross-check delta:
 
 ```text
-/Google Drive/ai/influencer/utils/integration-deltas/brand-kit-2__INDEPENDENT_DELTA__20261008-2200.md
+private-archive://influencer/utils/integration-deltas/brand-kit-2__INDEPENDENT_DELTA__20261008-2200.md
 independent_delta_sha256 = 08de565531c43d7ad494fb802512b1352822cf114383e73f5893b5c1f772dcf8 · created 2026-10-08T20:02:36Z
 baseline = Manifest Pre-v0.23 / Ledger Pre-v0.24 · baseline_checked_at = 2026-10-08T22:00:47+02:00
 ```
@@ -768,13 +768,13 @@ Detailed cross-check and adjudication live in External Skill Analysis Ledger §1
 Inspected captured-source group:
 
 ```text
-/Google Drive/ai/influencer/utils/higgsfield-blog/higgsfield-blog_ai-video-hands-faces.md
-/Google Drive/ai/influencer/utils/higgsfield-blog/higgsfield-blog_ai-video-look-real-2026.md
-/Google Drive/ai/influencer/utils/higgsfield-blog/higgsfield-blog_ai-video-prompt-mistakes.md
-/Google Drive/ai/influencer/utils/higgsfield-blog/higgsfield-blog_edit-ai-video-without-regenerating.md
-/Google Drive/ai/influencer/utils/higgsfield-blog/higgsfield-blog_how-to-avoid-distortions-ai-videos.md
-/Google Drive/ai/influencer/utils/higgsfield-blog/higgsfield-blog_realistic-ai-human-movement.md
-/Google Drive/ai/influencer/utils/higgsfield-blog/higgsfield-blog_why-ai-video-generations-fail.md
+private-archive://influencer/utils/higgsfield-blog/higgsfield-blog_ai-video-hands-faces.md
+private-archive://influencer/utils/higgsfield-blog/higgsfield-blog_ai-video-look-real-2026.md
+private-archive://influencer/utils/higgsfield-blog/higgsfield-blog_ai-video-prompt-mistakes.md
+private-archive://influencer/utils/higgsfield-blog/higgsfield-blog_edit-ai-video-without-regenerating.md
+private-archive://influencer/utils/higgsfield-blog/higgsfield-blog_how-to-avoid-distortions-ai-videos.md
+private-archive://influencer/utils/higgsfield-blog/higgsfield-blog_realistic-ai-human-movement.md
+private-archive://influencer/utils/higgsfield-blog/higgsfield-blog_why-ai-video-generations-fail.md
 ```
 
 Captured-note hashes:
@@ -792,7 +792,7 @@ why-ai-video-generations-fail           f1d46850f1290e2df590bd0094da72593ca53619
 Canonical pre-cross-check delta:
 
 ```text
-/Google Drive/ai/influencer/utils/integration-deltas/higgsfield-blog-falhas-e-realismo__INDEPENDENT_DELTA__20261008-2225.md
+private-archive://influencer/utils/integration-deltas/higgsfield-blog-falhas-e-realismo__INDEPENDENT_DELTA__20261008-2225.md
 independent_delta_sha256 = 85963150ecff142a9a4626c653f9619524317f63ada58e674edb7f9969c1c230
 created = 2026-10-08T20:20:02Z (22:20 CEST; the "2225" in the filename is a label, not the creation time)
 baseline = Manifest Pre-v0.25 / Ledger Pre-v0.26 · baseline time of day NOT RECORDED in the delta
@@ -836,7 +836,7 @@ higgsfield-blog_how-to-create-ai-influencer.md
 Canonical pre-cross-check delta:
 
 ```text
-/Google Drive/ai/influencer/utils/integration-deltas/higgsfield-blog-persona-e-voz__INDEPENDENT_DELTA__20261008-2232.md
+private-archive://influencer/utils/integration-deltas/higgsfield-blog-persona-e-voz__INDEPENDENT_DELTA__20261008-2232.md
 ```
 
 Methodology note:
@@ -897,8 +897,8 @@ live primary check of five posts: access time NOT RECORDED; content verified by 
 Independent pre-cross-check deltas:
 
 ```text
-/Google Drive/ai/influencer/utils/integration-deltas/higgsfield-blog-direcao__INDEPENDENT_DELTA__20261008-2328.md
-/Google Drive/ai/influencer/utils/integration-deltas/ultra-realist-commercial__INDEPENDENT_DELTA__20261008-2328.md
+private-archive://influencer/utils/integration-deltas/higgsfield-blog-direcao__INDEPENDENT_DELTA__20261008-2328.md
+private-archive://influencer/utils/integration-deltas/ultra-realist-commercial__INDEPENDENT_DELTA__20261008-2328.md
 ```
 
 G3 captured/package sources inspected before the saved report included:
@@ -1040,8 +1040,8 @@ This provenance record exists partly to make that review possible later.
 Canonical independent deltas persisted **before** saved-report consultation:
 
 ```text
-/Google Drive/ai/influencer/utils/integration-deltas/higgsfield-blog-seedance-guias__INDEPENDENT_DELTA__20261008-2345.md
-/Google Drive/ai/influencer/utils/integration-deltas/higgsfield-blog-seedance-producoes__INDEPENDENT_DELTA__20261008-2345.md
+private-archive://influencer/utils/integration-deltas/higgsfield-blog-seedance-guias__INDEPENDENT_DELTA__20261008-2345.md
+private-archive://influencer/utils/integration-deltas/higgsfield-blog-seedance-producoes__INDEPENDENT_DELTA__20261008-2345.md
 ```
 
 Independent source coverage comprised eight logical blog posts plus six attached/supporting skills:
@@ -1161,8 +1161,8 @@ license: no reusable-content license declared in the posts or the six skill file
 Canonical independent deltas persisted **before** saved-report consultation:
 
 ```text
-/Google Drive/ai/influencer/utils/integration-deltas/higgsfield-blog-anuncios__INDEPENDENT_DELTA__20261009-1145.md
-/Google Drive/ai/influencer/utils/integration-deltas/content-factory__INDEPENDENT_DELTA__20261009-1145.md
+private-archive://influencer/utils/integration-deltas/higgsfield-blog-anuncios__INDEPENDENT_DELTA__20261009-1145.md
+private-archive://influencer/utils/integration-deltas/content-factory__INDEPENDENT_DELTA__20261009-1145.md
 ```
 
 Baseline recorded in both deltas:
@@ -1240,7 +1240,7 @@ https://higgsfield.ai/blog/how-to-make-ai-ugc-videos
 | provider virality/hook/retention score | Ads Work Profile + Calibration | CROSS-CHECK PROMOTION (the ads delta had REJECT only; ads report §11 item 6) · ADAPT as third-party diagnostic / candidate-ranking signal only; one class `signal_origin_class = THIRD_PARTY_TOOL_DIAGNOSTIC` (Calibration Pre-v0.12), equivalent to "third-party diagnostic evidence" in Work Profile Ads §17.1 |
 | real `content-factory` run invents claim/social-proof/packaging details | Calibration | ADOPT as external anti-examples, not causal/provider law |
 | broad installed third-party content-factory trigger can overlap current project authority | Runtime Activation & Packaging | CROSS-CHECK PROMOTION (content-factory delta: "existing governance appears sufficient"; content-factory report §11 item 1) · ADAPT into generic overlap activation canary |
-| the skill is installed in the operator's account | Project Profile Pilot01 Pre-v0.7 §3.1 | OPERATOR DECISION 2026-10-09: the installed skill stays disabled while there is Pilot work (operator acts in the account; the design records the decision); no vendor skill name becomes a framework rule |
+| the skill may be present in the operator's environment | Project Profile Pilot01 Pre-v0.7 §3.1 | OPERATOR DECISION 2026-10-09: the installed skill stays disabled while there is Pilot work (operator acts where the skill is present; the design records the decision); no vendor skill name becomes a framework rule |
 | review/testimonial avatar as real customer, generated proof, auto-spend/publish, hidden fixed UGC mix | existing governance / none | REJECT as method authority; existing rules already own boundary |
 | Meta/TikTok publishing, campaigns, current provider models/presets/costs/credits | Registry / Route Recipe / future platform execution | DEFER current verification; no route installed here |
 
@@ -1279,7 +1279,7 @@ repository scope: `higgsfield-ai/skills` was not part of G5; it has its own map 
 Canonical independent delta persisted **before** saved-report consultation:
 
 ```text
-/Google Drive/ai/influencer/utils/integration-deltas/higgsfield-blog-nano-banana-pro__INDEPENDENT_DELTA__20261009-1201.md
+private-archive://influencer/utils/integration-deltas/higgsfield-blog-nano-banana-pro__INDEPENDENT_DELTA__20261009-1201.md
 ```
 
 Baseline recorded in the delta:
@@ -1293,7 +1293,7 @@ Ledger Pre-v0.31
 ### Independently inspected source
 
 ```text
-/Google Drive/ai/influencer/utils/higgsfield-blog/higgsfield-blog_Nano-Banana-Pro-Expert-Use-Cases.md
+private-archive://influencer/utils/higgsfield-blog/higgsfield-blog_Nano-Banana-Pro-Expert-Use-Cases.md
 sha256 = c3aa54d069e5f6b78d312974e6844de196cc62fe081c392f5a10ac143388ef1a
 ```
 
@@ -1370,14 +1370,14 @@ No repository installer, setup script, CLI command, generation call, deploy/publ
 
 ```text
 independent_delta =
-/Google Drive/ai/influencer/utils/integration-deltas/higgsfield-ai-skills__INDEPENDENT_DELTA__20261009-1256.md
+private-archive://influencer/utils/integration-deltas/higgsfield-ai-skills__INDEPENDENT_DELTA__20261009-1256.md
 
 baseline =
 Manifest Pre-v0.31
 Ledger Pre-v0.32
 
 saved_report =
-/Google Drive/ai/influencer/analysis/ANALISE_higgsfield-ai-skills.md
+private-archive://influencer/analysis/ANALISE_higgsfield-ai-skills.md
 ```
 
 A small search-result snippet from the saved report had been incidentally surfaced before the formal repository pass; the full report was not opened until after the immutable delta was persisted. This audit limitation is recorded rather than hidden.

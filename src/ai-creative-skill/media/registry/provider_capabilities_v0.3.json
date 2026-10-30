@@ -55,7 +55,7 @@
       "max_duration_seconds": 5,
       "quality_status": "TECHNICAL_ONLY_VISUAL_REVIEW_REQUIRED",
       "third_party_transfer": false,
-      "host_evidence": "https://drive.google.com/drive/folders/1yc2Ivkrvrc52hVtBiNVPk-1PKLdVObUW",
+      "host_evidence": "private-archive://media-evidence/realesrgan-mps-video-v0.2",
       "note": "5s MPS historical; v0.3 generic frame-by-frame local executor tested on short CPU fixture; full Della revalidation on MPS outstanding",
       "weight_names": [
         "realesr-general-wdn-x4v3.pth"

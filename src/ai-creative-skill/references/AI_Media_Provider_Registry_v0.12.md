@@ -1131,7 +1131,7 @@ Checked: `2026-10-08`
 Source-of-record archive:
 
 ```text
-/Google Drive/ai/influencer/utils/remotion-main.zip
+private-archive://influencer/utils/remotion-main.zip
 Drive ID = 16v0STtI8ugeaNK7WH74k7La7b4CTr8OI
 size = 584836895 bytes
 ```

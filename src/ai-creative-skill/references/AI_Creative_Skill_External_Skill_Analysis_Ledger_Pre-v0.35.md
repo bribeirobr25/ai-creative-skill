@@ -68,7 +68,7 @@ If the baseline changes after the write-once delta is persisted, do not rewrite 
 The Independent Integration Delta must be **persisted before** the saved analysis report is consulted and before documentation edits begin. For this project, the required durable artifact is an immutable Markdown note under:
 
 ```text
-/Google Drive/ai/influencer/utils/integration-deltas/
+private-archive://influencer/utils/integration-deltas/
 ```
 
 Recommended filename:
@@ -92,7 +92,7 @@ If historical timestamps cannot prove that order for a prior integration, record
 
 ## `analysis/` read-only boundary and index roles
 
-For this workflow, `/Google Drive/ai/influencer/analysis/` is a **read-only consultation surface**. Do not create, edit, overwrite, rename, move or delete files there.
+For this workflow, `private-archive://influencer/analysis/` is a **read-only consultation surface**. Do not create, edit, overwrite, rename, move or delete files there.
 
 Two read-only indices currently coexist with different roles:
 
@@ -140,12 +140,12 @@ DIFFERENCE
 ## 1.1 Identification
 
 ```text
-source_path = /Google Drive/ai/influencer/utils/humanizer-main.zip
+source_path = private-archive://influencer/utils/humanizer-main.zip
 source_package = blader/humanizer
 source_version = 3.1.0
 license = MIT
 sha256 = bc3fb4d129d28ffa2eeb90050d00365857e4b7bfe29b44dbce0c84cabc27fee4
-analysis_report = /Google Drive/ai/influencer/analysis/ANALISE_humanizer-main.md
+analysis_report = private-archive://influencer/analysis/ANALISE_humanizer-main.md
 capability_family = TEXT / WRITING / EDITING · SCRIPT / COPY QA / ORGANIC POST COPY
 ```
 
@@ -250,12 +250,12 @@ Subsequent consistency, versioning and schema-cleanup revisions are resolved by 
 ## 2.1 Identification
 
 ```text
-source_path = /Google Drive/ai/influencer/utils/no-ai-slop-main.zip
+source_path = private-archive://influencer/utils/no-ai-slop-main.zip
 source_package = petergyang/no-ai-slop
 source_version = 1.0.6
 license = MIT
 sha256 = 59c435f1c92e86f58513ede3e649b20b4b4d1db0b1f0c81592943ae1937aaef6
-analysis_report = /Google Drive/ai/influencer/analysis/ANALISE_no-ai-slop-main.md
+analysis_report = private-archive://influencer/analysis/ANALISE_no-ai-slop-main.md
 capability_family = TEXT / WRITING / EDITING · SCRIPT / COPY QA
 ```
 
@@ -374,12 +374,12 @@ These later revisions do not retroactively change the source decision; they reco
 ## 3.1 Identification
 
 ```text
-source_path = /Google Drive/ai/influencer/utils/last30days-skill-main.zip
+source_path = private-archive://influencer/utils/last30days-skill-main.zip
 source_package = mvanhorn/last30days-skill
 source_version = 3.26.0
 license = MIT
 sha256 = 15b81164b2cbfbe12f6c9735596ed09e5a7ba2860b2b5c59eea326bf0ad687f0
-analysis_report = /Google Drive/ai/influencer/analysis/ANALISE_last30days-skill-main.md
+analysis_report = private-archive://influencer/analysis/ANALISE_last30days-skill-main.md
 capability_family = RESEARCH / CURRENTNESS / SOCIAL & WEB EVIDENCE / TREND DISCOVERY
 ```
 
@@ -512,12 +512,12 @@ Therefore the earlier §3.3 statement that research spend implementation was def
 ## 4.1 Identification
 
 ```text
-source_path = /Google Drive/ai/influencer/utils/claude-video-main.zip
+source_path = private-archive://influencer/utils/claude-video-main.zip
 source_package = bradautomates/claude-video
 source_version = 0.3.2
 license = MIT
 sha256 = 6d18b65b45fe48b89cf6b5e439861dc255dffae495684cd6b25b1bb6bfbd599f
-analysis_report = /Google Drive/ai/influencer/analysis/ANALISE_claude-video-main.md
+analysis_report = private-archive://influencer/analysis/ANALISE_claude-video-main.md
 capability_family = VIDEO EVIDENCE INSPECTION / MULTIMODAL UNDERSTANDING / SPEECH-TRANSCRIPT SUPPORT
 ```
 
@@ -656,12 +656,12 @@ The historical §4.5 list remains the **direct integration delta**, not a claim 
 ## 5.1 Identification
 
 ```text
-source_path = /Google Drive/ai/influencer/utils/higgsfield-marketing-new.skill
+source_path = private-archive://influencer/utils/higgsfield-marketing-new.skill
 source_package = create-ads-with-agents
 source_version = 2.1.2
 license = NOT DECLARED IN INSPECTED PACKAGE
 sha256 = 5f5a849986b52c9d4649865bdd06074f0f5550e910b7d623084a407e692ebfc0
-analysis_report = /Google Drive/ai/influencer/analysis/ANALISE_higgsfield-marketing-new.md
+analysis_report = private-archive://influencer/analysis/ANALISE_higgsfield-marketing-new.md
 capability_family = ADS RESEARCH / CREATIVE PRODUCTION / QA / PROVIDER-SPECIFIC EXECUTION
 lifecycle = HISTORICAL_INTEGRATION_RECONCILED
 ```
@@ -786,12 +786,12 @@ The current reconciliation is source-first and identifies lineage faithfully, bu
 ## 6.1 Identification
 
 ```text
-source_path = /Google Drive/ai/influencer/utils/ai-agent-team.zip
+source_path = private-archive://influencer/utils/ai-agent-team.zip
 source_package = AI Agent Skills Suite
 source_version = NOT DECLARED
 license = NOT DECLARED
 sha256 = 9380c365fad8242910572fc177f9ee076a02d904a52b6ac2a541fe3a264db9c3
-analysis_report = /Google Drive/ai/influencer/analysis/ANALISE_ai-agent-team.md
+analysis_report = private-archive://influencer/analysis/ANALISE_ai-agent-team.md
 capability_family = AGENT ORCHESTRATION / REVIEW WORKFLOW / ROUTINE DESIGN
 ```
 
@@ -917,14 +917,14 @@ This is recorded as an auditability limitation. A later independent package chec
 ## 7.1 Identification
 
 ```text
-source_path = /Google Drive/ai/influencer/utils/hyperframes-main.zip
+source_path = private-archive://influencer/utils/hyperframes-main.zip
 source_package = heygen-com/hyperframes
 source_version = 0.8.135
 license = Apache-2.0
 sha256 = 0b7740cb3f0cda4ecb0e5aa4ee4a39ea7b870f99d288cb4952fd5d8b6e822870
-independent_delta = /Google Drive/ai/influencer/utils/integration-deltas/hyperframes-main__INDEPENDENT_DELTA__20261008-0022.md
+independent_delta = private-archive://influencer/utils/integration-deltas/hyperframes-main__INDEPENDENT_DELTA__20261008-0022.md
 independent_delta_sha256 = 740e84bc1116f31b736f4f5186640ca181b1f7462e06d874543d4be04cb4f705
-analysis_report = /Google Drive/ai/influencer/analysis/ANALISE_hyperframes-main.md
+analysis_report = private-archive://influencer/analysis/ANALISE_hyperframes-main.md
 capability_family = VIDEO FINISHING / TYPOGRAPHY / AUDIO / DETERMINISTIC RENDER / QA
 lifecycle = INTEGRATED
 runtime_status = DEFERRED
@@ -1081,7 +1081,7 @@ No Architecture, Work Profile, Execution Contracts, Video Evidence Inspection, T
 A second immutable-looking HyperFrames note was created later on 2026-10-08:
 
 ```text
-/Google Drive/ai/influencer/utils/integration-deltas/hyperframes-main__INDEPENDENT_DELTA__20261008-2000.md
+private-archive://influencer/utils/integration-deltas/hyperframes-main__INDEPENDENT_DELTA__20261008-2000.md
 Drive ID = 1MquaoOoS9EK1O4Spa87_QGPWb127oRFN
 source ZIP sha256 = 0b7740cb3f0cda4ecb0e5aa4ee4a39ea7b870f99d288cb4952fd5d8b6e822870
 ```
@@ -1117,16 +1117,16 @@ Its proposed themes substantially overlap the already adjudicated HyperFrames co
 ## 8.1 Identification
 
 ```text
-source_path = /Google Drive/ai/influencer/utils/ai-short-form-video-skill-main.zip
+source_path = private-archive://influencer/utils/ai-short-form-video-skill-main.zip
 source_package = ai-short-form-video
 source_version = NOT DECLARED IN PACKAGE
 license = NOT DECLARED IN INSPECTED PACKAGE
 archive_comment = cf50ecfe4f244e7668daa6d428ab06ef27eb00cb
 sha256 = 21a2fbabaf251c1f4acffd1e4a897fccf1fd3113c09bfefa389111323ab4348b
 source_size_bytes = 52205
-independent_delta = /Google Drive/ai/influencer/utils/integration-deltas/ai-short-form-video-skill-main__INDEPENDENT_DELTA__20261008-0116.md
+independent_delta = private-archive://influencer/utils/integration-deltas/ai-short-form-video-skill-main__INDEPENDENT_DELTA__20261008-0116.md
 independent_delta_sha256 = 69f8a02a5ae7c24b58f9c2c70075083fc1b44fc105488467f4c1b7528abe4959
-analysis_report = /Google Drive/ai/influencer/analysis/ANALISE_ai-short-form-video-skill-main.md
+analysis_report = private-archive://influencer/analysis/ANALISE_ai-short-form-video-skill-main.md
 capability_family = SHORT-FORM VIDEO PRODUCTION / AUDIO-LED TIMING / CAPTIONS / EDITING REFERENCE
 lifecycle = INTEGRATED
 runtime_status = DEFERRED
@@ -1274,7 +1274,7 @@ The last item refines the wording of §7.7, which said that `TYPOGRAPHY_LAYOUT` 
 ## 9.1 Identification
 
 ```text
-source_path = /Google Drive/ai/influencer/utils/remotion-main.zip
+source_path = private-archive://influencer/utils/remotion-main.zip
 source_drive_id = 16v0STtI8ugeaNK7WH74k7La7b4CTr8OI
 source_size_bytes = 584836895
 source_sha256 = UNAVAILABLE_CONNECTOR_SIZE_LIMIT
@@ -1285,8 +1285,8 @@ probable_revision_basis = last commit on main's first-parent history before Driv
 core_version_at_probable_revision = 4.0.533
 ZIP_commit_byte_equivalence = NOT_PROVEN
 license = custom Remotion license at probable revision
-analysis_report = /Google Drive/ai/influencer/analysis/ANALISE_remotion-main.md
-independent_delta = /Google Drive/ai/influencer/utils/integration-deltas/remotion-main__INDEPENDENT_DELTA__20261008-0153.md
+analysis_report = private-archive://influencer/analysis/ANALISE_remotion-main.md
+independent_delta = private-archive://influencer/utils/integration-deltas/remotion-main__INDEPENDENT_DELTA__20261008-0153.md
 independent_delta_sha256 = 86609c4abaaf0863a1b4cb191f62f46a00fb899abc12a28a28855ac279244ddb
 capability_family = DETERMINISTIC VIDEO COMPOSITING / EDITING / CAPTIONS / RENDERING
 ```
@@ -1439,15 +1439,15 @@ The write-once delta still names the branch commit; it is not rewritten. Registr
 ## 10.1 Identification
 
 ```text
-source_path = /Google Drive/ai/influencer/utils/video-to-guide-main.zip
+source_path = private-archive://influencer/utils/video-to-guide-main.zip
 source_drive_id = 1RRrcA7mkfZXX-uHRUOwkzowEdCBcR01p
 source_size_bytes = 16774
 source_sha256 = e695d0c9b5a721ddba5b992845d61e45f0ac9ed2131e1b6b4f77e15fcd7846d2
 archive_comment = 0203472eb29538904b97b1f9701ced1be9eaebe2
 source_version = NOT DECLARED IN INSPECTED PACKAGE
 license = README DECLARES MIT · NO STANDALONE LICENSE FILE IN INSPECTED PACKAGE
-analysis_report = /Google Drive/ai/influencer/analysis/ANALISE_video-to-guide-main.md
-independent_delta = /Google Drive/ai/influencer/utils/integration-deltas/video-to-guide-main__INDEPENDENT_DELTA__20261008-1259.md
+analysis_report = private-archive://influencer/analysis/ANALISE_video-to-guide-main.md
+independent_delta = private-archive://influencer/utils/integration-deltas/video-to-guide-main__INDEPENDENT_DELTA__20261008-1259.md
 independent_delta_sha256 = 910a5fcbf7e0c4c90b44acac9bb39fed949da9fd2a69daedc21275074b55a082
 capability_family = EXISTING VIDEO INSPECTION / PROCEDURAL SCREEN EVIDENCE / GUIDE GENERATION
 ```
@@ -1581,7 +1581,7 @@ The package does not materially advance the separate Stage-9 Editing/Finishing s
 ## 11.1 Identification
 
 ```text
-source_path = /Google Drive/ai/influencer/utils/tvm-3-free-skills.zip
+source_path = private-archive://influencer/utils/tvm-3-free-skills.zip
 Drive ID = 19CH372rPS7rQQ8aM3od8CHehfbbN0T-S
 size = 103364 bytes
 sha256 = e6588dfc598728502e78b348138dda482adfd176b9776a9922e217f48501b73e
@@ -1590,8 +1590,8 @@ content-atomizer version = 7.0
 direct-response-copy version = 7.0
 seo-content version = NOT DECLARED
 license = NOT DECLARED IN INSPECTED PACKAGE
-analysis_report = /Google Drive/ai/influencer/analysis/ANALISE_tvm-3-free-skills.md
-independent_delta = /Google Drive/ai/influencer/utils/integration-deltas/tvm-3-free-skills__INDEPENDENT_DELTA__20261008-1121.md
+analysis_report = private-archive://influencer/analysis/ANALISE_tvm-3-free-skills.md
+independent_delta = private-archive://influencer/utils/integration-deltas/tvm-3-free-skills__INDEPENDENT_DELTA__20261008-1121.md
 independent_delta_sha256 = fa7509298781e81fc4e42f1d3041695a654599d11f370d51b97ea44f30dc8b31
 baseline_manifest = AI_Creative_Skill_Current_Design_Manifest_Pre-v0.16.md
 baseline_ledger = AI_Creative_Skill_External_Skill_Analysis_Ledger_Pre-v0.17.md
@@ -1774,14 +1774,14 @@ AUTHORIZED PERSONA EXPERIENCE
 ## 12.1 Identification
 
 ```text
-source_path = /Google Drive/ai/influencer/utils/content-atomizer-SKILL.md.zip
+source_path = private-archive://influencer/utils/content-atomizer-SKILL.md.zip
 Drive ID = 13ZIsLY7AWOIarpfnrfWozbrqz8AY6XHi
 size = 35612 bytes
 sha256 = b3054ce7b177b43be49a397689a3d41f6130ae94c66452f2767747f40edd65cc
 content-atomizer version = 7.0
 license = NOT DECLARED IN INSPECTED PACKAGE
-analysis_report = /Google Drive/ai/influencer/analysis/ANALISE_content-atomizer-SKILL.md
-independent_delta = /Google Drive/ai/influencer/utils/integration-deltas/content-atomizer-SKILL.md__INDEPENDENT_DELTA__20261008-1121.md
+analysis_report = private-archive://influencer/analysis/ANALISE_content-atomizer-SKILL.md
+independent_delta = private-archive://influencer/utils/integration-deltas/content-atomizer-SKILL.md__INDEPENDENT_DELTA__20261008-1121.md
 independent_delta_sha256 = e08cb5df82b165afef3b70339b5c737d13afcc9889530294aea65e86c80fe408
 substantive_skill_sha256 = 486af45d89a346ceeb549139aac91d12a1372e20a93762b58c8205fe49be1422
 platform_playbook_sha256 = 8b26ffbe11c33f97be13b748eb3346c02cbdd440032a853391bd3a97ad330215
@@ -1853,15 +1853,15 @@ The method versions created in the paired batch are attributable to the shared s
 ## 13.1 Identification
 
 ```text
-source_path = /Google Drive/ai/influencer/utils/Multiplayer Skills Guide (doc).pdf
+source_path = private-archive://influencer/utils/Multiplayer Skills Guide (doc).pdf
 Drive ID = 1poyxHPVfIKlqk_C4NBZ9rSCu-5h5tpHd
 size = 149432 bytes
 pages = 6
 sha256 = 1527e8fe7928a3becb04aabb5223390e09bf213b9f0ad16e4a6b01ea6260b041
 version/date = NOT DECLARED IN INSPECTED PDF
 license = NOT DECLARED IN INSPECTED PDF
-analysis_report = /Google Drive/ai/influencer/analysis/ANALISE_Multiplayer-Skills-Guide.md
-independent_delta = /Google Drive/ai/influencer/utils/integration-deltas/Multiplayer-Skills-Guide__INDEPENDENT_DELTA__20261008-1347.md
+analysis_report = private-archive://influencer/analysis/ANALISE_Multiplayer-Skills-Guide.md
+independent_delta = private-archive://influencer/utils/integration-deltas/Multiplayer-Skills-Guide__INDEPENDENT_DELTA__20261008-1347.md
 independent_delta_sha256 = 479afaea5dd4dd02ccab8800b02c261a92adc677ddc5d7e1459da44cd38175d4
 baseline_manifest = AI_Creative_Skill_Current_Design_Manifest_Pre-v0.17.md
 baseline_ledger = AI_Creative_Skill_External_Skill_Analysis_Ledger_Pre-v0.18.md
@@ -1992,8 +1992,8 @@ Any future reconsideration would require an explicit operator decision and an in
 
 ```text
 source_group =
-  /Google Drive/ai/influencer/utils/seedance-25-prompt-builder.skill
-  /Google Drive/ai/influencer/utils/music-video-transcript.txt
+  private-archive://influencer/utils/seedance-25-prompt-builder.skill
+  private-archive://influencer/utils/music-video-transcript.txt
 
 seedance_skill_drive_id = 1X1qBg72YilbcHRTKunLqOyjb7XEcbIeQ
 seedance_skill_size = 5770 bytes
@@ -2008,13 +2008,13 @@ source_version = NOT DECLARED
 source_license = NOT DECLARED
 
 independent_delta =
-/Google Drive/ai/influencer/utils/integration-deltas/seedance-25-prompt-builder__INDEPENDENT_DELTA__20261008-1444.md
+private-archive://influencer/utils/integration-deltas/seedance-25-prompt-builder__INDEPENDENT_DELTA__20261008-1444.md
 
 independent_delta_sha256 =
 cf6b9575cf600e66ef6ac6e89594fc2624dc3e07edac3f3ffa98a498165e9460
 
 saved_report =
-/Google Drive/ai/influencer/analysis/ANALISE_seedance-25-prompt-builder.md
+private-archive://influencer/analysis/ANALISE_seedance-25-prompt-builder.md
 ```
 
 The durable delta was written against **Manifest Pre-v0.18 / Ledger Pre-v0.19** before the saved report was consulted. The independent-validator cleanup then advanced the design to **Manifest Pre-v0.19 / Ledger Pre-v0.20**.
@@ -2186,29 +2186,29 @@ Any future executable Seedance route must re-check current provider surface, mod
 ## 16.1 Identification / audit chain
 
 ```text
-source_path = /Google Drive/ai/influencer/utils/motion-os-main-skill.zip
+source_path = private-archive://influencer/utils/motion-os-main-skill.zip
 source_package = Motion OS · Jason Lee
 source_version = NOT DECLARED IN INSPECTED PACKAGE
 archive / upstream commit = 15dc59eb33a1bca4de3436975078a65b9c8e2e95
 license = MIT · Copyright (c) 2026 Jason Lee
 sha256 = 720c48b87b16aa0d8f0c96ff25c4193e10e0af39ec9d7811f27c63e24581815a
 
-companion = /Google Drive/ai/influencer/utils/motion-graphics-transcricao.txt
+companion = private-archive://influencer/utils/motion-graphics-transcricao.txt
 sha256 = a9bc91f2d7be5621ee326d4999f9c6ca0d8fd80b92f8273d0c256c68ba5bc11d
 license = NOT DECLARED IN INSPECTED FILE
 
-companion = /Google Drive/ai/influencer/utils/motion-graphics-instrucoes.txt
+companion = private-archive://influencer/utils/motion-graphics-instrucoes.txt
 sha256 = a672915b03fa61a0c8da6b5a91ac4fd359ee092d972ccdbaee52bbb1ede4d00a
 license = NOT DECLARED IN INSPECTED FILE
 
 canonical_pre_crosscheck_delta =
-/Google Drive/ai/influencer/utils/integration-deltas/motion-os-main-skill__INDEPENDENT_DELTA__20261008-1444.md
+private-archive://influencer/utils/integration-deltas/motion-os-main-skill__INDEPENDENT_DELTA__20261008-1444.md
 
 supplemental_later_note =
-/Google Drive/ai/influencer/utils/integration-deltas/motion-os-main-skill__INDEPENDENT_DELTA__20261008-1415.md
+private-archive://influencer/utils/integration-deltas/motion-os-main-skill__INDEPENDENT_DELTA__20261008-1415.md
 
 saved_report =
-/Google Drive/ai/influencer/analysis/ANALISE_motion-os-main-skill.md
+private-archive://influencer/analysis/ANALISE_motion-os-main-skill.md
 ```
 
 The canonical write-once delta records `analysis_report_consulted_before_this_delta: NO` and was persisted before report cross-check. A second immutable note was later created with additional reconciliation detail; it is preserved as supplemental reasoning, not substituted for the primary chronology. Nothing from the source package was executed.
@@ -2351,8 +2351,8 @@ METHOD/HANDOFF DISCIPLINE INTEGRATED
 
 ```text
 source_group =
-  /Google Drive/ai/influencer/utils/AI Influencer Cheat Sheet.zip
-  /Google Drive/ai/influencer/utils/ai-influencer-lazy-way.txt
+  private-archive://influencer/utils/AI Influencer Cheat Sheet.zip
+  private-archive://influencer/utils/ai-influencer-lazy-way.txt
 
 AI Influencer Cheat Sheet.zip
 Drive ID = 1OMNVOtF2VcECAdZlmnoFoSIinJf_PP6i
@@ -2368,16 +2368,16 @@ source_version = NOT DECLARED AS ONE PACKAGE VERSION
 source_license = NOT DECLARED IN INSPECTED PACKAGE
 
 canonical_pre_crosscheck_delta =
-/Google Drive/ai/influencer/utils/integration-deltas/ai-influencer-cheat-sheet__INDEPENDENT_DELTA__20261008-1444.md
+private-archive://influencer/utils/integration-deltas/ai-influencer-cheat-sheet__INDEPENDENT_DELTA__20261008-1444.md
 
 canonical_delta_group_sha256 =
 02374548c8b14a913b692ff3076c3b85ffbf5feb653a2a0f1bccda09cd2ac350
 
 supplemental_immutable_note =
-/Google Drive/ai/influencer/utils/integration-deltas/ai-influencer-cheat-sheet__INDEPENDENT_DELTA__20261008-1415.md
+private-archive://influencer/utils/integration-deltas/ai-influencer-cheat-sheet__INDEPENDENT_DELTA__20261008-1415.md
 
 saved_report =
-/Google Drive/ai/influencer/analysis/ANALISE_ai-influencer-cheat-sheet.md
+private-archive://influencer/analysis/ANALISE_ai-influencer-cheat-sheet.md
 ```
 
 The raw ZIP and transcript were independently inspected against the recorded hashes before this workflow opened the saved report. The ZIP contains the 33-page cheat-sheet PDF, two DOCX prompt/example files and four nested single-file skills (`charsheet-soul`, `content-engine`, `digital-product`, `ugc-influencer-video`). No source scripts, provider actions, installer or affiliate link was executed.
@@ -2565,7 +2565,7 @@ The source is commercially coupled to Higgsfield and includes affiliate/promotio
 ## 18.1 Identification / audit chain
 
 ```text
-source_path = /Google Drive/ai/influencer/utils/ai-realistm.txt
+source_path = private-archive://influencer/utils/ai-realistm.txt
 Drive ID = 12GeN67-SR6L-Ydtj5MZLDBt-LXehRo09
 size = 11309 bytes
 sha256 = 9d25715a858ff626c7350bcf36dd1582e4ee1961b34a0e366f67d29c964365e0
@@ -2573,16 +2573,16 @@ source_version = NOT DECLARED
 source_license = NOT DECLARED
 
 canonical_pre_crosscheck_delta =
-/Google Drive/ai/influencer/utils/integration-deltas/ai-realistm__INDEPENDENT_DELTA__20261008-1444.md
+private-archive://influencer/utils/integration-deltas/ai-realistm__INDEPENDENT_DELTA__20261008-1444.md
 
 canonical_delta_group_sha256 =
 591fffd1c9a4a8c81282fa85782b6cbb21fbbd61cdf37d58794648499d0ba506
 
 supplemental_immutable_note =
-/Google Drive/ai/influencer/utils/integration-deltas/ai-realistm__INDEPENDENT_DELTA__20261008-1415.md
+private-archive://influencer/utils/integration-deltas/ai-realistm__INDEPENDENT_DELTA__20261008-1415.md
 
 saved_report =
-/Google Drive/ai/influencer/analysis/ANALISE_ai-realistm.md
+private-archive://influencer/analysis/ANALISE_ai-realistm.md
 ```
 
 The raw text source was independently inspected and its SHA-256 matched the canonical delta before the saved report was opened. The source is a tutorial transcript plus a link to an external Higgsfield blog. This independent pass inspected the supplied text file only; the linked page was not required to form the delta and is not silently promoted into the independently inspected source set.
@@ -2785,12 +2785,12 @@ COMMERCIAL VALUE CLAIM VALIDATED
 ```text
 source_group = brand-kit-2
 
-source_path_1 = /Google Drive/ai/influencer/utils/brand-kit-2.txt
+source_path_1 = private-archive://influencer/utils/brand-kit-2.txt
 Drive ID = 1aEVcNyV-g6rhfUvHIxVqUXVeWs0Ouq02
 size = 21798 bytes
 sha256 = 16034d0a27d8e1113e85ce34e7ab492c240647047f074b8493f818dfef069010
 
-source_path_2 = /Google Drive/ai/influencer/utils/Marketing-Studio-Skills-Bank.zip
+source_path_2 = private-archive://influencer/utils/Marketing-Studio-Skills-Bank.zip
 Drive ID = 1PEqflhuQk3IGCE7Xr6OOw_d3xWDfhcmz
 size = 72303 bytes
 sha256 = a276eeb3806b796e2378b7049a3fce8199cf8e86901531eaf3adaf77575a3fdd
@@ -2799,10 +2799,10 @@ source_version = NOT DECLARED AS ONE PACKAGE VERSION
 source_license = NOT DECLARED IN INSPECTED PACKAGE
 
 canonical_pre_crosscheck_delta =
-/Google Drive/ai/influencer/utils/integration-deltas/brand-kit-2__INDEPENDENT_DELTA__20261008-2200.md
+private-archive://influencer/utils/integration-deltas/brand-kit-2__INDEPENDENT_DELTA__20261008-2200.md
 
 saved_report =
-/Google Drive/ai/influencer/analysis/ANALISE_brand-kit-2.md
+private-archive://influencer/analysis/ANALISE_brand-kit-2.md
 ```
 
 The independent pass inspected the complete supplied transcript, outer ZIP and all substantive nested skill/reference files before opening the saved report. No package code or paid generation was executed. The transcript-linked public Notion prompt page could not be retrieved through the independent web reader; this limitation was recorded in the immutable delta before cross-check. The saved report had previously read that page and reports 14 prompts. No adopted current-design rule depends solely on unseen Notion-only content.
@@ -3039,7 +3039,7 @@ CLIENT-PROSPECTING CAPABILITY ADDED
 
 ```text
 source_group = brand-kit
-source_path = /Google Drive/ai/influencer/utils/brand-kit.txt
+source_path = private-archive://influencer/utils/brand-kit.txt
 Drive ID = 1CbrE55oB-pyKgyBOljjuyDocCbDnU1Pt
 size = 7815 bytes
 sha256 = 4c3de26a183947f9481bee7ff8fa8643e308641fd0faaf686da907676e3aac8b
@@ -3047,10 +3047,10 @@ source_version = NOT DECLARED
 source_license = NOT DECLARED IN SUPPLIED TEXT
 
 canonical_pre_crosscheck_delta =
-/Google Drive/ai/influencer/utils/integration-deltas/brand-kit__INDEPENDENT_DELTA__20261008-2212.md
+private-archive://influencer/utils/integration-deltas/brand-kit__INDEPENDENT_DELTA__20261008-2212.md
 
 saved_report =
-/Google Drive/ai/influencer/analysis/ANALISE_brand-kit.md
+private-archive://influencer/analysis/ANALISE_brand-kit.md
 ```
 
 The independent pass read the complete supplied transcript before opening the saved report. The transcript-linked Notion prompt page could not be retrieved through the independent web reader; a search did not surface a trustworthy copy of that exact page. Separate Nano Banana Pro/blog materials already present in the project were deliberately not imported into this source-first judgement because they belong to other source workstreams. No generation or paid route was executed.
@@ -3205,15 +3205,15 @@ It means the current design already owns the transferable production discipline 
 
 ```text
 source_group = higgsfield-blog-falhas-e-realismo
-source_catalog = /Google Drive/ai/influencer/utils/higgsfield-blog/00_LEIA-ME_higgsfield-blog.md
+source_catalog = private-archive://influencer/utils/higgsfield-blog/00_LEIA-ME_higgsfield-blog.md
 source_kind = 7 PUBLIC PROVIDER BLOG CAPTURES · NO SKILL PACKAGE
 source_license = NO REUSABLE-CONTENT LICENSE DECLARED IN CAPTURED MATERIAL
 
 canonical_pre_crosscheck_delta =
-/Google Drive/ai/influencer/utils/integration-deltas/higgsfield-blog-falhas-e-realismo__INDEPENDENT_DELTA__20261008-2225.md
+private-archive://influencer/utils/integration-deltas/higgsfield-blog-falhas-e-realismo__INDEPENDENT_DELTA__20261008-2225.md
 
 saved_report =
-/Google Drive/ai/influencer/analysis/ANALISE_higgsfield-blog_falhas-e-realismo.md
+private-archive://influencer/analysis/ANALISE_higgsfield-blog_falhas-e-realismo.md
 ```
 
 Captured-note hashes:
@@ -3442,10 +3442,10 @@ source_kind = 8 PUBLIC PROVIDER BLOG CAPTURES · NO SKILL PACKAGE
 source_license = NO REUSABLE-CONTENT LICENSE DECLARED IN CAPTURED MATERIAL
 
 canonical_pre_crosscheck_delta =
-/Google Drive/ai/influencer/utils/integration-deltas/higgsfield-blog-persona-e-voz__INDEPENDENT_DELTA__20261008-2232.md
+private-archive://influencer/utils/integration-deltas/higgsfield-blog-persona-e-voz__INDEPENDENT_DELTA__20261008-2232.md
 
 saved_report =
-/Google Drive/ai/influencer/analysis/ANALISE_higgsfield-blog_persona-e-voz.md
+private-archive://influencer/analysis/ANALISE_higgsfield-blog_persona-e-voz.md
 ```
 
 Captured-note hashes are preserved in the immutable delta. The delta was formed against Manifest Pre-v0.26 / Ledger Pre-v0.27 and explicitly records that the saved `/analysis/` report had not yet been consulted.
@@ -3630,16 +3630,16 @@ baseline_manifest = AI_Creative_Skill_Current_Design_Manifest_Pre-v0.27.md
 baseline_ledger = AI_Creative_Skill_External_Skill_Analysis_Ledger_Pre-v0.28.md
 
 canonical_G3_delta =
-/Google Drive/ai/influencer/utils/integration-deltas/higgsfield-blog-direcao__INDEPENDENT_DELTA__20261008-2328.md
+private-archive://influencer/utils/integration-deltas/higgsfield-blog-direcao__INDEPENDENT_DELTA__20261008-2328.md
 
 canonical_ultra_delta =
-/Google Drive/ai/influencer/utils/integration-deltas/ultra-realist-commercial__INDEPENDENT_DELTA__20261008-2328.md
+private-archive://influencer/utils/integration-deltas/ultra-realist-commercial__INDEPENDENT_DELTA__20261008-2328.md
 
 saved_G3_report =
-/Google Drive/ai/influencer/analysis/ANALISE_higgsfield-blog_direcao-de-video.md
+private-archive://influencer/analysis/ANALISE_higgsfield-blog_direcao-de-video.md
 
 saved_ultra_report =
-/Google Drive/ai/influencer/analysis/ANALISE_ultra-realist-commercial.md
+private-archive://influencer/analysis/ANALISE_ultra-realist-commercial.md
 ```
 
 Both independent deltas were persisted before either saved report was opened. This satisfies the report-independence gate; it does **not** pretend that validator capture notes are the same as a fresh live-web capture.
@@ -4166,8 +4166,8 @@ CURRENT ADJUDICATION BASELINE
 = Manifest Pre-v0.29 / Ledger Pre-v0.30
 
 INDEPENDENT DELTAS PERSISTED BEFORE REPORT READ
-= /Google Drive/ai/influencer/utils/integration-deltas/higgsfield-blog-anuncios__INDEPENDENT_DELTA__20261009-1145.md
-= /Google Drive/ai/influencer/utils/integration-deltas/content-factory__INDEPENDENT_DELTA__20261009-1145.md
+= private-archive://influencer/utils/integration-deltas/higgsfield-blog-anuncios__INDEPENDENT_DELTA__20261009-1145.md
+= private-archive://influencer/utils/integration-deltas/content-factory__INDEPENDENT_DELTA__20261009-1145.md
 ```
 
 The G5 Ads delta covers six captured blog-source notes plus direct `ADMAKER-SKILL.md`. The content-factory delta covers direct `content-factory.txt` and static inspection of `higgsfield-content-factory.skill`. The direct skill archive was byte-verified as identical to the copy nested in the previously adjudicated `Marketing-Studio-Skills-Bank.zip`; it therefore does not receive duplicate method-source credit.
@@ -4378,11 +4378,11 @@ The inspected G5 skill materials do not declare a reusable-content license. Inte
 ## 26.1 Identification
 
 ```text
-source_path = /Google Drive/ai/influencer/utils/higgsfield-blog/higgsfield-blog_Nano-Banana-Pro-Expert-Use-Cases.md
+source_path = private-archive://influencer/utils/higgsfield-blog/higgsfield-blog_Nano-Banana-Pro-Expert-Use-Cases.md
 source_sha256 = c3aa54d069e5f6b78d312974e6844de196cc62fe081c392f5a10ac143388ef1a
 source_type = captured-source note of public Higgsfield post
-independent_delta = /Google Drive/ai/influencer/utils/integration-deltas/higgsfield-blog-nano-banana-pro__INDEPENDENT_DELTA__20261009-1201.md
-analysis_report = /Google Drive/ai/influencer/analysis/ANALISE_higgsfield-blog_nano-banana-pro.md
+independent_delta = private-archive://influencer/utils/integration-deltas/higgsfield-blog-nano-banana-pro__INDEPENDENT_DELTA__20261009-1201.md
+analysis_report = private-archive://influencer/analysis/ANALISE_higgsfield-blog_nano-banana-pro.md
 baseline = Manifest Pre-v0.30 / Ledger Pre-v0.31
 license = no attached reusable-content license declared by the post
 ```
@@ -4570,10 +4570,10 @@ VERSION = 0.13.0
 license = MIT
 
 independent_delta =
-/Google Drive/ai/influencer/utils/integration-deltas/higgsfield-ai-skills__INDEPENDENT_DELTA__20261009-1256.md
+private-archive://influencer/utils/integration-deltas/higgsfield-ai-skills__INDEPENDENT_DELTA__20261009-1256.md
 
 saved_report =
-/Google Drive/ai/influencer/analysis/ANALISE_higgsfield-ai-skills.md
+private-archive://influencer/analysis/ANALISE_higgsfield-ai-skills.md
 ```
 
 The source-first pass inspected the Drive-captured repository material before the saved report was opened. The capture set represented 79 source/text files in 13 Markdown parts across the root plus seven skill subtrees. Repository metadata declared eight skills, exposing a capture gap. The immutable official Git tree at the same commit confirmed the missing eighth subtree, `higgsfield-websites/`; its `SKILL.md` was read directly and classified as website/app/game build runtime, outside the current AI Creative Skill capability scope.
@@ -4890,7 +4890,7 @@ DEFINED HIGH-PRIORITY HIGGSFIELD SOURCE CYCLE
 
 STILL PENDING AFTER THAT ROUND
 1. GPT cross-check of the validator correction round at the start of the next round
-2. operator action: disable the installed higgsfield-content-factory skill while there is Pilot work (decision 2026-10-09; §29.12)
+2. operator action: disable the higgsfield-content-factory skill, if present, while there is Pilot work (decision 2026-10-09; §29.12)
 3. QUEUED · NOT ADJUDICATED ideas of hyperframes ...-2000 (§29.9)
 4. items DEFERRED with reason in §29 (route facts incl. Seedance 2.5 resolution re-verification, Calibration instances, out-of-scope capabilities)
 5. release 0.1.0-rc.1 artifact items (SKILL.md, validator, scenario results, KNOWN_ISSUES) → next release candidate (§29.15)
@@ -4931,9 +4931,9 @@ This section is the item-by-item record of that round. Method and contract chang
 ### Operator decision recorded in this round
 
 ```text
-higgsfield-content-factory (third-party skill installed in the operator's account)
+higgsfield-content-factory (third-party skill, if present in the operator's environment)
 = DISABLED WHILE THERE IS PILOT WORK
-→ the operator disables it in the account; the design only records the decision
+→ the operator disables it where present; the design only records the decision
 → project record: Project Profile Pilot01 Pre-v0.7 §3.1 · round record: §29.12
 → until the operator confirms the action, it stays in the pending list (§28.4, §29.15)
 ```
@@ -6714,19 +6714,19 @@ Content-factory report:
 
 ```text
 FACT
-the third-party skill `higgsfield-content-factory` is installed in the operator's account
+the third-party skill `higgsfield-content-factory` may be present in the operator's environment
 (the same byte-identical skill as in Marketing-Studio-Skills-Bank.zip; sha256 019b8430…c524)
 
 OPERATOR DECISION · 2026-10-09
 → the installed skill stays DISABLED while there is Pilot work
-→ the operator disables it in the account; the design only records the decision
+→ the operator disables it where present; the design only records the decision
 → recorded in Project Profile Pilot01 Pre-v0.7 §3.1 (Worker B), linked to the Runtime Activation §13.1 canary
 
 DESIGN RULE (unchanged)
 → Runtime Activation §13.1 remains a generic overlap canary; no vendor skill name becomes a framework rule
 
 OPERATOR PENDING (action outside the design)
-→ disable the skill in the account; the design cannot verify the account state
+→ disable the skill where present; the design cannot verify the operator's environment
 ```
 
 §25.3 E is corrected: the report did **not** propose encoding a vendor skill name as a framework disable rule. It asked to (1) record the current installation, (2) take the disable-or-call-only-by-name decision to the operator, and (3) add a canary to the future skill. (3) was done in Pre-v0.30; (1) and (2) are done now.
@@ -7133,7 +7133,7 @@ Release-artifact items (validation bloco 5 §7 items 4–7) are not design docum
 
 ```text
 1. GPT cross-check of this validator correction round at the start of the next round (operator-agreed window).
-2. Operator action: disable the installed higgsfield-content-factory skill in the account while there is Pilot work (§29.12).
+2. Operator action: disable the higgsfield-content-factory skill, if present, while there is Pilot work (§29.12).
 3. QUEUED · NOT ADJUDICATED ideas of hyperframes ...-2000 (§29.9); enter only via a future source-first delta.
 4. DEFERRED items listed in §29.9–§29.14 (Calibration instances, route facts, Seedance 2.5 resolution re-verification, out-of-scope capabilities).
 5. Release rc.2 items (validation bloco 5 §7 items 4–7).
@@ -7268,7 +7268,7 @@ Status words: APPLIED = method/contract text changed in a document of §29.0; RE
 | v3-3 | P3: Pilot / existing-rule conflict lists; Phase 10B failure | RECORDED + APPLIED | §29.9–§29.14; Registry v0.12 §15.6 |
 | v3-4 | P3: `COMPOSITION` map (colour/shape, no text in Pilot, never inherited) | APPLIED | Image Direction Pre-v0.9 §10, §10.2 |
 | v3-5 | P3: source media with a real person → QA Evidence & Rights | APPLIED | Video Direction Pre-v0.10 §9.2 |
-| v3-6 | P4: installed content-factory; operator decision | RECORDED + APPLIED; operator action PENDING | §29.0, §29.12; Project Profile Pilot01 Pre-v0.7 §3.1 |
+| v3-6 | P4: content-factory, if present; operator decision | RECORDED + APPLIED; operator action PENDING | §29.0, §29.12; Project Profile Pilot01 Pre-v0.7 §3.1 |
 | v3-7 | X1: delta sha256 and createdTime (8 deltas) | RECORDED | §29.9–§29.12; Provenance §1.20–§1.23; Manifest §6.8–§6.11 |
 | v3-8 | X2: STEP 0 of the four rounds | RECORDED | §29.9–§29.12 |
 | v3-9 | X3: delta item → class → final decision; restored rejects | RECORDED | §29.9–§29.12 |

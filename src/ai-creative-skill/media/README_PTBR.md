@@ -14,7 +14,7 @@ A extensão acrescenta `IMAGE_UPSCALE`, negocia as dimensões por capacidade esp
 - 41 testes automatizados aprovados: 26 novos + 15 regressões do MVP v0.1.
 
 **Registrado, mas não implementado de modo genérico neste pacote:**
-- `local.realesrgan.srvgg.mps.video.v0.2`: Work executou 5s reais da Della num Mac M1, 1080×1922, 24 FPS, resultado visual `PARTIAL_VERIFIED`. O pacote v0.2 registra origem/limites e não afirma que este host possa executar esse backend. Fonte: <https://drive.google.com/drive/folders/1yc2Ivkrvrc52hVtBiNVPk-1PKLdVObUW>.
+- `local.realesrgan.srvgg.mps.video.v0.2`: Work executou 5s reais da Della num Mac M1, 1080×1922, 24 FPS, resultado visual `PARTIAL_VERIFIED`. O pacote v0.2 registra origem/limites e não afirma que este host possa executar esse backend. Fonte: <private-archive://media-evidence/realesrgan-mps-video-v0.2>.
 - Vídeo neural em 4K, imagem neural em 4K e 8K, QA temporal integral, reconhecimento exato do lettering: **não validados**.
 
 ## Execução sem APIs e sem custos por inferência

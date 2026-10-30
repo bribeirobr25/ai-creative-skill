@@ -375,9 +375,9 @@ class CandidateGovernance(unittest.TestCase):
         self.ci=candidate_integrity
 
     def test_active_candidate_is_cumulative_over_parent(self):
-        self.assertEqual(self.ci.CANDIDATE_ID,'web-runtime-2.6-v2')
+        self.assertEqual(self.ci.CANDIDATE_ID,'privacy-redaction-v1')
         parent,scope=self.ci.CANDIDATE_SCOPES[self.ci.CANDIDATE_ID]
-        self.assertEqual(parent,'web-runtime-2.6-v1')
+        self.assertEqual(parent,'web-runtime-2.6-v2')
         self.assertTrue(self.ci.CANDIDATE_SCOPES[parent][1]<scope)
         self.assertTrue(self.ci.BOUNDARY_SCOPE<scope)
         self.assertTrue(self.ci.lineage_valid())
@@ -393,6 +393,7 @@ class CandidateGovernance(unittest.TestCase):
     def test_pointer_cannot_roll_back_to_superseded_candidate(self):
         with self.assertRaisesRegex(ValueError,'newest'):self.ci.lineage_valid('boundary-hardening-v1')
         with self.assertRaisesRegex(ValueError,'newest'):self.ci.lineage_valid('web-runtime-2.6-v1')
+        with self.assertRaisesRegex(ValueError,'newest'):self.ci.lineage_valid('web-runtime-2.6-v2')
 
     def test_superseded_candidate_records_are_byte_preserved(self):
         self.assertTrue(self.ci.preserved_history())
