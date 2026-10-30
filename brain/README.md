@@ -5,7 +5,7 @@ One place to answer "where are we, what was decided, what is next" at the start 
 ## Start of a session
 
 ```
-python3 -m brain status       # current decisions, due reviews, live checks, open PRs and issues
+python3 -m brain status       # current decisions (owner-merged only), pending decisions, due reviews, live checks, open PRs and issues
 python3 -m brain validate     # records follow the contract
 ```
 
