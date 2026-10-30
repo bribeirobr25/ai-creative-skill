@@ -11,7 +11,7 @@ RECORDS = ROOT / 'brain' / 'records'
 GATES = ROOT / 'brain' / 'gates.json'
 BENCHMARK_LOG = ROOT / 'docs' / 'benchmarks' / 'benchmark-log.md'
 KINDS = {'OBSERVED', 'CHANGE_REQUESTED', 'DECISION_RECORDED'}
-FINDING_STATUS = {'OPEN', 'FIXED', 'ACCEPTED-RISK', 'UNKNOWN'}
+FINDING_STATUS = {'OPEN', 'FIXED', 'ACCEPTED-RISK', 'UNKNOWN', 'WITHDRAWN'}
 REQUIRED = ('id', 'kind', 'subject', 'statement', 'evidence_refs', 'occurred_at', 'recorded_at', 'privacy_class')
 DATE = re.compile(r'^\d{4}-\d{2}-\d{2}$')
 AUTHORITY = re.compile(r'^pr:#(\d+)$')
@@ -128,7 +128,7 @@ def verify_authority(rows, fetch=None):
     return errs
 
 
-REQUIRED_CHECKS = {'Immutable V2.5 integrity', 'Boundary hardening candidate', 'scan-publication-diff'}
+REQUIRED_CHECKS = {'Immutable V2.5 integrity', 'Boundary hardening candidate', 'scan-publication-diff', 'brain-records'}
 
 
 def settings_problems(rulesets, repo):
@@ -181,6 +181,38 @@ def fetch_settings():
     return None if None in details else (details, repo)
 
 
+# Finding SNAP-1: living docs (not dated records) must not describe merged PRs as open or proposed.
+LIVING_DOCS = ('README.md', 'AGENTS.md', 'brain/README.md', 'docs/benchmarks/benchmark-log.md', 'docs/migration/README.md',
+               'docs/research/intelligence/STATUS.md', 'docs/research/intelligence/README.md',
+               'experiments/intelligence/README.md', 'security/README.md', 'validation/README.md')
+PR_REF = re.compile(r'(?i)(?:\bPRs?\s*#|/pull/)(\d+)')
+STALE_WORD = re.compile(r'(?i)\b(?:open|draft|pending|before merging|antes do merge|proposed|unmerged|not merged|to review|aberto|pendente|propost[oa]|'
+                        r'em revis[aã]o|a revisar|n[aã]o integrad[oa])\b')
+MERGED_WORD = re.compile(r'(?i)\b(?:merged|integrad[oa]s?|closed|fechado)\b')
+
+
+def stale_doc_lines(merged, root=ROOT, docs=LIVING_DOCS):
+    """Lines that call a merged PR open/proposed. merged: set of merged PR numbers."""
+    out = []
+    for rel in docs:
+        path = Path(root) / rel
+        if not path.exists():
+            continue
+        for n, line in enumerate(path.read_text(encoding='utf-8').splitlines(), 1):
+            if MERGED_WORD.search(line):
+                continue
+            for m in PR_REF.finditer(line):
+                near = line[max(0, m.start() - 40):m.end() + 40]
+                if int(m.group(1)) in merged and STALE_WORD.search(near):
+                    out.append('%s:%d: PR #%s is merged but described as %r' % (rel, n, m.group(1), STALE_WORD.search(near).group(0)))
+    return out
+
+
+def merged_prs():
+    rows = gh('pr', 'list', '--state', 'merged', '--limit', '500', '--json', 'number')
+    return None if rows is None else {r['number'] for r in rows}
+
+
 def benchmark_checks(path=BENCHMARK_LOG):
     if not Path(path).exists():
         return []
@@ -209,7 +241,7 @@ def status(rows, today=None, online=True):
                                    ' [scope: %s]' % r['scope'] if r.get('scope') else '') for r in obs]
     finds = [r for r in cur if r.get('finding_status')]
     if finds:
-        paper = [r for r in finds if r.get('finding_status') != 'FIXED' and r.get('test_ref') == 'paper']
+        paper = [r for r in finds if r.get('finding_status') in ('OPEN', 'UNKNOWN') and r.get('test_ref') == 'paper']
         L += ['', '## Findings (brain/records/findings.jsonl)', '',
               '- %d carried: %s' % (len(finds), ', '.join('%d %s' % (sum(r['finding_status'] == k for r in finds), k)
                                                        for k in sorted(FINDING_STATUS) if any(r['finding_status'] == k for r in finds))),
@@ -220,7 +252,7 @@ def status(rows, today=None, online=True):
     gates = json.loads(GATES.read_text(encoding='utf-8'))['gates'] if GATES.exists() else []
     L += ['', '## Gates', '']
     for g in gates:
-        L.append('- %s %s: %s. Enforced by: %s' % ('[live]' if g['status'] == 'live' else '[PAPER]', g['id'], g['principle'], g['enforced_by']))
+        L.append('- %s %s: %s. Enforced by: %s' % ({'live': '[live]', 'waived': '[waived]'}.get(g['status'], '[PAPER]'), g['id'], g['principle'], g['enforced_by']))
     checks = benchmark_checks()
     if checks:
         L += ['', '## Benchmark checks (docs/benchmarks/benchmark-log.md)', '']
@@ -231,6 +263,12 @@ def status(rows, today=None, online=True):
         L.append('- not checked (GitHub not reachable)')
     else:
         L += ['- PROBLEM: ' + e for e in settings_problems(*fetched)] or ['- protections in place (rulesets, required checks, secret scanning)']
+    merged = merged_prs() if online else None
+    L += ['', '## Stale living docs (merged PRs described as open)', '']
+    if merged is None:
+        L.append('- not checked (GitHub not reachable)')
+    else:
+        L += ['- ' + x for x in stale_doc_lines(merged)] or ['- none']
     L += ['', '## Open on GitHub', '']
     prs = gh('pr', 'list', '--state', 'open', '--json', 'number,title') if online else None
     issues = gh('issue', 'list', '--state', 'open', '--json', 'number,title') if online else None

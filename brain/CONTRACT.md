@@ -22,7 +22,7 @@ There is one JSON object per line in `brain/records/*.jsonl`.
 | `privacy_class` | yes | Must be `public` here. Anything else belongs in the private half, outside this repository (invariant 8). |
 
 **Findings** (`brain/records/findings.jsonl`) use the same fields with `kind: OBSERVED`, plus:
-- `finding_status`: `OPEN`, `FIXED`, `ACCEPTED-RISK` or `UNKNOWN`;
+- `finding_status`: `OPEN`, `FIXED`, `ACCEPTED-RISK`, `UNKNOWN` or `WITHDRAWN` (no longer applicable);
 - `test_ref`: the test that catches the problem again (`path` or `path::Class[.method]`; the file must exist), or `paper` until a test exists;
 - `source`: where the finding was raised.
 

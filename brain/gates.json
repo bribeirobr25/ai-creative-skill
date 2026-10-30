@@ -28,7 +28,7 @@
     {
       "id": "GATE-main-pr-only",
       "principle": "main changes only by squash-merged PRs with checks green; no force push or deletion",
-      "enforced_by": "Ruleset \"Push Protection\"; re-checked on read by python3 -m brain status (tests/test_findings.py::RepoSettings)",
+      "enforced_by": "Ruleset \"Push Protection\" (required: Immutable V2.5 integrity, Boundary hardening candidate, scan-publication-diff, brain-records); re-checked on read by python3 -m brain status (tests/test_findings.py::RepoSettings)",
       "status": "live",
       "required": true,
       "source": "Issue #24"
@@ -44,9 +44,9 @@
     {
       "id": "GATE-brain-contract",
       "principle": "Brain records follow the record contract; no contradictory current decisions",
-      "enforced_by": "python -m brain validate; tests/test_brain.py and tests/test_findings.py; workflow brain.yml (not required)",
+      "enforced_by": "python -m brain validate; tests/test_brain.py and tests/test_findings.py; required check brain-records (workflow brain.yml)",
       "status": "live",
-      "required": false,
+      "required": true,
       "source": "ADR-0005 D5"
     },
     {
@@ -68,10 +68,18 @@
     {
       "id": "GATE-src-no-private-locators",
       "principle": "No private storage locators or operator-account statements in the shipped skill",
-      "enforced_by": "tests/test_findings.py::SrcExposure in workflow brain.yml (not required)",
+      "enforced_by": "tests/test_findings.py::SrcExposure in required check brain-records (workflow brain.yml)",
       "status": "live",
-      "required": false,
+      "required": true,
       "source": "ADR-0005 D4; finding S0-1"
+    },
+    {
+      "id": "GATE-living-docs-fresh",
+      "principle": "Living docs do not describe merged PRs as open or proposed",
+      "enforced_by": "python -m brain lint-docs in required check brain-records",
+      "status": "live",
+      "required": true,
+      "source": "finding SNAP-1"
     },
     {
       "id": "GATE-semantic-privacy",
@@ -84,8 +92,8 @@
     {
       "id": "GATE-independent-review",
       "principle": "A second reviewer for changes to main",
-      "enforced_by": "None: required approvals is 0 (single maintainer)",
-      "status": "paper",
+      "enforced_by": "Waived by the owner (DEC-2026-10-30-review-model); compensated by required checks, rulesets and owner-only merges",
+      "status": "waived",
       "required": false,
       "source": "Issue #24"
     },

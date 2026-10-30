@@ -1,7 +1,14 @@
-# ADR-0003 · Segurança de publicação no repositório público · CANDIDATE
+# ADR-0003 · Segurança de publicação no repositório público
 
 **Data:** 2026-10-24
-**Status:** PROPOSED; acceptance remains a separate owner decision. This text is not itself an approval.
+**Status:** ACCEPTED by the owner on 2026-10-30. The acceptance is recorded in the Project Brain (`DEC-2026-10-30-adr-0003`). The filename keeps `-PROPOSED` so existing links stay stable.
+
+> **Acceptance note (2026-10-30).** The items under "Required before acceptance" were met:
+> - real-Git tests (finding ADR3-1);
+> - the guard run on the Web 2.6 candidate diff (ADR3-2);
+> - the cross-check with ADR-0001/0002 (no conflict: this ADR adds publication checks and supersedes neither).
+>
+> The Drive locator in `src/` mentioned below was replaced by candidate `privacy-redaction-v1` (#35). The text below is otherwise unchanged from the proposal.
 **Decision owner:** repository maintainer (owner acceptance required; no automatic approval).
 **Authority:** complements ADR-0001 (separation of public source and private assets) and ADR-0002 (minimum sufficient bounded path). Neither is superseded.
 
