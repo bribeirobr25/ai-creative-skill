@@ -100,7 +100,7 @@
     {
       "id": "GATE-semantic-privacy",
       "principle": "No owner-environment or account details in public text",
-      "enforced_by": "Human review, prompted by the PR template checklist; the pattern scanner cannot judge meaning",
+      "enforced_by": "Human review, prompted by the PR template checklist; the pattern scanner cannot judge meaning. Accepted risk (DEC-2026-10-30-semantic-privacy)",
       "status": "paper",
       "required": false,
       "source": "ADR-0004 I8; ADR-0005 D4"
@@ -116,9 +116,9 @@
     {
       "id": "GATE-actions-pinned",
       "principle": "Third-party Actions pinned by commit SHA",
-      "enforced_by": "tests/test_findings.py::ActionsPinning in workflow brain.yml: every uses: is a full commit SHA",
+      "enforced_by": "Repository setting \"require SHA pinning\" (re-checked by python3 -m brain status) and tests/test_findings.py::ActionsPinning in workflow brain.yml; Dependabot proposes pin updates",
       "status": "live",
-      "required": false,
+      "required": true,
       "source": "Issue #24"
     }
   ]
