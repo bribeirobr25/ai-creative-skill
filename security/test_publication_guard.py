@@ -392,6 +392,40 @@ class SecretRulesTests(unittest.TestCase):
         for path in (".npmrc", "config/.netrc", "secrets/token.json", "token.pickle", ".git-credentials"):
             self.assertIn(("BLOCK", "PRIVATE_FILE_PATH"), rules(fake_patch("x=1", path)), path)
 
+    def test_jwt_blocks(self):
+        # Finding PR20-P2-4. Built at runtime so this file holds no token-shaped literal.
+        seg = lambda c: "eyJ" + c * 20
+        self.assertIn(("BLOCK", "JWT"), rules(fake_patch("t = " + seg("A") + "." + seg("B") + "." + "S" * 30)))
+        self.assertNotIn(("BLOCK", "JWT"), rules(fake_patch("eyJ is how a JWT header starts")))
+
+    def test_private_key_block_variants(self):
+        for label, rule in (("ENCRYPTED PRIVATE KEY", "PRIVATE_KEY_PEM"), ("PGP PRIVATE KEY BLOCK", "PGP_PRIVATE_KEY")):
+            self.assertIn(("BLOCK", rule), rules(fake_patch("-----BEGIN " + label + "-----")), label)
+        self.assertNotIn(("BLOCK", "PGP_PRIVATE_KEY"), rules(fake_patch("-----BEGIN PGP PUBLIC KEY BLOCK-----")))
+
+    def test_bearer_inside_json_blocks(self):
+        line = '{"Authorization": "Bearer ' + "q" * 30 + '"}'
+        self.assertIn(("BLOCK", "BEARER_CREDENTIAL"), rules(fake_patch(line)))
+
+    def test_credentials_in_url(self):
+        self.assertIn(("BLOCK", "CREDENTIALS_IN_URL"),
+                      rules(fake_patch("DATABASE_URL=postgres://admin:" + "S3cr3tValue9" + "@db.internal:5432/app")))
+        for benign in ("postgres://user:password@localhost/db", "https://user:${DB_PASS}@host/x",
+                       "https://user:<password>@host/x", "see https://example.com/a:b@c"):
+            self.assertNotIn(("BLOCK", "CREDENTIALS_IN_URL"), rules(fake_patch(benign)), benign)
+
+    def test_base64_encoded_token_blocks(self):
+        import base64
+        token = ("ghp_" + "X" * 32).encode()
+        for enc in (base64.b64encode(token), base64.urlsafe_b64encode(token)):
+            self.assertIn(("BLOCK", "BASE64_GITHUB_TOKEN"), rules(fake_patch("blob: " + enc.decode())))
+        self.assertFalse([r for r in rules(fake_patch("hash " + "a1b2c3d4" * 8)) if r[1].startswith("BASE64_")])
+
+    def test_office_tiff_and_webm_files_reviewed(self):
+        # Finding PR20-P1-5 (partly): these formats are routed to review.
+        for path in ("assets/scan.tiff", "assets/clip.webm", "docs/brief.docx", "docs/sheet.xlsx"):
+            self.assertIn(("REVIEW", "BINARY_OR_MEDIA_REVIEW"), rules(fake_patch("x", path)), path)
+
     def test_github_classic_token(self):
         token = "ghp_" + "X" * 32
         self.assertIn(("BLOCK", "GITHUB_TOKEN"), rules(fake_patch("token=" + token)))

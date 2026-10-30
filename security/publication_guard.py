@@ -7,6 +7,8 @@ Findings deliberately do not print matched secret values.
 from __future__ import annotations
 
 import argparse
+import base64
+import binascii
 import hashlib
 from dataclasses import dataclass
 import re
@@ -39,8 +41,15 @@ BLOCK_RULES = (
     ("META_ACCESS_TOKEN", re.compile(r"(?<![A-Za-z0-9])EAA[A-Za-z0-9]{45,}")),
     ("GENERIC_SECRET_ASSIGNMENT", re.compile(r"(?i)(?:client_secret|api_secret|refresh_token|access_token|password)\s*[:=]\s*['\\\"]?[A-Za-z0-9._/+~-]{24,}")),
     ("AWS_ACCESS_ID", re.compile(r"(?<![A-Za-z0-9])(?:AKIA|ASIA)[A-Z0-9]{16}(?![A-Za-z0-9])")),
-    ("BEARER_CREDENTIAL", re.compile(r"(?i)\bauthorization\s*[:=]\s*bearer\s+[A-Za-z0-9._~+/-]{24,}")),
-    ("PRIVATE_KEY_PEM", re.compile(r"-----BEGIN (?:RSA |EC |DSA |OPENSSH )?PRIVATE KEY-----")),
+    # Also matches JSON/YAML quoting, e.g. "Authorization": "Bearer ..." (finding PR20-P2-4).
+    ("BEARER_CREDENTIAL", re.compile(r"(?i)\bauthorization['\"]?\s*[:=]\s*['\"]?bearer\s+[A-Za-z0-9._~+/-]{24,}")),
+    ("PRIVATE_KEY_PEM", re.compile(r"-----BEGIN (?:RSA |EC |DSA |OPENSSH |ENCRYPTED )?PRIVATE KEY-----")),
+    ("PGP_PRIVATE_KEY", re.compile(r"-----BEGIN PGP PRIVATE KEY[ ]BLOCK-----")),
+    ("JWT", re.compile(r"(?<![A-Za-z0-9_-])eyJ[A-Za-z0-9_-]{10,}\.eyJ[A-Za-z0-9_-]{10,}\.[A-Za-z0-9_-]{10,}")),
+    # user:password@host in any URL scheme; obvious placeholders are not credentials.
+    ("CREDENTIALS_IN_URL", re.compile(
+        r"(?i)\b[a-z][a-z0-9+.-]{1,20}://[^\s/:@'\"<>]{1,64}:"
+        r"(?!(?:password|passwd|pass|secret|changeme|example|placeholder|x+|\*+)@)(?![<$%{])[^\s/@'\"<>]{6,}@[^\s/'\"<>]+")),
     ("SIGNED_ACCESS_URL", re.compile(r"(?i)(?:X-Amz-Signature|X-Goog-Signature)=[A-Za-z0-9%]{32,}")),
     ("SIGNED_QUERY_TOKEN", re.compile(r"(?i)(?:https?://[^\s<>'\"]{1,900}[?&](?:token|access_token|signature|sig|auth)=)[A-Za-z0-9%._~-]{24,}")),
 )
@@ -76,10 +85,11 @@ PRIVATE_FILENAME = re.compile(
     r"[^/]*(?:private|secret|credential|token)[^/]*\.(?:p12|pfx|pem|key|db|sqlite)|"
     r"[^/]+\.(?:p12|pfx))$"
 )
-REVIEW_FILE_SUFFIXES = (".zip", ".pdf", ".png", ".jpg", ".jpeg", ".gif", ".webp", ".heic", ".heif", ".mov", ".mp4", ".key", ".pem", ".db", ".sqlite")
+REVIEW_FILE_SUFFIXES = (".zip", ".pdf", ".png", ".jpg", ".jpeg", ".gif", ".webp", ".heic", ".heif", ".mov", ".mp4", ".key", ".pem", ".db", ".sqlite",
+                        ".tif", ".tiff", ".webm", ".docx", ".xlsx", ".pptx")
 DIFF_FILE = re.compile(r"^\+\+\+ b/(.+)$")
 # The suffix alone is never enough to exempt NUL-containing content.
-RECOGNIZED_MEDIA_SUFFIXES = (".png", ".jpg", ".jpeg", ".gif", ".webp", ".pdf", ".mp4", ".mov", ".heic")
+RECOGNIZED_MEDIA_SUFFIXES = (".png", ".jpg", ".jpeg", ".gif", ".webp", ".pdf", ".mp4", ".mov", ".heic", ".tif", ".tiff", ".webm")
 
 
 def _has_valid_media_magic(path: str, data: bytes) -> bool:
@@ -94,6 +104,10 @@ def _has_valid_media_magic(path: str, data: bytes) -> bool:
         return data.startswith(b"RIFF") and data[8:12] == b"WEBP"
     if suffix == ".pdf":
         return data.startswith(b"%PDF-")
+    if suffix in (".tif", ".tiff"):
+        return data.startswith((b"II*\x00", b"MM\x00*"))
+    if suffix == ".webm":
+        return data.startswith(b"\x1a\x45\xdf\xa3")
     if suffix in (".mp4", ".mov", ".heic"):
         return len(data) >= 12 and data[4:8] == b"ftyp" and (
             suffix != ".heic" or data[8:12] in (b"heic", b"heix", b"hevc", b"mif1"))
@@ -182,6 +196,25 @@ def _scan_commit_history(range_ref: str) -> list[Finding]:
     return findings
 
 
+BASE64_RUN = re.compile(r"[A-Za-z0-9+/_-]{40,4096}={0,2}")
+
+
+def _base64_hidden_secrets(path: str, line: str, line_number: int) -> list[Finding]:
+    """Finding PR20-P2-2: a token encoded as base64 (standard or URL-safe) is still a token."""
+    found = []
+    for match in BASE64_RUN.finditer(line):
+        raw = match.group(0).rstrip("=").replace("-", "+").replace("_", "/")
+        try:
+            decoded = base64.b64decode(raw + "=" * (-len(raw) % 4)).decode("ascii")
+        except (binascii.Error, ValueError, UnicodeDecodeError):
+            continue
+        for name, rx in BLOCK_RULES:
+            if rx.search(decoded):
+                found.append(Finding("BLOCK", "BASE64_" + name, path, line_number))
+                break
+    return found
+
+
 def scan_added_line(path: str, line: str, line_number: int, *, verified_media: bool = False) -> list[Finding]:
     findings = []
     # Git --text exposes UTF-16-style data as interleaved NUL bytes. Treat
@@ -199,6 +232,7 @@ def scan_added_line(path: str, line: str, line_number: int, *, verified_media: b
     for name, rx in BLOCK_RULES:
         if rx.search(line):
             findings.append(Finding("BLOCK", name, path, line_number))
+    findings += _base64_hidden_secrets(path, line, line_number)
     for name, rx in REVIEW_RULES:
         # Check every matched resource: a harmless fixture must not hide
         # a real Drive link later on the same added line.
