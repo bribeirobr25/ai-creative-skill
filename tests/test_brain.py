@@ -60,6 +60,12 @@ class Contract(unittest.TestCase):
         errs = core.problems(rows(rec(kind='OBSERVED', authority_ref=None), file='findings.jsonl'))
         self.assertTrue(any('test_ref' in e for e in errs))
 
+    def test_finding_status_and_test_file_checked(self):
+        bad = rec(kind='OBSERVED', authority_ref=None, finding_status='DONE', test_ref='tests/no_such_test.py::X')
+        errs = core.problems(rows(bad, file='findings.jsonl'))
+        self.assertTrue(any('finding_status' in e for e in errs))
+        self.assertTrue(any('test_ref file does not exist' in e for e in errs))
+
     def test_malformed_line_reported(self):
         with tempfile.TemporaryDirectory() as d:
             (Path(d) / 'decisions.jsonl').write_text('{"id": \n')
