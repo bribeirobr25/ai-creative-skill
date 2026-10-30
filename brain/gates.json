@@ -28,7 +28,7 @@
     {
       "id": "GATE-main-pr-only",
       "principle": "main changes only by squash-merged PRs with checks green; no force push or deletion",
-      "enforced_by": "Ruleset \"Push Protection\"",
+      "enforced_by": "Ruleset \"Push Protection\"; re-checked on read by python3 -m brain status (tests/test_findings.py::RepoSettings)",
       "status": "live",
       "required": true,
       "source": "Issue #24"
@@ -36,7 +36,7 @@
     {
       "id": "GATE-evidence-preserved",
       "principle": "Evidence branches and release tags cannot be deleted or rewritten",
-      "enforced_by": "Rulesets \"Preserve evidence branches\" and \"Protect release tags\"",
+      "enforced_by": "Rulesets \"Preserve evidence branches\" and \"Protect release tags\"; re-checked on read by python3 -m brain status (tests/test_findings.py::RepoSettings)",
       "status": "live",
       "required": true,
       "source": "Issue #24"
@@ -44,7 +44,7 @@
     {
       "id": "GATE-brain-contract",
       "principle": "Brain records follow the record contract; no contradictory current decisions",
-      "enforced_by": "python -m brain validate; tests/test_brain.py; workflow brain.yml (not required)",
+      "enforced_by": "python -m brain validate; tests/test_brain.py and tests/test_findings.py; workflow brain.yml (not required)",
       "status": "live",
       "required": false,
       "source": "ADR-0005 D5"
@@ -66,6 +66,14 @@
       "source": "ADR-0005 D1.3"
     },
     {
+      "id": "GATE-src-no-private-locators",
+      "principle": "No private storage locators or operator-account statements in the shipped skill",
+      "enforced_by": "tests/test_findings.py::SrcExposure in workflow brain.yml (not required)",
+      "status": "live",
+      "required": false,
+      "source": "ADR-0005 D4; finding S0-1"
+    },
+    {
       "id": "GATE-semantic-privacy",
       "principle": "No owner-environment or account details in public text",
       "enforced_by": "Manual review only; the publication guard is pattern-based and missed an account-state disclosure once",
@@ -84,7 +92,7 @@
     {
       "id": "GATE-actions-pinned",
       "principle": "Third-party Actions pinned by commit SHA",
-      "enforced_by": "None: Actions are pinned by tag",
+      "enforced_by": "Partial: tests/test_findings.py::ActionsPinning blocks new unpinned references; the existing ones are pinned by tag",
       "status": "paper",
       "required": false,
       "source": "Issue #24"
