@@ -30,8 +30,8 @@ class SrcExposure(unittest.TestCase):
 
 
 class ActionsPinning(unittest.TestCase):
-    """PR20-P2-7 (OPEN): Actions are pinned by tag. This ratchet blocks any new unpinned reference until they are pinned by SHA."""
-    KNOWN_UNPINNED = {'actions/checkout@v4', 'actions/setup-python@v5', 'actions/upload-artifact@v4'}
+    """PR20-P2-7: every third-party Action is pinned by a full commit SHA."""
+    KNOWN_UNPINNED = set()
 
     def test_no_new_unpinned_actions(self):
         refs = set()
@@ -39,6 +39,12 @@ class ActionsPinning(unittest.TestCase):
             refs |= set(re.findall(r'uses:\s*([^\s#]+)', wf.read_text()))
         unpinned = {r for r in refs if not re.search(r'@[0-9a-f]{40}$', r) and not r.startswith('./')}
         self.assertLessEqual(unpinned, self.KNOWN_UNPINNED, 'pin new Actions by commit SHA')
+
+    def test_guard_enforces_with_base_branch_copy(self):
+        # PR20-P1-4: the enforcing scan must run the base branch's scanner, not the PR's.
+        wf = (ROOT / '.github/workflows/publication-guard.yml').read_text()
+        self.assertIn('git archive "origin/$GITHUB_BASE_REF" security', wf)
+        self.assertIn('"$RUNNER_TEMP/base-guard/security/publication_guard.py"', wf)
 
 
 def good_settings():
