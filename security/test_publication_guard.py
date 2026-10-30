@@ -437,6 +437,33 @@ class SecretRulesTests(unittest.TestCase):
                      "+The ghp_ prefix marks a classic token.\n+It is followed by 36 characters.\n")
         self.assertFalse([r for r in rules(unrelated) if r[1].startswith("SPLIT_")])
 
+    def test_token_split_across_three_added_lines_blocks(self):
+        # 2026-10-30 audit: a third line must not hide a split token either.
+        parts = ('TOKEN = "ghp_' + "X" * 10 + '" +', '    "' + "X" * 10 + '" +', '    "' + "X" * 12 + '"')
+        patch = ("diff --git a/a.py b/a.py\nnew file mode 100644\n+++ b/a.py\n@@ -0,0 +3 @@\n"
+                 + "".join("+%s\n" % p for p in parts))
+        found = [r for r in rules(patch) if r[1] == "SPLIT_GITHUB_TOKEN"]
+        self.assertEqual(found, [("BLOCK", "SPLIT_GITHUB_TOKEN")])
+
+    def test_common_key_names_block(self):
+        # 2026-10-30 audit: api_key, x-api-key, token and secret assignments with key-like values.
+        value = "Q7" + "w" * 30
+        for line in ("API_KEY=" + value, '"api_key": "%s"' % value, "x-api-key: " + value,
+                     "TOKEN=" + value, "SECRET = '%s'" % value):
+            self.assertIn(("BLOCK", "GENERIC_SECRET_ASSIGNMENT"), rules(fake_patch(line)), line)
+        for line in ("API_KEY=<your key>", "token: ${{ secrets.GITHUB_TOKEN }}", "the token is short", "api_key=abc"):
+            self.assertNotIn(("BLOCK", "GENERIC_SECRET_ASSIGNMENT"), rules(fake_patch(line)), line)
+
+    def test_underscore_secret_key_blocks(self):
+        self.assertIn(("BLOCK", "SECRET_KEY"), rules(fake_patch("key " + "sk_" + "t" * 30)))
+
+    def test_local_home_path_is_reviewed(self):
+        # 2026-10-30 audit: a home folder names the owner's account and machine layout.
+        self.assertIn(("REVIEW", "LOCAL_HOME_PATH"), rules(fake_patch("see /Users/" + "jdoe/Desktop/notes")))
+        self.assertIn(("REVIEW", "LOCAL_HOME_PATH"), rules(fake_patch("cd /home/" + "jdoe/work/")))
+        for line in ("/Users/you/project/", "/home/runner/work/", "C:/Users/someone/a.js"):
+            self.assertNotIn(("REVIEW", "LOCAL_HOME_PATH"), rules(fake_patch(line)), line)
+
     def test_media_with_exif_needs_review(self):
         # Finding PR20-P1-5: EXIF in added media is routed to review (labels only, no values).
         jpeg = b"\xff\xd8\xff\xe1\x00\x10" + b"Exif\x00\x00" + b"II*\x00\x08\x00\x00\x00" + b"\x00\x00"

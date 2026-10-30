@@ -28,7 +28,7 @@ class Finding:
 
 BLOCK_RULES = (
     ("GITHUB_TOKEN", re.compile(r"(?<![A-Za-z0-9])(?:ghp_|gho_|ghu_|ghs_|ghr_)[A-Za-z0-9]{30,}(?![A-Za-z0-9])|(?<![A-Za-z0-9])github_pat_[A-Za-z0-9_]{40,}(?![A-Za-z0-9])")),
-    ("SECRET_KEY", re.compile(r"\bsk-(?:proj-)?[A-Za-z0-9_-]{24,}\b")),
+    ("SECRET_KEY", re.compile(r"\bsk-(?:proj-)?[A-Za-z0-9_-]{24,}\b|\bsk_(?!live_)[A-Za-z0-9_]{24,}\b")),
     ("GOOGLE_API_KEY", re.compile(r"\bAIza[A-Za-z0-9_-]{35}\b")),
     ("STRIPE_LIVE_KEY", re.compile(r"\b(?:sk|rk)_live_[A-Za-z0-9]{20,}\b")),
     ("SLACK_TOKEN", re.compile(r"\bxox(?:b|p|s|a|r)-[A-Za-z0-9-]{24,}\b")),
@@ -39,7 +39,8 @@ BLOCK_RULES = (
     ("GOOGLE_OAUTH_ACCESS_TOKEN", re.compile(r"(?<![A-Za-z0-9])ya29\.[A-Za-z0-9._~-]{30,}")),
     ("GOOGLE_OAUTH_REFRESH_TOKEN", re.compile(r"(?<![A-Za-z0-9])1//[A-Za-z0-9._~-]{35,}")),
     ("META_ACCESS_TOKEN", re.compile(r"(?<![A-Za-z0-9])EAA[A-Za-z0-9]{45,}")),
-    ("GENERIC_SECRET_ASSIGNMENT", re.compile(r"(?i)(?:client_secret|api_secret|refresh_token|access_token|password)\s*[:=]\s*['\\\"]?[A-Za-z0-9._/+~-]{24,}")),
+    # Also common key names (api_key, x-api-key, token, secret) in env, JSON or header form (2026-10-30 audit).
+    ("GENERIC_SECRET_ASSIGNMENT", re.compile(r"(?i)(?:client_secret|api_secret|refresh_token|access_token|password|api[_-]?key|x-api-key|secret[_-]?key|auth[_-]?token|(?<![a-z0-9_])token|(?<![a-z0-9_])secret)['\"]?\s*[:=]\s*['\\\"]?[A-Za-z0-9._/+~-]{24,}")),
     ("AWS_ACCESS_ID", re.compile(r"(?<![A-Za-z0-9])(?:AKIA|ASIA)[A-Z0-9]{16}(?![A-Za-z0-9])")),
     # Also matches JSON/YAML quoting, e.g. "Authorization": "Bearer ..." (finding PR20-P2-4).
     ("BEARER_CREDENTIAL", re.compile(r"(?i)\bauthorization['\"]?\s*[:=]\s*['\"]?bearer\s+[A-Za-z0-9._~+/-]{24,}")),
@@ -56,6 +57,8 @@ BLOCK_RULES = (
 REVIEW_RULES = (
     ("DRIVE_REFERENCE", re.compile(r"https?://(?:drive|docs)\.google\.com/(?:(?:file(?:/u/\d+)?/d|drive(?:(?:/u/\d+|/mobile))?/folders|document(?:/u/\d+)?/d|spreadsheets(?:/u/\d+)?/d|presentation(?:/u/\d+)?/d)/[A-Za-z0-9_-]{18,}|(?:open|uc)\?id=[A-Za-z0-9_-]{18,})", re.I)),
     ("SHAREABLE_STORAGE_LINK", re.compile(r"https?://[^\s<>'\"]{1,300}/(?:share|sharing|download)/[^\s<>'\"]{10,}", re.I)),
+    # A local home folder names the owner's account and machine layout (owner-environment detail).
+    ("LOCAL_HOME_PATH", re.compile(r"(?<![A-Za-z0-9])(?:/Users|/home)/(?!(?:you|user|username|name|me|runner|someone|example)[/\s])[A-Za-z][A-Za-z0-9._-]{1,30}/")),
 )
 
 EMAIL_CANDIDATE = re.compile(r"\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b", re.I)
@@ -287,14 +290,22 @@ _JOIN_TAIL = " \t\\\"'+,"
 _JOIN_HEAD = " \t\"'+"
 
 
-def _split_token_findings(path: str, first: str, second: str, line_number: int) -> list[Finding]:
-    """Finding PR20-P2-2: a token split across two consecutive added lines
-    (string concatenation or line continuation) is still a token. Only rules
-    that match neither line alone are reported, so nothing is counted twice."""
-    joined = first.rstrip(_JOIN_TAIL) + second.lstrip(_JOIN_HEAD)
+def _join(parts: list[str]) -> str:
+    out = parts[0]
+    for part in parts[1:]:
+        out = out.rstrip(_JOIN_TAIL) + part.lstrip(_JOIN_HEAD)
+    return out
+
+
+def _split_token_findings(path: str, window: list[str], line_number: int) -> list[Finding]:
+    """Finding PR20-P2-2: a token split across two or three consecutive added lines
+    (string concatenation or line continuation) is still a token. A rule is reported
+    only if it matches the whole window and no shorter run of it, so nothing is counted twice."""
+    joined = _join(window)
+    shorter = [window[i:j] for i in range(len(window)) for j in range(i + 1, len(window) + 1) if j - i < len(window)]
     found = []
     for name, rx in BLOCK_RULES:
-        if rx.search(joined) and not rx.search(first) and not rx.search(second):
+        if rx.search(joined) and not any(rx.search(_join(run)) for run in shorter):
             found.append(Finding("BLOCK", "SPLIT_" + name, path, line_number))
     return found
 
@@ -320,7 +331,7 @@ def scan_unified_diff(patch: str, *, verified_media_paths: frozenset[str] = froz
     deleted = False
     in_hunk = False
     line_no = 0
-    previous_added: str | None = None
+    previous_added: list[str] = []
     seen_file_checks: set[tuple[str, str]] = set()
 
     def check_destination(value: str) -> None:
@@ -353,11 +364,12 @@ def scan_unified_diff(patch: str, *, verified_media_paths: frozenset[str] = froz
             line_no += 1
             results.extend(scan_added_line(destination or "<unknown-file>", line[1:], line_no,
                                            verified_media=destination in verified_media_paths))
-            if previous_added is not None:
-                results.extend(_split_token_findings(destination or "<unknown-file>", previous_added, line[1:], line_no))
-            previous_added = line[1:]
+            for size in (1, 2):
+                if len(previous_added) >= size:
+                    results.extend(_split_token_findings(destination or "<unknown-file>", previous_added[-size:] + [line[1:]], line_no))
+            previous_added = (previous_added + [line[1:]])[-2:]
             continue
-        previous_added = None
+        previous_added = []
         if line.startswith("deleted file mode ") or line == "+++ /dev/null":
             deleted = True
             in_hunk = False
