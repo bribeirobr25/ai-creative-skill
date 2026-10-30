@@ -11,6 +11,7 @@ RECORDS = ROOT / 'brain' / 'records'
 GATES = ROOT / 'brain' / 'gates.json'
 BENCHMARK_LOG = ROOT / 'docs' / 'benchmarks' / 'benchmark-log.md'
 KINDS = {'OBSERVED', 'CHANGE_REQUESTED', 'DECISION_RECORDED'}
+FINDING_STATUS = {'OPEN', 'FIXED', 'ACCEPTED-RISK', 'UNKNOWN'}
 REQUIRED = ('id', 'kind', 'subject', 'statement', 'evidence_refs', 'occurred_at', 'recorded_at', 'privacy_class')
 DATE = re.compile(r'^\d{4}-\d{2}-\d{2}$')
 AUTHORITY = re.compile(r'^pr:#(\d+)$')
@@ -30,8 +31,9 @@ def load(records=RECORDS):
     return out
 
 
-def problems(rows, root=ROOT):
+def problems(rows, root=ROOT, allow_private=False):
     errs, ids = [], {}
+    classes = {'public', 'private'} if allow_private else {'public'}
     for f, n, r in rows:
         where = '%s:%d' % (f, n)
         if '_error' in r:
@@ -47,8 +49,8 @@ def problems(rows, root=ROOT):
             errs.append('%s: kind must be one of %s' % (where, ', '.join(sorted(KINDS))))
         if r.get('kind') == 'DECISION_RECORDED' and not AUTHORITY.match(str(r.get('authority_ref', ''))):
             errs.append('%s: a decision needs authority_ref "pr:#N" (the PR whose merge was the owner act)' % where)
-        if r.get('privacy_class') != 'public':
-            errs.append('%s: privacy_class must be "public"; private records belong outside this repository' % where)
+        if r.get('privacy_class') not in classes:
+            errs.append('%s: privacy_class must be %s; private records belong outside this repository' % (where, ' or '.join('"%s"' % c for c in sorted(classes))))
         for k in ('occurred_at', 'recorded_at', 'review_by'):
             if k in r and not DATE.match(str(r[k])):
                 errs.append('%s: %s must be YYYY-MM-DD' % (where, k))
@@ -60,8 +62,16 @@ def problems(rows, root=ROOT):
                     errs.append('%s: unrecognised evidence ref %r' % (where, ref))
                 elif not ref.startswith(('pr:', 'issue:', 'commit:')) and not (root / ref.split('#')[0]).exists():
                     errs.append('%s: evidence path does not exist: %s' % (where, ref))
-        if f == 'findings.jsonl' and not r.get('test_ref'):
-            errs.append('%s: a finding needs test_ref (a test path, or "paper" until one exists)' % where)
+        if f == 'findings.jsonl':
+            t = str(r.get('test_ref') or '')
+            if not t:
+                errs.append('%s: a finding needs test_ref (a test path, or "paper" until one exists)' % where)
+            elif t != 'paper' and not (root / t.split('::')[0]).exists():
+                errs.append('%s: test_ref file does not exist: %s' % (where, t))
+            if r.get('finding_status') not in FINDING_STATUS:
+                errs.append('%s: finding_status must be one of %s' % (where, ', '.join(sorted(FINDING_STATUS))))
+            if r.get('kind') != 'OBSERVED':
+                errs.append('%s: a finding is an OBSERVED record' % where)
     known = {r.get('id') for _, _, r in rows}
     for f, n, r in rows:
         if r.get('supersedes') and r['supersedes'] not in known:
@@ -118,6 +128,59 @@ def verify_authority(rows, fetch=None):
     return errs
 
 
+REQUIRED_CHECKS = {'Immutable V2.5 integrity', 'Boundary hardening candidate', 'scan-publication-diff'}
+
+
+def settings_problems(rulesets, repo):
+    """Findings ISS24-1/2/3/7/9/10: the protections Issue #24 asked for are still in place.
+
+    rulesets: list of ruleset details (GET /repos/{owner}/{repo}/rulesets/{id}); repo: GET /repos/{owner}/{repo}."""
+    errs = []
+
+    def find(include):
+        return [r for r in rulesets if r.get('enforcement') == 'active' and include in r['conditions']['ref_name']['include']]
+
+    def rules(r):
+        return {x['type']: x.get('parameters') or {} for x in r.get('rules', [])}
+
+    main = find('~DEFAULT_BRANCH')
+    if not main:
+        errs.append('no active ruleset on the default branch')
+    for r in main[:1]:
+        got = rules(r)
+        for t in ('deletion', 'non_fast_forward', 'required_linear_history', 'pull_request', 'required_status_checks'):
+            if t not in got:
+                errs.append('default-branch ruleset lacks %s' % t)
+        checks = {c['context'] for c in got.get('required_status_checks', {}).get('required_status_checks', [])}
+        if not REQUIRED_CHECKS <= checks:
+            errs.append('required checks missing: %s' % ', '.join(sorted(REQUIRED_CHECKS - checks)))
+        if 'required_status_checks' in got and not got['required_status_checks'].get('strict_required_status_checks_policy'):
+            errs.append('required checks do not require up-to-date branches')
+        if 'pull_request' in got and got['pull_request'].get('allowed_merge_methods') != ['squash']:
+            errs.append('default branch is not squash-only')
+        if r.get('bypass_actors'):
+            errs.append('default-branch ruleset has bypass actors')
+    for include, need, label in (('~ALL', ('deletion', 'non_fast_forward'), 'evidence-branch'),
+                                 ('refs/tags/v*', ('deletion', 'update', 'non_fast_forward'), 'release-tag')):
+        rs = find(include)
+        if not rs or any(t not in rules(rs[0]) for t in need):
+            errs.append('%s ruleset missing or incomplete' % label)
+    sa = repo.get('security_and_analysis') or {}
+    for k in ('secret_scanning', 'secret_scanning_push_protection'):
+        if (sa.get(k) or {}).get('status') != 'enabled':
+            errs.append('%s is not enabled' % k)
+    return errs
+
+
+def fetch_settings():
+    listed = gh('api', 'repos/{owner}/{repo}/rulesets')
+    repo = gh('api', 'repos/{owner}/{repo}')
+    if listed is None or repo is None:
+        return None
+    details = [gh('api', 'repos/{owner}/{repo}/rulesets/%d' % r['id']) for r in listed]
+    return None if None in details else (details, repo)
+
+
 def benchmark_checks(path=BENCHMARK_LOG):
     if not Path(path).exists():
         return []
@@ -139,11 +202,18 @@ def status(rows, today=None, online=True):
     L += ['## Current decisions', '']
     for r in sorted((r for r in cur if r.get('kind') == 'DECISION_RECORDED'), key=lambda r: r.get('subject', '')):
         L.append('- **%s** (%s, %s): %s' % (r['subject'], r['occurred_at'], r.get('authority_ref', '?'), r['statement']))
-    obs = [r for r in cur if r.get('kind') != 'DECISION_RECORDED']
+    obs = [r for r in cur if r.get('kind') != 'DECISION_RECORDED' and not r.get('finding_status')]
     if obs:
         L += ['', '## Observations and requests (not decisions)', '']
         L += ['- %s `%s`: %s%s' % (r['kind'].lower(), r['subject'], r['statement'],
                                    ' [scope: %s]' % r['scope'] if r.get('scope') else '') for r in obs]
+    finds = [r for r in cur if r.get('finding_status')]
+    if finds:
+        paper = [r for r in finds if r.get('finding_status') != 'FIXED' and r.get('test_ref') == 'paper']
+        L += ['', '## Findings (brain/records/findings.jsonl)', '',
+              '- %d carried: %s' % (len(finds), ', '.join('%d %s' % (sum(r['finding_status'] == k for r in finds), k)
+                                                       for k in sorted(FINDING_STATUS) if any(r['finding_status'] == k for r in finds))),
+              '- not fixed and no test yet (paper): ' + (', '.join(r['id'] for r in paper) or 'none')]
     due = [r for r in cur if r.get('review_by') and r['review_by'] <= today]
     L += ['', '## Due for review', '']
     L += ['- %s (review_by %s)' % (r['id'], r['review_by']) for r in due] or ['- none']
@@ -155,6 +225,12 @@ def status(rows, today=None, online=True):
     if checks:
         L += ['', '## Benchmark checks (docs/benchmarks/benchmark-log.md)', '']
         L += ['- %s: %s (%s)' % (c['id'], c['check'], c['status']) for c in checks]
+    fetched = fetch_settings() if online else None
+    L += ['', '## Repository settings (Issue #24)', '']
+    if fetched is None:
+        L.append('- not checked (GitHub not reachable)')
+    else:
+        L += ['- PROBLEM: ' + e for e in settings_problems(*fetched)] or ['- protections in place (rulesets, required checks, secret scanning)']
     L += ['', '## Open on GitHub', '']
     prs = gh('pr', 'list', '--state', 'open', '--json', 'number,title') if online else None
     issues = gh('issue', 'list', '--state', 'open', '--json', 'number,title') if online else None

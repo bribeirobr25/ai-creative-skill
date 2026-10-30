@@ -387,6 +387,11 @@ class SecretRulesTests(unittest.TestCase):
         self.assertIn(("BLOCK", "PRIVATE_FILE_PATH"),
                       rules(fake_patch("LIVE=1", ".env.production")))
 
+    def test_credential_file_names_block(self):
+        # Finding PR20-P2-3: these names were in the rule but untested.
+        for path in (".npmrc", "config/.netrc", "secrets/token.json", "token.pickle", ".git-credentials"):
+            self.assertIn(("BLOCK", "PRIVATE_FILE_PATH"), rules(fake_patch("x=1", path)), path)
+
     def test_github_classic_token(self):
         token = "ghp_" + "X" * 32
         self.assertIn(("BLOCK", "GITHUB_TOKEN"), rules(fake_patch("token=" + token)))

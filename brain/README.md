@@ -20,7 +20,7 @@ python3 -m brain validate     # records follow the contract
 | Which principles are enforced, and by what | `brain/gates.json` (live, or still on paper) |
 | What current models do well or badly | `docs/benchmarks/benchmark-log.md` |
 | Why a decision was made | The ADR in `docs/decisions/` |
-| Anything private | Not here. Use the owner's private store. |
+| Anything private | Not here. The private half uses the same contract in the owner's private store; validate it with `python3 -m brain validate --records <private>/records --allow-private` |
 
 ## Order of work
 
