@@ -12,7 +12,7 @@ decision without authorizing merge, installation, production acceptance or relea
 | Fixed 160px visual rule / universal image-first hero | REJECTED | Does not transfer to educational task or legitimate CTA-first brief |
 | Mandatory moodboard, generated assets or extra revision on every request | REJECTED | B had no defect needing C; extra work is not automatically improvement |
 | Image/video P3–P6 expansion | DEFERRED | Outside this phase; prior findings remain, no new paid media generation |
-| Required dependency on unmerged harness #6/#7 | BLOCKED_FOR_MAIN_RUNTIME | Keep optional research dependency pinned to PR #7 until separately integrated |
+| Required dependency on unmerged harness #6/#7 | RESOLVED (2026-10-30 note): #6 and #7 merged on 2026-10-21; the package is frozen by ADR-0005, so no main-runtime integration is planned | Research dependency only |
 | Production rollout / canonical release | NOT_AUTHORIZED | No merge/install/release authority in this task |
 
 These labels are research decisions, **not new runtime status enums**. Canonical
