@@ -20,7 +20,7 @@
     {
       "id": "GATE-publication-patterns",
       "principle": "No secrets, credentials or known private patterns in public diffs",
-      "enforced_by": "CI required check: scan-publication-diff (security/publication_guard.py)",
+      "enforced_by": "CI required check: scan-publication-diff (security/publication_guard.py, enforcing copy taken from the base branch)",
       "status": "live",
       "required": true,
       "source": "ADR-0003 (PROPOSED)"
@@ -92,8 +92,8 @@
     {
       "id": "GATE-actions-pinned",
       "principle": "Third-party Actions pinned by commit SHA",
-      "enforced_by": "Partial: tests/test_findings.py::ActionsPinning blocks new unpinned references; the existing ones are pinned by tag",
-      "status": "paper",
+      "enforced_by": "tests/test_findings.py::ActionsPinning in workflow brain.yml: every uses: is a full commit SHA",
+      "status": "live",
       "required": false,
       "source": "Issue #24"
     }

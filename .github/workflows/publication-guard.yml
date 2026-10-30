@@ -11,16 +11,26 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
         with:
           fetch-depth: 0
           persist-credentials: false
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5.6.0
         with:
           python-version: '3.11'
       - name: Test redaction and detection rules
         run: python -m unittest discover -s security -p 'test_*.py' -v
-      - name: Inspect final PR diff AND all commit additions
+      - name: Inspect final PR diff AND all commit additions (scanner from the base branch)
+        if: github.event_name == 'pull_request'
+        # Finding PR20-P1-4: the enforcing scan uses the base branch's copy of security/, so a PR
+        # cannot weaken the scanner that judges it. The PR's own copy also runs, so new rules apply at once.
+        run: |
+          mkdir -p "$RUNNER_TEMP/base-guard"
+          git archive "origin/$GITHUB_BASE_REF" security | tar -x -C "$RUNNER_TEMP/base-guard"
+          python "$RUNNER_TEMP/base-guard/security/publication_guard.py" \
+            --range "origin/$GITHUB_BASE_REF...HEAD" \
+            --history-range "origin/$GITHUB_BASE_REF..HEAD"
+      - name: Inspect the same range with the PR's scanner
         if: github.event_name == 'pull_request'
         run: |
           python security/publication_guard.py \
