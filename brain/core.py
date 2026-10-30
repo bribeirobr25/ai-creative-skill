@@ -128,7 +128,7 @@ def verify_authority(rows, fetch=None):
     return errs
 
 
-REQUIRED_CHECKS = {'Immutable V2.5 integrity', 'Boundary hardening candidate', 'scan-publication-diff'}
+REQUIRED_CHECKS = {'Immutable V2.5 integrity', 'Boundary hardening candidate', 'scan-publication-diff', 'brain-records'}
 
 
 def settings_problems(rulesets, repo):
