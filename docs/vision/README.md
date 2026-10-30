@@ -42,7 +42,7 @@ Guided steps are the main way the system improves outcomes. A user should never 
 
 1. **Intake.** The user states a goal ("launch my AI marketing agency", "a 10-episode cartoon", "sell my product on Etsy"). The system gathers what it needs: who the user is, the brand or story, the audience, budget, deadlines, what already exists, and the user's taste.
 2. **Plan from a playbook.** A playbook is a proven sequence for a type of goal, across areas. Example for a new service business: research the niche, define the offer, build the brand, the website, the content, the ads, then the leads and outreach. The plan states each step, its deliverable, its cost estimate and where the user approves.
-3. **Guided stages with checkpoints.** Each deliverable moves through proven stages, for example brief, then storyboard, then generation, then review. The user approves at the checkpoints that matter: the brief, the direction, opening or raising a budget, and anything published, sent or contacted. Inside an approved budget, agents generate and explore variants without asking each time.
+3. **Guided stages with checkpoints.** Each deliverable moves through proven stages, for example brief, then storyboard, then generation, then review. The user approves at the checkpoints that matter: the brief, the direction, a stage's execution scope with its spend limit, and anything published, sent or contacted. An execution scope says what is generated, what may vary, how many items and attempts, and with which kind of tool. Inside it, agents generate and explore variants without asking each time. Money left in the budget is not permission: anything outside the scope (another tool, another deliverable, more attempts) needs a new approval.
 4. **Delivery.** Finished work in a usable form: files, a live site, a published post, a sent campaign, a listed product, a book in a store, an episode on a channel.
 5. **Measure and learn.** Results flow back: ad performance, site visits, replies, sales, the user's own ratings. They feed the plan's next steps and the specialists' own experience.
 
@@ -143,7 +143,7 @@ Tools stay replaceable; the provider registry in the frozen package is already p
 | Level | Examples | Rule |
 |---|---|---|
 | Read | Marketplace, social and web research | Allowed; official APIs where they exist, within each platform's terms. Many marketplace and social APIs are restricted, so research often needs a paid data provider, which is the spend level |
-| Spend | Image or video generation, paid APIs, paid research data, ad budget | Within a budget the user approves for a stage; approval is needed to open or raise a budget, not for each generation. Cost estimated before, reported after |
+| Spend | Image or video generation, paid APIs, paid research data, ad budget | Within an execution scope the user approves for a stage (what, how many, which tool class, spend limit); no per-job approval inside it, a new approval for anything outside it. Each paid attempt is traceable; a partial batch is never blindly re-run. Cost estimated before, reported after |
 | Act outward | Posting, launching or changing ads, sending email, listing a product, publishing a book or episode | User approval per action, or a standing permission the user grants for a named action |
 | Credentials | API keys, tokens, passwords | Never in the repository; held by the host or the user's own secret store |
 
@@ -228,7 +228,7 @@ Each step is separately authorized by the owner.
 3. **Design the shared core.** Short specifications for: an agent role, a knowledge pack, a playbook, the shared project context (brand kit, story bible, asset library), a research record with freshness, the permission levels. Choose the agent host, preferring host-native agents, delegation and scheduling (ADR-0005 D6), and decide where new code lives (not `src/`, which stays frozen).
 4. **One vertical slice on a real project, chosen by the owner.** One playbook end to end, for example: research, inspiration board, storyboard, generation, owner approval, manual posting, measurement. Generation and measurement run with tools the owner authorizes for the slice; posting stays manual. It tests intake, handoffs, pack loading, freshness, the memory scenarios T01–T08 and the permission levels on real work.
 5. **The learning loop** for the slice's specialists.
-6. **Connections, level by level:** read first; then spend within a budget; then act outward with approval.
+6. **Connections, level by level:** read first; then spend within an approved execution scope; then act outward with approval.
 7. **Widen area by area,** each new agent, pack and playbook earning its place through checks.
 
 **Open threads, folded in**

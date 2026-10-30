@@ -344,7 +344,9 @@ def status(rows, today=None, online=True, fetch=None, files=None):
         L += ['', '## Findings (brain/records/findings.jsonl)', '',
               '- %d carried: %s' % (len(finds), ', '.join('%d %s' % (sum(r['finding_status'] == k for r in finds), k)
                                                        for k in sorted(FINDING_STATUS) if any(r['finding_status'] == k for r in finds))),
-              '- not fixed and no test yet (paper): ' + (', '.join(r['id'] for r in paper) or 'none')]
+              '- not fixed and no test yet (paper): ' + (', '.join(r['id'] for r in paper) or 'none'),
+              '- fixed or accepted, verified by review only (no automated guard): ' +
+              (', '.join(r['id'] for r in finds if r.get('finding_status') in ('FIXED', 'ACCEPTED-RISK') and r.get('test_ref') == 'paper') or 'none')]
     due = [r for r in cur if r.get('review_by') and r['review_by'] <= today]
     L += ['', '## Due for review', '']
     L += ['- %s (review_by %s)' % (r['id'], r['review_by']) for r in due] or ['- none']

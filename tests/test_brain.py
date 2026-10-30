@@ -184,6 +184,13 @@ class Status(unittest.TestCase):
         self.assertIn('DEC-x (review_by 2026-01-01)', out)
         self.assertIn('GitHub not reachable', out)
 
+    def test_review_only_fixes_are_listed_apart(self):
+        # A fix checked by document review only must not read as guarded by a test.
+        f = dict(rec(id='FND-r', kind='OBSERVED', subject='finding.r', finding_status='FIXED', test_ref='paper'))
+        del f['authority_ref']
+        out = core.status(rows(f, file='findings.jsonl'), today='2026-10-30', online=False)
+        self.assertIn('verified by review only (no automated guard): FND-r', out)
+
     def test_benchmark_checks_parsed(self):
         self.assertTrue(any(c['id'] == 'C1' for c in core.benchmark_checks()))
 
