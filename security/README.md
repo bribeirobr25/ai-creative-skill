@@ -49,3 +49,9 @@ The global historical scan runs **only on explicit workflow_dispatch/manual use*
 3. False-positive handling of review-only references, and blocked diffs not exposing values: covered by the guard tests.
 4. The stable Drive asset link in `src/` media documentation and registry: replaced by candidate `privacy-redaction-v1` (#35).
 5. Merging a public security gate does **not** grant API credentials, source rights, production or release authority.
+
+## Local hook and mutation check (2026-10-30)
+
+- `python3 security/install_hooks.py` installs a pre-push hook that runs the guard on every commit being pushed and stops the push on BLOCK. `--check` reports whether it is installed. GitHub API and connector writes bypass local hooks; the required CI check covers them.
+- `python3 security/mutation_check.py --report security/mutation-report.md` disables each rule in turn and requires the test suite to fail. Current score: 28 of 28 killed.
+- A PR that adds media or binary files fails `scan-publication-diff` unless its description has a line `Media reviewed: ...`.

@@ -82,9 +82,25 @@
       "source": "finding SNAP-1"
     },
     {
+      "id": "GATE-media-review-recorded",
+      "principle": "Media or binary files in a PR carry a recorded human review (rights, likeness, EXIF)",
+      "enforced_by": "Required check scan-publication-diff fails without a \"Media reviewed:\" line in the PR description",
+      "status": "live",
+      "required": true,
+      "source": "finding OWN-A2"
+    },
+    {
+      "id": "GATE-pre-push",
+      "principle": "Publication check before every local push",
+      "enforced_by": "security/install_hooks.py pre-push hook (local; install once per clone)",
+      "status": "live",
+      "required": false,
+      "source": "ADR-0003 §1; finding S0-3"
+    },
+    {
       "id": "GATE-semantic-privacy",
       "principle": "No owner-environment or account details in public text",
-      "enforced_by": "Manual review only; the publication guard is pattern-based and missed an account-state disclosure once",
+      "enforced_by": "Human review, prompted by the PR template checklist; the pattern scanner cannot judge meaning",
       "status": "paper",
       "required": false,
       "source": "ADR-0004 I8; ADR-0005 D4"
