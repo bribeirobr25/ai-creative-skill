@@ -55,3 +55,8 @@ The global historical scan runs **only on explicit workflow_dispatch/manual use*
 - `python3 security/install_hooks.py` installs a pre-push hook that runs the guard on every commit being pushed and stops the push on BLOCK. `--check` reports whether it is installed. GitHub API and connector writes bypass local hooks; the required CI check covers them.
 - `python3 security/mutation_check.py --report security/mutation-report.md` disables each rule in turn and requires the test suite to fail. Current score: 28 of 28 killed.
 - A PR that adds media or binary files fails `scan-publication-diff` unless its description has a line `Media reviewed: ...`.
+
+## Workflow supply chain and meaning-level privacy (2026-10-30)
+
+- The repository setting "require SHA pinning" is on: a workflow that uses an Action by tag or branch fails to start. `python3 -m brain status` re-checks the setting. `.github/dependabot.yml` opens weekly PRs that move the pins to newer releases; the owner merges them.
+- Meaning-level privacy (account, environment, client or personal details written in prose) has no automated check. The owner accepted this as a known risk: the PR template checklist is the control.

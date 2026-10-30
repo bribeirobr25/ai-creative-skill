@@ -65,7 +65,8 @@ def good_settings():
                                                               'required_status_checks': [{'context': c} for c in core.REQUIRED_CHECKS]})])
     branches = rs('~ALL', [('deletion', None), ('non_fast_forward', None)])
     tags = rs('refs/tags/v*', [('deletion', None), ('update', None), ('non_fast_forward', None)])
-    repo = {'security_and_analysis': {'secret_scanning': {'status': 'enabled'}, 'secret_scanning_push_protection': {'status': 'enabled'}}}
+    repo = {'security_and_analysis': {'secret_scanning': {'status': 'enabled'}, 'secret_scanning_push_protection': {'status': 'enabled'}},
+            'actions_permissions': {'sha_pinning_required': True}}
     return [main, branches, tags], repo
 
 
@@ -85,6 +86,7 @@ class RepoSettings(unittest.TestCase):
             'evidence-branch': lambda rs, repo: rs[1].update(enforcement='disabled'),
             'push_protection': lambda rs, repo: repo['security_and_analysis']['secret_scanning_push_protection'].update(status='disabled'),
             'lacks deletion': lambda rs, repo: rs[0]['rules'].pop(0),
+            'SHA pinning': lambda rs, repo: repo['actions_permissions'].update(sha_pinning_required=False),
         }
         for want, mutate in cases.items():
             rs, repo = copy.deepcopy(good_settings())

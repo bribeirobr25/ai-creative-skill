@@ -1,0 +1,9 @@
+# Weekly PRs that move the SHA-pinned Actions to newer releases (DEC-2026-10-30-actions-supply-chain).
+# Dependabot keeps the full-SHA pin and the "# vX.Y.Z" comment; the owner merges each PR.
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5

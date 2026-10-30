@@ -134,7 +134,8 @@ REQUIRED_CHECKS = {'Immutable V2.5 integrity', 'Boundary hardening candidate', '
 def settings_problems(rulesets, repo):
     """Findings ISS24-1/2/3/7/9/10: the protections Issue #24 asked for are still in place.
 
-    rulesets: list of ruleset details (GET /repos/{owner}/{repo}/rulesets/{id}); repo: GET /repos/{owner}/{repo}."""
+    rulesets: list of ruleset details (GET /repos/{owner}/{repo}/rulesets/{id}); repo: GET /repos/{owner}/{repo},
+    plus 'actions_permissions' from GET /repos/{owner}/{repo}/actions/permissions."""
     errs = []
 
     def find(include):
@@ -169,14 +170,18 @@ def settings_problems(rulesets, repo):
     for k in ('secret_scanning', 'secret_scanning_push_protection'):
         if (sa.get(k) or {}).get('status') != 'enabled':
             errs.append('%s is not enabled' % k)
+    if not (repo.get('actions_permissions') or {}).get('sha_pinning_required'):
+        errs.append('Actions SHA pinning is not required in repository settings')
     return errs
 
 
 def fetch_settings():
     listed = gh('api', 'repos/{owner}/{repo}/rulesets')
     repo = gh('api', 'repos/{owner}/{repo}')
-    if listed is None or repo is None:
+    actions = gh('api', 'repos/{owner}/{repo}/actions/permissions')
+    if listed is None or repo is None or actions is None:
         return None
+    repo['actions_permissions'] = actions
     details = [gh('api', 'repos/{owner}/{repo}/rulesets/%d' % r['id']) for r in listed]
     return None if None in details else (details, repo)
 
@@ -262,7 +267,7 @@ def status(rows, today=None, online=True):
     if fetched is None:
         L.append('- not checked (GitHub not reachable)')
     else:
-        L += ['- PROBLEM: ' + e for e in settings_problems(*fetched)] or ['- protections in place (rulesets, required checks, secret scanning)']
+        L += ['- PROBLEM: ' + e for e in settings_problems(*fetched)] or ['- protections in place (rulesets, required checks, secret scanning, Actions SHA pinning)']
     merged = merged_prs() if online else None
     L += ['', '## Stale living docs (merged PRs described as open)', '']
     if merged is None:
