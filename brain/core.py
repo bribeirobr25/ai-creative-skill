@@ -242,21 +242,41 @@ def fetch_settings():
 # Finding SNAP-1: living docs (not dated records) must not describe merged PRs as open or proposed.
 LIVING_DOCS = ('README.md', 'AGENTS.md', 'brain/README.md', 'docs/benchmarks/benchmark-log.md', 'docs/migration/README.md',
                'docs/research/intelligence/STATUS.md', 'docs/research/intelligence/README.md',
-               'experiments/intelligence/README.md', 'security/README.md', 'validation/README.md', 'docs/vision/README.md')
+               'experiments/intelligence/README.md', 'security/README.md', 'validation/README.md', 'docs/vision/README.md',
+               'brain/gates.json')
 PR_REF = re.compile(r'(?i)(?:\bPRs?\s*#|/pull/)(\d+)')
 STALE_WORD = re.compile(r'(?i)\b(?:open|draft|pending|before merging|antes do merge|proposed|unmerged|not merged|to review|aberto|pendente|propost[oa]|'
                         r'em revis[aã]o|a revisar|n[aã]o integrad[oa])\b')
 MERGED_WORD = re.compile(r'(?i)\b(?:merged|integrad[oa]s?|closed|fechado)\b')
 
 
+ADR_STATUS = re.compile(r'^\*\*Status:\*\*\s*ACCEPTED', re.M)
+PROPOSED_WORD = r'(?:PROPOSED|proposed|propost[oa]|continua PROPOSED)'
+ADR_FILENAME = re.compile(r'ADR-\d{4}-PROPOSED-[\w.-]*')
+
+
+def accepted_adrs(root=ROOT):
+    """ADR ids whose own Status line says ACCEPTED."""
+    return {p.name[:8] for p in sorted((Path(root) / 'docs' / 'decisions').glob('ADR-[0-9][0-9][0-9][0-9]-*.md'))
+            if ADR_STATUS.search(p.read_text(encoding='utf-8'))}
+
+
 def stale_doc_lines(merged, root=ROOT, docs=LIVING_DOCS):
-    """Lines that call a merged PR open/proposed. merged: set of merged PR numbers."""
+    """Lines that call a merged PR open/proposed, or an accepted ADR proposed (2026-10-30 audit).
+    merged: set of merged PR numbers."""
     out = []
+    adrs = accepted_adrs(root)
+    adr_rx = [(a, re.compile(r'%s(?!-PROPOSED-)(?:(?!ADR-)[^.\n]){0,40}?\b%s\b|\b%s\s+(?:a\s+)?%s' % (a, PROPOSED_WORD, PROPOSED_WORD, a)))
+              for a in sorted(adrs)]
     for rel in docs:
         path = Path(root) / rel
         if not path.exists():
             continue
         for n, line in enumerate(path.read_text(encoding='utf-8').splitlines(), 1):
+            bare = ADR_FILENAME.sub('', line)
+            for a, rx in adr_rx:
+                if rx.search(bare) and not re.search(r'(?i)\baccept', bare):
+                    out.append('%s:%d: %s is ACCEPTED but described as proposed' % (rel, n, a))
             if MERGED_WORD.search(line):
                 continue
             for m in PR_REF.finditer(line):

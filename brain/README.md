@@ -1,6 +1,6 @@
 # Project Brain (skeleton v0.1)
 
-One place to answer "where are we, what was decided, what is next" at the start of any session, in any tool. It is a guide to **what** and **in what order**, not a rulebook. Methods and techniques are not kept here: under [ADR-0005](../docs/decisions/ADR-0005-PROPOSED-container-decision-and-adr-0004-disposition.md) D1 they are dated observations in the [benchmark log](../docs/benchmarks/benchmark-log.md).
+One place to answer "where are we, what was decided, what is next" at the start of any session, in any tool. It is a guide to **what** and **in what order**, not a rulebook. Methods and techniques are not kept here: under [ADR-0006](../docs/decisions/ADR-0006-system-direction-agent-teams.md) they go into dated knowledge packs for the agents, and what current hosts do is recorded in the [benchmark log](../docs/benchmarks/benchmark-log.md).
 
 ## Start of a session
 
@@ -16,7 +16,7 @@ python3 -m brain validate     # records follow the contract
 | Need | Where |
 |---|---|
 | A decision the owner made | `brain/records/decisions.jsonl`, one record per decision ([contract](CONTRACT.md)) |
-| A review or audit finding, and the test that guards it | `brain/records/findings.jsonl` (empty until the first finding is carried over) |
+| A review or audit finding, and the test that guards it | `brain/records/findings.jsonl` |
 | Which principles are enforced, and by what | `brain/gates.json` (live, or still on paper) |
 | What current models do well or badly | `docs/benchmarks/benchmark-log.md` |
 | Why a decision was made | The ADR in `docs/decisions/` |

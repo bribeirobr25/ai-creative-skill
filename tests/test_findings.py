@@ -107,6 +107,18 @@ class StaleDocs(unittest.TestCase):
         self.assertTrue(self.lint('S1: substituição proposta no PR #23'))
         self.assertTrue(self.lint('See PR #23, still open for review'))
 
+    def test_accepted_adr_called_proposed_is_flagged(self):
+        # 2026-10-30 audit: five living lines still called ADR-0003 PROPOSED and the lint did not see them.
+        with tempfile.TemporaryDirectory() as d:
+            (Path(d) / 'docs' / 'decisions').mkdir(parents=True)
+            (Path(d) / 'docs' / 'decisions' / 'ADR-0003-PROPOSED-x.md').write_text('# x\n\n**Status:** ACCEPTED by the owner.\n')
+            (Path(d) / 'docs' / 'decisions' / 'ADR-0004-PROPOSED-y.md').write_text('# y\n\n**Status:** PROPOSED.\n')
+            (Path(d) / 'README.md').write_text('ADR-0003 is PROPOSED\n"source": "ADR-0003 (PROPOSED)"\nproposed ADR-0003 here\n'
+                                               'ADR-0004 is PROPOSED\nsee ADR-0003-PROPOSED-x.md\nADR-0003 was proposed, then accepted\n'
+                                               '[ADR-0003](docs/decisions/ADR-0003-PROPOSED-x.md) and ADR-0005; ADR-0004 is PROPOSED\n')
+            got = core.stale_doc_lines(set(), root=d, docs=('README.md',))
+        self.assertEqual([g.split(':')[1] for g in got], ['1', '2', '3'])
+
     def test_acknowledged_or_unmerged_is_not_flagged(self):
         self.assertEqual(self.lint('PR #23 was merged on 2026-10-26; it had been proposed earlier'), [])
         self.assertEqual(self.lint('PR #99 is open', merged={23}), [])
