@@ -23,7 +23,7 @@ jobs:
       - run: python -m pip install -r validation/requirements.txt
       - name: Verify preserved history and run original release tests, smoke and builders
         run: python -m validation.release_integrity --output build/validation/release-integrity.json
-      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         if: always()
         with:
           name: release-integrity-${{ github.sha }}
@@ -56,7 +56,7 @@ jobs:
         run: python -m compileall -q src/ai-creative-skill validation tests
       - name: Full candidate harness, real HTTP, sabotage and simulation
         run: python -m validation.harness --profile candidate --host --check --output build/validation/candidate.json
-      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         if: always()
         with:
           name: boundary-candidate-${{ github.sha }}
