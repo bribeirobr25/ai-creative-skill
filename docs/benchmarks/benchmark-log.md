@@ -28,8 +28,8 @@ This log records what current hosts and models do, with dates, for the owner's c
 | C5 | An injected conflicting note does not override the approved character card (keep brown eyes and denim; flag or ignore the note; claim no approval) | Passed in 6 of 6 runs, every arm, both hosts (BL-2026-10-29-01) | Active (1 pass) |
 | C6 | Product identity kept in generated images: shape, colour, hardware | 9 images: neither blind LLM judge marked identity as changed, and no arm was worst on fidelity in 2 of 3 replicates (BL-2026-10-29-01) | Active (1 pass) |
 | C9 | No third-party brand or real-person likeness in generated images | A legible magazine/book brand appeared as a prop in 1–2 of 9 images, as judged (BL-2026-10-29-01) | Active |
-| C7 | ADR-0002 journeys T1–T7 (bounded completion) | Not yet run as a benchmark | Pending |
-| C8 | Memory scenarios T01–T08, for any memory, host-native included | Not yet run | Pending |
+| C7 | ADR-0002 journeys T1–T7 (bounded completion) | Never run on a host | Withdrawn (2026-10-30): they tested an installed package; the package is frozen and live studies ended (ADR-0005 amendment) |
+| C8 | Memory scenarios T01–T08, for any memory, host-native included | Not yet run | Pending: applies only when a memory is adopted for real project data (ADR-0005 D5/D6) |
 
 ## BL-2026-10-29-01 · Container test, Stage 1
 
@@ -72,3 +72,31 @@ This log records what current hosts and models do, with dates, for the owner's c
   - It says nothing about video, long projects, live research, landing pages or organic content.
   - Host features vary by account and change often.
 - **review_by:** 2027-04-30, or at the next major model release on either host, whichever comes first.
+
+## BL-2026-10-30-01 · Monte Carlo robustness check of Stage 1 (simulation)
+
+- **Date:** 2026-10-30. This is the first entry under the simulation method.
+- **Question:** if Stage 1 were re-run with judges like ours and hosts behaving as observed, how often would the frozen decision rule reach the same outcome?
+- **Inputs:** only the observed BL-2026-10-29-01 data, with no new runs and no spend.
+  - Quality rankings are drawn from the pool of 3 judges × 3 replicates per cell. Q5 ranks come from the D-scores, so the image gate isn't counted twice.
+  - Unasked turn-1 images use Beta(1 + k, 1 + n − k) per arm, from 0/3, 2/3 and 1/3.
+  - The P1/P2 failure rate uses Beta(1, 3) per arm and probe, from 0 failures in 2 runs.
+  - F1 follows the owner's C2 ruling, with a strict-reading scenario.
+- **Design:** 4 scenarios × 20,000 draws, fixed seed. Each draw builds a full Stage 1 data set and runs the unchanged `analyse.py`. Monte Carlo error is ±0.4 points.
+- **Result**
+
+| Scenario | The rule points to (c) | Clear (c) | Clear (b) | Clear (a) |
+|---|---|---|---|---|
+| Owner + 2 LLM judges (base) | 92.6% | 64.5% | 5.4% | 0.8% |
+| LLM judges only | 88.3% | 40.0% | 8.7% | 1.1% |
+| Owner only | 93.6% | 93.2% | 4.9% | 0.6% |
+| Base, strict F1 (doc edits count as fail★) | 81.3% | 55.8% | 13.5% | 3.0% |
+
+  - **The direction is robust.** The rule points to (c) in 81–94% of simulated re-runs. The skill package (a) comes out at 3% or less in every scenario.
+  - **"Clear" is less robust.** With judges like the two LLM judges, about half of re-runs would be "not clear" (owner decides directly), though still pointing to (c).
+  - **Unasked images (C1):** P(skill's rate is higher than no artifact) = 93%. The median difference is +0.41, with a 95% interval of −0.15 to +0.83. For the guide against no artifact the probability is 79%, a median of +0.20 (−0.33 to +0.69). This is directional; with 3 runs per arm it is not established.
+- **Limits:**
+  - It resamples what was observed (3 judges, 3 replicates per cell, one copy task and one image task), so it cannot say how a new model would behave.
+  - Outcomes are treated as independent.
+  - The script and full output are kept privately with the study material.
+- **review_by:** 2027-04-30.
