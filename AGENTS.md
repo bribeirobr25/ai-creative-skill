@@ -1,5 +1,6 @@
 # Start here (any agent, any tool)
 
+0. The direction is in [docs/vision/README.md](docs/vision/README.md) (ADR-0006): agent teams for creative work and the business around it. Read it before planning new work.
 1. Run `python3 -m brain status` and read the current decisions before proposing anything that touches them. See [brain/README.md](brain/README.md).
 2. Once per clone, run `python3 security/install_hooks.py`, which adds the pre-push publication check. The repository is public. Never commit client media, personal data, credentials, account or environment details. Private material lives outside the repository.
 3. Work on a branch and open a pull request. Merges, releases, `src/` changes, paid APIs, private data and external operations each need the owner's explicit authorization; one approval does not carry over to the next step.
