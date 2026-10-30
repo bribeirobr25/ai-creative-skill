@@ -114,7 +114,7 @@ def _has_valid_media_magic(path: str, data: bytes) -> bool:
     return False
 
 
-def _verified_media_paths(ns: argparse.Namespace) -> set[str]:
+def _verified_media_paths(ns: argparse.Namespace, metadata: list[Finding] | None = None) -> set[str]:
     # Read the actual staged/HEAD blob, not a filename or a Git diff rendering.
     command = ["git", "diff"]
     if ns.staged:
@@ -139,6 +139,8 @@ def _verified_media_paths(ns: argparse.Namespace) -> set[str]:
             continue
         if _has_valid_media_magic(name, content):
             valid.add(name)
+            if metadata is not None:
+                metadata.extend(media_metadata_findings(name, content))
     return valid
 
 
@@ -281,6 +283,31 @@ def _destination_from_git_header(line: str) -> str | None:
     return None
 
 
+_JOIN_TAIL = " \t\\\"'+,"
+_JOIN_HEAD = " \t\"'+"
+
+
+def _split_token_findings(path: str, first: str, second: str, line_number: int) -> list[Finding]:
+    """Finding PR20-P2-2: a token split across two consecutive added lines
+    (string concatenation or line continuation) is still a token. Only rules
+    that match neither line alone are reported, so nothing is counted twice."""
+    joined = first.rstrip(_JOIN_TAIL) + second.lstrip(_JOIN_HEAD)
+    found = []
+    for name, rx in BLOCK_RULES:
+        if rx.search(joined) and not rx.search(first) and not rx.search(second):
+            found.append(Finding("BLOCK", "SPLIT_" + name, path, line_number))
+    return found
+
+
+def media_metadata_findings(path: str, content: bytes) -> list[Finding]:
+    """Finding PR20-P1-5: added media with EXIF or text metadata needs review before
+    publication (location, device or identifying values). Labels only; no values."""
+    from history_audit import classify_binary_metadata
+    kinds = classify_binary_metadata(content)
+    risky = sorted(k for k in kinds if "EXIF" in k or "PNG_METADATA" in k or "LINK" in k)
+    return [Finding("REVIEW", "MEDIA_METADATA_REVIEW", path, 0)] if risky else []
+
+
 def scan_unified_diff(patch: str, *, verified_media_paths: frozenset[str] = frozenset()) -> list[Finding]:
     """Scan every added hunk line, even if a filename cannot be decoded.
 
@@ -293,6 +320,7 @@ def scan_unified_diff(patch: str, *, verified_media_paths: frozenset[str] = froz
     deleted = False
     in_hunk = False
     line_no = 0
+    previous_added: str | None = None
     seen_file_checks: set[tuple[str, str]] = set()
 
     def check_destination(value: str) -> None:
@@ -325,7 +353,11 @@ def scan_unified_diff(patch: str, *, verified_media_paths: frozenset[str] = froz
             line_no += 1
             results.extend(scan_added_line(destination or "<unknown-file>", line[1:], line_no,
                                            verified_media=destination in verified_media_paths))
+            if previous_added is not None:
+                results.extend(_split_token_findings(destination or "<unknown-file>", previous_added, line[1:], line_no))
+            previous_added = line[1:]
             continue
+        previous_added = None
         if line.startswith("deleted file mode ") or line == "+++ /dev/null":
             deleted = True
             in_hunk = False
@@ -464,8 +496,10 @@ def main(argv: list[str] | None = None) -> int:
         final_text = _get_diff(ns)
         findings = ([Finding("REVIEW", "NON_UTF8_CONTENT", "<git-diff>", 0)]
                     if "\ufffd" in final_text else [])
-        verified_media_paths = frozenset(_verified_media_paths(ns))
+        media_metadata: list[Finding] = []
+        verified_media_paths = frozenset(_verified_media_paths(ns, media_metadata))
         findings.extend(scan_unified_diff(final_text, verified_media_paths=verified_media_paths))
+        findings.extend(media_metadata)
         if ns.staged:
             # Staged paths are not necessarily present in a text hunk.
             findings.extend(_scan_path_list(_run_git([

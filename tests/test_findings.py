@@ -47,6 +47,13 @@ class ActionsPinning(unittest.TestCase):
         self.assertIn('git archive "origin/$GITHUB_BASE_REF" security', wf)
         self.assertIn('"$RUNNER_TEMP/base-guard/security/publication_guard.py"', wf)
 
+    def test_media_needs_recorded_review(self):
+        # OWN-A2: a REVIEW for media fails the required check unless the PR body records the human review.
+        wf = (ROOT / '.github/workflows/publication-guard.yml').read_text()
+        self.assertIn('tee "$RUNNER_TEMP/guard.out"', wf)
+        self.assertIn("grep -q -i -E '^Media reviewed: *[^ ]'", wf)
+        self.assertIn('types: [opened, synchronize, reopened, edited]', wf)
+
 
 def good_settings():
     def rs(include, rules):

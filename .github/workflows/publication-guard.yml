@@ -1,6 +1,7 @@
 name: Publication Safety Guard (candidate)
 on:
   pull_request:
+    types: [opened, synchronize, reopened, edited]
     paths:
       - '**'
   workflow_dispatch:
@@ -29,7 +30,18 @@ jobs:
           git archive "origin/$GITHUB_BASE_REF" security | tar -x -C "$RUNNER_TEMP/base-guard"
           python "$RUNNER_TEMP/base-guard/security/publication_guard.py" \
             --range "origin/$GITHUB_BASE_REF...HEAD" \
-            --history-range "origin/$GITHUB_BASE_REF..HEAD"
+            --history-range "origin/$GITHUB_BASE_REF..HEAD" | tee "$RUNNER_TEMP/guard.out"
+      - name: Media in the PR needs a recorded human review (finding OWN-A2)
+        if: github.event_name == 'pull_request'
+        env:
+          PR_BODY: ${{ github.event.pull_request.body }}
+        run: |
+          if grep -q -E 'REVIEW: (BINARY_OR_MEDIA_REVIEW|MEDIA_METADATA_REVIEW)' "$RUNNER_TEMP/guard.out"; then
+            if ! printf '%s\n' "$PR_BODY" | grep -q -i -E '^Media reviewed: *[^ ]'; then
+              echo "This PR adds media or binary files. Add a line 'Media reviewed: <rights, likeness, EXIF checked>' to the PR description; the check re-runs on edit."
+              exit 1
+            fi
+          fi
       - name: Inspect the same range with the PR's scanner
         if: github.event_name == 'pull_request'
         run: |

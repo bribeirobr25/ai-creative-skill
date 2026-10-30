@@ -7,7 +7,7 @@ import unittest
 from contextlib import redirect_stdout
 from unittest.mock import patch
 
-from publication_guard import scan_added_line, scan_unified_diff, main
+from publication_guard import scan_added_line, scan_unified_diff, main, media_metadata_findings
 from history_audit import audit_text_blob, _exif_value_risk_categories, _verified_branch_coverage, classify_binary_metadata, _scope_bucket, classify_link_metadata, _reachable_blobs, _link_fingerprints, _generic_share_host_types, audit_commit_metadata
 
 
@@ -425,6 +425,34 @@ class SecretRulesTests(unittest.TestCase):
         # Finding PR20-P1-5 (partly): these formats are routed to review.
         for path in ("assets/scan.tiff", "assets/clip.webm", "docs/brief.docx", "docs/sheet.xlsx"):
             self.assertIn(("REVIEW", "BINARY_OR_MEDIA_REVIEW"), rules(fake_patch("x", path)), path)
+
+    def test_token_split_across_two_added_lines_blocks(self):
+        # Finding PR20-P2-2: concatenation or line continuation must not hide a token.
+        head, tail = "ghp_" + "X" * 12, "X" * 20
+        for first, second in ((f'TOKEN = "{head}" +', f'    "{tail}"'), (f"TOKEN={head}\\", tail)):
+            patch = ("diff --git a/a.py b/a.py\nnew file mode 100644\n+++ b/a.py\n@@ -0,0 +2 @@\n"
+                     f"+{first}\n+{second}\n")
+            self.assertIn(("BLOCK", "SPLIT_GITHUB_TOKEN"), rules(patch), first)
+        unrelated = ("diff --git a/a.md b/a.md\nnew file mode 100644\n+++ b/a.md\n@@ -0,0 +2 @@\n"
+                     "+The ghp_ prefix marks a classic token.\n+It is followed by 36 characters.\n")
+        self.assertFalse([r for r in rules(unrelated) if r[1].startswith("SPLIT_")])
+
+    def test_media_with_exif_needs_review(self):
+        # Finding PR20-P1-5: EXIF in added media is routed to review (labels only, no values).
+        jpeg = b"\xff\xd8\xff\xe1\x00\x10" + b"Exif\x00\x00" + b"II*\x00\x08\x00\x00\x00" + b"\x00\x00"
+        self.assertEqual([(f.severity, f.rule) for f in media_metadata_findings("p.jpg", jpeg)], [("REVIEW", "MEDIA_METADATA_REVIEW")])
+        plain_png = b"\x89PNG\r\n\x1a\n" + b"\x00" * 16
+        self.assertEqual(media_metadata_findings("p.png", plain_png), [])
+
+    def test_google_refresh_token_blocks(self):
+        # Killed a surviving mutant in security/mutation_check.py.
+        self.assertIn(("BLOCK", "GOOGLE_OAUTH_REFRESH_TOKEN"), rules(fake_patch("refresh: 1//" + "R" * 40)))
+
+    def test_shareable_storage_link_is_reviewed(self):
+        # Killed a surviving mutant in security/mutation_check.py.
+        line = "https://files.example.net/share/" + "a1b2c3d4e5f6"
+        self.assertIn(("REVIEW", "SHAREABLE_STORAGE_LINK"), rules(fake_patch(line)))
+        self.assertNotIn(("REVIEW", "SHAREABLE_STORAGE_LINK"), rules(fake_patch("https://example.net/share/x")))
 
     def test_github_classic_token(self):
         token = "ghp_" + "X" * 32
