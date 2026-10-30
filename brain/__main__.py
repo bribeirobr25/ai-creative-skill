@@ -12,10 +12,21 @@ def main(argv=None):
     v.add_argument('--verify-authority', action='store_true', help='also check on GitHub that each decision PR was merged by the owner')
     v.add_argument('--records', help='validate another records folder, e.g. the private half (evidence paths resolve from its parent)')
     v.add_argument('--allow-private', action='store_true', help='accept privacy_class "private" (only for a folder outside this repository)')
+    sub.add_parser('lint-docs', help='fail if a living doc calls a merged PR open or proposed (needs GitHub)')
     s = sub.add_parser('status', help='print the current state, derived on read')
     s.add_argument('--offline', action='store_true', help='skip GitHub')
     a = p.parse_args(argv)
     rows = core.load(a.records) if getattr(a, 'records', None) else core.load()
+    if a.cmd == 'lint-docs':
+        merged = core.merged_prs()
+        if merged is None:
+            print('FAIL cannot reach GitHub to list merged PRs')
+            return 1
+        stale = core.stale_doc_lines(merged)
+        for x in stale:
+            print('FAIL ' + x)
+        print('%s: %d stale line(s) in %d living docs' % ('PASS' if not stale else 'FAIL', len(stale), len(core.LIVING_DOCS)))
+        return 1 if stale else 0
     if a.cmd == 'status':
         sys.stdout.write(core.status(rows, online=not a.offline))
         return 0

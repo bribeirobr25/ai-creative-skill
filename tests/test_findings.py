@@ -1,6 +1,7 @@
 """Guards for findings carried into brain/records/findings.jsonl. Each test names the finding it keeps fixed."""
 import copy
 import re
+import tempfile
 import subprocess
 import sys
 import unittest
@@ -78,6 +79,26 @@ class RepoSettings(unittest.TestCase):
             errs = core.settings_problems(rs, repo)
             self.assertTrue(any(want.split()[-1] in e for e in errs), (want, errs))
 
+
+class StaleDocs(unittest.TestCase):
+    """SNAP-1: living docs must not call a merged PR open or proposed (`python3 -m brain lint-docs` in CI)."""
+
+    def lint(self, text, merged=frozenset({23})):
+        with tempfile.TemporaryDirectory() as d:
+            (Path(d) / 'README.md').write_text(text, encoding='utf-8')
+            return core.stale_doc_lines(set(merged), root=d, docs=('README.md',))
+
+    def test_merged_pr_called_proposed_or_open_is_flagged(self):
+        self.assertTrue(self.lint('S1: substituição proposta no PR #23'))
+        self.assertTrue(self.lint('See PR #23, still open for review'))
+
+    def test_acknowledged_or_unmerged_is_not_flagged(self):
+        self.assertEqual(self.lint('PR #23 was merged on 2026-10-26; it had been proposed earlier'), [])
+        self.assertEqual(self.lint('PR #99 is open', merged={23}), [])
+        self.assertEqual(self.lint('PR #23 added the lab'), [])
+
+    def test_living_docs_list_exists(self):
+        self.assertTrue(all((ROOT / p).exists() for p in core.LIVING_DOCS))
 
 if __name__ == '__main__':
     unittest.main()

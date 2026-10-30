@@ -99,7 +99,7 @@ class Status(unittest.TestCase):
 
     def test_gates_file_shape(self):
         gates = json.loads(core.GATES.read_text())['gates']
-        self.assertTrue(all(g['status'] in ('live', 'paper') for g in gates))
+        self.assertTrue(all(g['status'] in ('live', 'paper', 'waived') for g in gates))
         self.assertEqual(len({g['id'] for g in gates}), len(gates))
 
     def test_private_class_only_outside_repository(self):

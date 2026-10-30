@@ -42,10 +42,10 @@ python security/history_audit.py
 
 The global historical scan runs **only on explicit workflow_dispatch/manual use**, not as a blocking dependency of unrelated PRs. It reports **audit incomplete (exit 2)** when it encounters skipped oversized, binary or non-UTF8 blobs; a zero exit code must not be claimed in that case. Full coverage of unreachable commits, forks, caches, media pixels, historical permissions and rights is not claimed. Private link/media triage remains local only.
 
-## Follow-up required before merging PR #20
+## Follow-up items from PR #20 (status 2026-10-30)
 
-1. Independent CC verification of the real-Git accented-path, unusual separators, non-UTF8 and binary path regressions.
-2. Review the slim [ADR-0003 candidate](../docs/decisions/ADR-0003-PROPOSED-development-review-and-publication-safety.md) against ADR-0001/0002 and obtain explicit owner approval.
-3. Confirm false-positive handling of review-only references and that blocked diffs do not expose values.
-4. Treat one stable Drive asset link still distributed in media documentation/registry as a separate **versioned `src/` inventory change**, coordinated with PR #17 and Manifest governance. No silent change to `main`.
+1. Real-Git regressions for accented paths, unusual separators, non-UTF8 and binary paths: done (finding ADR3-1).
+2. [ADR-0003](../docs/decisions/ADR-0003-PROPOSED-development-review-and-publication-safety.md): accepted by the owner on 2026-10-30.
+3. False-positive handling of review-only references, and blocked diffs not exposing values: covered by the guard tests.
+4. The stable Drive asset link in `src/` media documentation and registry: replaced by candidate `privacy-redaction-v1` (#35).
 5. Merging a public security gate does **not** grant API credentials, source rights, production or release authority.

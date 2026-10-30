@@ -4,6 +4,7 @@ on:
   workflow_dispatch:
 permissions:
   contents: read
+  pull-requests: read
 jobs:
   brain-records:
     runs-on: ubuntu-latest
@@ -17,5 +18,9 @@ jobs:
           python-version: '3.11'
       - name: Records follow brain/CONTRACT.md
         run: python -m brain validate
+      - name: Living docs do not call merged PRs open (finding SNAP-1)
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python -m brain lint-docs
       - name: Brain and finding-guard tests
         run: python -m unittest tests.test_brain tests.test_findings -v

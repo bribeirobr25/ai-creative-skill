@@ -74,6 +74,14 @@
       "source": "ADR-0005 D4; finding S0-1"
     },
     {
+      "id": "GATE-living-docs-fresh",
+      "principle": "Living docs do not describe merged PRs as open or proposed",
+      "enforced_by": "python -m brain lint-docs in workflow brain.yml",
+      "status": "live",
+      "required": false,
+      "source": "finding SNAP-1"
+    },
+    {
       "id": "GATE-semantic-privacy",
       "principle": "No owner-environment or account details in public text",
       "enforced_by": "Manual review only; the publication guard is pattern-based and missed an account-state disclosure once",
@@ -84,8 +92,8 @@
     {
       "id": "GATE-independent-review",
       "principle": "A second reviewer for changes to main",
-      "enforced_by": "None: required approvals is 0 (single maintainer)",
-      "status": "paper",
+      "enforced_by": "Waived by the owner (DEC-2026-10-30-review-model); compensated by required checks, rulesets and owner-only merges",
+      "status": "waived",
       "required": false,
       "source": "Issue #24"
     },

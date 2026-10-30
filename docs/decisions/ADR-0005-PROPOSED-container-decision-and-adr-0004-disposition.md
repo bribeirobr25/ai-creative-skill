@@ -1,9 +1,16 @@
 # ADR-0005 · Container decision and the disposition of ADR-0004
 
 **Date:** 2026-10-30
-**Status:** PROPOSED.
-- **D1 is owner-accepted:** the owner accepted the container test result on 2026-10-29.
-- **D2–D7 await the owner's acceptance in this ADR's pull request.** They follow the operator's recommendations, which the owner asked to proceed with on 2026-10-30.
+**Status:** ACCEPTED.
+- D1 was accepted by the owner on 2026-10-29.
+- D2–D7 were accepted when the owner merged PR #33 on 2026-10-30.
+- The filename keeps `-PROPOSED` so existing links stay stable.
+
+> **Amendment (owner, 2026-10-30): evaluation method.** No more live blind benchmark studies like Stage 1 are planned.
+> - Future questions are evaluated with simulations (for example Monte Carlo) and similar techniques, using the evidence already recorded.
+> - This replaces the entry cadence in D1.4. The benchmark log stays as the record of what was observed.
+> - The durable checks stay active, because their retirement rule needed new entries.
+> - Recorded as `DEC-2026-10-30-evaluation-method` in the Project Brain.
 
 **Supersedes in part:** [ADR-0004](ADR-0004-PROPOSED-agent-workspace-durable-memory.md) (PROPOSED, never accepted). Its text stays unchanged as a historical record.
 **Leaves unchanged:** ADR-0001, ADR-0002, and ADR-0003 (still PROPOSED).
