@@ -6,6 +6,8 @@
 - D2–D7 were accepted when the owner merged PR #33 on 2026-10-30.
 - The filename keeps `-PROPOSED` so existing links stay stable.
 
+> **Superseded in part by [ADR-0006](ADR-0006-system-direction-agent-teams.md) (2026-10-30):** the "no guide" part of D1 is replaced by guidance that earns its place, and M4–M6 (withdrawn in D2/D3) are re-opened as the agent-team direction. The frozen package, D4–D7 and the evaluation-method amendment stand.
+
 > **Amendment (owner, 2026-10-30): evaluation method.** No more live blind benchmark studies like Stage 1 are planned.
 > - Future questions are evaluated with simulations (for example Monte Carlo) and similar techniques, using the evidence already recorded.
 > - This replaces the entry cadence in D1.4. The benchmark log stays as the record of what was observed.

@@ -189,7 +189,7 @@ def fetch_settings():
 # Finding SNAP-1: living docs (not dated records) must not describe merged PRs as open or proposed.
 LIVING_DOCS = ('README.md', 'AGENTS.md', 'brain/README.md', 'docs/benchmarks/benchmark-log.md', 'docs/migration/README.md',
                'docs/research/intelligence/STATUS.md', 'docs/research/intelligence/README.md',
-               'experiments/intelligence/README.md', 'security/README.md', 'validation/README.md')
+               'experiments/intelligence/README.md', 'security/README.md', 'validation/README.md', 'docs/vision/README.md')
 PR_REF = re.compile(r'(?i)(?:\bPRs?\s*#|/pull/)(\d+)')
 STALE_WORD = re.compile(r'(?i)\b(?:open|draft|pending|before merging|antes do merge|proposed|unmerged|not merged|to review|aberto|pendente|propost[oa]|'
                         r'em revis[aã]o|a revisar|n[aã]o integrad[oa])\b')

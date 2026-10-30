@@ -1,7 +1,7 @@
 # AI Creative Skill
 
-**Status do `main`: pacote congelado ([ADR-0005](docs/decisions/ADR-0005-PROPOSED-container-decision-and-adr-0004-disposition.md)).**
-A decisão de contêiner é (c): sem pacote nem guia novos; um [benchmark log](docs/benchmarks/benchmark-log.md) datado registra o que os hosts atuais fazem.
+**Direção (2026-10-30): um sistema de equipes de agentes para trabalho criativo em qualquer formato e para o negócio em volta dele** (pesquisa, leads, vendas, anúncios). Veja a [visão](docs/vision/README.md) e a [ADR-0006](docs/decisions/ADR-0006-system-direction-agent-teams.md).
+O pacote V2.5 continua congelado ([ADR-0005](docs/decisions/ADR-0005-PROPOSED-container-decision-and-adr-0004-disposition.md)) e serve de matéria-prima; um [benchmark log](docs/benchmarks/benchmark-log.md) datado registra o que os hosts atuais fazem.
 A baseline **V2.5.0** continua atestada no commit `39a0bfa39270ea4b685b0f862e7dbf647cf81d77` e verificável byte a byte. Não há linha de release nova.
 Metadados do plugin: versão `0.3.0`.
 
