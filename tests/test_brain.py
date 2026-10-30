@@ -102,6 +102,13 @@ class Status(unittest.TestCase):
         self.assertTrue(all(g['status'] in ('live', 'paper') for g in gates))
         self.assertEqual(len({g['id'] for g in gates}), len(gates))
 
+    def test_private_class_only_outside_repository(self):
+        self.assertEqual(core.problems(rows(rec(privacy_class='private')), allow_private=True), [])
+        out = subprocess.run([sys.executable, '-m', 'brain', 'validate', '--records', 'brain/records', '--allow-private'],
+                             cwd=ROOT, capture_output=True, text=True)
+        self.assertEqual(out.returncode, 1)
+        self.assertIn('outside this repository', out.stdout)
+
     def test_cli_validate(self):
         out = subprocess.run([sys.executable, '-m', 'brain', 'validate'], cwd=ROOT, capture_output=True, text=True)
         self.assertEqual(out.returncode, 0, out.stdout + out.stderr)

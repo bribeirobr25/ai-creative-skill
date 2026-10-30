@@ -31,8 +31,9 @@ def load(records=RECORDS):
     return out
 
 
-def problems(rows, root=ROOT):
+def problems(rows, root=ROOT, allow_private=False):
     errs, ids = [], {}
+    classes = {'public', 'private'} if allow_private else {'public'}
     for f, n, r in rows:
         where = '%s:%d' % (f, n)
         if '_error' in r:
@@ -48,8 +49,8 @@ def problems(rows, root=ROOT):
             errs.append('%s: kind must be one of %s' % (where, ', '.join(sorted(KINDS))))
         if r.get('kind') == 'DECISION_RECORDED' and not AUTHORITY.match(str(r.get('authority_ref', ''))):
             errs.append('%s: a decision needs authority_ref "pr:#N" (the PR whose merge was the owner act)' % where)
-        if r.get('privacy_class') != 'public':
-            errs.append('%s: privacy_class must be "public"; private records belong outside this repository' % where)
+        if r.get('privacy_class') not in classes:
+            errs.append('%s: privacy_class must be %s; private records belong outside this repository' % (where, ' or '.join('"%s"' % c for c in sorted(classes))))
         for k in ('occurred_at', 'recorded_at', 'review_by'):
             if k in r and not DATE.match(str(r[k])):
                 errs.append('%s: %s must be YYYY-MM-DD' % (where, k))

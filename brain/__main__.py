@@ -10,14 +10,20 @@ def main(argv=None):
     sub = p.add_subparsers(dest='cmd', required=True)
     v = sub.add_parser('validate', help='check records against brain/CONTRACT.md')
     v.add_argument('--verify-authority', action='store_true', help='also check on GitHub that each decision PR was merged by the owner')
+    v.add_argument('--records', help='validate another records folder, e.g. the private half (evidence paths resolve from its parent)')
+    v.add_argument('--allow-private', action='store_true', help='accept privacy_class "private" (only for a folder outside this repository)')
     s = sub.add_parser('status', help='print the current state, derived on read')
     s.add_argument('--offline', action='store_true', help='skip GitHub')
     a = p.parse_args(argv)
-    rows = core.load()
+    rows = core.load(a.records) if getattr(a, 'records', None) else core.load()
     if a.cmd == 'status':
         sys.stdout.write(core.status(rows, online=not a.offline))
         return 0
-    errs = core.problems(rows) + (core.verify_authority(rows) if a.verify_authority else [])
+    if a.allow_private and (not a.records or core.Path(a.records).resolve().is_relative_to(core.ROOT)):
+        print('FAIL --allow-private needs --records outside this repository')
+        return 1
+    root = core.Path(a.records).resolve().parent if a.records else core.ROOT
+    errs = core.problems(rows, root, a.allow_private) + (core.verify_authority(rows) if a.verify_authority else [])
     for e in errs:
         print('FAIL ' + e)
     print('%s: %d record(s), %d problem(s)' % ('PASS' if not errs else 'FAIL', len(rows), len(errs)))
