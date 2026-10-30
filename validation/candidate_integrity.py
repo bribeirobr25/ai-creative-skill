@@ -20,6 +20,18 @@ CANDIDATE_SCOPES['web-runtime-2.6-v2']=('web-runtime-2.6-v1',CANDIDATE_SCOPES['w
    'references/AI_Creative_Skill_Method_Image_Direction_Pre-v0.12-V2.4-CANDIDATE.md',
    'references/AI_Creative_Skill_Method_Localized_Repair_Pre-v0.12-V2.4-CANDIDATE.md',
    'web/runtime/migrate.py'})
+# privacy-redaction-v1 (ADR-0005 D4): neutral wording for Drive links/paths and operator-environment details;
+# no method or runtime change.
+CANDIDATE_SCOPES['privacy-redaction-v1']=('web-runtime-2.6-v2',CANDIDATE_SCOPES['web-runtime-2.6-v2'][1]|{
+   'media/README_PTBR.md',
+   'media/registry/provider_capabilities_v0.2.json',
+   'media/registry/provider_capabilities_v0.3.json',
+   'references/AI_Creative_Skill_Calibration_and_Experience_Memory_Pre-v0.15-V2.4-CANDIDATE.md',
+   'references/AI_Creative_Skill_Current_Design_Manifest_Pre-v0.40-V2.4-CANDIDATE.md',
+   'references/AI_Creative_Skill_External_Skill_Analysis_Ledger_Pre-v0.35.md',
+   'references/AI_Creative_Skill_Method_Provenance_Map_Pre-v0.30.md',
+   'references/AI_Creative_Skill_Project_Profile_Pilot01_Pre-v0.7.md',
+   'references/AI_Media_Provider_Registry_v0.12.md'})
 CANDIDATES=ROOT/'validation/candidates'
 ACTIVE=json.loads((CANDIDATES/'ACTIVE.json').read_text())
 CANDIDATE_ID=ACTIVE['candidate_id']
@@ -29,6 +41,7 @@ ALLOWED_CHANGES=set(CANDIDATE_SCOPES[CANDIDATE_ID][1])
 # A superseded candidate is pinned either by a commit on main (its records are compared to that commit's bytes) or,
 # when its reviewing commit is not on main (squash-only history), by the sha256 of every record file it had there.
 SUPERSEDED={'boundary-hardening-v1':'b83b331f552baa22e14f2cf760dcd396b65a5537',
+ 'web-runtime-2.6-v2':'ce20a59a314942eed881f8c6df0bde110380a56c',
  'web-runtime-2.6-v1':{'reviewed_commit':'0f7089a5b473c0d878ba1cac1efbea27a960ecf1','files_sha256':{
    'README.md':'ddf9bb782366686ab1d8e9dd13ac92f4675241033d387e14101783cc45694898',
    'source-manifest.json':'30afc1f099a8292fe1c9d5484df70d083581eec6a877abefcd69090ac4249808'}}}

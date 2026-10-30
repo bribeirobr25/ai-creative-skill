@@ -1,18 +1,22 @@
-# Intelligence · Status da proposta (não canônico) · 2026-10-24
+# Intelligence · Status da proposta (não canônico) · 2026-10-30
 
 **Estado de Gate 0: `GATE_0_NOT_PASSED / OWNER_ACCEPTANCE_PENDING`.**
 **Estado de implementação: `SYNTHETIC_LAB_REVIEW_ONLY / NO_CANONICAL_INTEGRATION / NO_RELEASE`.**
 Estes são registros de revisão, não autorização formal. A versão v0.3 é uma proposta de harmonização, não um contrato adotado.
+
+**Atualização 2026-10-30:**
+- Os PRs #20 (proposta do Security Gate), #18 (candidata v0.3) e #23 (laboratório consolidado S1–S3) foram integrados à `main` em 2026-10-26. Integração ao histórico não é aceite do Gate 0, da v0.3 nem da ADR-0003, que continua PROPOSED.
+- A [ADR-0005](../../decisions/ADR-0005-PROPOSED-container-decision-and-adr-0004-disposition.md) adia a Trilha D / M7 (Intelligence), sem alterar o estado do Gate 0.
 
 ## Sequência S0–S6
 
 | Fase | Resultado e situação |
 |---|---|
 | S0 | Encerrada administrativamente por atestação do proprietário, com limites residuais. O link Drive em `src/` ainda precisa de migração versionada |
-| S1 | Motor estatístico anterior #19: histórico; substituição proposta no PR #23 |
-| S2 | Validador de contratos anterior #21: histórico; substituição proposta no PR #23 |
-| S3 | Preflight de permissões anterior #22: histórico; substituição proposta no PR #23 |
-| S1–S3 consolidados | [PR #23](https://github.com/bribeirobr25/ai-creative-skill/pull/23), laboratório sintético de revisão; número de testes e estado devem ser conferidos no HEAD atual de CI |
+| S1 | Motor estatístico anterior #19: histórico; substituído pelo laboratório consolidado do PR #23 (integrado em 2026-10-26) |
+| S2 | Validador de contratos anterior #21: histórico; substituído pelo laboratório consolidado do PR #23 (integrado em 2026-10-26) |
+| S3 | Preflight de permissões anterior #22: histórico; substituído pelo laboratório consolidado do PR #23 (integrado em 2026-10-26) |
+| S1–S3 consolidados | [PR #23](https://github.com/bribeirobr25/ai-creative-skill/pull/23), integrado em 2026-10-26 como laboratório sintético offline (`experiments/intelligence/`); não é capacidade canônica nem release. Número de testes e estado devem ser conferidos no CI da `main` |
 | S4 | Resiliência avançada, hipóteses e testes por planejar; não iniciada |
 | S5 | Primeiro canário real somente após direitos, credenciais privadas e autorização específica; NÃO autorizado |
 | S6 | Integração em `src/` e release: NÃO autorizado; exige coordenação com versão do PR #17 e Manifest |
@@ -24,7 +28,7 @@ Estes são registros de revisão, não autorização formal. A versão v0.3 é u
 - Confirmar SourceCapabilityRecord sob §24, aliases da §1.1, vínculo a `MetricObservation`, `STOP_POLICY_REJECTION` e `STOP_REQUIRED_AUTHORITY_MISSING`.
 - A ativação futura de §24.1 DATA-SOURCE CONNECTORS é Gate separado. A seção é `NOT CURRENT CAPABILITIES`; citá-la não a implementa.
 - Fonte real inicial, licenças/permissões de dados próprios e externos, host das credenciais, histórico permitido e custos.
-- Adoção do Security Gate/ADR-0003 proposta no PR #20 e regras de proteção da branch principal.
+- Aceite da ADR-0003 (Security Gate). O PR #20 foi integrado, mas a ADR continua PROPOSED. A proteção da `main` já está ativa por ruleset; as lacunas restantes são acompanhadas na Issue #24.
 - Decidir, antes de S6, quem governa a identidade de criadores, canais e publicações de terceiros; não confundir com `publication_id` das próprias campanhas.
 - Confirmar direitos por operação/campo/fonte para comparações com YouTube, métricas derivadas e redistribuição; aprovação específica de Analytics & Reporting permanece não demonstrada.
 
