@@ -47,7 +47,7 @@ Runtime tests require optional local packages described in the source installati
 - `assets/manifests/`: storage-neutral asset schema, no actual media.
 - `.github/workflows/`: offline CI only.
 
-Original ZIP releases and old snapshots remain preserved in Google Drive.
+The original V2.5 ZIPs and old Drive snapshots no longer exist (deleted by the owner's request; confirmed 2026-10-30). V2.5 is rebuildable from commit `39a0bfa` and verified by `python -m validation.release_integrity`.
 
 ## Reusable validation
 
