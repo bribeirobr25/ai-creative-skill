@@ -72,10 +72,13 @@ def problems(rows, root=ROOT, allow_private=False):
                 errs.append('%s: finding_status must be one of %s' % (where, ', '.join(sorted(FINDING_STATUS))))
             if r.get('kind') != 'OBSERVED':
                 errs.append('%s: a finding is an OBSERVED record' % where)
-    known = {r.get('id') for _, _, r in rows}
+    known = {r.get('id'): r for _, _, r in rows}
     for f, n, r in rows:
         if r.get('supersedes') and r['supersedes'] not in known:
             errs.append('%s:%d: supersedes unknown id %s' % (f, n, r['supersedes']))
+        elif r.get('supersedes') and r.get('kind') != 'DECISION_RECORDED' and \
+                known[r['supersedes']].get('kind') == 'DECISION_RECORDED':
+            errs.append('%s:%d: %s cannot supersede decision %s; only a decision can replace a decision' % (f, n, r.get('kind'), r['supersedes']))
     by_subject = {}
     for r in current(rows):
         if r.get('kind') == 'DECISION_RECORDED':
@@ -88,11 +91,14 @@ def problems(rows, root=ROOT, allow_private=False):
 
 def current(rows, accepted=None):
     """Records in force. With `accepted` (ids of decisions whose PR the owner merged), any other decision
-    neither counts nor supersedes: a pending replacement leaves the accepted decision current."""
+    neither counts nor supersedes: a pending replacement leaves the accepted decision current.
+    Only a decision can supersede a decision; an observation or change request never revokes one."""
     ok = [r for _, _, r in rows if '_error' not in r]
     if accepted is not None:
         ok = [r for r in ok if r.get('kind') != 'DECISION_RECORDED' or r.get('id') in accepted]
-    gone = {r.get('supersedes') for r in ok if r.get('supersedes')}
+    decision = {r.get('id') for _, _, r in rows if r.get('kind') == 'DECISION_RECORDED'}
+    gone = {r.get('supersedes') for r in ok if r.get('supersedes')
+            and (r.get('kind') == 'DECISION_RECORDED' or r['supersedes'] not in decision)}
     return [r for r in ok if r.get('id') not in gone]
 
 
@@ -128,7 +134,8 @@ def authority(rows, fetch=None, files=None):
     """Classify every decision by its authority PR: {id: (state, reason)}.
 
     accepted: merged by the repository owner, and the PR changed at least one of the record's evidence files
-              (or brain/records when it cites no file), so a wrong PR number cannot borrow another merge;
+              (or brain/records when it cites no file). The file match is a provenance consistency check that
+              catches a wrong PR number; it is not proof of authorization, which is the owner's merge itself;
     pending: the PR is still open; unverified: GitHub not reachable; invalid: anything else."""
     fetch = fetch or (lambda n: gh('api', 'repos/{owner}/{repo}/pulls/%d' % n))
     files = files or pr_files
@@ -159,12 +166,12 @@ def authority(rows, fetch=None, files=None):
         paths = {e.split('#')[0] for e in r.get('evidence_refs', []) if not str(e).startswith(('pr:', 'issue:', 'commit:'))}
         hit = paths & changed[n] if paths else {f for f in changed[n] if f.startswith('brain/records/')}
         out[r['id']] = ('accepted', '') if hit else \
-            ('invalid', 'pr:#%d changed none of the record\'s evidence files; is the PR number right?' % n)
+            ('invalid', 'pr:#%d changed none of the record\'s evidence files (provenance check); is the PR number right?' % n)
     return out
 
 
 def verify_authority(rows, fetch=None, files=None):
-    """A decision counts only if its PR was merged by the repository owner and is the PR that carries its evidence."""
+    """A decision counts only if its PR was merged by the repository owner and that PR is consistent with its evidence."""
     states = authority(rows, fetch, files)
     errs = []
     for r in current(rows):

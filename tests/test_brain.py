@@ -155,6 +155,23 @@ class PendingDecisions(unittest.TestCase):
         offline = core.status(rows(self.OLD), today='2026-10-30', online=False)
         self.assertIn('none is confirmed as the owner', offline)
 
+    def test_observation_or_request_cannot_revoke_a_decision(self):
+        for kind in ('OBSERVED', 'CHANGE_REQUESTED'):
+            other = rec(id='OBS-x', kind=kind, statement='a note', supersedes='DEC-old')
+            del other['authority_ref']
+            out = self.status(self.OLD, other, answers={1: pr()})
+            self.assertIn('old rule', self.section(out, 'Current decisions'), kind)
+            self.assertIn('DEC-old', [r['id'] for r in core.current(rows(self.OLD, other))], kind)
+            self.assertTrue(any('only a decision can replace a decision' in e for e in core.problems(rows(self.OLD, other))), kind)
+
+    def test_observation_may_still_supersede_an_observation(self):
+        first = rec(id='FND-a', kind='OBSERVED', statement='first')
+        second = rec(id='FND-b', kind='OBSERVED', statement='second', supersedes='FND-a')
+        for r in (first, second):
+            del r['authority_ref']
+        self.assertEqual([r['id'] for r in core.current(rows(first, second))], ['FND-b'])
+        self.assertEqual(core.problems(rows(first, second)), [])
+
     def test_validate_without_authority_still_accepts_own_pending_records(self):
         # The PR check runs `validate` without --verify-authority, so a decision PR can pass before its own merge.
         self.assertEqual(core.problems(rows(self.OLD, self.NEW)), [])
