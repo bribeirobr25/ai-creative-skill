@@ -593,7 +593,7 @@ operator_or_reviewer_verdict:
 confidence:
 ```
 
-Initial third-party classes, from the G1 Higgsfield blog source group (Ledger §21). Each `source_ref` names the post slug, the sha256 of the captured note `higgsfield-blog_<slug>.md` in `/Google Drive/ai/influencer/utils/higgsfield-blog/` (`note sha256`), the sha256 of the validator's raw text capture `hblog/raw/<slug>.txt` (`raw sha256`) and a quote from the post (`https://higgsfield.ai/blog/<slug>`), as captured by the validator on 2026-10-08. The literal quote comes from the raw capture; the notes are summarized captures and do not contain the quoted wording. `analyst_extension` marks wording that the posts do not state; that part is `ANALYST_HYPOTHESIS`, `UNVALIDATED`.
+Initial third-party classes, from the G1 Higgsfield blog source group (Ledger §21). Each `source_ref` names the post slug, the sha256 of the captured note `higgsfield-blog_<slug>.md` in `private-archive://influencer/utils/higgsfield-blog/` (`note sha256`), the sha256 of the validator's raw text capture `hblog/raw/<slug>.txt` (`raw sha256`) and a quote from the post (`https://higgsfield.ai/blog/<slug>`), as captured by the validator on 2026-10-08. The literal quote comes from the raw capture; the notes are summarized captures and do not contain the quoted wording. `analyst_extension` marks wording that the posts do not state; that part is `ANALYST_HYPOTHESIS`, `UNVALIDATED`.
 
 ```yaml
 - visual_failure_case_id: EXT-VID-LIGHT-01

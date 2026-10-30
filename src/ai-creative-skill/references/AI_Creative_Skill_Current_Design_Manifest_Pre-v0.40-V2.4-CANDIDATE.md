@@ -634,7 +634,7 @@ RUNTIME_ACTIVATION_AND_PACKAGING
    [cross-check promotion; content-factory delta judged existing governance sufficient]
 ```
 
-Operator decision recorded 2026-10-09: the `higgsfield-content-factory` skill installed in the operator's account stays **disabled while there is Pilot work** (the operator disables it in the account; Project Profile Pilot01 Pre-v0.7 §3.1 records the decision). The generic canary does not name any vendor skill.
+Operator decision recorded 2026-10-09: the `higgsfield-content-factory` skill, if present in the operator's environment, stays **disabled while there is Pilot work** (the operator disables it where present; Project Profile Pilot01 Pre-v0.7 §3.1 records the decision). The generic canary does not name any vendor skill.
 
 Live Higgsfield primary pages (`claude-ad-production-end-to-end`, `how-to-make-ai-ugc-videos`) were checked after the immutable deltas/report cross-check for the variant/review, script-vs-preset, claim-review and predictive-score candidates; access times were not recorded. Provider performance claims, prices, current limits and route mechanics are not promoted as generic authority.
 
@@ -734,7 +734,7 @@ FUTURE PROVIDER CHANGES PRE-APPROVED
 
 PENDING
 - GPT cross-check of the 2026-10-09 validator correction round
-- operator action: disable the installed higgsfield-content-factory skill while there is Pilot work
+- operator action: disable the higgsfield-content-factory skill, if present, while there is Pilot work
 - items DEFERRED with reason in Ledger §29 (route facts incl. Seedance 2.5 resolution, Calibration instances, out-of-scope capabilities)
 - release rc.2 items
 ```
@@ -843,9 +843,9 @@ DEFERRED (with reason in Ledger §29):
 Operator decision recorded in this round:
 
 ```text
-higgsfield-content-factory (installed in the operator's account)
+higgsfield-content-factory (if present in the operator's environment)
 = DISABLED WHILE THERE IS PILOT WORK
-→ the operator disables it in the account; the design records the decision (Project Profile Pilot01 Pre-v0.7 §3.1; Ledger §29.12)
+→ the operator disables it where present; the design records the decision (Project Profile Pilot01 Pre-v0.7 §3.1; Ledger §29.12)
 ```
 
 ```text
