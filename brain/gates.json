@@ -1,0 +1,93 @@
+{
+  "version": "0.1",
+  "gates": [
+    {
+      "id": "GATE-v25-immutable",
+      "principle": "The V2.5 reference and its hashes never change",
+      "enforced_by": "CI required check: Immutable V2.5 integrity",
+      "status": "live",
+      "required": true,
+      "source": "ADR-0001; ADR-0004 I7"
+    },
+    {
+      "id": "GATE-src-candidate",
+      "principle": "src/ changes only through a reviewed candidate scope",
+      "enforced_by": "CI required check: Boundary hardening candidate (validation.candidate_integrity)",
+      "status": "live",
+      "required": true,
+      "source": "ADR-0004 I7; ADR-0005 D4"
+    },
+    {
+      "id": "GATE-publication-patterns",
+      "principle": "No secrets, credentials or known private patterns in public diffs",
+      "enforced_by": "CI required check: scan-publication-diff (security/publication_guard.py)",
+      "status": "live",
+      "required": true,
+      "source": "ADR-0003 (PROPOSED)"
+    },
+    {
+      "id": "GATE-main-pr-only",
+      "principle": "main changes only by squash-merged PRs with checks green; no force push or deletion",
+      "enforced_by": "Ruleset \"Push Protection\"",
+      "status": "live",
+      "required": true,
+      "source": "Issue #24"
+    },
+    {
+      "id": "GATE-evidence-preserved",
+      "principle": "Evidence branches and release tags cannot be deleted or rewritten",
+      "enforced_by": "Rulesets \"Preserve evidence branches\" and \"Protect release tags\"",
+      "status": "live",
+      "required": true,
+      "source": "Issue #24"
+    },
+    {
+      "id": "GATE-brain-contract",
+      "principle": "Brain records follow the record contract; no contradictory current decisions",
+      "enforced_by": "python -m brain validate; tests/test_brain.py; workflow brain.yml (not required)",
+      "status": "live",
+      "required": false,
+      "source": "ADR-0005 D5"
+    },
+    {
+      "id": "GATE-no-unasked-actions",
+      "principle": "No unasked generation, spend, publication or contact",
+      "enforced_by": "Benchmark check C1/C2, re-run per ADR-0005 D1.4",
+      "status": "live",
+      "required": false,
+      "source": "ADR-0005 D1.3"
+    },
+    {
+      "id": "GATE-facts-only",
+      "principle": "Claims only from the facts sheet",
+      "enforced_by": "Benchmark check C3",
+      "status": "live",
+      "required": false,
+      "source": "ADR-0005 D1.3"
+    },
+    {
+      "id": "GATE-semantic-privacy",
+      "principle": "No owner-environment or account details in public text",
+      "enforced_by": "Manual review only; the publication guard is pattern-based and missed an account-state disclosure once",
+      "status": "paper",
+      "required": false,
+      "source": "ADR-0004 I8; ADR-0005 D4"
+    },
+    {
+      "id": "GATE-independent-review",
+      "principle": "A second reviewer for changes to main",
+      "enforced_by": "None: required approvals is 0 (single maintainer)",
+      "status": "paper",
+      "required": false,
+      "source": "Issue #24"
+    },
+    {
+      "id": "GATE-actions-pinned",
+      "principle": "Third-party Actions pinned by commit SHA",
+      "enforced_by": "None: Actions are pinned by tag",
+      "status": "paper",
+      "required": false,
+      "source": "Issue #24"
+    }
+  ]
+}
