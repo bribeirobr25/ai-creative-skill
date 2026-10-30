@@ -42,7 +42,7 @@ The question was tested before deciding. See [benchmark log entry BL-2026-10-29-
    - The `2.6.0-dev` candidate is parked, not released.
    - `src/` is neither deleted nor moved; any such change would be a separate owner decision.
 2. **No new methods or technique content go into `src/`.** A technique worth keeping becomes a dated, host- and model-scoped observation in the benchmark log, with a review-by date.
-3. **Durable rules become checks, not instructions.** The durable rules are: no unasked generation, spend, publication or contact; claims only from the facts; flag conflicting inputs; keep product identity. They live as pass/fail criteria in benchmark entries and, later, as Project Brain gates. They are not prompt text.
+3. **Durable rules become checks, not instructions.** The durable rules are: no unasked generation, spend, publication or contact (editing the assistant's own deliverable document is allowed, per the owner's ruling of 2026-10-30); claims only from the facts; flag conflicting inputs; keep product identity. They live as pass/fail criteria in benchmark entries and, later, as Project Brain gates. They are not prompt text.
    - A rule is retired when the current hosts pass it with no artifact in two consecutive benchmark entries.
 4. **The benchmark log is the evidence trail** (`docs/benchmarks/benchmark-log.md`).
    - An entry is added when a major host or model change matters to the owner's work, and at least every 6 months while the work continues.
@@ -143,7 +143,7 @@ Host memory, delegation, scheduling and artifacts are preferred over home-built 
 | D-M4-01 | Kept as action-class envelopes for any delegate |
 | D-M5-01 | Deferred |
 | D-D-01 | Deferred |
-| D-A0-02 (PR #30) | Closed without merge once this ADR is accepted. Its branch is preserved by the evidence-branch ruleset, and ADR-0004's text is carried here unchanged. |
+| D-A0-02 (PR #30) | Closed without merge by the owner on 2026-10-30. Its branch is preserved by the evidence-branch ruleset, and ADR-0004's text is carried here unchanged. |
 
 ## Consequences
 
@@ -162,8 +162,7 @@ Host memory, delegation, scheduling and artifacts are preferred over home-built 
 ## Next steps (each separately authorized)
 
 1. The owner reviews and accepts this ADR (D2–D7) in its pull request.
-2. Close PR #30 without merging.
-3. Public-exposure redaction candidate (D4).
-4. Project Brain skeleton (D5.1).
-5. Housekeeping M0-11, M0-12 and M0-13.
-6. Next benchmark entry, when D1.4 triggers.
+2. Public-exposure redaction candidate (D4).
+3. Project Brain skeleton (D5.1).
+4. Housekeeping M0-11, M0-12 and M0-13.
+5. Next benchmark entry, when D1.4 triggers.
