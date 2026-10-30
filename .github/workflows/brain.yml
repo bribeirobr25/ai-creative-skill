@@ -12,10 +12,27 @@ jobs:
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
+          fetch-depth: 0
           persist-credentials: false
       - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
         with:
           python-version: '3.11'
+      - name: Records also pass the base branch's validator (a PR cannot weaken the check that judges it)
+        if: github.event_name == 'pull_request'
+        # 2026-10-30 audit: like the publication guard (PR20-P1-4), the enforcing validation runs the base
+        # commit's brain/ code over this PR's tree and records, before any PR code runs.
+        shell: bash
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: |
+          check="$RUNNER_TEMP/base-brain"
+          mkdir -p "$check"
+          git archive HEAD | tar -x -C "$check"
+          rm -rf "$check/brain"
+          git archive "$BASE_SHA" brain | tar -x -C "$check"
+          rm -rf "$check/brain/records"
+          cp -R brain/records "$check/brain/records"
+          cd "$check" && python -m brain validate
       - name: Records follow brain/CONTRACT.md
         run: python -m brain validate
       - name: Living docs do not call merged PRs open (finding SNAP-1)
