@@ -3,7 +3,7 @@
 **Piloto com marcas reais: 2 marcas × 2 condições × 2 repetições = 8 execuções, cada uma com R0 e R1 (16 sites).
 Revisão do proprietário pendente: `AWAITING_HUMAN_REVIEW`.**
 
-Pergunta: pedir ao agente duas ou três direções contrastantes antes de escolher (B, `experiment/web-divergent-directions-v0-1`)
+Pergunta: pedir ao agente duas ou três direções contrastantes antes de escolher (B, `experiment/web-divergent-directions-v0-1`, guardada na tag `archive/web-divergent-directions-v0-1` desde 2026-10-31)
 melhora e diversifica os sites em relação ao método atual (A, candidata `web-runtime-2.6-v1` do PR #17)?
 
 Resumo exploratório: B foi seguido e não custou mais, mas quase não mudou o resultado. As alternativas se repetem entre

@@ -1,6 +1,6 @@
 # R1 · Media Reframe — comparative evaluation (2026-10-20)
 
-**Scope:** evidence-based research and offline synthetic proof of deterministic reframing, **not** V2.6 or production authorization. Source V2.5 `src/ai-creative-skill/` is unchanged. Branch: `feature/media-reframe-research`; PR #2 remains DRAFT.
+**Scope:** evidence-based research and offline synthetic proof of deterministic reframing, **not** V2.6 or production authorization. Source V2.5 `src/ai-creative-skill/` is unchanged. Branch: `feature/media-reframe-research` (PR #2, merged; the branch was removed on 2026-10-31).
 
 **Evidence labels:** `DOCUMENTED` = primary vendor/library documentation checked; `AVAILABLE` = interface or local library found; `EXECUTABLE` = accessible in the tested environment; `TESTED` = actually run with specified media and QA; `UNKNOWN` = not established. These are not a strict linear ranking and refer to the **exact operation** (not every feature of a provider). `BLOCKED` denotes an absent prerequisite/approval. Pricing and feature claims may change; verify immediately before any spending.
 

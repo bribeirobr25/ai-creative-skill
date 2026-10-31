@@ -332,11 +332,15 @@ def settings_problems(rulesets, repo):
             errs.append('default branch is not squash-only')
         if r.get('bypass_actors'):
             errs.append('default-branch ruleset has bypass actors')
-    for include, need, label in (('~ALL', ('deletion', 'non_fast_forward'), 'evidence-branch'),
+    # Branch policy (owner, 2026-10-31): history is never rewritten on any branch, but a branch may be deleted;
+    # merged PR branches are deleted automatically and GitHub keeps every PR's commits on the PR.
+    for include, need, label in (('~ALL', ('non_fast_forward',), 'evidence-branch'),
                                  ('refs/tags/v*', ('deletion', 'update', 'non_fast_forward'), 'release-tag')):
         rs = find(include)
         if not rs or any(t not in rules(rs[0]) for t in need):
             errs.append('%s ruleset missing or incomplete' % label)
+    if repo.get('delete_branch_on_merge') is not True:
+        errs.append('merged PR branches are not deleted automatically (delete_branch_on_merge)')
     sa = repo.get('security_and_analysis') or {}
     for k in ('secret_scanning', 'secret_scanning_push_protection'):
         if (sa.get(k) or {}).get('status') != 'enabled':
