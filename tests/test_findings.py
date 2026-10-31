@@ -44,8 +44,32 @@ class ActionsPinning(unittest.TestCase):
     def test_guard_enforces_with_base_branch_copy(self):
         # PR20-P1-4: the enforcing scan must run the base branch's scanner, not the PR's.
         wf = (ROOT / '.github/workflows/publication-guard.yml').read_text()
-        self.assertIn('git archive "origin/$GITHUB_BASE_REF" security', wf)
+        self.assertIn('git archive "$BASE_SHA" security', wf)
+        self.assertIn('BASE_SHA: ${{ github.event.pull_request.base.sha }}', wf)
         self.assertIn('"$RUNNER_TEMP/base-guard/security/publication_guard.py"', wf)
+
+    @staticmethod
+    def steps(name):
+        text = (ROOT / '.github/workflows' / name).read_text()
+        return re.split(r'\n      - ', text)[1:]
+
+    def test_piped_steps_keep_the_exit_status(self):
+        # 2026-10-30 audit: under the default `bash -e`, `scan | tee out` returns tee's status and hides a BLOCK.
+        # Any step that pipes into tee must run with `shell: bash` (which sets pipefail).
+        for wf in tracked('.github/workflows'):
+            for step in re.split(r'\n      - ', wf.read_text())[1:]:
+                if re.search(r'\|\s*tee\b', step):
+                    self.assertRegex(step, r'\n\s+shell: bash\n', '%s: %s' % (wf.name, step.splitlines()[0]))
+
+    def test_enforcing_checks_run_before_pr_code(self):
+        # 2026-10-30 audit: the base-copy checks run before any step that executes the PR's own code.
+        guard = self.steps('publication-guard.yml')
+        base = next(i for i, st in enumerate(guard) if 'base-guard' in st)
+        self.assertLess(base, next(i for i, st in enumerate(guard) if 'unittest discover -s security' in st))
+        brain = self.steps('brain.yml')
+        base = next(i for i, st in enumerate(brain) if 'git archive "$BASE_SHA" brain' in st)
+        self.assertLess(base, next(i for i, st in enumerate(brain) if st.startswith('name: Records follow')))
+        self.assertIn('fetch-depth: 0', brain[0])
 
     def test_media_needs_recorded_review(self):
         # OWN-A2: a REVIEW for media fails the required check unless the PR body records the human review.

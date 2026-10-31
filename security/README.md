@@ -60,3 +60,10 @@ The global historical scan runs **only on explicit workflow_dispatch/manual use*
 
 - The repository setting "require SHA pinning" is on: a workflow that uses an Action by tag or branch fails to start. `python3 -m brain status` re-checks the setting. `.github/dependabot.yml` opens weekly PRs that move the pins to newer releases; the owner merges them.
 - Meaning-level privacy (account, environment, client or personal details written in prose) has no automated check. The owner accepted this as a known risk: the PR template checklist is the control.
+
+## 2026-10-30 audit fixes
+
+- The base-branch scan runs with `shell: bash` (pipefail), so a BLOCK fails the step instead of being lost in `| tee`. It runs before any PR code and uses the base commit SHA from the event.
+- `brain-records` also validates the PR's records with the base commit's `brain/` code, for the same reason.
+- New detection: common key names (`api_key`, `x-api-key`, `token`, `secret`) with key-like values, `sk_` keys, tokens split across three lines, and local home-folder paths (REVIEW).
+- Known limits: a PR can still edit the workflow files themselves (the control is owner-only merges); PR bodies and comments are not scanned. See `FND-AUDIT-WORKFLOW-EDIT` and `FND-AUDIT-DETECTION-REST` in the Brain.

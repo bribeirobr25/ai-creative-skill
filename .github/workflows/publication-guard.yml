@@ -19,18 +19,21 @@ jobs:
       - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
         with:
           python-version: '3.11'
-      - name: Test redaction and detection rules
-        run: python -m unittest discover -s security -p 'test_*.py' -v
       - name: Inspect final PR diff AND all commit additions (scanner from the base branch)
         if: github.event_name == 'pull_request'
         # Finding PR20-P1-4: the enforcing scan uses the base branch's copy of security/, so a PR
         # cannot weaken the scanner that judges it. The PR's own copy also runs, so new rules apply at once.
+        # 2026-10-30 audit: `shell: bash` sets pipefail, so a BLOCK is not lost in `| tee`; the step runs
+        # before any PR code, and uses the base commit SHA from the event, not a ref PR code could move.
+        shell: bash
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
         run: |
           mkdir -p "$RUNNER_TEMP/base-guard"
-          git archive "origin/$GITHUB_BASE_REF" security | tar -x -C "$RUNNER_TEMP/base-guard"
+          git archive "$BASE_SHA" security | tar -x -C "$RUNNER_TEMP/base-guard"
           python "$RUNNER_TEMP/base-guard/security/publication_guard.py" \
-            --range "origin/$GITHUB_BASE_REF...HEAD" \
-            --history-range "origin/$GITHUB_BASE_REF..HEAD" | tee "$RUNNER_TEMP/guard.out"
+            --range "$BASE_SHA...HEAD" \
+            --history-range "$BASE_SHA..HEAD" | tee "$RUNNER_TEMP/guard.out"
       - name: Media in the PR needs a recorded human review (finding OWN-A2)
         if: github.event_name == 'pull_request'
         env:
@@ -42,6 +45,8 @@ jobs:
               exit 1
             fi
           fi
+      - name: Test redaction and detection rules
+        run: python -m unittest discover -s security -p 'test_*.py' -v
       - name: Inspect the same range with the PR's scanner
         if: github.event_name == 'pull_request'
         run: |
