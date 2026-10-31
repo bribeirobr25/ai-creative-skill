@@ -3,7 +3,7 @@ on:
   push:
     branches: [main, 'feature/**']
   pull_request:
-    branches: [main, 'feature/validation-harness']
+    branches: [main]
   workflow_dispatch:
 permissions:
   contents: read

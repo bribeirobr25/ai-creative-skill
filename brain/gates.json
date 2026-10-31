@@ -35,8 +35,8 @@
     },
     {
       "id": "GATE-evidence-preserved",
-      "principle": "Evidence branches and release tags cannot be deleted or rewritten",
-      "enforced_by": "Rulesets \"Preserve evidence branches\" and \"Protect release tags\"; re-checked on read by python3 -m brain status (tests/test_findings.py::RepoSettings)",
+      "principle": "History is never rewritten: no force-push on any branch, release tags cannot be deleted or moved. Only main and branches with open PRs exist; merged or closed PR branches are deleted, and GitHub keeps their commits on the PR. Work without a PR is kept as an archive/ tag before its branch is deleted",
+      "enforced_by": "Rulesets \"Preserve evidence branches\" (no force-push, Dependabot excluded) and \"Protect release tags\"; repository setting delete_branch_on_merge; re-checked on read by python3 -m brain status (tests/test_findings.py::RepoSettings)",
       "status": "live",
       "required": true,
       "source": "Issue #24"

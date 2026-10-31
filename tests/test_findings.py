@@ -87,9 +87,9 @@ def good_settings():
                                   ('pull_request', {'allowed_merge_methods': ['squash']}),
                                   ('required_status_checks', {'strict_required_status_checks_policy': True,
                                                               'required_status_checks': [{'context': c} for c in core.REQUIRED_CHECKS]})])
-    branches = rs('~ALL', [('deletion', None), ('non_fast_forward', None)])
+    branches = rs('~ALL', [('non_fast_forward', None)])
     tags = rs('refs/tags/v*', [('deletion', None), ('update', None), ('non_fast_forward', None)])
-    repo = {'security_and_analysis': {'secret_scanning': {'status': 'enabled'}, 'secret_scanning_push_protection': {'status': 'enabled'}},
+    repo = {'delete_branch_on_merge': True, 'security_and_analysis': {'secret_scanning': {'status': 'enabled'}, 'secret_scanning_push_protection': {'status': 'enabled'}},
             'actions_permissions': {'sha_pinning_required': True}}
     return [main, branches, tags], repo
 
@@ -111,6 +111,8 @@ class RepoSettings(unittest.TestCase):
             'push_protection': lambda rs, repo: repo['security_and_analysis']['secret_scanning_push_protection'].update(status='disabled'),
             'lacks deletion': lambda rs, repo: rs[0]['rules'].pop(0),
             'SHA pinning': lambda rs, repo: repo['actions_permissions'].update(sha_pinning_required=False),
+            'deleted automatically': lambda rs, repo: repo.update(delete_branch_on_merge=False),
+            'evidence-branch ruleset missing': lambda rs, repo: rs[1]['rules'].pop(),
         }
         for want, mutate in cases.items():
             rs, repo = copy.deepcopy(good_settings())

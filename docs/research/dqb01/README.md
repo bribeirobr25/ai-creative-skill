@@ -6,7 +6,7 @@ A ausência de falhas funcionais não comprova design profissional. A análise d
 
 > **Versão enxuta no `main`.** Esta cópia traz relatórios, protocolo, scripts, registros e dados JSON, sem as
 > imagens (fotos Pexels dos sites e 98 capturas, cerca de 9,9 MB). A evidência visual completa permanece no PR #11
-> (branch `research/design-excellence-dqb01`); para reproduzir os sites, recoloque as fotos listadas em
+> (a branch `research/design-excellence-dqb01` foi removida em 2026-10-31; os arquivos continuam na página do PR); para reproduzir os sites, recoloque as fotos listadas em
 > `validation/dqb01/shared/assets/credits.json`. A galeria só exibe as capturas quando aberta a partir daquela branch.
 > Um caminho local do host foi redigido depois da execução; veja `validation/dqb01/REDACTION.md`.
 

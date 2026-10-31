@@ -152,7 +152,7 @@ Host memory, delegation, scheduling and artifacts are preferred over home-built 
 | D-M4-01 | Kept as action-class envelopes for any delegate |
 | D-M5-01 | Deferred |
 | D-D-01 | Deferred |
-| D-A0-02 (PR #30) | Closed without merge by the owner on 2026-10-30. Its branch is preserved by the evidence-branch ruleset, and ADR-0004's text is carried here unchanged. |
+| D-A0-02 (PR #30) | Closed without merge by the owner on 2026-10-30. Its commits stay on the PR (the branch itself was removed on 2026-10-31 under the branch policy), and ADR-0004's text is carried here unchanged. |
 
 ## Consequences
 

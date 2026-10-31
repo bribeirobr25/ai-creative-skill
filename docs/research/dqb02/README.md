@@ -15,7 +15,7 @@ muito parecidas. Decisão formal: `INCONCLUSIVE`; inclinação: `REVISE CANDIDAT
 > rubrica, registros dos executores, manifestos de hash, resultados JSON, ferramentas e as seis folhas comparativas
 > (`validation/dqb02/results/comparisons/`). Ficam fora do `main` os 16 sites (HTML/CSS/JS), as 33 fotos do Wikimedia
 > Commons (créditos e licenças em `shared/assets-*/credits.json`) e as 200 capturas de evidência, cerca de 51 MB.
-> Esse material completo permanece no PR #13 (branch `research/dqb02-visual-direction`); as galerias e os comandos de
+> Esse material completo permanece no PR #13 (a branch `research/dqb02-visual-direction` foi removida em 2026-10-31; os arquivos continuam na página do PR); as galerias e os comandos de
 > reprodução abaixo funcionam a partir daquela branch.
 
 ## Começar aqui
