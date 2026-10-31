@@ -10,6 +10,8 @@ The first specialist under the [system vision](../../vision/README.md) and [ADR-
 | [contract.md](contract.md) | Input (objective, type, medium, techniques, specifications, authorities, references, user experience, deliverable level) and output (the direction package) |
 | [knowledge-packs.md](knowledge-packs.md) | Direction Core, format and medium cards, professional motion reference library, Production's tool register, and what was not adopted |
 | [evaluation.md](evaluation.md) | Three simulation scenarios with planted traps; planning criteria and a decision rule fixed before testing; production-quality criteria for later |
+| [smoke-test-plan.md](smoke-test-plan.md) | Five exploratory scenarios with fixed user sheets, procedure and criteria, written before running |
+| [smoke-test-report-2026-10-31.md](smoke-test-report-2026-10-31.md) | Results of the five runs (assisted role-play), the problems found and the fixes made; transcripts in `smoke-test-2026-10-31/` |
 
 ## Design choices
 

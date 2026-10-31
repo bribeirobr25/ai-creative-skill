@@ -41,7 +41,7 @@ Each item also has a strength, kept separate from the tag:
 | C4 | Before any paid step, check feasibility: actions fit the duration, references support the identities, the route can do the motion and audio, the script fits, transitions say what is preserved and what changes, known failures were checked | `provisional` | default | V2.5 Video Direction §12 |
 | C5 | No paid step before the user approves the execution scope; money left in a budget authorizes nothing outside the scope | `rule` | binding | ADR-0006 D6 |
 | C6 | A reference only secures what it shows. Identity-bearing references should be clean and isolated, and cover the views the motion will reveal (a front-only photo cannot guarantee the back in a turn) | `evidence` + `provisional` | default | Photoshoot study: clean references were the largest fidelity gain (`docs/research/auditoria-aprendizados-2026-10-22.md`); V2.5 Image Direction §5.1 |
-| C7 | Products, interfaces and claims come from the user's real material and approved facts; real interface captures, not invented screens; unknowns stay unknown | `rule` | binding | ADR-0006 D8; benchmark check C3 |
+| C7 | Products, interfaces and claims come from the user's real material and approved facts; real interface captures, not invented screens; unknowns stay unknown. A comparison over time (day 1 / day 7, before / after) implies a result claim and needs substantiation like any claim. Copy that states a fact about the user's business ("customers keep asking…") is listed as an assumption to confirm as true *(S4)* | `rule` | binding | ADR-0006 D8; benchmark check C3 |
 | C8 | State what must not change in a transformation or a series of shots (the invariants), and what may | `provisional` | recommended | V2.5 Video Direction §9.1; Specialist Method System §6.2 |
 | C9 | On-screen text, numbers and logos are planned for precise rendering in the graphics or edit layer, not left to the video model | `provisional` | recommended | V2.5 Image Direction §9 (text modes); the research conversations report garbled text as a common model failure (`current`, unverified) |
 | C10 | Every shot creates useful change: new information, a demonstration, a progression, a reveal or a consequence | `provisional` | recommended | V2.5 Video Direction §3 |
@@ -112,7 +112,7 @@ For performance evidence, as opposed to inspiration: platform ad libraries (TikT
 
 ## Production tool register (placeholder, owned by Production)
 
-Not loaded by the Director, which recommends routes by kind, never by a single provider. Every item is `current`: it needs a vendor source and an expiry date before use, and is unverified until then. These claims come from the research conversations:
+Not loaded by the Director, which recommends routes by kind, never by a single provider. It is kept out of the Director's context; in the 2026-10-31 smoke test it was included by mistake and the Director quoted its unverified prices (S2). Every item is `current`: it needs a vendor source and an expiry date before use, and is unverified until then. These claims come from the research conversations:
 
 | Claim | Status |
 |---|---|

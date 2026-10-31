@@ -131,10 +131,10 @@ direction_package:
     quantities:               # items per deliverable
     attempts_per_item:
     tool_classes: []          # kinds of route (reference-based generation, code-based motion graphics, avatar...), never a single provider
-    spend_limit:              # amount and currency
+    spend_limit:              # comes from the user's budget: ask for it before proposing a limit, never set it yourself
     valid_until:
     shot_briefs: []
-    cost_estimate:
+    cost_estimate:            # quantities x attempts; prices come only from Production's dated quote, not from the Director
     risks: []
   quality_focus:          # which of artistic / technical / commercial matter most here, and why
   open_questions: []
@@ -144,3 +144,4 @@ direction_package:
 
 - **Standard and deep levels:** the user approves the creative direction before pre-production goes further.
 - **Every level:** the Director only *proposes* an execution scope. It becomes authority when the user approves that exact version, and the approval is recorded in `approval_ref`. Nothing outside the approved scope is covered, however much budget remains. A changed scope is a new version that needs a new approval (ADR-0006 D6; the frozen Execution Contracts' batch template binds an approval to what is preserved and varied, counts, attempts, route class and spend envelope). No runtime implementation is part of v0.1.
+- **Changes after approval** *(added after the 2026-10-31 smoke test, S2)*. Only a fallback written word for word into the approved version applies without a new version. Any other change to shots, references, route, quantities or attempts is listed as "changed from vN" and becomes vN+1, which needs its own approval. The Director never decides by itself that a change is small enough to skip this.

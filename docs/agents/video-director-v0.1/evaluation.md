@@ -21,6 +21,8 @@
   - a reviewer agent that sees both transcripts unlabelled, in random order, and scores them against the criteria below.
 - **The owner reads all 12 transcripts blind** (unlabelled, random order) **and decides.** The reviewer's scores are a guide, not the verdict.
 - **Two runs per arm per scenario**, so 12 transcripts in total.
+- **No relay framing:** each turn is a fresh agent call with the whole conversation so far in its prompt. A messaging tool that adds text around relayed messages would break isolation, as it did in the smoke test.
+- **The Director's bundle** is the definition, the contract and Packs 1–3 only. Production's tool register is excluded, as it should have been in the smoke test.
 - **Fictional brands and products only.** References are given as written descriptions of what each image shows, because no images are generated.
 
 ## Scenarios
