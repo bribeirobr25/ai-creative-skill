@@ -12,15 +12,17 @@
   - Each user and each Director was a separate agent. The user agents saw only their sheet. The Directors saw only the user's messages and their definition.
   - The tool logs show that every Director made exactly one tool call, reading the definition bundle, and opened nothing else. The user agents made no tool calls.
 - **Isolation broke in four ways, so by the plan's own rule this counts as assisted role-play:**
-  1. **The messaging tool wrapped every relayed message** in a framing line: "The coordinator sent a message while you were working: …" and "Address this before completing your current task." It reached both the Directors and the users, so "word for word, adding nothing" was not met. We saw no effect on behaviour, but the framing tells each agent that someone is coordinating. It is removed from the transcripts, which show only what each side wrote.
+  1. **The messaging tool wrapped every relayed message** in a framing line: "The coordinator sent a message while you were working: …" and "Address this before completing your current task." It reached both the Directors and the users, so "word for word, adding nothing" was not met. We saw no effect on behaviour, but the framing tells each agent that someone is coordinating. The transcripts keep these lines exactly as received, each labelled as added by the tool.
+  5. **The harness injected its own context into every agent:** the project instruction files, the session's memory index, the account email, and the git status with recent commit titles. One title mentioned the smoke-test plan, so agents could infer they were in a test. This is omitted from the published transcripts for privacy, and a labelled note marks where it was. The plan file itself was never opened.
   2. **The Director bundle contained Production's tool register,** which the definition says the Director does not load. The S2 Director then quoted its unverified prices.
   3. **The S2 opening was reworded.** It said "a famous ad from a big luxury brand" instead of the sheet's bracketed placeholder.
   4. **One stray message from the orchestrator reached the S4 user agent.** Its reply had already been written; the stray message produced only a duplicate, which was not relayed.
 - **"END" lines** were stop signals and were not relayed. The exception is S2's final approval, which was relayed so its approval handling could be observed.
 
-**For the formal evaluation:**
-- run each turn as a fresh agent call with the whole conversation so far in its prompt, so no tool framing is added;
-- build the Director bundle from the definition, the contract and Packs 1–3 only.
+**For the next runs:**
+- run each turn as a fresh agent call reading the conversation so far from a file, so no tool framing is added;
+- build the Director bundle from the definition, the contract and Packs 1–3 only;
+- the harness context in item 5 cannot be switched off from here. Agents are told to ignore everything except their two files, and the limitation is reported.
 
 ## Results
 
@@ -73,7 +75,9 @@ Only problems the transcripts demonstrate were fixed:
 | 8 | "I produce" for work Production does | S2: "Day 1: … I produce key frames" | Definition: name who acts |
 | — | Unverified knowledge stated as settled fact | S1: "Video models still tend to garble on-screen text" | Definition: say how sure knowledge is |
 
-Not fixed, as speculative: how an approval is recorded when no tools are connected (S2: "I've recorded it as the scope's approval reference"). It is to be revisited if it recurs.
+**Revised after review (2026-10-31):**
+- **The change rule in problem 1 was too rigid.** It now binds the Director to the execution envelope: changes within approved `vary` ranges, permitted alternatives, attempt limits and tool classes need no new approval and are reported in the next update. Anything marked `preserve`, or outside the written fields, becomes a new version.
+- **"I've recorded it as the scope's approval reference" (S2) was first left unfixed as speculative.** That was wrong: the transcript shows it. Now the Director may acknowledge an approval in the conversation but never claims it was recorded; `approval_ref` stays empty until a verifiable record exists.
 
 ## What this shows and what it does not
 

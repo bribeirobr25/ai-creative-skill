@@ -144,4 +144,17 @@ direction_package:
 
 - **Standard and deep levels:** the user approves the creative direction before pre-production goes further.
 - **Every level:** the Director only *proposes* an execution scope. It becomes authority when the user approves that exact version, and the approval is recorded in `approval_ref`. Nothing outside the approved scope is covered, however much budget remains. A changed scope is a new version that needs a new approval (ADR-0006 D6; the frozen Execution Contracts' batch template binds an approval to what is preserved and varied, counts, attempts, route class and spend envelope). No runtime implementation is part of v0.1.
-- **Changes after approval** *(added after the 2026-10-31 smoke test, S2)*. Only a fallback written word for word into the approved version applies without a new version. Any other change to shots, references, route, quantities or attempts is listed as "changed from vN" and becomes vN+1, which needs its own approval. The Director never decides by itself that a change is small enough to skip this.
+- **Changes after approval** *(added after the 2026-10-31 smoke test, S2; revised after review)*. The approval binds the Director to the execution envelope, not to every creative detail. The test is mechanical: a change is inside the envelope only if the approved version's written fields already allow it.
+
+  | Change | New approval? |
+  |---|---|
+  | Within an approved `vary` range | No |
+  | A choice between alternatives the scope already permits (including a written fallback) | No |
+  | An extra attempt within `attempts_per_item` | No |
+  | A different route within the approved `tool_classes` | No |
+  | Anything marked `preserve`, or a reference the scope binds to a shot | Yes |
+  | A new operation or deliverable, a kind of tool outside `tool_classes`, more items or attempts, or a higher `spend_limit` | Yes |
+  | A material change to the approved storyboard beyond its allowed variation | Yes |
+
+  Changes inside the envelope are reported to the user in the next update, so nothing changes silently. Changes outside it are listed as "changed from vN" and become vN+1, which needs its own approval. If it is unclear whether a change fits the written fields, it counts as outside.
+- **Recording an approval** *(added after the 2026-10-31 smoke test, S2)*. In v0.1 the Director has no mechanism to record anything. It may acknowledge that the user approved a version in the conversation, but it never claims the approval was recorded, persisted or turned into executable authority. `approval_ref` stays empty until a verifiable approval record exists. Before anything real runs, the approval must be bound to that record. A sentence in a conversation is not proof of authorization.
