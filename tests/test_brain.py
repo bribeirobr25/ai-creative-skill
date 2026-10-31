@@ -81,9 +81,15 @@ EVIDENCE = 'brain/CONTRACT.md'
 CHANGED = lambda n: {EVIDENCE}  # noqa: E731  the authority PR changed the record's evidence file
 
 
+def own_pr(*records):
+    """Stub for git history: each record was added to main by its own authority PR."""
+    m = {r['id']: int(r['authority_ref'][4:]) for r in records if str(r.get('authority_ref', '')).startswith('pr:#')}
+    return lambda rid: m.get(rid, 'branch')
+
+
 class Authority(unittest.TestCase):
-    def verify(self, record, fetch, files=CHANGED):
-        return core.verify_authority(rows(record), fetch=fetch, files=files)
+    def verify(self, record, fetch, files=CHANGED, added=None):
+        return core.verify_authority(rows(record), fetch=fetch, files=files, added=added or own_pr(record))
 
     def test_owner_merge_verifies(self):
         self.assertEqual(self.verify(rec(evidence_refs=[EVIDENCE]), lambda n: pr()), [])
@@ -109,7 +115,8 @@ class Authority(unittest.TestCase):
         cases = {'accepted': pr(), 'pending': pr(merged=False), 'unverified': None,
                  'invalid': pr(merged=False, state='closed')}
         for want, answer in cases.items():
-            got = core.authority(rows(rec(evidence_refs=[EVIDENCE])), fetch=lambda n: answer, files=CHANGED)['DEC-x'][0]
+            r = rec(evidence_refs=[EVIDENCE])
+            got = core.authority(rows(r), fetch=lambda n: answer, files=CHANGED, added=own_pr(r))['DEC-x'][0]
             self.assertEqual(got, want)
 
 
@@ -119,8 +126,9 @@ class PendingDecisions(unittest.TestCase):
     OLD = rec(id='DEC-old', authority_ref='pr:#1', statement='old rule', evidence_refs=[EVIDENCE])
     NEW = rec(id='DEC-new', authority_ref='pr:#2', statement='new rule', supersedes='DEC-old', evidence_refs=[EVIDENCE])
 
-    def status(self, *records, answers):
-        return core.status(rows(*records), today='2026-10-30', online=False, fetch=lambda n: answers.get(n), files=CHANGED)
+    def status(self, *records, answers, added=None):
+        return core.status(rows(*records), today='2026-10-30', online=False, fetch=lambda n: answers.get(n), files=CHANGED,
+                           added=added or own_pr(*records))
 
     @staticmethod
     def section(out, title):
@@ -175,6 +183,107 @@ class PendingDecisions(unittest.TestCase):
     def test_validate_without_authority_still_accepts_own_pending_records(self):
         # The PR check runs `validate` without --verify-authority, so a decision PR can pass before its own merge.
         self.assertEqual(core.problems(rows(self.OLD, self.NEW)), [])
+
+
+class Hardening(unittest.TestCase):
+    """2026-10-30 audit: attacks reproduced against PR #51, each pinned by a test."""
+
+    A = rec(id='A', authority_ref='pr:#1', statement='rule A', evidence_refs=[EVIDENCE])
+    B = rec(id='B', authority_ref='pr:#2', statement='rule B', supersedes='A', evidence_refs=[EVIDENCE])
+    C = rec(id='C', authority_ref='pr:#3', statement='rule C', supersedes='B', evidence_refs=[EVIDENCE])
+    section = staticmethod(PendingDecisions.section)
+
+    def status(self, *records, answers, added=None, files=CHANGED, today='2026-10-30'):
+        return core.status(rows(*records), today=today, online=False, fetch=lambda n: answers.get(n), files=files,
+                           added=added or own_pr(*records))
+
+    def test_branch_record_cannot_borrow_an_old_merge(self):
+        # A record added on a branch that cites an old, owner-merged PR whose files match its evidence.
+        fake = rec(id='DEC-fake', authority_ref='pr:#50', statement='agents may spend freely', evidence_refs=[EVIDENCE])
+        out = self.status(fake, answers={50: pr()}, added=lambda rid: 'branch')
+        self.assertNotIn('spend freely', self.section(out, 'Current decisions'))
+        self.assertIn('exists only on this branch', self.section(out, 'Pending decisions'))
+        self.assertTrue(core.verify_authority(rows(fake), fetch=lambda n: pr(), files=CHANGED, added=lambda rid: 'branch'))
+
+    def test_record_added_by_a_later_owner_merged_pr_counts(self):
+        # Backfilled records (decided in #31, recorded in #36) stay valid; a non-owner or unknown adder does not.
+        r = rec(id='DEC-l', authority_ref='pr:#31', evidence_refs=[EVIDENCE])
+        ok = core.authority(rows(r), fetch=lambda n: pr(), files=CHANGED, added=lambda rid: 36)
+        self.assertEqual(ok['DEC-l'][0], 'accepted')
+        foreign = core.authority(rows(r), fetch=lambda n: pr(by='someone-else') if n == 36 else pr(), files=CHANGED, added=lambda rid: 36)
+        self.assertEqual(foreign['DEC-l'][0], 'invalid')
+        self.assertEqual(core.authority(rows(r), fetch=lambda n: pr(), files=CHANGED, added=lambda rid: 'unknown')['DEC-l'][0], 'invalid')
+        self.assertEqual(core.authority(rows(r), fetch=lambda n: pr(), files=CHANGED, added=lambda rid: None)['DEC-l'][0], 'unverified')
+
+    def test_chain_with_a_middle_link_not_in_force_does_not_revive_the_oldest(self):
+        for middle in (pr(merged=False), pr(merged=False, state='closed')):
+            out = self.status(self.A, self.B, self.C, answers={1: pr(), 2: middle, 3: pr()})
+            current = self.section(out, 'Current decisions')
+            self.assertIn('rule C', current)
+            self.assertNotIn('rule A', current)
+            self.assertIn('superseded by C, which is in force', out)
+        errs = core.verify_authority(rows(self.A, self.B, self.C), fetch=lambda n: pr(merged=n != 2), files=CHANGED,
+                                     added=own_pr(self.A, self.B, self.C))
+        self.assertTrue(any(e.startswith('B:') for e in errs), errs)
+
+    def test_cycles_and_self_supersession_fail(self):
+        x = rec(id='X', supersedes='Y')
+        y = rec(id='Y', supersedes='X', subject='t')
+        self.assertTrue(any('cycle' in e for e in core.problems(rows(x, y))))
+        self.assertTrue(any('supersedes itself' in e for e in core.problems(rows(rec(id='S', supersedes='S')))))
+
+    def test_unverified_replacement_does_not_leave_the_old_decision_confirmed(self):
+        new = rec(id='NEW', authority_ref='pr:#2', statement='rule new', supersedes='A', evidence_refs=[EVIDENCE])
+        out = self.status(self.A, new, answers={1: pr()})
+        self.assertNotIn('rule A', self.section(out, 'Current decisions'))
+        self.assertIn('may be superseded by NEW', self.section(out, 'Decisions not verified'))
+
+    def test_duplicate_id_counts_for_neither_copy(self):
+        first = rec(id='X', authority_ref='pr:#2', statement='PENDING rule', subject='other', evidence_refs=[EVIDENCE])
+        second = rec(id='X', authority_ref='pr:#1', statement='merged rule', evidence_refs=[EVIDENCE])
+        out = self.status(first, second, answers={1: pr(), 2: pr(merged=False)}, added=lambda rid: 1)
+        self.assertNotIn('rule', self.section(out, 'Current decisions'))
+        self.assertIn('duplicate id', self.section(out, 'Decision problems'))
+
+    def test_malformed_lines_are_reported_not_crashing(self):
+        with tempfile.TemporaryDirectory() as d:
+            (Path(d) / 'decisions.jsonl').write_text('[]\n"text"\nnull\n5\n', encoding='utf-8')
+            loaded = core.load(d)
+        self.assertEqual(len(loaded), 4)
+        self.assertEqual(len([e for e in core.problems(loaded) if 'not valid JSON' in e]), 4)
+        listed = rows(rec(id=['x']), rec(id='Q', supersedes=['A']))
+        self.assertEqual(len([e for e in core.problems(listed) if 'must be text' in e]), 2)
+        bare = rec(id='N')
+        del bare['statement']
+        core.status(rows(bare), today='2026-10-30', online=False)
+        core.status(rows(bare), today='2026-10-30', online=False, fetch=lambda n: pr(), files=CHANGED, added=own_pr(bare))
+
+    def test_due_reviews_listed_when_github_is_unreachable(self):
+        r = rec(id='R', review_by='2026-01-01', evidence_refs=[EVIDENCE])
+        out = self.status(r, answers={})
+        self.assertIn('R (review_by 2026-01-01) [unverified]', self.section(out, 'Due for review'))
+
+    def test_malformed_authority_is_a_problem(self):
+        r = rec(id='M', authority_ref='PR #5', statement='odd rule', evidence_refs=[EVIDENCE])
+        out = self.status(r, answers={})
+        self.assertIn('odd rule', self.section(out, 'Decision problems'))
+        self.assertTrue(core.verify_authority(rows(r), fetch=lambda n: pr(), files=CHANGED, added=lambda rid: 1))
+
+    def test_subjects_compare_without_case(self):
+        errs = core.problems(rows(rec(id='U1', subject='Container'), rec(id='U2', subject='container ')))
+        self.assertTrue(any('contradiction' in e for e in errs), errs)
+
+    def test_evidence_paths_normalized_and_directories_match(self):
+        self.assertTrue(any('repo-relative' in e for e in core.problems(rows(rec(evidence_refs=['./brain/CONTRACT.md'])))))
+        r = rec(id='D', evidence_refs=['brain'])
+        got = core.authority(rows(r), fetch=lambda n: pr(), files=lambda n: {'brain/CONTRACT.md'}, added=own_pr(r))
+        self.assertEqual(got['D'][0], 'accepted')
+
+    def test_cli_rejects_a_missing_records_folder(self):
+        out = subprocess.run([sys.executable, '-m', 'brain', 'validate', '--records', '/nonexistent-brain-records'],
+                             cwd=ROOT, capture_output=True, text=True)
+        self.assertEqual(out.returncode, 1)
+        self.assertIn('is not a folder', out.stdout)
 
 
 class Status(unittest.TestCase):

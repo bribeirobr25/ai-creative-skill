@@ -16,6 +16,9 @@ def main(argv=None):
     s = sub.add_parser('status', help='print the current state, derived on read')
     s.add_argument('--offline', action='store_true', help='skip GitHub')
     a = p.parse_args(argv)
+    if getattr(a, 'records', None) and not core.Path(a.records).is_dir():
+        print('FAIL --records %s is not a folder' % a.records)
+        return 1
     rows = core.load(a.records) if getattr(a, 'records', None) else core.load()
     if a.cmd == 'lint-docs':
         merged = core.merged_prs()
