@@ -119,10 +119,21 @@ direction_package:
   repurposing:            # optional
     planned:
     reusable_assets: []
-  production_handoff:     # becomes the execution scope the user approves; nothing runs before that
+  proposed_execution_scope:   # a PROPOSAL, never authority; nothing runs on it
+    scope_id:
+    version:                  # any change makes a new version, which needs a new approval
+    status: proposed          # proposed | approved | superseded (only the user's recorded approval changes it)
+    approval_ref: null        # set only by the user's recorded approval
+    permitted_operations: []  # e.g. generate key frames, animate approved frames, edit, add sound
+    deliverables: []          # what is produced, with formats
+    preserve: []              # what must stay fixed (product, identity, approved text)
+    vary: []                  # what may vary, and within what range
+    quantities:               # items per deliverable
+    attempts_per_item:
+    tool_classes: []          # kinds of route (reference-based generation, code-based motion graphics, avatar...), never a single provider
+    spend_limit:              # amount and currency
+    valid_until:
     shot_briefs: []
-    eligible_routes: []   # never a single provider
-    attempts:
     cost_estimate:
     risks: []
   quality_focus:          # which of artistic / technical / commercial matter most here, and why
@@ -132,4 +143,4 @@ direction_package:
 ## Approval points the contract produces
 
 - **Standard and deep levels:** the user approves the creative direction before pre-production goes further.
-- **Every level:** the user approves the `production_handoff` as the execution scope (what is generated, what may vary, how many items and attempts, which kind of route, the spend limit) before any paid step. Nothing outside that scope is covered, however much budget remains (ADR-0006 D6).
+- **Every level:** the Director only *proposes* an execution scope. It becomes authority when the user approves that exact version, and the approval is recorded in `approval_ref`. Nothing outside the approved scope is covered, however much budget remains. A changed scope is a new version that needs a new approval (ADR-0006 D6; the frozen Execution Contracts' batch template binds an approval to what is preserved and varied, counts, attempts, route class and spend envelope). No runtime implementation is part of v0.1.

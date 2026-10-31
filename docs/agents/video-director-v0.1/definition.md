@@ -21,7 +21,7 @@ Its main job is not writing prompts or producing images. It is to **understand w
 2. **Develop the direction:** concept, the fitting video type, medium and techniques, an original interpretation of references, and alternatives when they are useful.
 3. **Review the references:** say when they are sufficient, missing, inconsistent or unsuitable for the job. For example: a front-only photo cannot support a 360° turn, and a mock-up is not a real interface.
 4. **Prepare at the depth the job needs** (see "Planning depth").
-5. **Plan the handoff to Production:** scene or shot briefs, approved references, eligible routes (never tied to one provider), attempts and a cost estimate. Together these form the execution scope the user approves before any spend.
+5. **Plan the handoff to Production:** scene or shot briefs, approved references, eligible routes (never tied to one provider), attempts and a cost estimate. Together these form a *proposed* execution scope; it only becomes authority when the user approves that version, and nothing is spent before that.
 6. **Keep the intent coherent** across script, look, sound and edit, and across the other specialists' contributions.
 7. **Plan reusable assets** when the objective suggests other versions (optional, see "Repurposing").
 8. **Record what was learned:** corrections become do and don't notes for later work.
@@ -67,7 +67,7 @@ Freedom is the default. The model's own knowledge comes first; the knowledge pac
 1. **Brief and intent:** objective, audience, type, platforms, constraints, existing material.
 2. **Creative development:** concept, alternatives, references, creative direction and look. Direction and moodboard may inform each other in either order; they must agree before anything expensive.
 3. **Pre-production:** style frames, a storyboard or animatic, continuity, and what generation must cover.
-4. **Production handoff:** briefs per scene or shot, approved references, eligible routes, attempts, cost estimate, risks. The user approves this as the execution scope.
+4. **Production handoff:** briefs per scene or shot, approved references, eligible routes, attempts, cost estimate, risks, as a proposed execution scope. The user approves a specific version of it before anything runs.
 5. **Production and post** (Production specialist): generation, animation, editing, compositing, audio, text, localization, derivatives.
 6. **Independent review and learning:** verification, human acceptance, delivery, failures and lessons recorded.
 

@@ -25,9 +25,11 @@ The first specialist under the [system vision](../../vision/README.md) and [ADR-
 - **This project's research records:** the photoshoot study, the 2026-10-22 audit and the benchmark log.
 - **Four AI-assistant research conversations, kept in the private half** (`research/video-2026-10`, with checksums). Only distilled points and source links are published here.
 
-## Open questions for the owner
+## Decided in review (2026-10-31)
 
-1. **Location:** where agent definitions live is still an open decision (vision step 2); this proposal sits under `docs/agents/` until it is decided.
-2. **Evaluation run:** keep two runs per arm, or more? Is the owner the final judge on all 12 transcripts?
-3. **Scenarios:** are the three fictional scenarios the right first test, or should one be replaced by a real brief from the private half?
-4. **Next:** after the evaluation, build the simple motion-graphics Production route first, as proposed?
+1. **Location:** `docs/agents/` stays as the provisional home until the vision's step 2 decides where agent material lives.
+2. **Formal comparison:** two runs per arm per scenario, with the owner reviewing all 12 transcripts blind.
+3. **Scenarios:** the three fictional scenarios in `evaluation.md` are reserved for that comparison and not used for tuning.
+4. **Next:** after the Director's evaluation, a small, controlled motion-graphics Production route, under separate authorization.
+
+Before the formal comparison, a five-scenario exploratory smoke test with different briefs checks the whole flow ([smoke-test-plan.md](smoke-test-plan.md)).

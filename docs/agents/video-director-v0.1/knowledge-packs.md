@@ -13,7 +13,14 @@
 | `technique` | An optional "how" | May use, change or ignore |
 | `hypothesis` | A claim to test (performance, "works best") | Never a rule; can be tried and measured |
 
-Each item also says whether it is **required**, **recommended** or an **option**.
+Each item also has a strength, kept separate from the tag:
+
+| Strength | Meaning | Allowed for |
+|---|---|---|
+| **binding** | Must be followed; no exceptions without the authority changing | `rule` only |
+| **default** | Applied unless the Director has a stated creative or technical reason to adapt it | `evidence`, `provisional` |
+| **recommended** | Usually helps; the Director decides | any tag except `rule` |
+| **option** | Available when it fits | `technique`, `hypothesis`, `current` |
 
 **Loading:** the Core is short and always loaded. Each task adds only the one or two cards it needs. The reference library is used for moodboards and reference studies. The tool register is for Production, not the Director.
 
@@ -28,23 +35,23 @@ Each item also says whether it is **required**, **recommended** or an **option**
 
 | # | Item | Tag | Strength | Basis |
 |---|---|---|---|---|
-| C1 | Consider the four information categories (references, creative direction, look, sequence) for every job; their form and depth follow the job | `provisional` | required to consider | Owner experience; V2.5 Video Direction §3.1; the research conversations agree |
-| C2 | Planning depth follows continuity, number of identities, fidelity risk, regeneration cost, editing complexity, user experience and deliverable; no fixed scene-count thresholds | `provisional` | required | Owner description; V2.5 Video Direction §3.1, §4 complexity budget |
+| C1 | Consider the four information categories (references, creative direction, look, sequence) for every job; their form and depth follow the job | `provisional` | default (consider) | Owner experience; V2.5 Video Direction §3.1; the research conversations agree |
+| C2 | Planning depth follows continuity, number of identities, fidelity risk, regeneration cost, editing complexity, user experience and deliverable; no fixed scene-count thresholds | `provisional` | default | Owner description; V2.5 Video Direction §3.1, §4 complexity budget |
 | C3 | Resolve composition and continuity on still frames before motion when that is cheaper than fixing a clip | `provisional` | recommended | V2.5 Video Direction §3.1; research conversations |
-| C4 | Before any paid step, check feasibility: actions fit the duration, references support the identities, the route can do the motion and audio, the script fits, transitions say what is preserved and what changes, known failures were checked | `provisional` | required | V2.5 Video Direction §12 |
-| C5 | No paid step before the user approves the execution scope; money left in a budget authorizes nothing outside the scope | `rule` | required | ADR-0006 D6 |
-| C6 | A reference only secures what it shows. Identity-bearing references should be clean and isolated, and cover the views the motion will reveal (a front-only photo cannot guarantee the back in a turn) | `evidence` + `provisional` | required | Photoshoot study: clean references were the largest fidelity gain (`docs/research/auditoria-aprendizados-2026-10-22.md`); V2.5 Image Direction §5.1 |
-| C7 | Products, interfaces and claims come from the user's real material and approved facts; real interface captures, not invented screens; unknowns stay unknown | `rule` | required | ADR-0006 D8; benchmark check C3 |
+| C4 | Before any paid step, check feasibility: actions fit the duration, references support the identities, the route can do the motion and audio, the script fits, transitions say what is preserved and what changes, known failures were checked | `provisional` | default | V2.5 Video Direction §12 |
+| C5 | No paid step before the user approves the execution scope; money left in a budget authorizes nothing outside the scope | `rule` | binding | ADR-0006 D6 |
+| C6 | A reference only secures what it shows. Identity-bearing references should be clean and isolated, and cover the views the motion will reveal (a front-only photo cannot guarantee the back in a turn) | `evidence` + `provisional` | default | Photoshoot study: clean references were the largest fidelity gain (`docs/research/auditoria-aprendizados-2026-10-22.md`); V2.5 Image Direction §5.1 |
+| C7 | Products, interfaces and claims come from the user's real material and approved facts; real interface captures, not invented screens; unknowns stay unknown | `rule` | binding | ADR-0006 D8; benchmark check C3 |
 | C8 | State what must not change in a transformation or a series of shots (the invariants), and what may | `provisional` | recommended | V2.5 Video Direction §9.1; Specialist Method System §6.2 |
 | C9 | On-screen text, numbers and logos are planned for precise rendering in the graphics or edit layer, not left to the video model | `provisional` | recommended | V2.5 Image Direction §9 (text modes); the research conversations report garbled text as a common model failure (`current`, unverified) |
 | C10 | Every shot creates useful change: new information, a demonstration, a progression, a reveal or a consequence | `provisional` | recommended | V2.5 Video Direction §3 |
-| C11 | Fix what carries identity and leave the rest open: each dimension is preserve, bounded variation or open exploration | `provisional` | required | V2.5 Specialist Method System §6.2 |
+| C11 | Fix what carries identity and leave the rest open: each dimension is preserve, bounded variation or open exploration | `provisional` | default | V2.5 Specialist Method System §6.2 |
 | C12 | Explore distinct concepts only when that serves the job; real alternatives need an outside input (the user's choice, a different style brief, a rule) | `evidence` + `provisional` | recommended | Same-agent alternatives repeated one direction (audit of 2026-10-22); Specialist Method System §6.4 |
-| C13 | The closing and verification steps are never skipped; acceptance needs an independent review | `evidence` + `rule` | required | Only 1 of 18 runs did the closing step (audit of 2026-10-22); ADR-0006 D2, D3 |
-| C14 | Say which of the three kinds of quality (artistic, technical, commercial) matter most for this job | `provisional` | required | Owner description |
+| C13 | The closing and verification steps are never skipped; acceptance needs an independent review | `evidence` + `rule` | binding | Only 1 of 18 runs did the closing step (audit of 2026-10-22); ADR-0006 D2, D3 |
+| C14 | Say which of the three kinds of quality (artistic, technical, commercial) matter most for this job | `provisional` | default | Owner description |
 | C15 | Sound is directed, not added at the end: ambience, sounds of materials and actions, and accents that mark transformations | `technique` | option | Research conversation (motion study) |
-| C16 | Name unwanted third-party brands, logos and real likenesses as things to avoid | `evidence` + `rule` | required | A legible third-party brand appeared in 1–2 of 9 test images (benchmark log, BL-2026-10-29-01); check C9 |
-| C17 | No synthetic testimonials, reviews or generated demonstrations presented as real; real customers' words only with consent and labelled when re-enacted or voiced by an avatar; consent for any real likeness or voice; follow AI-disclosure and platform ad rules | `rule` | required | ADR-0006 D4, D8 |
+| C16 | Third-party brands, logos and real likenesses are used according to the rights record and the authorization: the user's own brand, licensed products, partner co-branding and consented people are fine. Generation must not *introduce* marks or real likenesses nobody asked for, so name them in what to avoid | `rule` (rights and consent) + `evidence` (unrequested marks) | binding for rights and consent; default for naming what to avoid | ADR-0006 D8; a legible third-party brand appeared unrequested in 1–2 of 9 test images (benchmark log, BL-2026-10-29-01); check C9 |
+| C17 | No synthetic testimonials, reviews or generated demonstrations presented as real; real customers' words only with consent and labelled when re-enacted or voiced by an avatar; consent for any real likeness or voice; follow AI-disclosure and platform ad rules | `rule` | binding | ADR-0006 D4, D8 |
 | C18 | Plan reusable assets when the objective suggests other versions; never forced | `provisional` | option | Owner description; studio example of a reusable shot library (Pack 3) |
 
 ---
