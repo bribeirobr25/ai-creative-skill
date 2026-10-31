@@ -12,6 +12,7 @@ The first specialist under the [system vision](../../vision/README.md) and [ADR-
 | [evaluation.md](evaluation.md) | Three simulation scenarios with planted traps; planning criteria and a decision rule fixed before testing; production-quality criteria for later |
 | [smoke-test-plan.md](smoke-test-plan.md) | Five exploratory scenarios with fixed user sheets, procedure and criteria, written before running |
 | [smoke-test-report-2026-10-31.md](smoke-test-report-2026-10-31.md) | Results of the five runs (assisted role-play), the problems found and the fixes made; transcripts in `smoke-test-2026-10-31/` |
+| [smoke-test-regression-report-2026-10-31.md](smoke-test-regression-report-2026-10-31.md) | Clean regression run of the same five scenarios after the fixes: what is fixed, what regressed, what remains; transcripts in `smoke-test-2026-10-31-regression/` |
 
 ## Design choices
 
