@@ -1,6 +1,6 @@
-# Publication Safety Guard · experimental candidate
+# Publication Safety Guard
 
-**Scope:** Publication Safety Guard candidate. The acceptance state belongs to the reviewed ADR and repository owner; this README is not an operative merge decision. Historical V2.5 is immutable and Web 2.6 is maintained separately.
+**Scope:** the publication safety guard of [ADR-0003](../docs/decisions/ADR-0003-PROPOSED-development-review-and-publication-safety.md), accepted by the owner on 2026-10-30 (PR #42). This README is not an operative merge decision. Historical V2.5 is immutable and Web 2.6 is maintained separately.
 
 ## The active S0 result
 

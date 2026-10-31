@@ -1,4 +1,4 @@
-> **Current branch: boundary-hardening v1.** Follow the [candidate guide](candidates/boundary-hardening-v1/README.md) for current commands, 16 remediation mappings and separate release/candidate gates. The material below describes the original PR #6 baseline; its findings remain historical evidence, not the current candidate's acceptance status.
+> **Active candidate: `privacy-redaction-v1`** (see `candidates/ACTIVE.json`), which builds on [boundary-hardening v1](candidates/boundary-hardening-v1/README.md) and the Web 2.6 runtimes. The boundary-hardening guide keeps the 16 remediation mappings and separate release/candidate gates. The material below describes the original PR #6 baseline; its findings remain historical evidence, not the current candidate's acceptance status.
 
 # AI Creative Skill validation harness
 

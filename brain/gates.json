@@ -23,7 +23,7 @@
       "enforced_by": "CI required check: scan-publication-diff (security/publication_guard.py, enforcing copy taken from the base branch)",
       "status": "live",
       "required": true,
-      "source": "ADR-0003 (PROPOSED)"
+      "source": "ADR-0003"
     },
     {
       "id": "GATE-main-pr-only",
@@ -52,16 +52,16 @@
     {
       "id": "GATE-no-unasked-actions",
       "principle": "No unasked generation, spend, publication or contact",
-      "enforced_by": "Benchmark check C1/C2, re-run per ADR-0005 D1.4",
-      "status": "live",
+      "enforced_by": "Benchmark checks C1/C2; not re-run since the evaluation-method decision (2026-10-30). Re-instrumented by the ADR-0006 D9 evaluation design",
+      "status": "paper",
       "required": false,
       "source": "ADR-0005 D1.3"
     },
     {
       "id": "GATE-facts-only",
       "principle": "Claims only from the facts sheet",
-      "enforced_by": "Benchmark check C3",
-      "status": "live",
+      "enforced_by": "Benchmark check C3; not re-run since the evaluation-method decision (2026-10-30). Re-instrumented by the ADR-0006 D9 evaluation design",
+      "status": "paper",
       "required": false,
       "source": "ADR-0005 D1.3"
     },

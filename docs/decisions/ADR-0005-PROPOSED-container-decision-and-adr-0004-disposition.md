@@ -6,7 +6,7 @@
 - D2–D7 were accepted when the owner merged PR #33 on 2026-10-30.
 - The filename keeps `-PROPOSED` so existing links stay stable.
 
-> **Superseded in part by [ADR-0006](ADR-0006-system-direction-agent-teams.md) (2026-10-30):** the "no guide" part of D1 is replaced by guidance that earns its place, and M4–M6 (withdrawn in D2/D3) are re-opened as the agent-team direction. The frozen package, D4–D7 and the evaluation-method amendment stand.
+> **Superseded in part by [ADR-0006](ADR-0006-system-direction-agent-teams.md) (2026-10-30):** the "no guide" part of D1 and D1.2 are replaced by guidance that earns its place, and M4, M5's scheduler and notifications, and M6 (withdrawn in D2/D3) are re-opened as the agent-team direction; M5's dashboards stay withdrawn. D1.1, D1.3, D4–D7 and the evaluation-method amendment stand. Since 2026-10-30: D4 is done (#35), next steps 1–4 below are done, step 5 is replaced by the evaluation-method amendment, and check C7 (ADR-0002 T1–T7) is withdrawn.
 
 > **Amendment (owner, 2026-10-30): evaluation method.** No more live blind benchmark studies like Stage 1 are planned.
 > - Future questions are evaluated with simulations (for example Monte Carlo) and similar techniques, using the evidence already recorded.
@@ -15,7 +15,7 @@
 > - Recorded as `DEC-2026-10-30-evaluation-method` in the Project Brain.
 
 **Supersedes in part:** [ADR-0004](ADR-0004-PROPOSED-agent-workspace-durable-memory.md) (PROPOSED, never accepted). Its text stays unchanged as a historical record.
-**Leaves unchanged:** ADR-0001, ADR-0002, and ADR-0003 (still PROPOSED).
+**Leaves unchanged:** ADR-0001, ADR-0002, and ADR-0003 (PROPOSED when this ADR was written; accepted on 2026-10-30, PR #42).
 **Does not authorize:** merges, releases, changes to `src/`, paid APIs, use of private data, or external operations. Each still needs its own owner authorization.
 
 ## Context
@@ -27,7 +27,7 @@ The owner questioned whether a skill package is the right container. Three optio
 - **(b)** a short guide covering what, sequence, quality bar and limits, with techniques as dated suggestions;
 - **(c)** no artifact, plus a dated benchmark log.
 
-The question was tested before deciding. See [benchmark log entry BL-2026-10-29-01](../benchmarks/benchmark-log.md#bl-2026-10-29-01-container-test-stage-1).
+The question was tested before deciding. See [benchmark log entry BL-2026-10-29-01](../benchmarks/benchmark-log.md#bl-2026-10-29-01--container-test-stage-1).
 
 **Test design**
 - Three arms: none, the current skill (a), and a 6,500-character guide (b).

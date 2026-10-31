@@ -5,7 +5,7 @@
 Estes são registros de revisão, não autorização formal. A versão v0.3 é uma proposta de harmonização, não um contrato adotado.
 
 **Atualização 2026-10-30:**
-- Os PRs #20 (proposta do Security Gate), #18 (candidata v0.3) e #23 (laboratório consolidado S1–S3) foram integrados à `main` em 2026-10-26. Integração ao histórico não é aceite do Gate 0, da v0.3 nem da ADR-0003, que continua PROPOSED.
+- Os PRs #20 (proposta do Security Gate), #18 (candidata v0.3) e #23 (laboratório consolidado S1–S3) foram integrados à `main` em 2026-10-26. Integração ao histórico não é aceite do Gate 0 nem da v0.3. A ADR-0003 foi aceita pelo dono em 2026-10-30 (PR #42).
 - A [ADR-0005](../../decisions/ADR-0005-PROPOSED-container-decision-and-adr-0004-disposition.md) adia a Trilha D / M7 (Intelligence), sem alterar o estado do Gate 0.
 
 ## Sequência S0–S6
@@ -28,7 +28,7 @@ Estes são registros de revisão, não autorização formal. A versão v0.3 é u
 - Confirmar SourceCapabilityRecord sob §24, aliases da §1.1, vínculo a `MetricObservation`, `STOP_POLICY_REJECTION` e `STOP_REQUIRED_AUTHORITY_MISSING`.
 - A ativação futura de §24.1 DATA-SOURCE CONNECTORS é Gate separado. A seção é `NOT CURRENT CAPABILITIES`; citá-la não a implementa.
 - Fonte real inicial, licenças/permissões de dados próprios e externos, host das credenciais, histórico permitido e custos.
-- Aceite da ADR-0003 (Security Gate). O PR #20 foi integrado, mas a ADR continua PROPOSED. A proteção da `main` já está ativa por ruleset; as lacunas restantes são acompanhadas na Issue #24.
+- ADR-0003 (Security Gate): aceita em 2026-10-30 (PR #42); a proteção da `main` está ativa por ruleset e a Issue #24 foi fechada.
 - Decidir, antes de S6, quem governa a identidade de criadores, canais e publicações de terceiros; não confundir com `publication_id` das próprias campanhas.
 - Confirmar direitos por operação/campo/fonte para comparações com YouTube, métricas derivadas e redistribuição; aprovação específica de Analytics & Reporting permanece não demonstrada.
 
@@ -36,7 +36,7 @@ Estes são registros de revisão, não autorização formal. A versão v0.3 é u
 
 A `main`/V2.5 ficam intocados até merge autorizado. PR #17 é independente. O laboratório #23 é offline e não implementa API real, armazenamento real, publicação ou autorização financeira. Um retorno `SHAPE_CHECK_PASSED_SYNTHETIC_ONLY` jamais autoriza execução. As versões v0.1/v0.2 e referências PR #19/#21/#22 são história, não status vigente.
 
-**Evidência de testes sintéticos não equivale a direitos de fonte nem a aprovação do Gate 0.** A entrada independente e conclusão da futura capacidade exigem [ADR-0002](../../decisions/ADR-0002-capability-bounded-invocation.md) e seus cenários T1–T7, vinculados à [Issue #1](https://github.com/bribeirobr25/ai-creative-skill/issues/1).
+**Evidência de testes sintéticos não equivale a direitos de fonte nem a aprovação do Gate 0.** A entrada independente e conclusão da futura capacidade seguem os princípios da [ADR-0002](../../decisions/ADR-0002-capability-bounded-invocation.md); os cenários T1–T7 (check C7) foram retirados em 2026-10-30 e a Issue #1 foi fechada. A Trilha D volta como parte do desenho da área de Research ([visão](../../vision/README.md)).
 
 ## Limites documentados de cobertura (consulta de referência · outubro de 2026)
 

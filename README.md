@@ -27,7 +27,7 @@ Runtime tests require optional local packages described in the source installati
 
 ## Governance
 
-- `main`: pacote congelado (ADR-0005 D1), validado por dois gates (integridade imutável da V2.5 e candidata).
+- `main`: direção de equipes de agentes ([ADR-0006](docs/decisions/ADR-0006-system-direction-agent-teams.md)); o pacote V2.5 segue congelado (ADR-0005 D1), validado por dois gates (integridade imutável da V2.5 e candidata).
 - V2.5.0: commit `39a0bfa`, referência de release preservada.
 - Pesquisas concluídas ficam em `docs/research/`; evidência pesada (sites, fotos, capturas) fica nas branches dos PRs fechados.
 - Every capability belongs to the shared creative architecture **and** may run and finish independently at the user-requested boundary.
@@ -41,7 +41,8 @@ Runtime tests require optional local packages described in the source installati
 - `brain/`: Project Brain: decision and finding records, gates, `python3 -m brain status`.
 - `packaging/`: original plugin descriptor and deterministic two-format build.
 - `docs/migration/`: hashes and provenance.
-- `docs/decisions/`: architecture decisions (ADR-0001 to ADR-0005; ADR-0003 is PROPOSED, ADR-0004 partly superseded by ADR-0005).
+- `docs/decisions/`: architecture decisions (ADR-0001 to ADR-0006; ADR-0003 accepted on 2026-10-30, ADR-0004 partly superseded by ADR-0005, ADR-0005 partly superseded by ADR-0006).
+- `docs/vision/`: the system direction (agent teams for creative work and the business around it).
 - `docs/benchmarks/`: dated benchmark log of what current hosts and models do.
 - `docs/research/`: research records (creative quality, DQB-01, DQB-02, media reframe, video upscale, preference profiles).
 - `assets/manifests/`: storage-neutral asset schema, no actual media.

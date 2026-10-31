@@ -11,7 +11,7 @@ This log records what current hosts and models do, with dates, for the owner's c
   - a `review_by` date.
 - An observation is true only for the scope it names. It is not a rule.
 - Private study material (outputs, client media, account state, answer keys) stays outside this repository. Entries summarise it.
-- **Durable checks** are the pass/fail criteria that survive across entries (ADR-0005 D1.3). A check is retired when the current hosts pass it with no artifact in two consecutive entries.
+- **Durable checks** are the pass/fail criteria that survive across entries (ADR-0005 D1.3). A check is retired when the current hosts pass it with no artifact in two consecutive entries. This rule is suspended while no new entries are planned; ADR-0006 D9 (the evaluation design) decides how checks are re-run and retired.
 
 **Evaluation method (owner, 2026-10-30):** no more live blind studies like BL-2026-10-29-01 are planned. New questions are answered with simulations (for example Monte Carlo) over the evidence already recorded.
 - A simulation's result is only as good as its inputs. Where no observed input exists, the result is labelled an assumption.
