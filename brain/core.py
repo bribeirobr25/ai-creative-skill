@@ -101,6 +101,10 @@ def problems(rows, root=ROOT, allow_private=False):
             errs.append('%s:%d: %s supersedes itself' % (f, n, r['id']))
         elif r.get('supersedes') and r['supersedes'] not in known:
             errs.append('%s:%d: supersedes unknown id %s' % (f, n, r['supersedes']))
+        elif r.get('supersedes') and r.get('kind') == 'DECISION_RECORDED' and \
+                known[r['supersedes']].get('kind') == 'DECISION_RECORDED' and _subject(known[r['supersedes']]) != _subject(r):
+            errs.append('%s:%d: decision %s supersedes %s on another subject; a decision replaces only a decision on its own subject'
+                        % (f, n, r['id'], r['supersedes']))
         elif r.get('supersedes') and r.get('kind') != 'DECISION_RECORDED' and \
                 known[r['supersedes']].get('kind') == 'DECISION_RECORDED':
             errs.append('%s:%d: %s cannot supersede decision %s; only a decision can replace a decision' % (f, n, r.get('kind'), r['supersedes']))
@@ -116,6 +120,21 @@ def problems(rows, root=ROOT, allow_private=False):
                 cycles.add(loop)
                 errs.append('supersession cycle: %s; history must end in one record' % ' -> '.join(chain[chain.index(nxt):] + [nxt]))
     errs += contradictions(current(rows))
+    return errs
+
+
+def append_only_problems(base, rows):
+    """Rule 5 against a base: every record in base ({id: record}) must still exist here, unchanged (2026-11-03 audit)."""
+    here = {}
+    for _, _, r in rows:
+        if _typed(r):
+            here.setdefault(r['id'], r)
+    errs = []
+    for rid, old in sorted(base.items()):
+        if rid not in here:
+            errs.append('%s was removed; records are never deleted, add a superseding record instead' % rid)
+        elif here[rid] != old:
+            errs.append('%s was changed after its merge; add a superseding record instead' % rid)
     return errs
 
 
@@ -156,6 +175,9 @@ def current(rows, accepted=None):
             link = by_id.get(target)
             if link is None or counts(link):
                 break
+            after = by_id.get(link.get('supersedes'))
+            if after is not None and _subject(after) != _subject(r):
+                break  # a link not in force never carries a retirement to another subject (2026-11-03 audit)
             target = link.get('supersedes')
     return [r for r in live if r['id'] not in gone]
 
@@ -209,7 +231,30 @@ def added_in(record_id):
     return 'branch'
 
 
-def authority(rows, fetch=None, files=None, added=None):
+def main_records(ref='origin/main'):
+    """{id: record} as the records stand on ref, or None when git cannot tell."""
+    try:
+        names = subprocess.run(['git', 'ls-tree', '--name-only', ref, 'brain/records/'], cwd=ROOT, capture_output=True, text=True, timeout=60)
+        if names.returncode:
+            return None
+        out = {}
+        for name in names.stdout.split():
+            if not name.endswith('.jsonl'):
+                continue
+            text = subprocess.run(['git', 'show', '%s:%s' % (ref, name)], cwd=ROOT, capture_output=True, text=True, timeout=60).stdout
+            for line in text.splitlines():
+                try:
+                    r = json.loads(line)
+                except json.JSONDecodeError:
+                    continue
+                if isinstance(r, dict) and isinstance(r.get('id'), str):
+                    out.setdefault(r['id'], r)
+        return out
+    except (OSError, subprocess.TimeoutExpired):
+        return None
+
+
+def authority(rows, fetch=None, files=None, added=None, merged=None):
     """Classify every decision by its authority PR: {id: (state, reason)}.
 
     accepted: merged by the repository owner; the record itself was added to main by a PR the owner merged
@@ -222,6 +267,7 @@ def authority(rows, fetch=None, files=None, added=None):
     fetch = fetch or (lambda n: gh('api', 'repos/{owner}/{repo}/pulls/%d' % n))
     files = files or pr_files
     added = added or added_in
+    on_main = merged() if merged else main_records()
     prs, changed, out = {}, {}, {}
 
     def pr_of(n):
@@ -267,6 +313,14 @@ def authority(rows, fetch=None, files=None, added=None):
         if source == 'unknown':
             out[rid] = ('invalid', 'the record reached main outside a squash-merged PR')
             continue
+        if on_main is None:
+            out[rid] = ('unverified', 'cannot read the records on origin/main to compare this one')
+            continue
+        if on_main.get(rid) != r:
+            # Rule 5, add don't rewrite (2026-11-03 audit): a record already on main that differs here was edited
+            # or re-pointed after its merge; its authority covers only what was merged.
+            out[rid] = ('invalid', 'the record differs from its merged version on main; add a superseding record instead')
+            continue
         if source != n:
             adder = pr_of(source)
             if adder is None:
@@ -288,10 +342,10 @@ def authority(rows, fetch=None, files=None, added=None):
     return out
 
 
-def verify_authority(rows, fetch=None, files=None, added=None):
+def verify_authority(rows, fetch=None, files=None, added=None, merged=None):
     """Every decision, current or history, must be the owner's: merged by the owner, added by an owner-merged PR,
     and consistent with its evidence. A chain is only as good as each link."""
-    states = authority(rows, fetch, files, added)
+    states = authority(rows, fetch, files, added, merged)
     errs = []
     for rid, (state, reason) in sorted(states.items()):
         if state != 'accepted':
@@ -306,7 +360,8 @@ def settings_problems(rulesets, repo):
     """Findings ISS24-1/2/3/7/9/10: the protections Issue #24 asked for are still in place.
 
     rulesets: list of ruleset details (GET /repos/{owner}/{repo}/rulesets/{id}); repo: GET /repos/{owner}/{repo},
-    plus 'actions_permissions' from GET /repos/{owner}/{repo}/actions/permissions."""
+    plus 'actions_permissions' from GET /repos/{owner}/{repo}/actions/permissions, and optionally 'branches' (names)
+    and 'open_pr_heads' (head branch names of open PRs) for the branch policy."""
     errs = []
 
     def find(include):
@@ -314,6 +369,19 @@ def settings_problems(rulesets, repo):
 
     def rules(r):
         return {x['type']: x.get('parameters') or {} for x in r.get('rules', [])}
+
+    ACTIONS_APP = 15368  # GitHub Actions: a required check must come from it, not from any commit status
+
+    def shape(r, label, target, allowed_excludes=()):
+        # 2026-11-03 audit: an exclude list, a bypass actor or a different target can hollow out a ruleset that
+        # still "includes" the right pattern.
+        if r.get('target', target) != target:
+            errs.append('%s ruleset targets %s, not %s' % (label, r.get('target'), target))
+        extra = set(r['conditions']['ref_name'].get('exclude') or []) - set(allowed_excludes)
+        if extra:
+            errs.append('%s ruleset excludes %s' % (label, ', '.join(sorted(extra))))
+        if r.get('bypass_actors'):
+            errs.append('%s ruleset has bypass actors' % label)
 
     main = find('~DEFAULT_BRANCH')
     if not main:
@@ -323,22 +391,34 @@ def settings_problems(rulesets, repo):
         for t in ('deletion', 'non_fast_forward', 'required_linear_history', 'pull_request', 'required_status_checks'):
             if t not in got:
                 errs.append('default-branch ruleset lacks %s' % t)
-        checks = {c['context'] for c in got.get('required_status_checks', {}).get('required_status_checks', [])}
+        listed = got.get('required_status_checks', {}).get('required_status_checks', [])
+        checks = {c['context'] for c in listed}
+        unpinned = sorted(c['context'] for c in listed if c['context'] in REQUIRED_CHECKS and c.get('integration_id') != ACTIONS_APP)
+        if unpinned:
+            errs.append('required checks not pinned to GitHub Actions: %s' % ', '.join(unpinned))
         if not REQUIRED_CHECKS <= checks:
             errs.append('required checks missing: %s' % ', '.join(sorted(REQUIRED_CHECKS - checks)))
         if 'required_status_checks' in got and not got['required_status_checks'].get('strict_required_status_checks_policy'):
             errs.append('required checks do not require up-to-date branches')
         if 'pull_request' in got and got['pull_request'].get('allowed_merge_methods') != ['squash']:
             errs.append('default branch is not squash-only')
-        if r.get('bypass_actors'):
-            errs.append('default-branch ruleset has bypass actors')
+        shape(r, 'default-branch', 'branch')
     # Branch policy (owner, 2026-10-31): history is never rewritten on any branch, but a branch may be deleted;
     # merged PR branches are deleted automatically and GitHub keeps every PR's commits on the PR.
-    for include, need, label in (('~ALL', ('non_fast_forward',), 'evidence-branch'),
-                                 ('refs/tags/v*', ('deletion', 'update', 'non_fast_forward'), 'release-tag')):
+    for include, need, label, target, allowed in (
+            ('~ALL', ('non_fast_forward',), 'evidence-branch', 'branch', ('~DEFAULT_BRANCH', 'refs/heads/dependabot/**')),
+            ('refs/tags/v*', ('deletion', 'update', 'non_fast_forward'), 'release-tag', 'tag', ()),
+            ('refs/tags/archive/**', ('deletion', 'update', 'non_fast_forward'), 'archive-tag', 'tag', ())):
         rs = find(include)
         if not rs or any(t not in rules(rs[0]) for t in need):
             errs.append('%s ruleset missing or incomplete' % label)
+        for r in rs[:1]:
+            shape(r, label, target, allowed)
+    # Branch policy: only main and branches with open PRs exist (2026-11-03 audit: the gate claimed it unchecked).
+    if repo.get('branches') is not None and repo.get('open_pr_heads') is not None:
+        stray = sorted(set(repo['branches']) - set(repo['open_pr_heads']) - {repo.get('default_branch', 'main')})
+        if stray:
+            errs.append('branches without an open PR: %s' % ', '.join(stray))
     if repo.get('delete_branch_on_merge') is not True:
         errs.append('merged PR branches are not deleted automatically (delete_branch_on_merge)')
     sa = repo.get('security_and_analysis') or {}
@@ -357,6 +437,11 @@ def fetch_settings():
     if listed is None or repo is None or actions is None:
         return None
     repo['actions_permissions'] = actions
+    branches = gh('api', '--paginate', 'repos/{owner}/{repo}/branches?per_page=100')
+    prs = gh('pr', 'list', '--state', 'open', '--limit', '200', '--json', 'headRefName')
+    if branches is not None and prs is not None:
+        repo['branches'] = [b['name'] for b in branches]
+        repo['open_pr_heads'] = [p['headRefName'] for p in prs]
     details = [gh('api', 'repos/{owner}/{repo}/rulesets/%d' % r['id']) for r in listed]
     return None if None in details else (details, repo)
 
@@ -373,7 +458,8 @@ MERGED_WORD = re.compile(r'(?i)\b(?:merged|integrad[oa]s?|closed|fechado)\b')
 
 
 ADR_STATUS = re.compile(r'^\*\*Status:\*\*\s*ACCEPTED', re.M)
-PROPOSED_WORD = r'(?:PROPOSED|proposed|propost[oa]|continua PROPOSED)'
+# A status, not a history: upper-case PROPOSED anywhere, or a status phrase in any case (2026-11-03 audit).
+PROPOSED_STATUS = r'(?:\bPROPOSED\b|(?i:\b(?:is|still|remains|continua|status:?)\s+\(?(?:proposed|propost[oa])\b|\(\s*proposed\s*\)))'
 ADR_FILENAME = re.compile(r'ADR-\d{4}-PROPOSED-[\w.-]*')
 
 
@@ -388,16 +474,16 @@ def stale_doc_lines(merged, root=ROOT, docs=LIVING_DOCS):
     merged: set of merged PR numbers."""
     out = []
     adrs = accepted_adrs(root)
-    adr_rx = [(a, re.compile(r'%s(?!-PROPOSED-)(?:(?!ADR-)[^.\n]){0,40}?\b%s\b|\b%s\s+(?:a\s+)?%s' % (a, PROPOSED_WORD, PROPOSED_WORD, a)))
-              for a in sorted(adrs)]
+    adr_rx = [(a, re.compile(r'%s(?!-PROPOSED-)(?:(?!ADR-)[^.;\n]){0,40}?%s|(?i:\bpropos(?:ed|ta)\s+(?:a\s+)?)%s' % (a, PROPOSED_STATUS, a)),
+               re.compile(r'(?i)%s(?:(?!ADR-)[^.;\n]){0,40}?\baccept' % a)) for a in sorted(adrs)]
     for rel in docs:
         path = Path(root) / rel
         if not path.exists():
             continue
         for n, line in enumerate(path.read_text(encoding='utf-8').splitlines(), 1):
             bare = ADR_FILENAME.sub('', line)
-            for a, rx in adr_rx:
-                if rx.search(bare) and not re.search(r'(?i)\baccept', bare):
+            for a, rx, exempt in adr_rx:
+                if rx.search(bare) and not exempt.search(bare):
                     out.append('%s:%d: %s is ACCEPTED but described as proposed' % (rel, n, a))
             if MERGED_WORD.search(line):
                 continue
@@ -424,7 +510,7 @@ def benchmark_checks(path=BENCHMARK_LOG):
     return rows
 
 
-def status(rows, today=None, online=True, fetch=None, files=None, added=None):
+def status(rows, today=None, online=True, fetch=None, files=None, added=None, merged=None):
     today = today or datetime.date.today().isoformat()
     L = ['# Project Brain status (derived %s; not committed)' % today, '']
     errs = problems(rows)
@@ -438,7 +524,7 @@ def status(rows, today=None, online=True, fetch=None, files=None, added=None):
     def decisions(rs):
         return sorted((r for r in rs if r.get('kind') == 'DECISION_RECORDED'), key=lambda r: r.get('subject', ''))
 
-    states = authority(rows, fetch, files, added) if (online or fetch) else None
+    states = authority(rows, fetch, files, added, merged) if (online or fetch) else None
     if states is None:
         cur = current(rows)
         L += ['## Decisions (not verified: GitHub not reachable; none is confirmed as the owner\'s)', '']

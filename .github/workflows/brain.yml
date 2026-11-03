@@ -1,7 +1,9 @@
 name: Project Brain
 on:
+  # Pull requests only, including retargeting (edited): a manual run must not report brain-records using only the
+  # branch's own code (2026-11-03 audit).
   pull_request:
-  workflow_dispatch:
+    types: [opened, synchronize, reopened, edited]
 permissions:
   contents: read
   pull-requests: read
@@ -32,9 +34,15 @@ jobs:
           git archive "$BASE_SHA" brain | tar -x -C "$check"
           rm -rf "$check/brain/records"
           cp -R brain/records "$check/brain/records"
-          cd "$check" && python -m brain validate
-      - name: Records follow brain/CONTRACT.md
-        run: python -m brain validate
+          # Import only the base brain package: -P keeps the working folder off sys.path, so a module the PR adds at
+          # the top level (argparse.py, json.py...) cannot shadow the standard library (2026-11-03 audit).
+          mkdir -p "$RUNNER_TEMP/brain-path"
+          ln -s "$check/brain" "$RUNNER_TEMP/brain-path/brain"
+          cd "$check" && PYTHONPATH="$RUNNER_TEMP/brain-path" python -P -m brain validate
+      - name: Records follow brain/CONTRACT.md, and no merged record was changed or removed (rule 5)
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: python -m brain validate --base-ref "$BASE_SHA"
       - name: Living docs do not call merged PRs open (finding SNAP-1)
         env:
           GH_TOKEN: ${{ github.token }}

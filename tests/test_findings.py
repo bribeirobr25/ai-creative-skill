@@ -61,6 +61,22 @@ class ActionsPinning(unittest.TestCase):
                 if re.search(r'\|\s*tee\b', step):
                     self.assertRegex(step, r'\n\s+shell: bash\n', '%s: %s' % (wf.name, step.splitlines()[0]))
 
+    def test_required_checks_run_only_on_pull_requests(self):
+        # 2026-11-03 audit: a manual run reported the required check names using only the branch's own code, and
+        # retargeting a PR did not re-run brain-records.
+        for name in ('brain.yml', 'publication-guard.yml'):
+            head = (ROOT / '.github/workflows' / name).read_text().split('\njobs:')[0]
+            self.assertNotIn('workflow_dispatch', head, name)
+            self.assertIn('types: [opened, synchronize, reopened, edited]', head, name)
+        self.assertIn('history-audit:', (ROOT / '.github/workflows/history-audit.yml').read_text())
+
+    def test_base_brain_step_cannot_be_shadowed(self):
+        # 2026-11-03 audit: `python -m` puts the working folder first on sys.path, so a top-level module in the PR
+        # could replace the standard library inside the base-copy step.
+        step = next(st for st in self.steps('brain.yml') if 'git archive "$BASE_SHA" brain' in st)
+        self.assertIn('python -P -m brain validate', step)
+        self.assertIn('PYTHONPATH="$RUNNER_TEMP/brain-path"', step)
+
     def test_enforcing_checks_run_before_pr_code(self):
         # 2026-10-30 audit: the base-copy checks run before any step that executes the PR's own code.
         guard = self.steps('publication-guard.yml')
@@ -80,18 +96,21 @@ class ActionsPinning(unittest.TestCase):
 
 
 def good_settings():
-    def rs(include, rules):
-        return {'enforcement': 'active', 'bypass_actors': [], 'conditions': {'ref_name': {'include': [include]}},
+    def rs(include, rules, target='branch', exclude=()):
+        return {'enforcement': 'active', 'target': target, 'bypass_actors': [],
+                'conditions': {'ref_name': {'include': [include], 'exclude': list(exclude)}},
                 'rules': [{'type': t, 'parameters': p} for t, p in rules]}
     main = rs('~DEFAULT_BRANCH', [('deletion', None), ('non_fast_forward', None), ('required_linear_history', None),
                                   ('pull_request', {'allowed_merge_methods': ['squash']}),
                                   ('required_status_checks', {'strict_required_status_checks_policy': True,
-                                                              'required_status_checks': [{'context': c} for c in core.REQUIRED_CHECKS]})])
-    branches = rs('~ALL', [('non_fast_forward', None)])
-    tags = rs('refs/tags/v*', [('deletion', None), ('update', None), ('non_fast_forward', None)])
+                                                              'required_status_checks': [{'context': c, 'integration_id': 15368} for c in core.REQUIRED_CHECKS]})])
+    branches = rs('~ALL', [('non_fast_forward', None)], exclude=('~DEFAULT_BRANCH', 'refs/heads/dependabot/**'))
+    tags = rs('refs/tags/v*', [('deletion', None), ('update', None), ('non_fast_forward', None)], target='tag')
+    archive = rs('refs/tags/archive/**', [('deletion', None), ('update', None), ('non_fast_forward', None)], target='tag')
     repo = {'delete_branch_on_merge': True, 'security_and_analysis': {'secret_scanning': {'status': 'enabled'}, 'secret_scanning_push_protection': {'status': 'enabled'}},
             'actions_permissions': {'sha_pinning_required': True}}
-    return [main, branches, tags], repo
+    repo.update(branches=['main', 'feature-x'], open_pr_heads=['feature-x'], default_branch='main')
+    return [main, branches, tags, archive], repo
 
 
 class RepoSettings(unittest.TestCase):
@@ -113,6 +132,12 @@ class RepoSettings(unittest.TestCase):
             'SHA pinning': lambda rs, repo: repo['actions_permissions'].update(sha_pinning_required=False),
             'deleted automatically': lambda rs, repo: repo.update(delete_branch_on_merge=False),
             'evidence-branch ruleset missing': lambda rs, repo: rs[1]['rules'].pop(),
+            'evidence-branch ruleset excludes': lambda rs, repo: rs[1]['conditions']['ref_name']['exclude'].append('refs/heads/**'),
+            'release-tag ruleset has bypass actors': lambda rs, repo: rs[2].update(bypass_actors=[{'actor_id': 1}]),
+            'evidence-branch ruleset targets': lambda rs, repo: rs[1].update(target='tag'),
+            'not pinned to GitHub Actions': lambda rs, repo: rs[0]['rules'][4]['parameters']['required_status_checks'][0].pop('integration_id'),
+            'archive-tag ruleset missing': lambda rs, repo: rs.pop(3),
+            'branches without an open PR': lambda rs, repo: repo['branches'].append('stale-branch'),
         }
         for want, mutate in cases.items():
             rs, repo = copy.deepcopy(good_settings())
@@ -144,6 +169,19 @@ class StaleDocs(unittest.TestCase):
                                                '[ADR-0003](docs/decisions/ADR-0003-PROPOSED-x.md) and ADR-0005; ADR-0004 is PROPOSED\n')
             got = core.stale_doc_lines(set(), root=d, docs=('README.md',))
         self.assertEqual([g.split(':')[1] for g in got], ['1', '2', '3'])
+
+    def test_proposed_status_in_any_case_but_not_history(self):
+        # 2026-11-03 audit: "status: Proposed" was missed, an unrelated "accepted" on the line exempted it, and a
+        # true historical sentence ("ADR-0005 D2 proposed withdrawing M4") was flagged.
+        with tempfile.TemporaryDirectory() as d:
+            (Path(d) / 'docs' / 'decisions').mkdir(parents=True)
+            for n in ('0003', '0005', '0006'):
+                (Path(d) / 'docs' / 'decisions' / ('ADR-%s-x.md' % n)).write_text('# x\n\n**Status:** ACCEPTED.\n')
+            (Path(d) / 'README.md').write_text('ADR-0003 status: Proposed.\nADR-0003 is PROPOSED; ADR-0006 is accepted.\n'
+                                               'ADR-0005 D2 proposed withdrawing M4\nADR-0003 is still proposed\n'
+                                               'ADR-0006 was proposed and accepted\n')
+            got = core.stale_doc_lines(set(), root=d, docs=('README.md',))
+        self.assertEqual([g.split(':')[1] for g in got], ['1', '2', '4'])
 
     def test_acknowledged_or_unmerged_is_not_flagged(self):
         self.assertEqual(self.lint('PR #23 was merged on 2026-10-26; it had been proposed earlier'), [])

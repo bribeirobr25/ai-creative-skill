@@ -455,14 +455,30 @@ class SecretRulesTests(unittest.TestCase):
             self.assertNotIn(("BLOCK", "GENERIC_SECRET_ASSIGNMENT"), rules(fake_patch(line)), line)
 
     def test_underscore_secret_key_blocks(self):
-        self.assertIn(("BLOCK", "SECRET_KEY"), rules(fake_patch("key " + "sk_" + "t" * 30)))
+        self.assertIn(("BLOCK", "SECRET_KEY"), rules(fake_patch("key " + "sk_test_" + "t" * 30)))
+        # 2026-11-03 audit: an ordinary identifier starting with sk_ is not a key.
+        self.assertNotIn(("BLOCK", "SECRET_KEY"), rules(fake_patch("def sk_" + "compute_the_sha256_digest_of_file():")))
+
+    def test_names_ending_in_token_or_secret_block(self):
+        # 2026-11-03 audit: FOO_TOKEN= and FOO_SECRET= forms, =>, --api-key flags and "Authorization: Token".
+        value = "Q7" + "w" * 30
+        for line in ("GITHUB_TOKEN=" + value, "JWT_SECRET=" + value, "REPLICATE_API_TOKEN=" + value,
+                     "api_token: " + value, 'api_key => "%s"' % value, "--api-key " + value):
+            self.assertIn(("BLOCK", "GENERIC_SECRET_ASSIGNMENT"), rules(fake_patch(line)), line)
+        self.assertIn(("BLOCK", "BEARER_CREDENTIAL"), rules(fake_patch("Authorization: Token " + value)))
+        for line in ("secret: " + "a1b2c3d4e5" * 4, "commit_token: deadbeef", "token: ${{ secrets.GITHUB_TOKEN }}"):
+            self.assertNotIn(("BLOCK", "GENERIC_SECRET_ASSIGNMENT"), rules(fake_patch(line)), line)
 
     def test_local_home_path_is_reviewed(self):
         # 2026-10-30 audit: a home folder names the owner's account and machine layout.
         self.assertIn(("REVIEW", "LOCAL_HOME_PATH"), rules(fake_patch("see /Users/" + "jdoe/Desktop/notes")))
         self.assertIn(("REVIEW", "LOCAL_HOME_PATH"), rules(fake_patch("cd /home/" + "jdoe/work/")))
-        for line in ("/Users/you/project/", "/home/runner/work/", "C:/Users/someone/a.js"):
+        for line in ("/Users/you/project/", "/home/runner/work/", "C:/Users/someone/a.js", "/Users/you"):
             self.assertNotIn(("REVIEW", "LOCAL_HOME_PATH"), rules(fake_patch(line)), line)
+        # 2026-11-03 audit: no trailing slash, Windows, macOS temp folders, and the harness scratch form.
+        for line in ("/Users/" + "jdoe", "C:\\Users\\" + "jdoe\\Desktop", "/var/folders/" + "bv/x",
+                     "/private/tmp/claude-" + "501/scratch", "a -Users-" + "jdoe-Desktop path"):
+            self.assertIn(("REVIEW", "LOCAL_HOME_PATH"), rules(fake_patch(line)), line)
 
     def test_media_with_exif_needs_review(self):
         # Finding PR20-P1-5: EXIF in added media is routed to review (labels only, no values).

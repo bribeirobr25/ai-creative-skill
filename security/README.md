@@ -40,7 +40,7 @@ git fetch --no-tags --prune origin '+refs/heads/*:refs/remotes/origin/*'
 python security/history_audit.py
 ```
 
-The global historical scan runs **only on explicit workflow_dispatch/manual use**, not as a blocking dependency of unrelated PRs. It reports **audit incomplete (exit 2)** when it encounters skipped oversized, binary or non-UTF8 blobs; a zero exit code must not be claimed in that case. Full coverage of unreachable commits, forks, caches, media pixels, historical permissions and rights is not claimed. Private link/media triage remains local only.
+The global historical scan runs **only on explicit manual use** (the `history-audit` job in `.github/workflows/history-audit.yml`), not as a blocking dependency of unrelated PRs; the required checks run only on pull requests, so a manual run can never report them. It reports **audit incomplete (exit 2)** when it encounters skipped oversized, binary or non-UTF8 blobs; a zero exit code must not be claimed in that case. Full coverage of unreachable commits, forks, caches, media pixels, historical permissions and rights is not claimed. Private link/media triage remains local only.
 
 ## Follow-up items from PR #20 (status 2026-10-30)
 
