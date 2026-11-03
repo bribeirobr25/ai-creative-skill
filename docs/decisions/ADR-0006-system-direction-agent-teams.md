@@ -59,7 +59,7 @@ Read (allowed, within platform terms; restricted platform APIs often mean paid d
 
 ### D7 · Guided user journey
 - Intake of the user's goal and context; a plan from a playbook (a proven cross-area sequence for a type of goal); guided stages with checkpoints at the brief, the direction, approving or widening a stage's execution scope and spend limit (D6), and publication or contact; delivery; results measured and fed back.
-- The user can always see progress, cost so far, pending approvals and what was learned. How (records, host views or a dashboard) is decided in the shared-core design; a dedicated dashboard (M5) is not re-opened.
+- The user can always see progress, cost so far, pending approvals and what was learned. How (records or host views) is decided in the shared-core design; a dedicated dashboard (M5) stays withdrawn and is not re-opened without a new decision.
 - For an agency, approvals and revision rounds are recorded per end client.
 - Quality is judged by required elements (checked by the independent reviewer), the user's judgement, real results, and checks with simulation (ADR-0005 evaluation-method amendment).
 
@@ -70,7 +70,7 @@ Read (allowed, within platform terms; restricted platform APIs often mean paid d
 - Websites meet common accessibility standards; videos carry captions and images alt text. Steps that need a human professional (a trademark search by a lawyer, a real shoot, a voice actor's consent) are prepared and handed off, not simulated.
 
 ### D9 · Evaluation design is an open owner decision
-"Earns its place" needs evidence that results get worse without a piece of guidance or an agent. The benchmark checks C1–C9 test restraint and safety, not creative quality; simulation can only reuse recorded evidence; live blind studies are no longer planned. The design is decided before the vertical slice. A proposal: recorded owner ratings on real work, comparisons inside real projects (the same deliverable with and without a pack), and the four-axis rubric in `docs/research/creative-quality/evaluation.md`. Until then, guidance and agents are adopted provisionally and marked unproven, and the benchmark-check retirement rule is suspended.
+"Earns its place" needs evidence that results get worse without a piece of guidance or an agent. The benchmark checks C1–C9 test restraint and safety, not creative quality; simulation can only reuse recorded evidence; live blind studies are no longer planned. The design is decided before the vertical slice. A proposal: recorded owner ratings on real work, comparisons inside real projects (the same deliverable with and without a pack), and the four-axis rubric in `docs/research/creative-quality/evaluation.md`. Until then, guidance and agents are adopted provisionally and marked unproven, and the benchmark-check retirement rule is suspended. The decision record that settles D9 supersedes DEC-2026-10-30-evaluation-method (evaluation by simulation over recorded evidence), which stays current until then.
 
 ## Consequences
 
