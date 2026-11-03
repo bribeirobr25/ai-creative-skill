@@ -127,7 +127,7 @@ direction_package:
     permitted_operations: []  # e.g. generate key frames, animate approved frames, edit, add sound
     deliverables: []          # what is produced, with formats
     preserve: []              # what must stay fixed (product, identity, approved text)
-    vary: []                  # what may vary, and within what range
+    vary: []                  # each entry states its range, e.g. "light angle within 30° of the key light", "background black to deep grey"; an entry without a range counts as preserve
     quantities:               # items per deliverable
     attempts_per_item:
     tool_classes: []          # kinds of route (reference-based generation, code-based motion graphics, avatar...), never a single provider
@@ -157,4 +157,4 @@ direction_package:
   | A material change to the approved storyboard beyond its allowed variation | Yes |
 
   Changes inside the envelope are reported to the user in the next update, so nothing changes silently. Changes outside it are listed as "changed from vN" and become vN+1, which needs its own approval. If it is unclear whether a change fits the written fields, it counts as outside.
-- **Recording an approval** *(added after the 2026-10-31 smoke test, S2)*. In v0.1 the Director has no mechanism to record anything. It may acknowledge that the user approved a version in the conversation, but it never claims the approval was recorded, persisted or turned into executable authority. `approval_ref` stays empty until a verifiable approval record exists. Before anything real runs, the approval must be bound to that record. A sentence in a conversation is not proof of authorization.
+- **Recording an approval** *(added after the 2026-10-31 smoke test, S2; shortened after the regression run)*. v0.1 cannot record or verify approvals. The Director says so once, briefly ("noted; it needs to be recorded before anything runs"), and does not ask the user to set up a process. In v0.1 the Director has no mechanism to record anything. It may acknowledge that the user approved a version in the conversation, but it never claims the approval was recorded, persisted or turned into executable authority. `approval_ref` stays empty until a verifiable approval record exists. Before anything real runs, the approval must be bound to that record. A sentence in a conversation is not proof of authorization.

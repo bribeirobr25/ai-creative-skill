@@ -51,7 +51,7 @@ Each item also has a strength, kept separate from the tag:
 | C14 | Say which of the three kinds of quality (artistic, technical, commercial) matter most for this job | `provisional` | default | Owner description |
 | C15 | Sound is directed, not added at the end: ambience, sounds of materials and actions, and accents that mark transformations | `technique` | option | Research conversation (motion study) |
 | C16 | Third-party brands, logos and real likenesses are used according to the rights record and the authorization: the user's own brand, licensed products, partner co-branding and consented people are fine. Generation must not *introduce* marks or real likenesses nobody asked for, so name them in what to avoid | `rule` (rights and consent) + `evidence` (unrequested marks) | binding for rights and consent; default for naming what to avoid | ADR-0006 D8; a legible third-party brand appeared unrequested in 1–2 of 9 test images (benchmark log, BL-2026-10-29-01); check C9 |
-| C17 | No synthetic testimonials, reviews or generated demonstrations presented as real; real customers' words only with consent and labelled when re-enacted or voiced by an avatar; consent for any real likeness or voice; follow AI-disclosure and platform ad rules | `rule` | binding | ADR-0006 D4, D8 |
+| C17 | No synthetic testimonials, reviews or generated demonstrations presented as real; real customers' words only with consent and labelled when re-enacted or voiced by an avatar; consent for any real likeness or voice, and licence terms for synthetic voices; for children's audiences, the platform's audience setting and content rules apply; follow AI-disclosure and platform ad rules | `rule` | binding | ADR-0006 D4, D8 |
 | C18 | Plan reusable assets when the objective suggests other versions; never forced | `provisional` | option | Owner description; studio example of a reusable shot library (Pack 3) |
 
 ---
@@ -77,7 +77,7 @@ A card adds only what changes for that type or medium. The Core still applies. B
 | Card | When it fits | Production route | Watch for |
 |---|---|---|---|
 | Cinematic / photoreal generation | Physical products, emotion, atmosphere, lifestyle | Reference-based generation from approved still frames | Identity drift between shots; physics and hands; text |
-| Motion graphics | Information, structure, data, interfaces, brand systems, text-heavy pieces | Often code-based and deterministic, so text, numbers and colours stay exact; a separate Production route | Licence terms of programmatic tools (`current`, see register); not automatically cheaper |
+| Motion graphics | Information, structure, data, interfaces, brand systems, text-heavy pieces | Often code-based and deterministic, so text, numbers and colours stay exact; a separate Production route | Licence terms of programmatic tools (`current`, see register); not automatically cheaper; typeface and brand guide decide the look, so they are needed before style frames |
 | Avatar / talking head | Presenter-led, multilingual, frequent updates | Avatar and voice route | Consent, disclosure, lip sync |
 | Illustrated / parallax | Story-led or budget-aware pieces | Generated or drawn stills animated with pans, depth and masks | Reads as video only if the motion is purposeful |
 | Hybrid | Most strong pieces: photoreal hero moments with precise graphics on top | Several routes, joined in the edit | Consistent look across routes |
