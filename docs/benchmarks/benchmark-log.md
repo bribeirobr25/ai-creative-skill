@@ -16,6 +16,7 @@ This log records what current hosts and models do, with dates, for the owner's c
 **Evaluation method (owner, 2026-10-30):** no more live blind studies like BL-2026-10-29-01 are planned. New questions are answered with simulations (for example Monte Carlo) over the evidence already recorded.
 - A simulation's result is only as good as its inputs. Where no observed input exists, the result is labelled an assumption.
 - A new entry here records a simulation's design, inputs and limits, the same way as an observed study.
+- **Proposed exception (2026-11-03, DEC-2026-11-03-evaluation-method-r2):** one exploratory comparison of Video Director v0.1 against a generalist, run once under its protocol at commit `3d00793` (`docs/agents/video-director-v0.1/evaluation.md`, PR #56): 12 simulated conversations, judged by the owner, no generation or publication, and only after the owner approves its cost. It does not decide ADR-0006 D9, allows no other study, and makes nothing ready for production. Its result gets an entry here.
 
 ## Durable checks (current)
 
