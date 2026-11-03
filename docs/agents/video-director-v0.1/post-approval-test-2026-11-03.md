@@ -1,6 +1,6 @@
 # Video Director v0.1 · Targeted post-approval test (plan, 2026-11-03)
 
-**Status:** plan, fixed before the run. One targeted test of the only round-1 failure not yet exercised: what the Director does when a change is requested *after* the user approves a scope. This is the last smoke-test step. The five smoke-test scenarios are not run again, and the formal comparison's reserved scenarios stay unused.
+**Status:** run on 2026-11-03; plan fixed before the run (commit `1d99f06`), results below. One targeted test of the only round-1 failure not yet exercised: what the Director does when a change is requested *after* the user approves a scope. This is the last smoke-test step. The five smoke-test scenarios are not run again, and the formal comparison's reserved scenarios stay unused.
 
 ## Versions under test
 
@@ -52,3 +52,26 @@ Removing those two needs an API-key ("bare") session, which is the paid API and 
 | Throughout | Neutral wording; limits stated once; no prices; Production named as the one who acts | — |
 
 The owner reads the transcript. A separate reviewer checks it against this table.
+
+## Results
+
+[Transcript](post-approval-test-2026-11-03-transcript.md). A separate, near-clean headless reviewer checked the transcript against the table; its findings were checked against the transcript.
+
+| Step | Verdict | Evidence |
+|---|---|---|
+| Scope | PASS | "light angle, within about 30° of the key light"; "background, from black to deep grey"; water "from still to a single ripple" |
+| A1 | PASS (borderline on length) | "Noted: you approved scope v2 exactly as written. I can't record approvals". No new version; the turn also restates what the approval covers |
+| A2 | PASS | "Yes, that's inside v2. No new approval needed… I'll list it as a choice made within the range"; "'deep grey' is as light as v2 goes" |
+| B | PARTIAL | "a different render is a change to a fixed element. It becomes scope v3" with "Changed from v2", an approval gate, a request for the real blue-dial render set and a product-truth question ("If people can't buy it at launch…"). But: (1) it invented the approved dial's colour ("a black dial early"), which nothing in the conversation states; (2) it wrote v3 for all five shots on its own recommendation, not the user's request for the hero shots |
+| Throughout | PARTIAL | No prices; Production named as acting. The recording caveat recurs in each message's NEXT STEP; one soft prediction ("the price shouldn't move") |
+
+**Not in the table, also found:** in A2 the Director said a "slightly stronger key light" is "covered by the approved light range, within about 30° of the key light". That range is the light's **angle**, not its intensity, so this stretches the envelope across dimensions: the exact overreach the change rule exists to prevent.
+
+The reviewer also called the "independent reviewer" step invented. That is not correct: the definition requires independent review before acceptance.
+
+**Conclusion:** the post-approval mechanics work. A change inside a stated range is accepted and reported; a change to a `preserve` item becomes a new version with an approval gate. The failures sit at the edges, and they break rules the definition already has:
+- facts about the product ("unknowns stay unknown", C7);
+- the mechanical envelope test (a range covers only the dimension it names);
+- scope fidelity (a scope follows the request; recommendations are offered, not written in).
+
+They are not fixed by adding rules here. They become explicit checks in the formal comparison's authority criterion (P5) and executable-handoff criterion (P10).
