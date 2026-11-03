@@ -2,6 +2,10 @@
 
 **Status:** plan, fixed before any run. Exploratory evidence only. It shows whether the flow works, where it fails and whether limits are respected. It is **not** a comparison with a plain model and says nothing about final video quality. The formal comparison in [evaluation.md](evaluation.md) keeps its own reserved scenarios.
 
+**Deviations (found 2026-11-03):** the runs did not use the user sheets below exactly. The sheets as used are in [smoke-test-2026-10-31-regression/user-sheets.md](smoke-test-2026-10-31-regression/user-sheets.md); the reports' corrections list the differences. The plan's stop rule (the run ends at the Director's proposal) was not followed either.
+
+**Names are fictional.** Some coincide with real companies, products or characters (Loomly, for example, is also the name of a real software company). No reference to them is intended, and later scenarios check names before use.
+
 **Running it needs the owner's go.** It costs model usage only: no images, videos, paid APIs, external services or spend.
 
 ## Frozen version

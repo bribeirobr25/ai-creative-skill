@@ -27,7 +27,7 @@ Each item also has a strength, kept separate from the tag:
 **Sources:**
 - the frozen V2.5 methods (cited by section);
 - this project's research records (cited by file);
-- four AI-assistant research conversations kept in the private half (`research/video-2026-10`). These are leads, not primary sources: where they agree, that is a hypothesis, not a validation, and their tool claims are unverified.
+- four AI-assistant research conversations, kept privately. These are leads, not primary sources: where they agree, that is a hypothesis, not a validation, and their tool claims are unverified.
 
 ---
 
@@ -41,7 +41,7 @@ Each item also has a strength, kept separate from the tag:
 | C4 | Before any paid step, check feasibility: actions fit the duration, references support the identities, the route can do the motion and audio, the script fits, transitions say what is preserved and what changes, known failures were checked | `provisional` | default | V2.5 Video Direction §12 |
 | C5 | No paid step before the user approves the execution scope; money left in a budget authorizes nothing outside the scope | `rule` | binding | ADR-0006 D6 |
 | C6 | A reference only secures what it shows. Identity-bearing references should be clean and isolated, and cover the views the motion will reveal (a front-only photo cannot guarantee the back in a turn) | `evidence` + `provisional` | default | Photoshoot study: clean references were the largest fidelity gain (`docs/research/auditoria-aprendizados-2026-10-22.md`); V2.5 Image Direction §5.1 |
-| C7 | Products, interfaces and claims come from the user's real material and approved facts; real interface captures, not invented screens; unknowns stay unknown. A comparison over time (day 1 / day 7, before / after) implies a result claim and needs substantiation like any claim. Copy that states a fact about the user's business ("customers keep asking…") is listed as an assumption to confirm as true *(S4)* | `rule` | binding | ADR-0006 D8; benchmark check C3 |
+| C7 | Products, interfaces and claims come from the user's real material and approved facts; real interface captures are preferred, and a mock or invented screen is never presented as the real product; unknowns stay unknown. A comparison over time or a before / after implies a result claim and needs substantiation like any claim. Copy that states a fact about the user's business is an assumption to confirm as true | `rule` | binding | ADR-0006 D8; benchmark check C3 |
 | C8 | State what must not change in a transformation or a series of shots (the invariants), and what may | `provisional` | recommended | V2.5 Video Direction §9.1; Specialist Method System §6.2 |
 | C9 | On-screen text, numbers and logos are planned for precise rendering in the graphics or edit layer, not left to the video model | `provisional` | recommended | V2.5 Image Direction §9 (text modes); the research conversations report garbled text as a common model failure (`current`, unverified) |
 | C10 | Every shot creates useful change: new information, a demonstration, a progression, a reveal or a consequence | `provisional` | recommended | V2.5 Video Direction §3 |
@@ -65,9 +65,9 @@ A card adds only what changes for that type or medium. The Core still applies. B
 | Card | Purpose | Default shape (`technique`) | Most decisive information | Watch for |
 |---|---|---|---|---|
 | Feature showcase / product demo | Make the product desirable and its value clear | Hero → feature close-up → use → context → call to action | Product references from the angles the motion shows | Shape, label and material drift; physically wrong contact |
-| Launch teaser | Anticipation and a reveal | Tease → build → reveal → payoff, with the reveal timed precisely | Look references and reveal timing | Reveal too early; payoff not held long enough (V2.5 Video Direction §10) |
+| Launch teaser | Anticipation and a reveal | Tease → build → reveal → payoff, with the reveal timed precisely | Look references and reveal timing | Reveal too early; payoff not held long enough (the hold: V2.5 Video Direction §10) |
 | UGC-style ad | Feel native in a social feed | Hook → problem → demo → proof → call to action | The product in hand; a consistent persona reference | A generated "customer" is not a real customer (C17); "lo-fi outperforms" is a `hypothesis` |
-| Software demo | Prove one workflow works | Context → input → action → result → next step | Real interface captures | Invented screens (C7); unreadable text (C9) |
+| Software demo | Prove one workflow works | Context → input → action → result → next step | Real interface captures | Mock screens shown as the real product (C7); unreadable text (C9) |
 | Explainer | Make a complex idea simple | Problem → idea → how it works → benefit | Script and visual metaphors | Too many ideas per scene |
 | Talking head / avatar | Trust through direct address | Script-led, with supporting footage | Script naturalness; consented face and voice references | Consent and disclosure (C17); likely its own Production route |
 | Before / after | Show a transformation | Locked camera, fixed invariants, a clear change | The invariants (C8) | Generated "proof" presented as real (C17); platform restrictions in health and beauty |
@@ -77,7 +77,7 @@ A card adds only what changes for that type or medium. The Core still applies. B
 | Card | When it fits | Production route | Watch for |
 |---|---|---|---|
 | Cinematic / photoreal generation | Physical products, emotion, atmosphere, lifestyle | Reference-based generation from approved still frames | Identity drift between shots; physics and hands; text |
-| Motion graphics | Information, structure, data, interfaces, brand systems, text-heavy pieces | Often code-based and deterministic, so text, numbers and colours stay exact; a separate Production route | Licence terms of programmatic tools (`current`, see register); not automatically cheaper; typeface and brand guide decide the look, so they are needed before style frames |
+| Motion graphics | Information, structure, data, interfaces, brand systems, text-heavy pieces | Often code-based and deterministic, so text, numbers and colours stay exact; a separate Production route | Licence terms of programmatic tools are Production's to check (`current`); not automatically cheaper; typeface and brand guide decide the look, so they are needed before style frames |
 | Avatar / talking head | Presenter-led, multilingual, frequent updates | Avatar and voice route | Consent, disclosure, lip sync |
 | Illustrated / parallax | Story-led or budget-aware pieces | Generated or drawn stills animated with pans, depth and masks | Reads as video only if the motion is purposeful |
 | Hybrid | Most strong pieces: photoreal hero moments with precise graphics on top | Several routes, joined in the edit | Consistent look across routes |

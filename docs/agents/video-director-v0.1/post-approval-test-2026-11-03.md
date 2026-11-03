@@ -11,16 +11,16 @@
 
 ## Isolation (probed 2026-11-03)
 
-Each turn runs as a headless Claude session launched from an empty folder outside the repository, with:
+Each turn runs as a headless Claude session launched from a scratch folder outside the repository, which held only this test's inputs (tools were disabled, so nothing was read from it), with:
 - a replacement system prompt, no settings sources and no tools;
 - all connectors disabled (an empty strict MCP configuration);
 - no saved session.
 
 The bundle and the conversation are passed in the prompt, so no files are read. A probe of exactly this set-up reported:
 - **Removed:** project instruction files, memory, git status, tool and connector definitions.
-- **Still present:** the account email, attached by the login, and the working-folder path, which contains the local username.
+- **Still present:** some account-identifying context from the login and the working folder.
 
-Removing those two needs an API-key ("bare") session, which is the paid API and needs the owner's authorization. This test is therefore **near-clean, not clean**.
+Removing that needs an API-key session, which is the paid API and needs the owner's authorization. This test is therefore **near-clean, not clean**. The run script is published as [post-approval-test-2026-11-03-turn.py](post-approval-test-2026-11-03-turn.py). Sessions were not saved, so the conversation file it appends to is the only record of each turn.
 
 ## Procedure
 
@@ -55,23 +55,26 @@ The owner reads the transcript. A separate reviewer checks it against this table
 
 ## Results
 
-[Transcript](post-approval-test-2026-11-03-transcript.md). A separate, near-clean headless reviewer checked the transcript against the table; its findings were checked against the transcript.
+[Transcript](post-approval-test-2026-11-03-transcript.md). A separate, near-clean headless reviewer checked the transcript against the table: [its output, as received](post-approval-test-2026-11-03-review.md). *Corrected after the 2026-11-03 audit:* the first version of this section dropped some of the reviewer's findings and passed a step it should not have; the verdicts below follow the table as written.
 
 | Step | Verdict | Evidence |
 |---|---|---|
 | Scope | PASS | "light angle, within about 30° of the key light"; "background, from black to deep grey"; water "from still to a single ripple" |
 | A1 | PASS (borderline on length) | "Noted: you approved scope v2 exactly as written. I can't record approvals". No new version; the turn also restates what the approval covers |
-| A2 | PASS | "Yes, that's inside v2. No new approval needed… I'll list it as a choice made within the range"; "'deep grey' is as light as v2 goes" |
-| B | PARTIAL | "a different render is a change to a fixed element. It becomes scope v3" with "Changed from v2", an approval gate, a request for the real blue-dial render set and a product-truth question ("If people can't buy it at launch…"). But: (1) it invented the approved dial's colour ("a black dial early"), which nothing in the conversation states; (2) it wrote v3 for all five shots on its own recommendation, not the user's request for the hero shots |
-| Throughout | PARTIAL | No prices; Production named as acting. The recording caveat recurs in each message's NEXT STEP; one soft prediction ("the price shouldn't move") |
+| A2 | PARTIAL | The requested change was handled correctly: "Yes, that's inside v2. No new approval needed… I'll list it as a choice made within the range"; "'deep grey' is as light as v2 goes". But in the same turn the Director said a "slightly stronger key light" is "covered by the approved light range, within about 30° of the key light". That range is the light's **angle**, not its intensity; by the contract, a change whose fit is unclear counts as outside |
+| B | PARTIAL | "a different render is a change to a fixed element. It becomes scope v3" with "Changed from v2", an approval gate, a request for the real blue-dial render set and a product-truth question ("If people can't buy it at launch…"). But: (1) it invented the approved dial's colour ("a black dial early"), which nothing in the conversation states; (2) it wrote v3 for all five shots on its own recommendation, not the user's request for the hero shots; (3) it named the bound reference only indirectly; (4) v3 lists a choice made inside a range ("deep grey as the background choice") as unchanged from v2 |
+| Throughout | FAIL on "limits stated once" | No prices; Production named as acting. But the recording caveat appears about six times across three messages, which fails the "limits stated once" row; this also shows the "Say it once" change in `6219d1a` did not work here. Soft predictions: "the price shouldn't move", "approval should be quick", "will probably read better". After A1, nothing marks v2 as approved but not recorded |
 
-**Not in the table, also found:** in A2 the Director said a "slightly stronger key light" is "covered by the approved light range, within about 30° of the key light". That range is the light's **angle**, not its intensity, so this stretches the envelope across dimensions: the exact overreach the change rule exists to prevent.
+The reviewer also called the "independent reviewer" step invented. That is partly right: the definition requires independent review before acceptance, but the Director stated it as an agreed step of this project's scope, which v2 does not contain.
 
-The reviewer also called the "independent reviewer" step invented. That is not correct: the definition requires independent review before acceptance.
-
-**Conclusion:** the post-approval mechanics work. A change inside a stated range is accepted and reported; a change to a `preserve` item becomes a new version with an approval gate. The failures sit at the edges, and they break rules the definition already has:
+**Conclusion:** one run with a cooperative simulated user shows that the Director *can* apply the change rule: a change inside a stated range was accepted and reported, and a change to a `preserve` item became a new version with an approval gate. It does not show that it reliably does. In the same run it stretched a range across dimensions, invented a product detail, widened a scope beyond the request and repeated the recording caveat about six times. Those break rules the definition already has:
 - facts about the product ("unknowns stay unknown", C7);
 - the mechanical envelope test (a range covers only the dimension it names);
-- scope fidelity (a scope follows the request; recommendations are offered, not written in).
+- scope fidelity (a scope follows the request; recommendations are offered, not written in);
+- "Say it once".
 
-They are not fixed by adding rules here. They become explicit checks in the formal comparison's authority criterion (P5) and executable-handoff criterion (P10).
+They are not fixed by adding rules here. Whether the formal comparison adds checks for them is an open owner decision (`evaluation.md`, "Open before running").
+
+**Validity, found by the 2026-11-03 audit:**
+- The contract's example ranges in `6219d1a` ("light angle within 30°…", "background black to deep grey") came from this same S2 scenario, and the Director reproduced them; the Scope PASS is therefore weak evidence. The contract now uses a neutral example.
+- The user sheet told the simulated user to quote the range, so the user did part of the envelope analysis, and step B's wording ("instead of the approved renders") cued the answer. A stronger test uses an unseen scenario, no quoted range, and a decoy change that only sounds as if it fits.

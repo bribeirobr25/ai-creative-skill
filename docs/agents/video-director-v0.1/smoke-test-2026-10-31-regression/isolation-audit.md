@@ -1,6 +1,6 @@
 # Isolation audit of the regression run (2026-10-31)
 
-One row per agent call. "Files read" lists every file the agent opened, from its tool log (each call is recorded twice in the log; duplicates are merged). Allowed: the Director reads `bundle.md` and its scenario's `conversation.md`; the user reads its `user-sheet.md` and `conversation.md`. The raw logs contain the injected harness context, including the account email, so they are kept in the owner's private folder (`research/video-2026-10/regression-logs-2026-10-31/`), not published.
+One row per agent call. "Files read" lists every file the agent opened, from its tool log (each call is recorded twice in the log; duplicates are merged). Allowed: the Director reads `bundle.md` and its scenario's `conversation.md`; the user reads its `user-sheet.md` and `conversation.md`. The raw logs contain the injected harness context, so they are kept privately, not published.
 
 The Director bundle `bundle.md` has SHA-256 `a9686fde1f9da598ed2ff5d7be08448a747b4704122b9ab6ea20aa10069326f9`; its composition is in [post-approval-test-2026-11-03.md](../post-approval-test-2026-11-03.md).
 

@@ -1,6 +1,6 @@
 # Video Director v0.1 · Input and output contract
 
-**Status:** proposal. The contract is meant to be reused by later specialists (photographer, script writer, researcher), so only the media-specific blocks are video-only.
+**Status:** proposal, for video. Whether later specialists share its shape is decided when they are designed.
 
 ## Rules for using it
 
@@ -40,7 +40,7 @@ specifications:
   languages: []
   platforms: []
   audio:                  # voice-over, dialogue, music, sound effects
-  captions:
+  captions:               # videos carry captions (ADR-0006 D8): burned-in or a sidecar file
 
 authorities:              # what must be respected, each with its source
   brand:                  # identity, voice, palette, logo rules
@@ -55,6 +55,7 @@ references:               # one entry per asset
   - id:
     kind:                 # product | character | environment | interface | style | motion | audio
     source:
+    tool:                 # for a generated asset: the tool and date that made it (ADR-0006 D8)
     rights:
     version:
     notes:
@@ -127,7 +128,9 @@ direction_package:
     permitted_operations: []  # e.g. generate key frames, animate approved frames, edit, add sound
     deliverables: []          # what is produced, with formats
     preserve: []              # what must stay fixed (product, identity, approved text)
-    vary: []                  # each entry states its range, e.g. "light angle within 30° of the key light", "background black to deep grey"; an entry without a range counts as preserve
+    vary: []                  # each entry states its range, e.g. "music tempo 90-110 bpm"; an entry without a range counts as preserve
+    open: []                  # dimensions explicitly left to the Director's and Production's choice (open exploration)
+                              # before approval, every dimension the shots depend on is in preserve, vary or open; one not listed counts as preserve
     quantities:               # items per deliverable
     attempts_per_item:
     tool_classes: []          # kinds of route (reference-based generation, code-based motion graphics, avatar...), never a single provider
@@ -135,6 +138,7 @@ direction_package:
     valid_until:
     shot_briefs: []
     cost_estimate:            # quantities x attempts; prices come only from Production's dated quote, not from the Director
+    quote_ref:                # that quote; the scope is not ready for approval until it is attached
     risks: []
   quality_focus:          # which of artistic / technical / commercial matter most here, and why
   open_questions: []
@@ -144,7 +148,7 @@ direction_package:
 
 - **Standard and deep levels:** the user approves the creative direction before pre-production goes further.
 - **Every level:** the Director only *proposes* an execution scope. It becomes authority when the user approves that exact version, and the approval is recorded in `approval_ref`. Nothing outside the approved scope is covered, however much budget remains. A changed scope is a new version that needs a new approval (ADR-0006 D6; the frozen Execution Contracts' batch template binds an approval to what is preserved and varied, counts, attempts, route class and spend envelope). No runtime implementation is part of v0.1.
-- **Changes after approval** *(added after the 2026-10-31 smoke test, S2; revised after review)*. The approval binds the Director to the execution envelope, not to every creative detail. The test is mechanical: a change is inside the envelope only if the approved version's written fields already allow it.
+- **Changes after approval.** The approval binds the Director to the execution envelope, not to every creative detail. The test is mechanical: a change is inside the envelope only if the approved version's written fields already allow it.
 
   | Change | New approval? |
   |---|---|
@@ -157,4 +161,4 @@ direction_package:
   | A material change to the approved storyboard beyond its allowed variation | Yes |
 
   Changes inside the envelope are reported to the user in the next update, so nothing changes silently. Changes outside it are listed as "changed from vN" and become vN+1, which needs its own approval. If it is unclear whether a change fits the written fields, it counts as outside.
-- **Recording an approval** *(added after the 2026-10-31 smoke test, S2; shortened after the regression run)*. v0.1 cannot record or verify approvals. The Director says so once, briefly ("noted; it needs to be recorded before anything runs"), and does not ask the user to set up a process. In v0.1 the Director has no mechanism to record anything. It may acknowledge that the user approved a version in the conversation, but it never claims the approval was recorded, persisted or turned into executable authority. `approval_ref` stays empty until a verifiable approval record exists. Before anything real runs, the approval must be bound to that record. A sentence in a conversation is not proof of authorization.
+- **Recording an approval.** v0.1 cannot record or verify approvals. The Director may acknowledge that the user approved a version, says once that it still has to be recorded before anything runs, and never claims it was recorded. `approval_ref` stays empty until a verifiable approval record exists.

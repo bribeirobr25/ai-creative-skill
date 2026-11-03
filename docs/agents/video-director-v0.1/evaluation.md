@@ -14,14 +14,16 @@
   - **Generalist:** the model with the shared inputs, no definition and no packs.
   - **Director v0.1:** the shared inputs plus the definition, the Core and the cards the task needs.
 - **Nothing about the test reaches the agents.** No agent sees this file, the traps, the criteria or any expected result. The simulated user sees only its own user sheet.
-- **Reserved scenarios.** Scenarios A, B and C are kept for this formal comparison. They are not used to develop or tune the Director (the exploratory smoke test uses different briefs, see `smoke-test-plan.md`).
+- **Reserved scenarios.** Scenarios A, B and C are kept for this formal comparison and are not used to develop or tune the Director (the exploratory smoke tests use different briefs, see `smoke-test-plan.md`). They are **not fully held out**, though: they were written in the same commit as the packs, A resembles smoke scenario S1, B combines S2 and S4, C combines S3 and S4, and their traps cite pack items (C6, C7, C17) that the smoke tests sharpened. Fresh scenarios written by someone who has not seen the tuning would be a stronger test (see "Open before running").
 - **Three separate roles:**
   - a simulated user agent, which gets a profile and the scenario, and answers questions in character;
   - the agent under test;
   - a reviewer agent that sees both transcripts unlabelled, in random order, and scores them against the criteria below.
-- **The owner reads all 12 transcripts blind** (unlabelled, random order) **and decides.** The reviewer's scores are a guide, not the verdict.
+- **The owner reads all 12 transcripts unlabelled, in random order, and decides.** The reviewer's scores are a guide, not the verdict. This is not fully blind: the Director's format (a "NEXT STEP" line, scope versions, preserve and vary) is recognisable, and the owner has read the smoke transcripts. Either the format is normalised before review, or the report says that review was not blind.
 - **Two runs per arm per scenario**, so 12 transcripts in total.
-- **No relay framing:** each turn is a fresh agent call with the whole conversation so far in its prompt. A messaging tool that adds text around relayed messages would break isolation, as it did in the smoke test.
+- **No relay framing:** each turn is a fresh agent call with the whole conversation so far in its prompt. A messaging tool that adds text around relayed messages would break isolation, as it did in the first smoke-test round.
+- **Pre-registered as files before any run:** each user sheet exactly as given to the simulated user, including any instruction to volunteer facts; the opening message; a stop rule identical for both arms; both arms' exact prompts; and the run script with its flags. The 2026-10-31 smoke tests gave the simulated users sheets that differed from the plan, and this rule exists so that cannot happen silently.
+- **Kept and published:** every raw output with its SHA-256, the reviewer's prompt and raw output, and a list of every place the orchestrator's summary departs from the reviewer's.
 - **The Director's bundle** is the definition, the contract and Packs 1–3 only. Production's tool register is excluded, as it should have been in the smoke test.
 - **Fictional brands and products only.** References are given as written descriptions of what each image shows, because no images are generated.
 
@@ -96,6 +98,16 @@ Each criterion is scored 0, 1 or 2 per transcript, or `N/A` when it does not app
 - **Not useful yet:** no clear difference. Keep the generalist, revisit the knowledge packs, and record the result as evidence that this guidance did not earn its place.
 
 The owner's reading of the transcripts overrides the reviewer's scores in every case.
+
+## Open before running (owner decision)
+
+The audit of 2026-11-03 found these weaknesses in the fixed rules. They are listed, not changed, because changing a pre-registered rule is the owner's call:
+
+- **The creative goal is not tested directly.** The rule can pass on safety and planning (P4–P6, P10) with no win on P7 or P8. One option: require a win on P7 or P8, or make the owner's preference the primary outcome.
+- **Too few runs.** Two runs on a 0–2 scale with "strictly greater" produces many ties. Five or more runs per arm cost only model usage.
+- **The decision rule is not exhaustive.** For example, a Director that wins P4, P6 and P10 but loses P5 fits none of the three outcomes. When P10 is `N/A`, "three of the applicable" means all of P4–P6 must win.
+- **P10 cannot observe what happens after an approval:** none of A–C has an approval step, which is where the targeted test of 2026-11-03 found the failures at the edges (a stretched range, a widened scope, an invented detail).
+- **Held-out scenarios and reviewers.** Fresh scenarios (see "Reserved scenarios"), and a second reviewer from a different model family, which may need a paid API and so needs authorization.
 
 ## Later: final production quality
 

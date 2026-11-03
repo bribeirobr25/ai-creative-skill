@@ -6,14 +6,22 @@
 
 **Cost:** model usage only. No images, video, paid APIs, external services or spend.
 
+**Corrections (2026-11-03 audit):**
+- The user prompts did not use the plan's sheets: facts could also be given "when they naturally come up", and extra facts were scripted (see the [regression report's corrections](smoke-test-regression-report-2026-10-31.md#corrections-2026-11-03-audit)). The water-resistance "bonus catch" came from one of them.
+- Isolation broke in five ways, not four.
+- The reviewer was told the messages were relayed verbatim, which was not true (the framing lines).
+- NEXT STEP also appeared in earlier messages of S1 and S2, not only at the end.
+- The user agents' own instructions (the END rule, the lines allowing invented details) are not published.
+- "Binding limits hold under pressure" comes from assisted role-play with one run per scenario. It is a first observation, not a result.
+
 ## Validity: assisted role-play, not a clean test
 
 - **Separation held:**
   - Each user and each Director was a separate agent. The user agents saw only their sheet. The Directors saw only the user's messages and their definition.
   - The tool logs show that every Director made exactly one tool call, reading the definition bundle, and opened nothing else. The user agents made no tool calls.
-- **Isolation broke in four ways, so by the plan's own rule this counts as assisted role-play:**
+- **Isolation broke in five ways, so by the plan's own rule this counts as assisted role-play:**
   1. **The messaging tool wrapped every relayed message** in a framing line: "The coordinator sent a message while you were working: …" and "Address this before completing your current task." It reached both the Directors and the users, so "word for word, adding nothing" was not met. We saw no effect on behaviour, but the framing tells each agent that someone is coordinating. The transcripts keep these lines exactly as received, each labelled as added by the tool.
-  5. **The harness injected its own context into every agent:** the project instruction files, the session's memory index, the account email, and the git status with recent commit titles. One title mentioned the smoke-test plan, so agents could infer they were in a test. This is omitted from the published transcripts for privacy, and a labelled note marks where it was. The plan file itself was never opened.
+  5. **The harness injected its own context into every agent:** the project instruction files, the session's memory index, account-identifying details, and the git status with recent commit titles. One title mentioned the smoke-test plan, so agents could infer they were in a test. This is omitted from the published transcripts for privacy, and a labelled note marks where it was. The plan file itself was never opened.
   2. **The Director bundle contained Production's tool register,** which the definition says the Director does not load. The S2 Director then quoted its unverified prices.
   3. **The S2 opening was reworded.** It said "a famous ad from a big luxury brand" instead of the sheet's bracketed placeholder.
   4. **One stray message from the orchestrator reached the S4 user agent.** Its reply had already been written; the stray message produced only a duplicate, which was not relayed.
