@@ -22,6 +22,16 @@ STR_FIELDS = ('id', 'kind', 'subject', 'statement', 'authority_ref', 'supersedes
 SQUASH_PR = re.compile(r'\(#(\d+)\)\s*$')
 
 
+def _unique_keys(pairs):
+    """A repeated key would let the raw line say one thing while the parsed record says another (2026-11-04 audit)."""
+    obj = {}
+    for k, v in pairs:
+        if k in obj:
+            raise ValueError('duplicate key %r' % k)
+        obj[k] = v
+    return obj
+
+
 def load(records=RECORDS):
     """Return [(file, line_no, record)]; a malformed line is reported, never skipped."""
     out = []
@@ -29,8 +39,8 @@ def load(records=RECORDS):
         for n, line in enumerate(path.read_text(encoding='utf-8').splitlines(), 1):
             if line.strip():
                 try:
-                    obj = json.loads(line)
-                except json.JSONDecodeError as e:
+                    obj = json.loads(line, object_pairs_hook=_unique_keys)
+                except ValueError as e:  # JSONDecodeError is a ValueError
                     obj = {'_error': str(e)}
                 out.append((path.name, n, obj if isinstance(obj, dict) else {'_error': 'not a JSON object'}))
     return out
@@ -84,7 +94,7 @@ def problems(rows, root=ROOT, allow_private=False):
                         errs.append('%s: write evidence paths repo-relative without ./, // or a trailing /: %s' % (where, ref))
                     elif not (root / part).exists():
                         errs.append('%s: evidence path does not exist: %s' % (where, ref))
-        if f == 'findings.jsonl':
+        if f == 'findings.jsonl' or 'finding_status' in r:  # a finding in any file follows the finding rules (2026-11-04 audit)
             t = str(r.get('test_ref') or '')
             if not t:
                 errs.append('%s: a finding needs test_ref (a test path, or "paper" until one exists)' % where)
@@ -108,6 +118,10 @@ def problems(rows, root=ROOT, allow_private=False):
         elif r.get('supersedes') and r.get('kind') != 'DECISION_RECORDED' and \
                 known[r['supersedes']].get('kind') == 'DECISION_RECORDED':
             errs.append('%s:%d: %s cannot supersede decision %s; only a decision can replace a decision' % (f, n, r.get('kind'), r['supersedes']))
+        elif r.get('supersedes') and _subject(known[r['supersedes']]) != _subject(r):
+            # 2026-11-04 audit: an observation on another subject must not retire an open finding.
+            errs.append('%s:%d: %s supersedes %s on another subject; a record replaces only a record on its own subject'
+                        % (f, n, r['id'], r['supersedes']))
     cycles = set()
     for _, _, r in typed:
         chain, nxt = [r['id']], r.get('supersedes')

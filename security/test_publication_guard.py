@@ -3,6 +3,8 @@
 Synthetic token examples are assembled at runtime so no secrets are committed.
 """
 import io
+import sys
+import time
 import unittest
 from contextlib import redirect_stdout
 from unittest.mock import patch
@@ -307,7 +309,7 @@ class SecretRulesTests(unittest.TestCase):
             git("add", ".")
             git("commit", "-qm", "hidden token test")
             cmd = [
-                "python", str(Path(guard).resolve()),
+                sys.executable, str(Path(guard).resolve()),
                 "--range", base + "...HEAD",
                 "--history-range", base + "..HEAD",
             ]
@@ -337,7 +339,7 @@ class SecretRulesTests(unittest.TestCase):
             git("add", ".")
             git("commit", "-qm", "NUL token test")
             result = subprocess.run(
-                ["python", str(Path(guard).resolve()), "--range", base + "...HEAD",
+                [sys.executable, str(Path(guard).resolve()), "--range", base + "...HEAD",
                  "--history-range", base + "..HEAD"],
                 cwd=d, capture_output=True, text=True,
             )
@@ -372,7 +374,7 @@ class SecretRulesTests(unittest.TestCase):
             git("add", ".")
             git("commit", "-qm", "UTF16-style binary text")
             result = subprocess.run(
-                ["python", str(Path(guard).resolve()), "--range", base + "...HEAD",
+                [sys.executable, str(Path(guard).resolve()), "--range", base + "...HEAD",
                  "--history-range", base + "..HEAD"],
                 cwd=d, capture_output=True, text=True,
             )
@@ -472,6 +474,14 @@ class SecretRulesTests(unittest.TestCase):
         self.assertIn(("BLOCK", "BEARER_CREDENTIAL"), rules(fake_patch("Authorization: Token " + value)))
         for line in ("commit_token: deadbeef", "token: ${{ secrets.GITHUB_TOKEN }}"):
             self.assertNotIn(("BLOCK", "GENERIC_SECRET_ASSIGNMENT"), rules(fake_patch(line)), line)
+        # 2026-11-04 audit: a dotted lookup is not a key, and a long line does not stall the scan.
+        for line in ("const githubToken = process.env.GITHUB_TOKEN;", "self.bos_token = self.tokenizer.bos_token",
+                     "self.api_token = settings.SERVICE_API_TOKEN", "csrf_token = request.cookies.get_csrf_value_now"):
+            self.assertNotIn(("BLOCK", "GENERIC_SECRET_ASSIGNMENT"), rules(fake_patch(line)), line)
+        self.assertIn(("BLOCK", "GENERIC_SECRET_ASSIGNMENT"), rules(fake_patch("API_TOKEN=" + "1a.Q7" + "w" * 30)))
+        started = time.monotonic()
+        rules(fake_patch("a_" * 40000))
+        self.assertLess(time.monotonic() - started, 5)
         # 2026-11-04 review: a 40-hex value under a credential name is a credential, not a commit SHA.
         hex40 = "a1b2c3d4e5" * 4
         for line in ("secret: " + hex40, "client_secret=" + hex40, "password: " + hex40, "access_token=" + hex40,
@@ -487,9 +497,12 @@ class SecretRulesTests(unittest.TestCase):
         self.assertIn(("REVIEW", "LOCAL_HOME_PATH"), rules(fake_patch("cd /home/" + "jdoe/work/")))
         for line in ("/Users/you/project/", "/home/runner/work/", "C:/Users/someone/a.js", "/Users/you"):
             self.assertNotIn(("REVIEW", "LOCAL_HOME_PATH"), rules(fake_patch(line)), line)
+        # 2026-11-04 audit: a placeholder name is excluded only as a whole name.
+        for line in ("/Users/" + "user.smith/notes", "/home/" + "me-dev/work"):
+            self.assertIn(("REVIEW", "LOCAL_HOME_PATH"), rules(fake_patch(line)), line)
         # 2026-11-03 audit: no trailing slash, Windows, macOS temp folders, and the harness scratch form.
-        for line in ("/Users/" + "jdoe", "C:\\Users\\" + "jdoe\\Desktop", "/var/folders/" + "bv/x",
-                     "/private/tmp/claude-" + "501/scratch", "a -Users-" + "jdoe-Desktop path"):
+        for line in ("/Users/" + "jdoe", "C:\\Users\\" + "jdoe\\Desktop", "/var/folders/" + "zz/x",
+                     "/private/tmp/claude-" + "1000/scratch", "a -Users-" + "jdoe-Desktop path"):
             self.assertIn(("REVIEW", "LOCAL_HOME_PATH"), rules(fake_patch(line)), line)
 
     def test_media_with_exif_needs_review(self):
@@ -1011,7 +1024,7 @@ class ClosedScopeCliRegressions(unittest.TestCase):
         import subprocess
         from pathlib import Path
         from publication_guard import __file__ as guard_file
-        return subprocess.run(["python", str(Path(guard_file).resolve()), *args],
+        return subprocess.run([sys.executable, str(Path(guard_file).resolve()), *args],
                               cwd=root, capture_output=True, text=True)
 
     def test_history_added_then_removed_is_not_clean(self):

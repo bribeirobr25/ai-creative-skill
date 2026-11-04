@@ -44,7 +44,9 @@ BLOCK_RULES = (
     # Also common key names (api_key, x-api-key, token, secret, and names ending in _TOKEN / _SECRET such as
     # GITHUB_TOKEN or JWT_SECRET) in env, JSON, => or --flag form (2026-11-03 audit). No 40-hex exemption: classic
     # GitHub tokens and many API keys are 40 hex, and no commit SHA here sits under a key name (2026-11-04 review).
-    ("GENERIC_SECRET_ASSIGNMENT", re.compile(r"(?i)(?:client_secret|api_secret|refresh_token|access_token|password|api[_-]?key|x-api-key|secret[_-]?key|auth[_-]?token|(?<![a-z0-9])[a-z0-9_]*(?:token|secret))['\"]?\s*(?:=>|[:=])\s*['\\\"]?[A-Za-z0-9._/+~-]{24,}|--api[_-]?key[= ]+['\"]?[A-Za-z0-9._/+~-]{24,}")),
+    # The name part is bounded (an unbounded [a-z0-9_]* backtracks quadratically on long lines), and a value that is a
+    # dotted identifier (process.env.X, self.tokenizer.bos_token) is a lookup, not a key (2026-11-04 audit).
+    ("GENERIC_SECRET_ASSIGNMENT", re.compile(r"(?i)(?:client_secret|api_secret|refresh_token|access_token|password|api[_-]?key|x-api-key|secret[_-]?key|auth[_-]?token|(?<![a-z0-9])[a-z0-9_]{0,64}(?:token|secret))['\"]?\s*(?:=>|[:=])\s*['\\\"]?(?![A-Za-z_]\w*\.[A-Za-z_])[A-Za-z0-9._/+~-]{24,}|--api[_-]?key[= ]+['\"]?[A-Za-z0-9._/+~-]{24,}")),
     ("AWS_ACCESS_ID", re.compile(r"(?<![A-Za-z0-9])(?:AKIA|ASIA)[A-Z0-9]{16}(?![A-Za-z0-9])")),
     # Also matches JSON/YAML quoting, e.g. "Authorization": "Bearer ..." (finding PR20-P2-4).
     ("BEARER_CREDENTIAL", re.compile(r"(?i)\bauthorization['\"]?\s*[:=]\s*['\"]?(?:bearer|token)\s+[A-Za-z0-9._~+/-]{24,}")),
@@ -63,8 +65,8 @@ REVIEW_RULES = (
     ("SHAREABLE_STORAGE_LINK", re.compile(r"https?://[^\s<>'\"]{1,300}/(?:share|sharing|download)/[^\s<>'\"]{10,}", re.I)),
     # A local home folder names the owner's account and machine layout (owner-environment detail): Unix, Windows,
     # macOS temp folders and the harness scratch form that encodes the home path (2026-11-03 audit).
-    ("LOCAL_HOME_PATH", re.compile(r"(?<![A-Za-z0-9])(?:/Users|/home)/(?!(?:you|user|username|name|me|runner|someone|example|shared)\b)[A-Za-z][A-Za-z0-9._-]{1,30}(?![A-Za-z0-9._-])"
-                                   r"|(?<![A-Za-z0-9])[A-Za-z]:[\\/]Users[\\/](?!(?:you|user|username|name|someone|example|public|default)\b)[A-Za-z][A-Za-z0-9._ -]{1,30}"
+    ("LOCAL_HOME_PATH", re.compile(r"(?<![A-Za-z0-9])(?:/Users|/home)/(?!(?:you|user|username|name|me|runner|someone|example|shared)(?![A-Za-z0-9._-]))[A-Za-z][A-Za-z0-9._-]{1,30}(?![A-Za-z0-9._-])"
+                                   r"|(?<![A-Za-z0-9])[A-Za-z]:[\\/]Users[\\/](?!(?:you|user|username|name|someone|example|public|default)(?![A-Za-z0-9._ -]))[A-Za-z][A-Za-z0-9._ -]{1,30}"
                                    r"|/var/folders/[A-Za-z0-9_+-]{2}/|/private/tmp/claude-\d+/|(?<![A-Za-z0-9])-Users-[A-Za-z][A-Za-z0-9]+-")),
 )
 

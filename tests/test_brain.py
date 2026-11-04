@@ -322,6 +322,29 @@ class SecondAudit(unittest.TestCase):
         same = rec(id='L2', subject='License', supersedes='LIC')
         self.assertFalse(any('on another subject' in e for e in core.problems(rows(self.LIC, same))))
 
+    def test_no_record_retires_another_subject(self):
+        # 2026-11-04 audit: an observation on an unrelated subject must not retire an open finding.
+        open_finding = rec(id='FND-A', kind='OBSERVED', subject='finding.A', finding_status='OPEN', test_ref='paper')
+        other = rec(id='OBS-B', kind='OBSERVED', subject='unrelated', supersedes='FND-A')
+        errs = core.problems(rows(open_finding, other, file='findings.jsonl'))
+        self.assertTrue(any('OBS-B supersedes FND-A on another subject' in e for e in errs), errs)
+
+    def test_finding_rules_apply_in_any_file(self):
+        # 2026-11-04 audit: a finding placed in decisions.jsonl skipped the test_ref and status checks.
+        stray = rec(id='FND-S', kind='OBSERVED', subject='finding.S', finding_status='BOGUS')
+        errs = core.problems(rows(stray))
+        self.assertTrue(any('needs test_ref' in e for e in errs), errs)
+        self.assertTrue(any('finding_status must be one of' in e for e in errs), errs)
+
+    def test_repeated_key_is_malformed(self):
+        # 2026-11-04 audit: the parser kept the last of two "statement" keys, so rule 5 compared a record the raw line
+        # did not show.
+        line = json.dumps(self.LIC)[:-1] + ', "statement": "GPL-3.0"}'
+        with tempfile.TemporaryDirectory() as d:
+            (Path(d) / 'decisions.jsonl').write_text(line + '\n')
+            loaded = core.load(d)
+        self.assertIn("duplicate key 'statement'", loaded[0][2].get('_error', ''))
+
     def test_chain_through_a_link_not_in_force_stays_on_its_subject(self):
         x = rec(id='X', subject='pilot', supersedes='LIC')
         y = rec(id='Y', subject='pilot', supersedes='X')

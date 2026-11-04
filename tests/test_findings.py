@@ -222,7 +222,7 @@ class TrustedRuleFive(unittest.TestCase):
         return subprocess.run(['git', '-c', 'user.name=t', '-c', 'user.email=t@example.invalid', *args], cwd=ws,
                               capture_output=True, text=True, check=True).stdout.strip()
 
-    def run_step(self, base_edit=None, rewrite=True, blind=True, smuggle=False, tab_copy=False):
+    def run_step(self, base_edit=None, rewrite=True, blind=True, smuggle=False, tab_copy=False, executable=False):
         d = Path(self.enterContext(tempfile.TemporaryDirectory(ignore_cleanup_errors=True)))
         ws = d / 'ws'
         for rel in subprocess.run(['git', 'ls-files', '-z'], cwd=ROOT, capture_output=True, text=True,
@@ -264,6 +264,8 @@ class TrustedRuleFive(unittest.TestCase):
             lines[i] = '$Format:' + lines[i].replace('%', '%%') + '$'
             path.write_text('\n'.join(lines) + '\n')
         self.git(ws, 'add', '-A')
+        if executable:
+            self.git(ws, 'update-index', '--chmod=+x', 'brain/records/decisions.jsonl')
         self.git(ws, 'commit', '-q', '-m', 'head')
         shim = d / 'bin'
         shim.mkdir()
@@ -297,6 +299,12 @@ class TrustedRuleFive(unittest.TestCase):
         step, _ = self.run_step(tab_copy=True)
         self.assertNotEqual(step.returncode, 0, step.stdout + step.stderr)
         self.assertIn('plainly named .jsonl files', step.stdout)
+
+    def test_a_non_plain_record_file_fails_the_base_step(self):
+        # 2026-11-04 audit: only the mode check stops an entry git would not hand over as a plain file.
+        step, _ = self.run_step(rewrite=False, blind=False, executable=True)
+        self.assertNotEqual(step.returncode, 0, step.stdout + step.stderr)
+        self.assertIn('non-plain entry (mode 100755)', step.stdout)
 
     def test_clean_pr_passes_the_base_step(self):
         step, _ = self.run_step(rewrite=False)
