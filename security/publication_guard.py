@@ -28,7 +28,9 @@ class Finding:
 
 BLOCK_RULES = (
     ("GITHUB_TOKEN", re.compile(r"(?<![A-Za-z0-9])(?:ghp_|gho_|ghu_|ghs_|ghr_)[A-Za-z0-9]{30,}(?![A-Za-z0-9])|(?<![A-Za-z0-9])github_pat_[A-Za-z0-9_]{40,}(?![A-Za-z0-9])")),
-    ("SECRET_KEY", re.compile(r"\bsk-(?:proj-)?[A-Za-z0-9_-]{24,}\b|\bsk_(?!live_)[A-Za-z0-9_]{24,}\b")),
+    # sk_ keys: Stripe test keys, and bare sk_ keys (ElevenLabs-style hex) as one unbroken run with a digit, so an
+    # ordinary snake_case identifier such as sk_compute_digest does not block (2026-11-03 audit, 2026-11-04 review).
+    ("SECRET_KEY", re.compile(r"\bsk-(?:proj-)?[A-Za-z0-9_-]{24,}\b|\bsk_test_[A-Za-z0-9]{24,}\b|\bsk_(?=[A-Za-z]*[0-9])[A-Za-z0-9]{24,}\b")),
     ("GOOGLE_API_KEY", re.compile(r"\bAIza[A-Za-z0-9_-]{35}\b")),
     ("STRIPE_LIVE_KEY", re.compile(r"\b(?:sk|rk)_live_[A-Za-z0-9]{20,}\b")),
     ("SLACK_TOKEN", re.compile(r"\bxox(?:b|p|s|a|r)-[A-Za-z0-9-]{24,}\b")),
@@ -39,11 +41,16 @@ BLOCK_RULES = (
     ("GOOGLE_OAUTH_ACCESS_TOKEN", re.compile(r"(?<![A-Za-z0-9])ya29\.[A-Za-z0-9._~-]{30,}")),
     ("GOOGLE_OAUTH_REFRESH_TOKEN", re.compile(r"(?<![A-Za-z0-9])1//[A-Za-z0-9._~-]{35,}")),
     ("META_ACCESS_TOKEN", re.compile(r"(?<![A-Za-z0-9])EAA[A-Za-z0-9]{45,}")),
-    # Also common key names (api_key, x-api-key, token, secret) in env, JSON or header form (2026-10-30 audit).
-    ("GENERIC_SECRET_ASSIGNMENT", re.compile(r"(?i)(?:client_secret|api_secret|refresh_token|access_token|password|api[_-]?key|x-api-key|secret[_-]?key|auth[_-]?token|(?<![a-z0-9_])token|(?<![a-z0-9_])secret)['\"]?\s*[:=]\s*['\\\"]?[A-Za-z0-9._/+~-]{24,}")),
+    # Also common key names (api_key, x-api-key, token, secret, and names ending in _TOKEN / _SECRET such as
+    # GITHUB_TOKEN or JWT_SECRET) in env, JSON, => or --flag form (2026-11-03 audit). No 40-hex exemption: classic
+    # GitHub tokens and many API keys are 40 hex, and no commit SHA here sits under a key name (2026-11-04 review).
+    # The name part is bounded (an unbounded [a-z0-9_]* backtracks quadratically on long lines), and a value that is a
+    # code lookup (lowercase or UPPER_SNAKE segments joined by dots and nothing else: process.env.X,
+    # self.tokenizer.bos_token) is not a key; a dotted value with mixed case or digits still blocks (2026-11-04 review).
+    ("GENERIC_SECRET_ASSIGNMENT", re.compile(r"(?i)(?:client_secret|api_secret|refresh_token|access_token|password|api[_-]?key|x-api-key|secret[_-]?key|auth[_-]?token|(?<![a-z0-9])[a-z0-9_]{0,64}(?:token|secret))['\"]?\s*(?:=>|[:=])\s*['\\\"]?(?!(?-i:[a-z_]+(?:\.(?:[a-z_]+|[A-Z][A-Z0-9_]*))+)(?![A-Za-z0-9._/+~-]))[A-Za-z0-9._/+~-]{24,}|--api[_-]?key[= ]+['\"]?[A-Za-z0-9._/+~-]{24,}")),
     ("AWS_ACCESS_ID", re.compile(r"(?<![A-Za-z0-9])(?:AKIA|ASIA)[A-Z0-9]{16}(?![A-Za-z0-9])")),
     # Also matches JSON/YAML quoting, e.g. "Authorization": "Bearer ..." (finding PR20-P2-4).
-    ("BEARER_CREDENTIAL", re.compile(r"(?i)\bauthorization['\"]?\s*[:=]\s*['\"]?bearer\s+[A-Za-z0-9._~+/-]{24,}")),
+    ("BEARER_CREDENTIAL", re.compile(r"(?i)\bauthorization['\"]?\s*[:=]\s*['\"]?(?:bearer|token)\s+[A-Za-z0-9._~+/-]{24,}")),
     ("PRIVATE_KEY_PEM", re.compile(r"-----BEGIN (?:RSA |EC |DSA |OPENSSH |ENCRYPTED )?PRIVATE KEY-----")),
     ("PGP_PRIVATE_KEY", re.compile(r"-----BEGIN PGP PRIVATE KEY[ ]BLOCK-----")),
     ("JWT", re.compile(r"(?<![A-Za-z0-9_-])eyJ[A-Za-z0-9_-]{10,}\.eyJ[A-Za-z0-9_-]{10,}\.[A-Za-z0-9_-]{10,}")),
@@ -57,8 +64,11 @@ BLOCK_RULES = (
 REVIEW_RULES = (
     ("DRIVE_REFERENCE", re.compile(r"https?://(?:drive|docs)\.google\.com/(?:(?:file(?:/u/\d+)?/d|drive(?:(?:/u/\d+|/mobile))?/folders|document(?:/u/\d+)?/d|spreadsheets(?:/u/\d+)?/d|presentation(?:/u/\d+)?/d)/[A-Za-z0-9_-]{18,}|(?:open|uc)\?id=[A-Za-z0-9_-]{18,})", re.I)),
     ("SHAREABLE_STORAGE_LINK", re.compile(r"https?://[^\s<>'\"]{1,300}/(?:share|sharing|download)/[^\s<>'\"]{10,}", re.I)),
-    # A local home folder names the owner's account and machine layout (owner-environment detail).
-    ("LOCAL_HOME_PATH", re.compile(r"(?<![A-Za-z0-9])(?:/Users|/home)/(?!(?:you|user|username|name|me|runner|someone|example)[/\s])[A-Za-z][A-Za-z0-9._-]{1,30}/")),
+    # A local home folder names the owner's account and machine layout (owner-environment detail): Unix, Windows,
+    # macOS temp folders and the harness scratch form that encodes the home path (2026-11-03 audit).
+    ("LOCAL_HOME_PATH", re.compile(r"(?<![A-Za-z0-9])(?:/Users|/home)/(?!(?:you|user|username|name|me|runner|someone|example|shared)(?![A-Za-z0-9._-]))[A-Za-z][A-Za-z0-9._-]{1,30}(?![A-Za-z0-9._-])"
+                                   r"|(?<![A-Za-z0-9])[A-Za-z]:[\\/]Users[\\/](?!(?:you|user|username|name|someone|example|public|default)(?![A-Za-z0-9._ -]))[A-Za-z][A-Za-z0-9._ -]{1,30}"
+                                   r"|/var/folders/[A-Za-z0-9_+-]{2}/|/private/tmp/claude-\d+/|(?<![A-Za-z0-9])-Users-[A-Za-z][A-Za-z0-9]+-")),
 )
 
 EMAIL_CANDIDATE = re.compile(r"\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b", re.I)
