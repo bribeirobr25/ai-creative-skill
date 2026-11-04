@@ -38,7 +38,17 @@ jobs:
           # the top level (argparse.py, json.py...) cannot shadow the standard library (2026-11-03 audit).
           mkdir -p "$RUNNER_TEMP/brain-path"
           ln -s "$check/brain" "$RUNNER_TEMP/brain-path/brain"
-          cd "$check" && PYTHONPATH="$RUNNER_TEMP/brain-path" python -P -m brain validate
+          cd "$check"
+          # Rule 5 (no merged record changed or removed) is judged here by the base code too, so a PR that edits its own
+          # validator cannot switch it off (2026-11-04 review). The copy has no .git; git reads the checkout's.
+          # Bootstrap: a base validator without --base-ref (main before PR #58) cannot judge rule 5, and only the PR's
+          # own validator does, in the next step. Once the base has the flag, any failure here fails the check.
+          if grep -q -- '--base-ref' "$check/brain/__main__.py"; then
+            GIT_DIR="$GITHUB_WORKSPACE/.git" PYTHONPATH="$RUNNER_TEMP/brain-path" python -P -m brain validate --base-ref "$BASE_SHA"
+          else
+            echo "::warning::bootstrap: the base validator has no --base-ref, so rule 5 is checked only by this PR's own code"
+            PYTHONPATH="$RUNNER_TEMP/brain-path" python -P -m brain validate
+          fi
       - name: Records follow brain/CONTRACT.md, and no merged record was changed or removed (rule 5)
         env:
           BASE_SHA: ${{ github.event.pull_request.base.sha }}

@@ -1,9 +1,13 @@
 """Guards for findings carried into brain/records/findings.jsonl. Each test names the finding it keeps fixed."""
 import copy
+import json
+import os
 import re
+import shutil
 import tempfile
 import subprocess
 import sys
+import textwrap
 import unittest
 from pathlib import Path
 
@@ -190,6 +194,100 @@ class StaleDocs(unittest.TestCase):
 
     def test_living_docs_list_exists(self):
         self.assertTrue(all((ROOT / p).exists() for p in core.LIVING_DOCS))
+
+
+class BaseRecordsFailClosed(unittest.TestCase):
+    def test_a_base_with_no_records_cannot_be_read(self):
+        # FND-AUDIT2-RECORD-REWRITE (2026-11-04 review): an empty listing means a wrong path or git context, and
+        # reading it as "no merged records" would pass every rewrite.
+        self.assertIsNone(core.main_records('4b825dc642cb6eb9a060e54bf8d69288fbee4904'))  # git's empty tree
+        self.assertIsNone(core.main_records('no-such-ref'))
+        self.assertTrue(core.main_records('HEAD'))
+
+
+class TrustedRuleFive(unittest.TestCase):
+    """FND-AUDIT2-RECORD-REWRITE: the base-code step in brain.yml judges rule 5 itself, so a PR that rewrites a merged
+    record and edits its own validator to hide it still fails (2026-11-04 review). Runs the step's own script in a
+    throwaway repository. It covers the validator path only: a PR that edits the workflow is FND-AUDIT-WORKFLOW-EDIT."""
+
+    @classmethod
+    def setUpClass(cls):
+        if sys.version_info < (3, 11):
+            raise unittest.SkipTest('the step runs python -P (3.11+)')
+        text = (ROOT / '.github/workflows/brain.yml').read_text()
+        step = next(st for st in re.split(r'\n      - ', text)[1:] if 'git archive "$BASE_SHA" brain' in st)
+        cls.script = textwrap.dedent(step.split('run: |\n', 1)[1])
+
+    def git(self, ws, *args):
+        return subprocess.run(['git', '-c', 'user.name=t', '-c', 'user.email=t@example.invalid', *args], cwd=ws,
+                              capture_output=True, text=True, check=True).stdout.strip()
+
+    def run_step(self, base_edit=None, rewrite=True, blind=True):
+        d = Path(self.enterContext(tempfile.TemporaryDirectory(ignore_cleanup_errors=True)))
+        ws = d / 'ws'
+        for rel in subprocess.run(['git', 'ls-files', '-z'], cwd=ROOT, capture_output=True, text=True,
+                                  check=True).stdout.split('\0'):
+            if rel and (ROOT / rel).is_file():
+                (ws / rel).parent.mkdir(parents=True, exist_ok=True)
+                shutil.copy2(ROOT / rel, ws / rel)
+        if base_edit:
+            base_edit(ws)
+        self.git(ws, 'init', '-q')
+        self.git(ws, 'add', '-A')
+        self.git(ws, 'commit', '-q', '-m', 'base')
+        base = self.git(ws, 'rev-parse', 'HEAD')
+        if rewrite:
+            path = ws / 'brain/records/decisions.jsonl'
+            lines = path.read_text().splitlines()
+            i = next(n for n, line in enumerate(lines) if '"DECISION_RECORDED"' in line)
+            r = json.loads(lines[i])
+            r['statement'] += ' (rewritten)'
+            lines[i] = json.dumps(r)
+            path.write_text('\n'.join(lines) + '\n')
+        if blind:
+            core_py = ws / 'brain/core.py'
+            core_py.write_text(core_py.read_text().replace('def append_only_problems(base, rows):\n',
+                                                           'def append_only_problems(base, rows):\n    return []\n', 1))
+        self.git(ws, 'commit', '-q', '-am', 'head')
+        shim = d / 'bin'
+        shim.mkdir()
+        (shim / 'python').symlink_to(sys.executable)
+        if sys.platform == 'darwin':
+            # macOS bsdtar stops reading at the end-of-archive marker, so `git archive | tar` can end in SIGPIPE
+            # under pipefail; the CI runner's GNU tar reads to the end. Buffer the stream for local runs.
+            (shim / 'tar').write_text('#!/bin/bash\nf=$(mktemp); cat > "$f"; /usr/bin/tar "$@" -f "$f"; s=$?; rm -f "$f"; exit $s\n')
+            (shim / 'tar').chmod(0o755)
+        (d / 'runner').mkdir()
+        env = {k: v for k, v in os.environ.items() if not k.startswith('GIT_')}
+        env.update(BASE_SHA=base, GITHUB_WORKSPACE=str(ws), RUNNER_TEMP=str(d / 'runner'),
+                   PATH='%s%s%s' % (shim, os.pathsep, env.get('PATH', '')))
+        step = subprocess.run(['bash', '-eo', 'pipefail', '-c', self.script], cwd=ws, env=env, capture_output=True, text=True)
+        own = subprocess.run(['python', '-m', 'brain', 'validate', '--base-ref', base], cwd=ws, env=env,
+                             capture_output=True, text=True)
+        return step, own
+
+    def test_rewrite_with_blinded_validator_fails_the_base_step(self):
+        step, own = self.run_step()
+        self.assertEqual(own.returncode, 0, own.stdout)  # the PR's own validator no longer sees the rewrite
+        self.assertNotEqual(step.returncode, 0, step.stdout + step.stderr)
+        self.assertIn('was changed after its merge', step.stdout)
+
+    def test_clean_pr_passes_the_base_step(self):
+        step, _ = self.run_step(rewrite=False)
+        self.assertEqual(step.returncode, 0, step.stdout + step.stderr)
+
+    def test_bootstrap_base_without_the_flag_cannot_judge_rule_5(self):
+        # Documented limit: a base validator that predates --base-ref (main before PR #58) leaves rule 5 to the PR's code.
+        def old_base(ws):
+            m = ws / 'brain/__main__.py'
+            m.write_text(m.read_text().replace("'--base-ref'", "'--base-git-ref'"))
+        step, _ = self.run_step(base_edit=old_base)
+        self.assertEqual(step.returncode, 0, step.stdout + step.stderr)
+        self.assertIn('::warning::bootstrap', step.stdout)
+
+    def test_current_validator_keeps_the_flag(self):
+        # Once this is on main, the base step requires rule 5; renaming the flag would silently fall back to bootstrap.
+        self.assertIn('--base-ref', (ROOT / 'brain/__main__.py').read_text())
 
 if __name__ == '__main__':
     unittest.main()

@@ -28,8 +28,9 @@ class Finding:
 
 BLOCK_RULES = (
     ("GITHUB_TOKEN", re.compile(r"(?<![A-Za-z0-9])(?:ghp_|gho_|ghu_|ghs_|ghr_)[A-Za-z0-9]{30,}(?![A-Za-z0-9])|(?<![A-Za-z0-9])github_pat_[A-Za-z0-9_]{40,}(?![A-Za-z0-9])")),
-    # sk_ only as Stripe test keys: a generic sk_ match blocked ordinary identifiers (2026-11-03 audit).
-    ("SECRET_KEY", re.compile(r"\bsk-(?:proj-)?[A-Za-z0-9_-]{24,}\b|\bsk_test_[A-Za-z0-9]{24,}\b")),
+    # sk_ keys: Stripe test keys, and bare sk_ keys (ElevenLabs-style hex) as one unbroken run with a digit, so an
+    # ordinary snake_case identifier such as sk_compute_digest does not block (2026-11-03 audit, 2026-11-04 review).
+    ("SECRET_KEY", re.compile(r"\bsk-(?:proj-)?[A-Za-z0-9_-]{24,}\b|\bsk_test_[A-Za-z0-9]{24,}\b|\bsk_(?=[A-Za-z]*[0-9])[A-Za-z0-9]{24,}\b")),
     ("GOOGLE_API_KEY", re.compile(r"\bAIza[A-Za-z0-9_-]{35}\b")),
     ("STRIPE_LIVE_KEY", re.compile(r"\b(?:sk|rk)_live_[A-Za-z0-9]{20,}\b")),
     ("SLACK_TOKEN", re.compile(r"\bxox(?:b|p|s|a|r)-[A-Za-z0-9-]{24,}\b")),
@@ -41,8 +42,9 @@ BLOCK_RULES = (
     ("GOOGLE_OAUTH_REFRESH_TOKEN", re.compile(r"(?<![A-Za-z0-9])1//[A-Za-z0-9._~-]{35,}")),
     ("META_ACCESS_TOKEN", re.compile(r"(?<![A-Za-z0-9])EAA[A-Za-z0-9]{45,}")),
     # Also common key names (api_key, x-api-key, token, secret, and names ending in _TOKEN / _SECRET such as
-# GITHUB_TOKEN or JWT_SECRET) in env, JSON, => or --flag form; a 40-hex commit SHA is not a key (2026-11-03 audit).
-    ("GENERIC_SECRET_ASSIGNMENT", re.compile(r"(?i)(?:client_secret|api_secret|refresh_token|access_token|password|api[_-]?key|x-api-key|secret[_-]?key|auth[_-]?token|(?<![a-z0-9])[a-z0-9_]*(?:token|secret))['\"]?\s*(?:=>|[:=])\s*['\\\"]?(?![0-9a-f]{40}\b)[A-Za-z0-9._/+~-]{24,}|--api[_-]?key[= ]+['\"]?[A-Za-z0-9._/+~-]{24,}")),
+    # GITHUB_TOKEN or JWT_SECRET) in env, JSON, => or --flag form (2026-11-03 audit). No 40-hex exemption: classic
+    # GitHub tokens and many API keys are 40 hex, and no commit SHA here sits under a key name (2026-11-04 review).
+    ("GENERIC_SECRET_ASSIGNMENT", re.compile(r"(?i)(?:client_secret|api_secret|refresh_token|access_token|password|api[_-]?key|x-api-key|secret[_-]?key|auth[_-]?token|(?<![a-z0-9])[a-z0-9_]*(?:token|secret))['\"]?\s*(?:=>|[:=])\s*['\\\"]?[A-Za-z0-9._/+~-]{24,}|--api[_-]?key[= ]+['\"]?[A-Za-z0-9._/+~-]{24,}")),
     ("AWS_ACCESS_ID", re.compile(r"(?<![A-Za-z0-9])(?:AKIA|ASIA)[A-Z0-9]{16}(?![A-Za-z0-9])")),
     # Also matches JSON/YAML quoting, e.g. "Authorization": "Bearer ..." (finding PR20-P2-4).
     ("BEARER_CREDENTIAL", re.compile(r"(?i)\bauthorization['\"]?\s*[:=]\s*['\"]?(?:bearer|token)\s+[A-Za-z0-9._~+/-]{24,}")),

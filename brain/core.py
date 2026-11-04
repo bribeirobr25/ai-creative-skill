@@ -238,11 +238,15 @@ def main_records(ref='origin/main'):
         if names.returncode:
             return None
         out = {}
-        for name in names.stdout.split():
-            if not name.endswith('.jsonl'):
-                continue
-            text = subprocess.run(['git', 'show', '%s:%s' % (ref, name)], cwd=ROOT, capture_output=True, text=True, timeout=60).stdout
-            for line in text.splitlines():
+        files = [n for n in names.stdout.split() if n.endswith('.jsonl')]
+        if not files:
+            # No records found means a wrong path or git context, not an empty base: fail closed (2026-11-04 review).
+            return None
+        for name in files:
+            shown = subprocess.run(['git', 'show', '%s:%s' % (ref, name)], cwd=ROOT, capture_output=True, text=True, timeout=60)
+            if shown.returncode:
+                return None
+            for line in shown.stdout.splitlines():
                 try:
                     r = json.loads(line)
                 except json.JSONDecodeError:

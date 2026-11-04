@@ -456,8 +456,12 @@ class SecretRulesTests(unittest.TestCase):
 
     def test_underscore_secret_key_blocks(self):
         self.assertIn(("BLOCK", "SECRET_KEY"), rules(fake_patch("key " + "sk_test_" + "t" * 30)))
+        # 2026-11-04 review: bare sk_ keys still block (hex or mixed, one unbroken run with a digit).
+        for key in ("sk_" + "3f9a0c" * 8, "sk_" + "Q7" + "w" * 30):
+            self.assertIn(("BLOCK", "SECRET_KEY"), rules(fake_patch("key " + key)), key)
         # 2026-11-03 audit: an ordinary identifier starting with sk_ is not a key.
-        self.assertNotIn(("BLOCK", "SECRET_KEY"), rules(fake_patch("def sk_" + "compute_the_sha256_digest_of_file():")))
+        for line in ("def sk_" + "compute_the_sha256_digest_of_file():", "sk_" + "w" * 30, "task_" + "3f9a0c" * 8):
+            self.assertNotIn(("BLOCK", "SECRET_KEY"), rules(fake_patch(line)), line)
 
     def test_names_ending_in_token_or_secret_block(self):
         # 2026-11-03 audit: FOO_TOKEN= and FOO_SECRET= forms, =>, --api-key flags and "Authorization: Token".
@@ -466,7 +470,15 @@ class SecretRulesTests(unittest.TestCase):
                      "api_token: " + value, 'api_key => "%s"' % value, "--api-key " + value):
             self.assertIn(("BLOCK", "GENERIC_SECRET_ASSIGNMENT"), rules(fake_patch(line)), line)
         self.assertIn(("BLOCK", "BEARER_CREDENTIAL"), rules(fake_patch("Authorization: Token " + value)))
-        for line in ("secret: " + "a1b2c3d4e5" * 4, "commit_token: deadbeef", "token: ${{ secrets.GITHUB_TOKEN }}"):
+        for line in ("commit_token: deadbeef", "token: ${{ secrets.GITHUB_TOKEN }}"):
+            self.assertNotIn(("BLOCK", "GENERIC_SECRET_ASSIGNMENT"), rules(fake_patch(line)), line)
+        # 2026-11-04 review: a 40-hex value under a credential name is a credential, not a commit SHA.
+        hex40 = "a1b2c3d4e5" * 4
+        for line in ("secret: " + hex40, "client_secret=" + hex40, "password: " + hex40, "access_token=" + hex40,
+                     "GH_OAUTH_CLIENT_SECRET=" + hex40, '"api_key": "%s"' % hex40):
+            self.assertIn(("BLOCK", "GENERIC_SECRET_ASSIGNMENT"), rules(fake_patch(line)), line)
+        # A commit SHA under a non-credential name stays allowed.
+        for line in ("commit: " + hex40, "head_sha=" + hex40, "uses: actions/checkout@" + hex40):
             self.assertNotIn(("BLOCK", "GENERIC_SECRET_ASSIGNMENT"), rules(fake_patch(line)), line)
 
     def test_local_home_path_is_reviewed(self):

@@ -67,3 +67,10 @@ The global historical scan runs **only on explicit manual use** (the `history-au
 - `brain-records` also validates the PR's records with the base commit's `brain/` code, for the same reason.
 - New detection: common key names (`api_key`, `x-api-key`, `token`, `secret`) with key-like values, `sk_` keys, tokens split across three lines, and local home-folder paths (REVIEW).
 - Known limits: a PR can still edit the workflow files themselves (the control is owner-only merges); PR bodies and comments are not scanned. See `FND-AUDIT-WORKFLOW-EDIT` and `FND-AUDIT-DETECTION-REST` in the Brain.
+
+## 2026-11-03 audit and 2026-11-04 review fixes (PR #58)
+
+- `brain-records` judges rule 5 (no merged record changed or removed) with the base commit's validator, not only the PR's: the base-copy step runs `validate --base-ref` over the checkout's git history, so a PR that edits its own validator to hide a rewritten record still fails. Reading no base records fails the check. `tests/test_findings.py::TrustedRuleFive` runs the step's own script against that attack.
+- Bootstrap limit: `main` before PR #58 has no `--base-ref`, so for PR #58 itself rule 5 is checked only by the PR's own code. Base enforcement starts with the first PR after #58 merges.
+- Separate, still open: a PR that edits the workflow files can remove the base-copy step (`FND-AUDIT-WORKFLOW-EDIT`). The fix above does not close it; the control is still owner-only merges and reading workflow diffs.
+- `sk_` keys block as Stripe test keys or as one unbroken run containing a digit (ElevenLabs-style hex), so `sk_snake_case` identifiers do not. A 40-hex value under a credential name (`client_secret`, `password`, `access_token`, `*_TOKEN`, `*_SECRET`) blocks; a commit SHA under another name does not.
