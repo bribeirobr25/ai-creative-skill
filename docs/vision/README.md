@@ -46,7 +46,7 @@ Guided steps are the main way the system improves outcomes. A user should never 
 4. **Delivery.** Finished work in a usable form: files, a live site, a published post, a sent campaign, a listed product, a book in a store, an episode on a channel.
 5. **Measure and learn.** Results flow back: ad performance, site visits, replies, sales, the user's own ratings. They feed the plan's next steps and the specialists' own experience.
 
-At any point the user can see what is happening, what it costs so far, what is waiting for approval and what was learned. How this is shown (records, the host's own views, or a dashboard) is decided in the shared-core design; a dedicated dashboard is not yet in scope.
+At any point the user can see what is happening, what it costs so far, what is waiting for approval and what was learned. How this is shown (records or the host's own views) is decided in the shared-core design; a dedicated dashboard (M5) stays withdrawn, and re-opening it needs a new decision.
 
 For an agency, the end client may be the approver: approvals, revision rounds and feedback are recorded per client, separate from the agency's own.
 
@@ -59,7 +59,7 @@ The skill idea evolves into areas of agents. Each area has a lead that plans, as
 | Research | What to scan, how fresh it must be | Market and competitors, trends, inspiration boards, marketplace research, audience research |
 | Visual & Brand | Direction and consistency across outputs | Logos and identity, photoshoots and product photos, websites, motion graphics |
 | Story | Story bible and continuity | Books, scripts, series and soap operas, cartoons, AI films |
-| Growth | Campaign plan and use of the budget | Ad creative and ad videos, organic content, AI influencers and spokespersons, ad management, measurement |
+| Growth | Campaign plan and a proposed spend plan, which runs only inside an execution scope the user approves | Ad creative and ad videos, organic content, AI influencers and spokespersons, ad management, measurement |
 | Sales | Offer, pipeline, deals | Offer and pricing, leads, outreach, deals, marketplace listings and storefronts |
 
 **Production** is shared by every area: image generation, video generation, editing and assembly (clips into long pieces for films, series and soap operas), post-production (reframe, upscale, repair) and voice and audio. Other shared specialists: copy, translation and localization, and independent quality review.
@@ -80,7 +80,7 @@ The skill idea evolves into areas of agents. Each area has a lead that plans, as
 The same rules apply to business work: proven stages, required elements, and the model deciding how.
 
 - **Sales:** ideal customer, lead list, qualification, outreach sequence, follow-up, proposal, contract, invoice and payment, client onboarding. Required elements include consent to contact, a clear offer and a recorded next step.
-- **Ad management:** launch within budget, pacing, testing variants, watching for creative fatigue, kill-or-scale rules, reporting. Required elements include the platform's policies, the AI-disclosure rules and a spend cap.
+- **Ad management:** launch inside an approved execution scope, pacing, testing variants, watching for creative fatigue, kill-or-scale rules, reporting. Required elements include the platform's policies, the AI-disclosure rules and a spend cap.
 - **Selling goods:** listing, product page, pricing, fulfilment hand-off, reviews handled honestly (no synthetic testimonials).
 
 ## Guidance and freedom
