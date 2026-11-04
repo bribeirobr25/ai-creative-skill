@@ -222,7 +222,7 @@ class TrustedRuleFive(unittest.TestCase):
         return subprocess.run(['git', '-c', 'user.name=t', '-c', 'user.email=t@example.invalid', *args], cwd=ws,
                               capture_output=True, text=True, check=True).stdout.strip()
 
-    def run_step(self, base_edit=None, rewrite=True, blind=True, smuggle=False):
+    def run_step(self, base_edit=None, rewrite=True, blind=True, smuggle=False, tab_copy=False):
         d = Path(self.enterContext(tempfile.TemporaryDirectory(ignore_cleanup_errors=True)))
         ws = d / 'ws'
         for rel in subprocess.run(['git', 'ls-files', '-z'], cwd=ROOT, capture_output=True, text=True,
@@ -236,6 +236,10 @@ class TrustedRuleFive(unittest.TestCase):
         self.git(ws, 'add', '-A')
         self.git(ws, 'commit', '-q', '-m', 'base')
         base = self.git(ws, 'rev-parse', 'HEAD')
+        if tab_copy:
+            # 2026-11-04 re-review: an untouched copy named `decisions.jsonl<TAB>`; a trimming `read` would write it
+            # over the rewritten file in the judged copy.
+            shutil.copy2(ws / 'brain/records/decisions.jsonl', ws / 'brain/records/decisions.jsonl\t')
         if rewrite:
             path = ws / 'brain/records/decisions.jsonl'
             lines = path.read_text().splitlines()
@@ -288,6 +292,11 @@ class TrustedRuleFive(unittest.TestCase):
         step, _ = self.run_step(rewrite=False, smuggle=True)
         self.assertNotEqual(step.returncode, 0, step.stdout + step.stderr)
         self.assertIn('brain/records must be a plain folder', step.stdout)
+
+    def test_untrimmed_names_cannot_overwrite_the_judged_records(self):
+        step, _ = self.run_step(tab_copy=True)
+        self.assertNotEqual(step.returncode, 0, step.stdout + step.stderr)
+        self.assertIn('plainly named .jsonl files', step.stdout)
 
     def test_clean_pr_passes_the_base_step(self):
         step, _ = self.run_step(rewrite=False)

@@ -35,14 +35,19 @@ jobs:
           rm -rf "$check/brain/records"
           # The records judged are the PR's git blobs, not the work tree or the archive: a symlink plus .gitattributes
           # export-subst could otherwise show the base check an unchanged copy (2026-11-04 re-review). Fail on
-          # anything that is not a plain folder of plain files.
+          # anything that is not a plain folder of plain, plainly named .jsonl files: the line is read untrimmed and the
+          # name checked, since `read` would strip a trailing tab and let `x.jsonl<TAB>` overwrite x.jsonl (2026-11-04).
           if [ "$(git ls-tree HEAD brain/records | cut -d' ' -f1)" != 040000 ]; then
             echo "::error::brain/records must be a plain folder"; exit 1
           fi
-          git ls-tree -r -z HEAD -- brain/records/ | while IFS=$'\t' read -r -d '' meta path; do
+          mkdir -p "$check/brain/records"
+          git ls-tree -r -z HEAD -- brain/records/ | while IFS= read -r -d '' line; do
+            meta=${line%%$'\t'*} path=${line#*$'\t'}
             read -r mode _ blob <<< "$meta"
-            if [ "$mode" != 100644 ]; then echo "::error::$path must be a plain file (mode $mode)"; exit 1; fi
-            mkdir -p "$check/$(dirname "$path")"
+            if [ "$mode" != 100644 ]; then echo "::error::brain/records holds a non-plain entry (mode $mode)"; exit 1; fi
+            if ! [[ "$path" =~ ^brain/records/[A-Za-z0-9_-]+\.jsonl$ ]]; then
+              echo "::error::brain/records may hold only plainly named .jsonl files"; exit 1
+            fi
             git cat-file blob "$blob" > "$check/$path"
           done
           # Import only the base brain package: -P keeps the working folder off sys.path, so a module the PR adds at
