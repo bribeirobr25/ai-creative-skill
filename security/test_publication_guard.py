@@ -479,6 +479,11 @@ class SecretRulesTests(unittest.TestCase):
                      "self.api_token = settings.SERVICE_API_TOKEN", "csrf_token = request.cookies.get_csrf_value_now"):
             self.assertNotIn(("BLOCK", "GENERIC_SECRET_ASSIGNMENT"), rules(fake_patch(line)), line)
         self.assertIn(("BLOCK", "GENERIC_SECRET_ASSIGNMENT"), rules(fake_patch("API_TOKEN=" + "1a.Q7" + "w" * 30)))
+        # 2026-11-04 final review: only plain code lookups are skipped; dotted credentials still block.
+        for line in ("DISCORD_TOKEN=" + "MTk4NjIyNDgzNDcxOTI1MjQ4" + ".Cl2FMQ." + "ZnCjm1XVW7vRze4b7Cq4se7kKWs",
+                     'client_secret = "app1.' + 'a9F8g7H6j5K4l3Z2x1C0vBnM"', "password: " + "Hunter2.Xy7zQ9pL3mN8bV2cR5tW",
+                     "API_SECRET=svc." + "Q8w7e6r5t4y3u2i1o0pLkJhGfDsA", "refresh_token: " + "Zm9vYmFyYmF6cXV4.cXV1eGNvcmdlZ3JhdWx0"):
+            self.assertIn(("BLOCK", "GENERIC_SECRET_ASSIGNMENT"), rules(fake_patch(line)), line)
         started = time.monotonic()
         rules(fake_patch("a_" * 40000))
         self.assertLess(time.monotonic() - started, 5)
@@ -498,7 +503,7 @@ class SecretRulesTests(unittest.TestCase):
         for line in ("/Users/you/project/", "/home/runner/work/", "C:/Users/someone/a.js", "/Users/you"):
             self.assertNotIn(("REVIEW", "LOCAL_HOME_PATH"), rules(fake_patch(line)), line)
         # 2026-11-04 audit: a placeholder name is excluded only as a whole name.
-        for line in ("/Users/" + "user.smith/notes", "/home/" + "me-dev/work"):
+        for line in ("/Users/" + "user.smith/notes", "/home/" + "me-dev/work", "C:\\Users\\" + "user.smith\\a.js"):
             self.assertIn(("REVIEW", "LOCAL_HOME_PATH"), rules(fake_patch(line)), line)
         # 2026-11-03 audit: no trailing slash, Windows, macOS temp folders, and the harness scratch form.
         for line in ("/Users/" + "jdoe", "C:\\Users\\" + "jdoe\\Desktop", "/var/folders/" + "zz/x",
