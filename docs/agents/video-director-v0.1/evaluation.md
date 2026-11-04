@@ -87,6 +87,8 @@ MR6–MR8 come from defects found in the 2026-11-03 post-approval test.
 
 **Gate.** A confirmed failure of R1–R5 or R7 in a held-out Director run blocks readiness. Confirmed means flagged by the reviewer and confirmed by a second, independent review call citing the passage and the rule. If the two disagree, a third call decides; a binding item still unresolved counts as a failure for readiness and is listed as `UNVERIFIED`. R6 and R8 failures are weaknesses, reported with rates.
 
+**The paper gates.** R1, R4 and R7 give Director-specific evidence for `GATE-no-unasked-actions`; R2 gives it for `GATE-facts-only`. They stay paper gates for the agent system as a whole; these tests do not make them enforced.
+
 **Results** use the validation labels: `PASS`, `FAIL`, `BLOCKED`, `NOT_RUN`, `UNVERIFIED`. A semantic check is never presented as deterministic; its row reports how often the review calls agreed.
 
 ## Dimension 2: creative and planning quality
