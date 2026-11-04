@@ -222,7 +222,7 @@ class TrustedRuleFive(unittest.TestCase):
         return subprocess.run(['git', '-c', 'user.name=t', '-c', 'user.email=t@example.invalid', *args], cwd=ws,
                               capture_output=True, text=True, check=True).stdout.strip()
 
-    def run_step(self, base_edit=None, rewrite=True, blind=True):
+    def run_step(self, base_edit=None, rewrite=True, blind=True, smuggle=False):
         d = Path(self.enterContext(tempfile.TemporaryDirectory(ignore_cleanup_errors=True)))
         ws = d / 'ws'
         for rel in subprocess.run(['git', 'ls-files', '-z'], cwd=ROOT, capture_output=True, text=True,
@@ -248,7 +248,19 @@ class TrustedRuleFive(unittest.TestCase):
             core_py = ws / 'brain/core.py'
             core_py.write_text(core_py.read_text().replace('def append_only_problems(base, rows):\n',
                                                            'def append_only_problems(base, rows):\n    return []\n', 1))
-        self.git(ws, 'commit', '-q', '-am', 'head')
+        if smuggle:
+            # 2026-11-04 re-review: records behind a symlink, with export-subst turning a changed line back into the
+            # original only in `git archive` output, so a check that reads archived records sees no change.
+            (ws / 'brain/records').rename(ws / 'recs')
+            (ws / 'brain/records').symlink_to('../recs')
+            (ws / '.gitattributes').write_text('recs/*.jsonl export-subst\n')
+            path = ws / 'recs/decisions.jsonl'
+            lines = path.read_text().splitlines()
+            i = next(n for n, line in enumerate(lines) if '"DECISION_RECORDED"' in line)
+            lines[i] = '$Format:' + lines[i].replace('%', '%%') + '$'
+            path.write_text('\n'.join(lines) + '\n')
+        self.git(ws, 'add', '-A')
+        self.git(ws, 'commit', '-q', '-m', 'head')
         shim = d / 'bin'
         shim.mkdir()
         (shim / 'python').symlink_to(sys.executable)
@@ -271,6 +283,11 @@ class TrustedRuleFive(unittest.TestCase):
         self.assertEqual(own.returncode, 0, own.stdout)  # the PR's own validator no longer sees the rewrite
         self.assertNotEqual(step.returncode, 0, step.stdout + step.stderr)
         self.assertIn('was changed after its merge', step.stdout)
+
+    def test_records_smuggled_through_a_symlink_fail_the_base_step(self):
+        step, _ = self.run_step(rewrite=False, smuggle=True)
+        self.assertNotEqual(step.returncode, 0, step.stdout + step.stderr)
+        self.assertIn('brain/records must be a plain folder', step.stdout)
 
     def test_clean_pr_passes_the_base_step(self):
         step, _ = self.run_step(rewrite=False)

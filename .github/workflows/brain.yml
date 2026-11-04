@@ -33,7 +33,18 @@ jobs:
           rm -rf "$check/brain"
           git archive "$BASE_SHA" brain | tar -x -C "$check"
           rm -rf "$check/brain/records"
-          cp -R brain/records "$check/brain/records"
+          # The records judged are the PR's git blobs, not the work tree or the archive: a symlink plus .gitattributes
+          # export-subst could otherwise show the base check an unchanged copy (2026-11-04 re-review). Fail on
+          # anything that is not a plain folder of plain files.
+          if [ "$(git ls-tree HEAD brain/records | cut -d' ' -f1)" != 040000 ]; then
+            echo "::error::brain/records must be a plain folder"; exit 1
+          fi
+          git ls-tree -r -z HEAD -- brain/records/ | while IFS=$'\t' read -r -d '' meta path; do
+            read -r mode _ blob <<< "$meta"
+            if [ "$mode" != 100644 ]; then echo "::error::$path must be a plain file (mode $mode)"; exit 1; fi
+            mkdir -p "$check/$(dirname "$path")"
+            git cat-file blob "$blob" > "$check/$path"
+          done
           # Import only the base brain package: -P keeps the working folder off sys.path, so a module the PR adds at
           # the top level (argparse.py, json.py...) cannot shadow the standard library (2026-11-03 audit).
           mkdir -p "$RUNNER_TEMP/brain-path"
