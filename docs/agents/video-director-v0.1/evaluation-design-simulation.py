@@ -18,7 +18,7 @@ Model (every parameter is a labelled assumption; see the report for which ones t
 - Reading: "clear, Director" if the interval is above 0, "clear, generalist" if below, otherwise inconclusive.
   This classifies how informative a design is. It is not the readiness rule, which is not a win-rate threshold.
 
-Usage: python3 evaluation-design-simulation.py [--n 2000] [--boot 1000] [--seed 20261104] [--out FILE]
+Usage: python3 evaluation-design-simulation.py [--n 4000] [--boot 1000] [--seed 20261104] [--out FILE]
 """
 import argparse
 import itertools
@@ -82,7 +82,7 @@ def detection_table():
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument('--n', type=int, default=2000)
+    ap.add_argument('--n', type=int, default=4000)  # the committed results use 4,000 draws
     ap.add_argument('--boot', type=int, default=1000)
     ap.add_argument('--seed', type=int, default=20261104)
     ap.add_argument('--out', default=str(Path(__file__).with_name('evaluation-design-simulation-2026-11-04-results.md')))

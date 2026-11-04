@@ -9,6 +9,8 @@
 | Regression run, 2026-10-31 | commit `5638779` | `definition.md` + `contract.md` + `knowledge-packs.md` with the "Production tool register" section removed, concatenated in that order under one heading | `a9686fde1f9da598ed2ff5d7be08448a747b4704122b9ab6ea20aa10069326f9` |
 | This test | commit `6219d1a` | same composition | `4302af61f68fa80eda286fd4baf9a8f966e680715ccbd9303aa6b0c33e5e7b08` |
 
+The bundles, the user sheet and the conversation file were assembled in a private scratch folder and are not published. The hashes identify those files, but the exact joining (heading and separators) was not recorded, so they cannot be rebuilt from this repository alone. `post-approval-test-2026-11-03-turn.py` reads its inputs from its own folder, so it was run from a copy in that scratch folder, not from where it is published here. Commit ids in this folder are PR #56's commits, which GitHub keeps on the PR.
+
 ## Isolation (probed 2026-11-03)
 
 Each turn runs as a headless Claude session launched from a scratch folder outside the repository, which held only this test's inputs (tools were disabled, so nothing was read from it), with:

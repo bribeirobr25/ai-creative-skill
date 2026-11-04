@@ -62,7 +62,9 @@ Changed after the 2026-11-03 audit, and not re-run, so that the five smoke scena
 - labels kept internal unless they change what the user is asked;
 - the reports corrected.
 
+**Evaluation status (2026-11-04):** `evaluation.md` is a proposal and nothing has been run under it. Its status is kept here, not in the protocol, so a record can pin the protocol's exact text. Commit ids cited in this folder are PR #56's commits, which GitHub keeps on the PR; after a squash merge they are not in `main`'s history.
+
 Before automated evaluation (revised 2026-11-04, see `evaluation.md`):
-1. **Authority.** The owner decides the proposed record DEC-2026-11-04-evaluation-method-r2 (PR #59), a bounded exception to the evaluation-method decision for Video Director v0.x.
-2. **Build** the runner, checks and prompts, with no model calls.
+1. **Authority.** The owner decides the record DEC-2026-11-04-evaluation-method-r2 (PR #59), a bounded exception to the evaluation-method decision for Video Director v0.x. It is to be re-pinned to this protocol's squash commit on `main` and its SHA-256 after this PR merges.
+2. **Build** the runner, checks and prompts, with no model calls, after the owner's yes to build here.
 3. **Execution scopes,** each approved by the owner: development cycles on the subscription, then a held-out pass on a clean API session with a cost cap.
