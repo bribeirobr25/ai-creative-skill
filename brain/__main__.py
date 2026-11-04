@@ -10,6 +10,7 @@ def main(argv=None):
     sub = p.add_subparsers(dest='cmd', required=True)
     v = sub.add_parser('validate', help='check records against brain/CONTRACT.md')
     v.add_argument('--verify-authority', action='store_true', help='also check on GitHub that each decision PR was merged by the owner')
+    v.add_argument('--base-ref', help='also check that no record on this git ref was changed or removed (rule 5); used by CI')
     v.add_argument('--records', help='validate another records folder, e.g. the private half (evidence paths resolve from its parent)')
     v.add_argument('--allow-private', action='store_true', help='accept privacy_class "private" (only for a folder outside this repository)')
     sub.add_parser('lint-docs', help='fail if a living doc calls a merged PR open or proposed (needs GitHub)')
@@ -38,6 +39,12 @@ def main(argv=None):
         return 1
     root = core.Path(a.records).resolve().parent if a.records else core.ROOT
     errs = core.problems(rows, root, a.allow_private) + (core.verify_authority(rows) if a.verify_authority else [])
+    if getattr(a, 'base_ref', None):
+        base = core.main_records(a.base_ref)
+        if base is None:
+            print('FAIL cannot read brain/records at %s' % a.base_ref)
+            return 1
+        errs += core.append_only_problems(base, rows)
     for e in errs:
         print('FAIL ' + e)
     print('%s: %d record(s), %d problem(s)' % ('PASS' if not errs else 'FAIL', len(rows), len(errs)))

@@ -3,6 +3,8 @@
 Synthetic token examples are assembled at runtime so no secrets are committed.
 """
 import io
+import sys
+import time
 import unittest
 from contextlib import redirect_stdout
 from unittest.mock import patch
@@ -307,7 +309,7 @@ class SecretRulesTests(unittest.TestCase):
             git("add", ".")
             git("commit", "-qm", "hidden token test")
             cmd = [
-                "python", str(Path(guard).resolve()),
+                sys.executable, str(Path(guard).resolve()),
                 "--range", base + "...HEAD",
                 "--history-range", base + "..HEAD",
             ]
@@ -337,7 +339,7 @@ class SecretRulesTests(unittest.TestCase):
             git("add", ".")
             git("commit", "-qm", "NUL token test")
             result = subprocess.run(
-                ["python", str(Path(guard).resolve()), "--range", base + "...HEAD",
+                [sys.executable, str(Path(guard).resolve()), "--range", base + "...HEAD",
                  "--history-range", base + "..HEAD"],
                 cwd=d, capture_output=True, text=True,
             )
@@ -372,7 +374,7 @@ class SecretRulesTests(unittest.TestCase):
             git("add", ".")
             git("commit", "-qm", "UTF16-style binary text")
             result = subprocess.run(
-                ["python", str(Path(guard).resolve()), "--range", base + "...HEAD",
+                [sys.executable, str(Path(guard).resolve()), "--range", base + "...HEAD",
                  "--history-range", base + "..HEAD"],
                 cwd=d, capture_output=True, text=True,
             )
@@ -455,14 +457,59 @@ class SecretRulesTests(unittest.TestCase):
             self.assertNotIn(("BLOCK", "GENERIC_SECRET_ASSIGNMENT"), rules(fake_patch(line)), line)
 
     def test_underscore_secret_key_blocks(self):
-        self.assertIn(("BLOCK", "SECRET_KEY"), rules(fake_patch("key " + "sk_" + "t" * 30)))
+        self.assertIn(("BLOCK", "SECRET_KEY"), rules(fake_patch("key " + "sk_test_" + "t" * 30)))
+        # 2026-11-04 review: bare sk_ keys still block (hex or mixed, one unbroken run with a digit).
+        for key in ("sk_" + "3f9a0c" * 8, "sk_" + "Q7" + "w" * 30):
+            self.assertIn(("BLOCK", "SECRET_KEY"), rules(fake_patch("key " + key)), key)
+        # 2026-11-03 audit: an ordinary identifier starting with sk_ is not a key.
+        for line in ("def sk_" + "compute_the_sha256_digest_of_file():", "sk_" + "w" * 30, "task_" + "3f9a0c" * 8):
+            self.assertNotIn(("BLOCK", "SECRET_KEY"), rules(fake_patch(line)), line)
+
+    def test_names_ending_in_token_or_secret_block(self):
+        # 2026-11-03 audit: FOO_TOKEN= and FOO_SECRET= forms, =>, --api-key flags and "Authorization: Token".
+        value = "Q7" + "w" * 30
+        for line in ("GITHUB_TOKEN=" + value, "JWT_SECRET=" + value, "REPLICATE_API_TOKEN=" + value,
+                     "api_token: " + value, 'api_key => "%s"' % value, "--api-key " + value):
+            self.assertIn(("BLOCK", "GENERIC_SECRET_ASSIGNMENT"), rules(fake_patch(line)), line)
+        self.assertIn(("BLOCK", "BEARER_CREDENTIAL"), rules(fake_patch("Authorization: Token " + value)))
+        for line in ("commit_token: deadbeef", "token: ${{ secrets.GITHUB_TOKEN }}"):
+            self.assertNotIn(("BLOCK", "GENERIC_SECRET_ASSIGNMENT"), rules(fake_patch(line)), line)
+        # 2026-11-04 audit: a dotted lookup is not a key, and a long line does not stall the scan.
+        for line in ("const githubToken = process.env.GITHUB_TOKEN;", "self.bos_token = self.tokenizer.bos_token",
+                     "self.api_token = settings.SERVICE_API_TOKEN", "csrf_token = request.cookies.get_csrf_value_now"):
+            self.assertNotIn(("BLOCK", "GENERIC_SECRET_ASSIGNMENT"), rules(fake_patch(line)), line)
+        self.assertIn(("BLOCK", "GENERIC_SECRET_ASSIGNMENT"), rules(fake_patch("API_TOKEN=" + "1a.Q7" + "w" * 30)))
+        # 2026-11-04 final review: only plain code lookups are skipped; dotted credentials still block.
+        for line in ("DISCORD_TOKEN=" + "MTk4NjIyNDgzNDcxOTI1MjQ4" + ".Cl2FMQ." + "ZnCjm1XVW7vRze4b7Cq4se7kKWs",
+                     'client_secret = "app1.' + 'a9F8g7H6j5K4l3Z2x1C0vBnM"', "password: " + "Hunter2.Xy7zQ9pL3mN8bV2cR5tW",
+                     "API_SECRET=svc." + "Q8w7e6r5t4y3u2i1o0pLkJhGfDsA", "refresh_token: " + "Zm9vYmFyYmF6cXV4.cXV1eGNvcmdlZ3JhdWx0"):
+            self.assertIn(("BLOCK", "GENERIC_SECRET_ASSIGNMENT"), rules(fake_patch(line)), line)
+        started = time.monotonic()
+        rules(fake_patch("a_" * 40000))
+        rules(fake_patch("TOKEN=" + "_." * 60 + "!"))  # 2026-11-04 final review: overlapping segment alternatives
+        self.assertLess(time.monotonic() - started, 5)
+        # 2026-11-04 review: a 40-hex value under a credential name is a credential, not a commit SHA.
+        hex40 = "a1b2c3d4e5" * 4
+        for line in ("secret: " + hex40, "client_secret=" + hex40, "password: " + hex40, "access_token=" + hex40,
+                     "GH_OAUTH_CLIENT_SECRET=" + hex40, '"api_key": "%s"' % hex40):
+            self.assertIn(("BLOCK", "GENERIC_SECRET_ASSIGNMENT"), rules(fake_patch(line)), line)
+        # A commit SHA under a non-credential name stays allowed.
+        for line in ("commit: " + hex40, "head_sha=" + hex40, "uses: actions/checkout@" + hex40):
+            self.assertNotIn(("BLOCK", "GENERIC_SECRET_ASSIGNMENT"), rules(fake_patch(line)), line)
 
     def test_local_home_path_is_reviewed(self):
         # 2026-10-30 audit: a home folder names the owner's account and machine layout.
         self.assertIn(("REVIEW", "LOCAL_HOME_PATH"), rules(fake_patch("see /Users/" + "jdoe/Desktop/notes")))
         self.assertIn(("REVIEW", "LOCAL_HOME_PATH"), rules(fake_patch("cd /home/" + "jdoe/work/")))
-        for line in ("/Users/you/project/", "/home/runner/work/", "C:/Users/someone/a.js"):
+        for line in ("/Users/you/project/", "/home/runner/work/", "C:/Users/someone/a.js", "/Users/you"):
             self.assertNotIn(("REVIEW", "LOCAL_HOME_PATH"), rules(fake_patch(line)), line)
+        # 2026-11-04 audit: a placeholder name is excluded only as a whole name.
+        for line in ("/Users/" + "user.smith/notes", "/home/" + "me-dev/work", "C:\\Users\\" + "user.smith\\a.js"):
+            self.assertIn(("REVIEW", "LOCAL_HOME_PATH"), rules(fake_patch(line)), line)
+        # 2026-11-03 audit: no trailing slash, Windows, macOS temp folders, and the harness scratch form.
+        for line in ("/Users/" + "jdoe", "C:\\Users\\" + "jdoe\\Desktop", "/var/folders/" + "zz/x",
+                     "/private/tmp/claude-" + "1000/scratch", "a -Users-" + "jdoe-Desktop path"):
+            self.assertIn(("REVIEW", "LOCAL_HOME_PATH"), rules(fake_patch(line)), line)
 
     def test_media_with_exif_needs_review(self):
         # Finding PR20-P1-5: EXIF in added media is routed to review (labels only, no values).
@@ -983,7 +1030,7 @@ class ClosedScopeCliRegressions(unittest.TestCase):
         import subprocess
         from pathlib import Path
         from publication_guard import __file__ as guard_file
-        return subprocess.run(["python", str(Path(guard_file).resolve()), *args],
+        return subprocess.run([sys.executable, str(Path(guard_file).resolve()), *args],
                               cwd=root, capture_output=True, text=True)
 
     def test_history_added_then_removed_is_not_clean(self):

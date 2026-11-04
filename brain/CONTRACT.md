@@ -21,7 +21,7 @@ There is one JSON object per line in `brain/records/*.jsonl`.
 | `review_by` | no | Date to look at it again. `status` lists it once due. |
 | `privacy_class` | yes | Must be `public` here. Anything else belongs in the private half, outside this repository (invariant 8). |
 
-**Findings** (`brain/records/findings.jsonl`) use the same fields with `kind: OBSERVED`, plus:
+**Findings** (`brain/records/findings.jsonl`, and any record with a `finding_status`) use the same fields with `kind: OBSERVED`, plus:
 - `finding_status`: `OPEN`, `FIXED`, `ACCEPTED-RISK`, `UNKNOWN` or `WITHDRAWN` (no longer applicable);
 - `test_ref`: the test that catches the problem again (`path` or `path::Class[.method]`; the file must exist), or `paper` until a test exists;
 - `source`: where the finding was raised.
@@ -30,11 +30,11 @@ There is one JSON object per line in `brain/records/*.jsonl`.
 
 1. **The emitter is not the persister.** Agents and people propose records in a PR. A record counts only once the owner merges that PR. For a decision, `authority_ref` names the PR whose merge was the owner's act. `python -m brain validate --verify-authority` checks that on GitHub.
    - `status` checks each decision on GitHub. **Current** means: its PR was merged by the owner; the record itself reached `main` through a squash-merged PR the owner merged (read from git history, so a branch cannot borrow an old merge, while records backfilled by a later PR stay valid); and the authority PR changed at least one of the record's evidence files (or `brain/records` when it cites none). The file match is a provenance consistency check that catches a wrong PR number; it is not proof of authorization, which remains the owner's merge and review of the PR.
-   - A record that exists only on the current branch is **pending**. A duplicate id makes every copy a problem. `validate --verify-authority` checks every decision, history included: a chain is only as good as each link.
+   - A record that exists only on the current branch is **pending**. A duplicate id makes every copy a problem, and a line that repeats a key is malformed. `validate --verify-authority` checks every decision, history included: a chain is only as good as each link.
    - A decision whose PR is still open is **pending**: listed apart, and it supersedes nothing until the merge.
    - A PR closed without merge or merged by someone else makes the decision a **problem**. If GitHub or git history cannot be reached, no decision is shown as confirmed, and a decision whose replacement cannot be checked is not shown as confirmed either. Due reviews are still listed, tagged with their state.
    - The PR check runs `validate` without `--verify-authority`, so a decision PR can pass its own checks before the owner merges it.
-2. **Superseded is never current.** A record named in another record's `supersedes` is history. A record cannot supersede itself, and a cycle fails `validate`. When a decision in force supersedes one that is not (a pending or invalid link), that link's own target stays history too, and `status` reports the broken link. Only a decision can supersede a decision: an observation or change request that names a decision in `supersedes` fails `validate` and is ignored by `status`.
+2. **Superseded is never current.** A record named in another record's `supersedes` is history. A record cannot supersede itself, and a cycle fails `validate`. When a decision in force supersedes one that is not (a pending or invalid link), that link's own target stays history too, and `status` reports the broken link. Only a decision can supersede a decision: an observation or change request that names a decision in `supersedes` fails `validate` and is ignored by `status`. A record supersedes only a record on its own subject (compared like contradictions below); anything else fails `validate`.
 3. **Contradictions fail closed.** Two current decisions on the same subject (compared without case or surrounding spaces) make `validate` fail, and `status` reports them. Supersede one; don't edit both.
 4. **No automatic promotion.** An observation or a benchmark result never becomes a decision by itself (ADR-0004 I5, Calibration §1.2).
 5. **Add, don't rewrite.** To correct a record, add a new one that supersedes it. Typos may be fixed in place in the same PR that added the record, before merge.
