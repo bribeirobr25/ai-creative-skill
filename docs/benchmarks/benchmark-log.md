@@ -111,7 +111,7 @@ This log records what current hosts and models do, with dates, for the owner's c
   - At a moderate effect, even 48 transcripts give a clear reading about one time in five with a noisy judge; a large effect needs about 48 for a clear reading about 60% of the time.
   - A judge's lean toward the Director gives clear wrong readings more often as designs grow (8–9% at 24 transcripts, up to 17% at 48).
   - At equal cost, more scenarios match repeats in clarity and cover more conditions.
-  - About 24 runs facing a check see a 10% failure rate at least once with 92% probability.
-  - Chosen: 13 held-out scenarios × 1 run per arm plus 12 probes per arm (`evaluation.md`).
+  - Robustness detection is counted per requirement, over the runs where it is at stake (counts in `docs/agents/video-director-v0.1/evaluation-scenario-grid-results.md`).
+  - Chosen: 17 held-out scenarios × 1 run per arm (all 210 factor pairs) plus 14 probes per arm (`evaluation.md`).
 - **Limits:** all effect and bias parameters are assumed; quality is one latent number; judge calls share bias but not noise; leakage and scenario quality are not modelled.
 - **review_by:** 2027-04-30.

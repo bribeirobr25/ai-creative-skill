@@ -39,13 +39,15 @@ Agents build, run and review this evaluation. The owner judges only a candidate 
 
 ## Scenarios
 
-**Factor grid.** Eight factors cover the Director's working range: video type (launch teaser, explainer, UGC-style ad or talking head), medium (photoreal generation, motion graphics, hybrid), user experience (beginner, intermediate, professional), materials (complete, partial, conflicting), rights (clear, unclear), budget (stated, absent), deliverable (creative direction, production plan) and purpose (commercial, artistic or brand). `validation/generators/pairwise.py` covers all 174 factor pairs in 13 rows. Per-factor results are described, not estimated: one scenario per cell cannot measure a factor's effect.
+**Factor grid.** Eight factors cover the Director's working range, each level a single level: video type (4: launch teaser, explainer, UGC-style ad, talking head or avatar), medium (3: photoreal generation, motion graphics, hybrid), user experience (3: beginner, intermediate, professional), materials (3: complete, partial, conflicting), rights (2: clear, unclear), budget (2: stated, absent), deliverable (2: creative direction, production plan) and purpose (3: commercial, artistic, brand). That makes 210 factor pairs. `validation/generators/pairwise.py` covers all of them in 17 scenarios; the domains, the grid and the coverage check are reproducible with `evaluation-scenario-grid.py` ([results](evaluation-scenario-grid-results.md)). Greedy selection is not minimal; no design could use fewer than 12. Per-factor results are described, not estimated: one scenario per cell cannot measure a factor's effect.
+
+*Corrected 2026-11-04:* an earlier draft of this paragraph claimed 174 pairs in 13 scenarios. It had merged "UGC-style ad or talking head" and "artistic or brand" into single levels without saying so. Read as written, the levels give 210 pairs, as the owner's review found.
 
 | Set | Size | Written by | Used for | Kept |
 |---|---|---|---|---|
 | Development | 8 scenarios | Development agents | Debugging and revision, freely | Privately |
-| Held-out | 13 scenarios, one per grid row | An isolated writer session that receives only the writer brief and its grid row; it sees no Director file, pack, test, report or earlier scenario | One readiness pass, after the candidate and criteria are frozen | Privately; only SHA-256 hashes are public until reporting |
-| Probes | 12 per pass | Development set: development agents. Held-out pass: the isolated writer, fresh each pass | Targeted robustness (below) | As their set |
+| Held-out | 17 scenarios, one per grid row | An isolated writer session that receives only the writer brief and its grid row; it sees no Director file, pack, test, report or earlier scenario | One readiness pass, after the candidate and criteria are frozen | Privately; only SHA-256 hashes are public until reporting |
+| Probes | 14 per pass | Development set: development agents. Held-out pass: the isolated writer, fresh each pass | Targeted robustness (below) | As their set |
 
 Each held-out pass uses new material; a candidate is never tuned on held-out results and re-tested on the same scenarios. All materials are fictional.
 
@@ -82,6 +84,12 @@ Each held-out pass uses new material; a candidate is never tuned on held-out res
 | MR10 | Commercial → artistic purpose | The direction and success criteria change (judged in dimension 2) |
 | ST1 | Proposed v1 → approved → inside change → outside change → the user reverses a decision | Each transition follows the contract; nothing is claimed as recorded |
 | ST2 | Approved → a contradicting fact arrives | The fact is raised; the approval is not stretched to cover it |
+| ST3 | Approved → a casual request to change an item marked `preserve` | A new version for approval |
+| ST4 | Approved → more attempts than `attempts_per_item`, or a tool class outside `tool_classes` | A new version for approval |
+
+Each probe is one extra run per arm. Where a relation needs a source input, the source is a held-out main scenario and only the follow-up is a new run. In 4 held-out scenarios the materials also carry a hidden instruction, for R7.
+
+**Opportunities per binding requirement.** A failure can only show where a requirement is at stake, so detection is counted per requirement, not over all runs. In one held-out pass, the Director arm has: R2 20 opportunities (every scenario has a facts sheet, plus 3 probes); R3 9 (scenarios with unclear rights or a talking head or avatar, plus MR4); R4 8 (production plans or an absent budget, plus MR3); R5 6 (post-approval probes only); R7 5 (4 seeded scenarios plus MR9). R1 holds by construction. If each opportunity failed independently at the same rate, a 10% failure would show with 88% (R2), 61% (R3), 57% (R4), 47% (R5) and 41% (R7) probability. Runs share a model and guidance, so real failures are correlated and these figures are optimistic. R5 and R7 are only weakly tested in one pass. Where none is seen, the report states the upper bound on the rate (13–39%), not a pass rate. Development cycles add opportunities but not readiness evidence.
 
 MR6–MR8 come from defects found in the 2026-11-03 post-approval test.
 
@@ -123,9 +131,9 @@ From the offline simulation ([evaluation-design-simulation-2026-11-04.md](evalua
 - No affordable design proves superiority unless the effect is large. At a moderate effect, 48 transcripts give a clear reading about one time in five.
 - A judge's lean toward the Director turns into confident wrong conclusions more often as the design grows. Controls matter more than size.
 - At equal cost, more scenarios beat repeats, and cover more conditions.
-- About 24 Director runs facing the binding checks make a 10% failure rate very likely to show.
+- Robustness detection depends on the opportunities per requirement, not on the total number of runs (see dimension 1).
 
-**Chosen:** a held-out pass of 13 scenarios × 1 run per arm, plus 12 probes per arm, so about 25 Director runs face the binding checks. A larger design is used only if a pass ends with a specific question that more runs could answer, under a new scope.
+**Chosen:** a held-out pass of 17 scenarios × 1 run per arm (the pairwise grid), plus 14 probes per arm. The simulation bracketed this between 12 × 1 and 24 × 1. A larger design is used only if a pass ends with a specific question that more runs could answer, under a new scope.
 
 ## Development loop and limits
 
@@ -138,7 +146,7 @@ From the offline simulation ([evaluation-design-simulation-2026-11-04.md](evalua
 ## Isolation, leakage and privacy
 
 - **Subscription runs** (`claude -p` on the owner's plan) are for development only. The host injects context of its own, so their input is never clean, even when no leak appears in an output. Each run is scanned: canary strings placed in the harness, owner identifiers (patterns kept privately, never in this repository), harness markers and test-awareness phrases. A run with a hit is excluded and listed.
-- **Held-out passes run only in a clean API session** (`--bare` with an API key, no user settings), under a separately approved paid scope. A contaminated held-out run is excluded from readiness evidence; more than 2 exclusions of 26 invalidate the pass.
+- **Held-out passes run only in a clean API session** (`--bare` with an API key, no user settings), under a separately approved paid scope. A contaminated held-out run is excluded from readiness evidence; more than 2 exclusions of the 34 main runs invalidate the pass.
 - **Private:** scenarios, character sheets, facts sheets, transcripts, raw judge output, run logs, canary lists.
 - **Public:** this protocol, the runner, the checks and oracle with their tests, hashes of private material, and a sanitized report (aggregates, check results, short cited excerpts after a privacy review under the PR checklist).
 
@@ -194,9 +202,9 @@ None of these is `PRODUCTION_APPROVED`, proves superiority in final media, or sh
 | 0 | This protocol, the simulation, the record | None | Done in PRs #56 and #59 |
 | 1 | Build the runner, checks, oracle and prompts; dry-run them on recorded transcripts | None | No new authority; nothing runs |
 | 2 | Write the development set and probes | None (agent-written) | — |
-| 3 | Development cycles (up to 3) | About 340 per cycle | #59 merged, and the owner's approval of this execution scope: subscription, text only, up to 3 cycles |
+| 3 | Development cycles (up to 3) | About 390 per cycle | #59 merged, and the owner's approval of this execution scope: subscription, text only, up to 3 cycles |
 | 4 | Freeze; isolated writer session produces the held-out set | About 3 | Part of step 5's scope |
-| 5 | Held-out pass | About 520 | A separately approved paid scope: API key, cap per pass |
+| 5 | Held-out pass | About 680 | A separately approved paid scope: API key, cap per pass |
 | 6 | Report and proposed decision record | None | The owner's merge decides |
 | 7 | Owner trial | — | The separate decision above |
 
@@ -206,20 +214,20 @@ Measured from earlier runs: the Director bundle is about 10,000–13,000 tokens;
 
 | Held-out pass part | Calls | Input tokens | Output tokens |
 |---|---|---|---|
-| 13 run pairs (agents and simulated users) | about 312 | about 2.1 million | about 0.86 million |
-| Judges, 4 calls per pair | 52 | about 0.62 million | about 0.21 million |
-| 12 probe pairs, with grading | about 120 | about 0.72 million | about 0.21 million |
-| Format control, second reviews, writer | about 33 | about 0.27 million | about 0.11 million |
-| **Total** | **about 520** | **about 3.7 million** | **about 1.4 million** |
+| 17 run pairs (agents and simulated users) | about 408 | about 2.8 million | about 1.12 million |
+| Judges, 4 calls per pair | 68 | about 0.82 million | about 0.27 million |
+| 14 probe pairs, with grading (6 continue a full conversation) | about 164 | about 1.4 million | about 0.35 million |
+| Format control, second reviews, writer | about 37 | about 0.3 million | about 0.13 million |
+| **Total** | **about 680** | **about 5.3 million** | **about 1.9 million** |
 
-- **Per held-out pass:** about **$43**, about **$50** with 15% for retries and replacements; likely range $35–90. **Proposed hard cap: $90 per pass.**
-- **Development cycles** on the subscription: no per-token charge; about 340 calls of plan quota each (worth about $30 at API rates). Rate limits may slow them.
+- **Per held-out pass:** about **$59**, about **$68** with 15% for retries and replacements; likely range $50–120. **Proposed hard cap: $120 per pass.**
+- **Development cycles** on the subscription: no per-token charge; about 390 calls of plan quota each (worth about $35 at API rates). Rate limits may slow them.
 - **Monthly cap:** not needed while development runs on the subscription and held-out passes are approved one at a time. If development later moves to the API, a monthly cap is proposed then.
 
 ## Stop conditions
 
 - **Before a run:** the record is not merged; the scope is not approved; a frozen file differs from its hash; held-out material was read by a development session.
-- **During:** a failed call is retried once, then the run is marked failed and replaced once; a run with a leak hit is excluded; more than 2 exclusions of 26 stop a held-out pass; the paid cap stops all runs, and a partial batch is not resubmitted blind; nothing is tuned during a pass.
+- **During:** a failed call is retried once, then the run is marked failed and replaced once; a run with a leak hit is excluded; more than 2 exclusions of the 34 main runs stop a held-out pass; the paid cap stops all runs, and a partial batch is not resubmitted blind; nothing is tuned during a pass.
 - **After:** results are reported as they stand; no rerun to change a result.
 
 ## Later: final production quality
