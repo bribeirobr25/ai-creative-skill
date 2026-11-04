@@ -1,6 +1,6 @@
-# Video Director v0.1 (proposal)
+# Video Director v0.1 (candidate design)
 
-**Status:** draft for the owner's review. Not adopted and not formally evaluated; smoke and targeted runs only (below). No Brain decision yet. It authorizes nothing: no generation, external service, spend or change to the frozen `src/`.
+**Status: `DESIGN_COMPLETE`** (2026-11-04, `DEC-2026-11-04-video-director-v0-1`). The design phase is closed: this folder is the candidate design. It is **not** operational, validated, production-ready or `READY_FOR_OWNER_TRIAL`, and its guidance stays provisional. Only exploratory smoke and targeted runs were made (below), with their limitations. It authorizes nothing: no generation, external service, model run, spend or change to the frozen `src/`.
 
 The first specialist under the [system vision](../../vision/README.md) and [ADR-0006](../../decisions/ADR-0006-system-direction-agent-teams.md): an audiovisual creative director that turns an idea, goal or brief into a clear creative direction and an executable production plan. It is also the first concrete use of the shared parts later agents will reuse: a role definition, an input/output contract, knowledge packs with evidence tags, and an evaluation protocol fixed in advance.
 
@@ -62,9 +62,6 @@ Changed after the 2026-11-03 audit, and not re-run, so that the five smoke scena
 - labels kept internal unless they change what the user is asked;
 - the reports corrected.
 
-**Evaluation status (2026-11-04):** `evaluation.md` is a proposal and nothing has been run under it. Its status is kept here, not in the protocol, so a record can pin the protocol's exact text. Commit ids cited in this folder are PR #56's commits, which GitHub keeps on the PR; after a squash merge they are not in `main`'s history.
+**Evaluation status (2026-11-04):** `evaluation.md`, its simulation and its scenario grid are **deferred research**, kept as reference and not authorized for execution. Nothing has been run under them. PR #59, which proposed the authorization (`DEC-2026-11-04-evaluation-method-r2`), was closed without merge: deferred, not rejected on technical grounds. Its commits stay on the PR. Commit ids cited in this folder are PR #56's commits, which GitHub keeps on the PR; after a squash merge they are not in `main`'s history.
 
-Before automated evaluation (revised 2026-11-04, see `evaluation.md`):
-1. **Authority.** The owner decides the record DEC-2026-11-04-evaluation-method-r2 (PR #59), a bounded exception to the evaluation-method decision for Video Director v0.x. It is to be re-pinned to this protocol's squash commit on `main` and its SHA-256 after this PR merges.
-2. **Build** the runner, checks and prompts, with no model calls, after the owner's yes to build here.
-3. **Execution scopes,** each approved by the owner: development cycles on the subscription, then a held-out pass on a clean API session with a cost cap.
+If automated evaluation is resumed later, it needs, each separately: a new `evaluation-method` decision naming the protocol version, revised against the agent and tools that exist then; the owner's yes to build the runner; and an execution scope for every run.

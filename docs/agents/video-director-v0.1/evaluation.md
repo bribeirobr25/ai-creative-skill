@@ -1,6 +1,6 @@
 # Video Director v0.x · Automated evaluation protocol
 
-**Status:** kept in the folder [README](README.md), so this file stays exact when a record pins it. Nothing runs under it without the `evaluation-method` record that names this file's version, and the owner's approval of each execution scope below. The 2026-11-03 version (12 owner-rated transcripts) is in PR #56's commits (`3d00793`).
+**Status: deferred research, not authorized for execution** (see the folder [README](README.md) and `DEC-2026-11-04-video-director-v0-1`). Nothing runs under it unless a new `evaluation-method` record names this file's version, and the owner approves each execution scope below. The 2026-11-03 version (12 owner-rated transcripts) is in PR #56's commits (`3d00793`).
 
 **Questions**, kept apart:
 1. **Robustness:** does the Director respect its contract, the binding rules and its authority under varied conditions?
@@ -12,7 +12,7 @@ Agents build, run and review this evaluation. The owner judges only a candidate 
 ## Authority and boundaries
 
 - **General rule:** DEC-2026-10-30-evaluation-method ("No further live blind benchmark studies; questions are evaluated by simulation … over recorded evidence") stays unchanged for everything except this exception.
-- **The exception:** an `evaluation-method` record (DEC-2026-11-04-evaluation-method-r2, PR #59) allows one bounded exception for Video Director v0.x: repeated synthetic, text-only evaluations during its development, under this protocol at the commit and SHA-256 the record names. A changed protocol needs a new record naming the new version.
+- **The exception it would need:** an `evaluation-method` record allowing one bounded exception for Video Director v0.x (repeated synthetic, text-only evaluations during its development, under this protocol at a commit and SHA-256 the record names). PR #59 proposed one (DEC-2026-11-04-evaluation-method-r2) and was closed without merge on 2026-11-04, deferred. No such record is in force.
 - **Text only, enforced.** Every model call runs with no tools and no MCP servers (`--tools ''`, an empty `--strict-mcp-config`), so no generation, rendering, audio, search, publication or external contact is possible. Prompts, tool requests and payloads exist only as text inside a reply.
 - **What agents may change:** the Director's `definition.md`, `contract.md` and Packs 1–3 (unproven knowledge), within the cycle limits below, except the binding items; the development scenarios; the runner and its checks, except the parts that encode a binding item.
 - **Binding items, owner-only:** the Pack 1 rows C5, C7, C13, C16 and C17, the contract's "Rules for using it" and "Approval points the contract produces" sections, the requirements R1–R8 and the probe table below, and the envelope oracle's table. They are pinned to the commit the record names: at freeze the runner compares them with that commit and refuses to run if any differs, so a revision cannot soften what both arms and the oracle are graded against.
@@ -207,10 +207,10 @@ None of these is `PRODUCTION_APPROVED`, proves superiority in final media, or sh
 
 | Step | Work | Model calls | Needs |
 |---|---|---|---|
-| 0 | This protocol, the simulation, the record | None | Done in PRs #56 and #59 |
+| 0 | This protocol and the simulation | None | Kept as research in PR #56; the record proposed in PR #59 was deferred |
 | 1 | Build the runner, checks, oracle and prompts; dry-run them on recorded transcripts | None | The owner's yes to build here (the vision's sequence authorizes no build by itself); nothing runs |
 | 2 | Write the development set and probes | None (agent-written) | — |
-| 3 | Development cycles (up to 3) | About 400 per cycle | #59 merged, and the owner's approval of this execution scope: subscription, text only, up to 3 cycles |
+| 3 | Development cycles (up to 3) | About 400 per cycle | A new `evaluation-method` record, and the owner's approval of this execution scope: subscription, text only, up to 3 cycles |
 | 4 | Freeze; isolated writer sessions produce the held-out set, one per grid row | About 17 | Part of step 5's scope |
 | 5 | Held-out pass | About 725 | A separately approved paid scope: API key, cap per pass |
 | 6 | Report and proposed decision record | None | The owner's merge decides |
