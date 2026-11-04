@@ -486,6 +486,7 @@ class SecretRulesTests(unittest.TestCase):
             self.assertIn(("BLOCK", "GENERIC_SECRET_ASSIGNMENT"), rules(fake_patch(line)), line)
         started = time.monotonic()
         rules(fake_patch("a_" * 40000))
+        rules(fake_patch("TOKEN=" + "_." * 60 + "!"))  # 2026-11-04 final review: overlapping segment alternatives
         self.assertLess(time.monotonic() - started, 5)
         # 2026-11-04 review: a 40-hex value under a credential name is a credential, not a commit SHA.
         hex40 = "a1b2c3d4e5" * 4

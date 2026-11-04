@@ -47,7 +47,7 @@ BLOCK_RULES = (
     # The name part is bounded (an unbounded [a-z0-9_]* backtracks quadratically on long lines), and a value that is a
     # code lookup (lowercase or UPPER_SNAKE segments joined by dots and nothing else: process.env.X,
     # self.tokenizer.bos_token) is not a key; a dotted value with mixed case or digits still blocks (2026-11-04 review).
-    ("GENERIC_SECRET_ASSIGNMENT", re.compile(r"(?i)(?:client_secret|api_secret|refresh_token|access_token|password|api[_-]?key|x-api-key|secret[_-]?key|auth[_-]?token|(?<![a-z0-9])[a-z0-9_]{0,64}(?:token|secret))['\"]?\s*(?:=>|[:=])\s*['\\\"]?(?!(?-i:[a-z_]+(?:\.(?:[a-z_]+|[A-Z_][A-Z0-9_]*))+)(?![A-Za-z0-9._/+~-]))[A-Za-z0-9._/+~-]{24,}|--api[_-]?key[= ]+['\"]?[A-Za-z0-9._/+~-]{24,}")),
+    ("GENERIC_SECRET_ASSIGNMENT", re.compile(r"(?i)(?:client_secret|api_secret|refresh_token|access_token|password|api[_-]?key|x-api-key|secret[_-]?key|auth[_-]?token|(?<![a-z0-9])[a-z0-9_]{0,64}(?:token|secret))['\"]?\s*(?:=>|[:=])\s*['\\\"]?(?!(?-i:[a-z_]+(?:\.(?:[a-z_]+|[A-Z][A-Z0-9_]*))+)(?![A-Za-z0-9._/+~-]))[A-Za-z0-9._/+~-]{24,}|--api[_-]?key[= ]+['\"]?[A-Za-z0-9._/+~-]{24,}")),
     ("AWS_ACCESS_ID", re.compile(r"(?<![A-Za-z0-9])(?:AKIA|ASIA)[A-Z0-9]{16}(?![A-Za-z0-9])")),
     # Also matches JSON/YAML quoting, e.g. "Authorization": "Bearer ..." (finding PR20-P2-4).
     ("BEARER_CREDENTIAL", re.compile(r"(?i)\bauthorization['\"]?\s*[:=]\s*['\"]?(?:bearer|token)\s+[A-Za-z0-9._~+/-]{24,}")),
