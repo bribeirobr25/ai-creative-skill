@@ -9,7 +9,8 @@ The first specialist under the [system vision](../../vision/README.md) and [ADR-
 | [definition.md](definition.md) | Role, scope, responsibilities, boundaries, freedom, working with the user, phases, the four information categories, planning depth, repurposing, kinds of quality, relations, learning |
 | [contract.md](contract.md) | Input (objective, type, medium, techniques, specifications, authorities, references, user experience, deliverable level) and output (the direction package) |
 | [knowledge-packs.md](knowledge-packs.md) | Direction Core, format and medium cards, professional motion reference library, Production's tool register, and what was not adopted |
-| [evaluation.md](evaluation.md) | The comparison with a generalist: authority, three fresh scenarios, owner-judged creative quality as the main measure, minimum requirements, four possible recommendations, stop conditions, cost; production-quality criteria for later |
+| [evaluation.md](evaluation.md) | The automated, text-only evaluation: authority and boundaries, the decision chain (direction, handoff, prompt package, media), robustness checks and probes, AI-judged creative quality against a generalist, development and held-out sets, limits, `READY_FOR_OWNER_TRIAL`, reuse, plan and cost; production-quality criteria for later |
+| [evaluation-design-simulation-2026-11-04.md](evaluation-design-simulation-2026-11-04.md) | Offline simulation that sized the evaluation, with its script and generated results beside it |
 | [smoke-test-plan.md](smoke-test-plan.md) | Five exploratory scenarios with fixed user sheets, procedure and criteria, written before running |
 | [smoke-test-report-2026-10-31.md](smoke-test-report-2026-10-31.md) | Results of the five runs (assisted role-play), the problems found and the fixes made; transcripts in `smoke-test-2026-10-31/` |
 | [smoke-test-regression-report-2026-10-31.md](smoke-test-regression-report-2026-10-31.md) | Regression run of the same five scenarios after the fixes (file-scoped isolation, harness context present), with corrections from the 2026-11-03 audit; transcripts and the user sheets as used in `smoke-test-2026-10-31-regression/` |
@@ -32,8 +33,8 @@ The first specialist under the [system vision](../../vision/README.md) and [ADR-
 ## Decided in review (2026-10-31)
 
 1. **Location:** `docs/agents/` stays as the provisional home until the vision's step 2 decides where agent material lives.
-2. **Formal comparison:** two runs per arm per scenario, with the owner reviewing all 12 transcripts unlabelled and in random order (not fully blind; see `evaluation.md`).
-3. **Scenarios:** the three fictional scenarios in `evaluation.md` are reserved for that comparison and not used for tuning. *Replaced 2026-11-03 by three fresh scenarios written outside the Director's development (see `evaluation.md`).*
+2. **Formal comparison:** two runs per arm per scenario, with the owner reviewing all 12 transcripts unlabelled and in random order (not fully blind; see `evaluation.md`). *Replaced 2026-11-04 by the automated evaluation in `evaluation.md`: agents run and judge it, and the owner judges a candidate on real projects.*
+3. **Scenarios:** the three fictional scenarios in `evaluation.md` are reserved for that comparison and not used for tuning. *Replaced 2026-11-03 by three fresh scenarios, and 2026-11-04 by separate development and held-out sets (see `evaluation.md`).*
 4. **Next:** after the Director's evaluation, a small, controlled motion-graphics Production route, under separate authorization.
 
 Before the formal comparison, a five-scenario exploratory smoke test with different briefs checks the whole flow ([smoke-test-plan.md](smoke-test-plan.md)).
@@ -60,7 +61,7 @@ Changed after the 2026-11-03 audit, and not re-run, so that the five smoke scena
 - labels kept internal unless they change what the user is asked;
 - the reports corrected.
 
-Before the comparison (revised 2026-11-03, see `evaluation.md`):
-1. **Authority.** The owner decides the proposed record DEC-2026-11-03-evaluation-method-r2, which allows this one comparison as an exception to the evaluation-method decision.
-2. **Scenarios.** Three fresh scenarios, written by the owner or by a separate writer session that has not seen the Director.
-3. **Pre-registration**, then the owner approves the cost option.
+Before automated evaluation (revised 2026-11-04, see `evaluation.md`):
+1. **Authority.** The owner decides the proposed record DEC-2026-11-04-evaluation-method-r2 (PR #59), a bounded exception to the evaluation-method decision for Video Director v0.x.
+2. **Build** the runner, checks and prompts, with no model calls.
+3. **Execution scopes,** each approved by the owner: development cycles on the subscription, then a held-out pass on a clean API session with a cost cap.

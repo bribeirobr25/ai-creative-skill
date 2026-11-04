@@ -73,7 +73,7 @@ The reviewer also called the "independent reviewer" step invented. That is partl
 - scope fidelity (a scope follows the request; recommendations are offered, not written in);
 - "Say it once".
 
-They are not fixed by adding rules here. The revised comparison covers them with minimum requirements M1 and M4 and one post-approval sequence (`evaluation.md`, 2026-11-03).
+They are not fixed by adding rules here. The automated evaluation covers them with robustness checks R2, R5 and R6 and probes MR6–MR8 and ST1 (`evaluation.md`, 2026-11-04).
 
 **Validity, found by the 2026-11-03 audit:**
 - The contract's example ranges in `6219d1a` ("light angle within 30°…", "background black to deep grey") came from this same S2 scenario, and the Director reproduced them; the Scope PASS is therefore weak evidence. The contract now uses a neutral example.
