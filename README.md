@@ -29,7 +29,7 @@ Runtime tests require optional local packages described in the source installati
 
 - `main`: direção de equipes de agentes ([ADR-0006](docs/decisions/ADR-0006-system-direction-agent-teams.md)); o pacote V2.5 segue congelado (ADR-0005 D1), validado por dois gates (integridade imutável da V2.5 e candidata).
 - V2.5.0: commit `39a0bfa`, referência de release preservada.
-- Pesquisas concluídas ficam em `docs/research/`; evidência pesada (sites, fotos, capturas) fica nas branches dos PRs fechados.
+- Pesquisas concluídas ficam em `docs/research/`; evidência pesada (sites, fotos, capturas) fica nos commits dos PRs fechados, que o GitHub preserva, e em tags `archive/` para trabalho sem PR (essas tags ainda não têm uma regra do repositório que as proteja).
 - Every capability belongs to the shared creative architecture **and** may run and finish independently at the user-requested boundary.
 - Changes to canon, paid inference, publication and releases require separate authority.
 - **PUBLIC repository:** only publish code, generic documentation and permitted examples. Never commit client media, user data, API keys or third-party weights.
