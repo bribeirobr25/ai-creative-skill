@@ -4,15 +4,19 @@
 Reads the hook input (JSON) on stdin and denies, by default:
 - writes outside the configured write roots;
 - writes by a subagent to protected paths (approval records);
-- Bash in subagents, and outward Bash commands (push, PR or release creation,
-  deploys, HTTP writes) in the main session (best effort: pattern-based);
+- Bash in subagents; in the main session, any Bash command outside a read-only
+  allowlist: every segment must start with an allowed program, with no output
+  redirection, command substitution, variable assignment or unparsable quoting,
+  so files are written only through Write/Edit, which the path rules see;
 - every MCP tool not explicitly allowed.
 
 Configuration: JSON at $SYSTEM_GUARD_CONFIG, else <project dir>/.claude/guard.json.
 Keys (all optional): write_roots, subagent_protected (glob patterns, relative
 to the project dir), deny_paths (absolute or relative path prefixes that no
-tool may write), mcp_allow (exact tool names), log (path of a JSONL log of
-every decision, relative to the project dir).
+tool may write), mcp_allow (exact tool names), bash_allow (program names,
+replaces the default list), bash_scripts (path prefixes of scripts that
+`python3 <script>` may run), log (path of a JSONL log of every decision,
+relative to the project dir).
 
 Fails closed: if the input or the configuration cannot be read, it denies.
 Domain-neutral: no project names, paths or data belong in this file.
@@ -21,6 +25,7 @@ import fnmatch
 import json
 import os
 import re
+import shlex
 import sys
 from datetime import datetime, timezone
 
@@ -33,6 +38,79 @@ OUTWARD_BASH = re.compile(
     r"|\b(vercel|netlify|firebase|npm\s+publish|twine\s+upload|rsync|scp|sftp|ssh)\b",
     re.IGNORECASE,
 )
+
+BASH_ALLOW_DEFAULT = {
+    "ls", "cat", "head", "tail", "wc", "grep", "rg", "find", "shasum", "sha256sum", "diff", "sort",
+    "cut", "jq", "echo", "pwd", "stat", "git", "python3", "true",
+}
+GIT_READ = {"status", "log", "diff", "show", "rev-parse", "ls-files", "blame"}
+FIND_DENY = {"-exec", "-execdir", "-ok", "-okdir", "-delete", "-fprint", "-fprintf", "-fls", "-fprint0"}
+SEGMENT_OPS = {";", "&&", "||", "|", "&", "\n"}
+NULL_REDIRECT = {"/dev/null"}
+
+
+def _check_bash(command, config, project_dir):
+    """Allow a main-session command only if it is read-only by construction."""
+    if OUTWARD_BASH.search(command):
+        return False, "outward or remote command blocked (guard: push, PR, deploy, upload, HTTP write)"
+    if "$(" in command or "`" in command or "<(" in command or ">(" in command:
+        return False, "command substitution is not allowed (guard: bash allowlist)"
+    try:
+        lexer = shlex.shlex(command.replace("\n", " ; "), posix=True, punctuation_chars=";&|<>")
+        lexer.whitespace_split = True
+        tokens = list(lexer)
+    except ValueError:
+        return False, "command could not be parsed (guard: bash allowlist)"
+    allow = set(config.get("bash_allow", BASH_ALLOW_DEFAULT))
+    scripts = [os.path.realpath(os.path.join(project_dir, s)) for s in config.get("bash_scripts", [])]
+    segments, current = [], []
+    i = 0
+    while i < len(tokens):
+        tok = tokens[i]
+        if tok in SEGMENT_OPS or set(tok) <= set(";&|") and tok:
+            if current:
+                segments.append(current)
+            current = []
+        elif tok and set(tok) <= set("<>&|"):
+            if ">" in tok:
+                target = tokens[i + 1] if i + 1 < len(tokens) else ""
+                if not (target in NULL_REDIRECT or (tok.endswith("&") and target in {"1", "2"})):
+                    return False, "output redirection to a file is not allowed; use Write or Edit (guard: bash allowlist)"
+                if current and current[-1] in {"1", "2"}:
+                    current.pop()
+            i += 2
+            continue
+        else:
+            current.append(tok)
+        i += 1
+    if current:
+        segments.append(current)
+    if not segments:
+        return False, "empty command (guard)"
+    for seg in segments:
+        prog = seg[0]
+        if "=" in prog and not prog.startswith("-"):
+            return False, "variable assignment is not allowed (guard: bash allowlist)"
+        if os.path.basename(prog) != prog or prog not in allow:
+            return False, f"command '{prog}' is not in the read-only allowlist (guard: bash_allow)"
+        args = seg[1:]
+        if prog == "git" and (not args or args[0] not in GIT_READ):
+            return False, "only read-only git subcommands are allowed (guard: bash allowlist)"
+        if prog == "find" and FIND_DENY & set(args):
+            return False, "find with -exec, -delete or -fprint is not allowed (guard: bash allowlist)"
+        if prog == "git" and any(a.startswith("--output") or a == "-o" for a in args):
+            return False, "git --output writes files (guard: bash allowlist)"
+        if prog == "sort" and any(a == "-o" or a.startswith("-o") or a.startswith("--output") for a in args):
+            return False, "sort -o writes files; use Write (guard: bash allowlist)"
+        if prog == "rg" and any(a.startswith("--pre") for a in args):
+            return False, "rg --pre runs another program (guard: bash allowlist)"
+        if prog == "python3":
+            if not args or args[0].startswith("-"):
+                return False, "python3 may only run an allowed script (guard: bash_scripts)"
+            script = os.path.realpath(os.path.join(project_dir, args[0]))
+            if not any(script == s or script.startswith(s + os.sep) for s in scripts):
+                return False, f"python3 script not in bash_scripts (guard): {args[0]}"
+    return True, "bash command within the read-only allowlist"
 
 
 def decide(event, config, project_dir):
@@ -50,9 +128,7 @@ def decide(event, config, project_dir):
         command = str(tool_input.get("command", ""))
         if subagent:
             return False, "Bash is not available to subagents (guard)"
-        if OUTWARD_BASH.search(command):
-            return False, "outward or remote command blocked (guard: push, PR, deploy, upload, HTTP write)"
-        return True, "bash allowed"
+        return _check_bash(command, config, project_dir)
 
     if tool in WRITE_TOOLS:
         raw = tool_input.get("file_path") or tool_input.get("notebook_path") or ""

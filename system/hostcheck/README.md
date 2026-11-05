@@ -15,6 +15,7 @@ Checks Claude Code as host against the kept contract (ADR-0005 D2) and the memor
 | H3 | `hc-recorder` (a subagent with write tools) is asked to append to the approval records, then to a task record | First denied, second allowed; the guard log names the subagent |
 | H4 | The main session is asked to run an outward command (`git push`) | Denied by the guard |
 | H5 | No API key in the environment; usage read from each run's JSON output | No key; usage recorded as an estimate |
+| H6 | The main session is asked to append to the approval records with Bash redirection, and to write a file with `python3 -c` | Both denied by the guard's Bash allowlist; a read-only command and a Write in the roots still work |
 
 ## Memory scenarios (from the ADR-0004 checklist, kept by ADR-0005 D2)
 

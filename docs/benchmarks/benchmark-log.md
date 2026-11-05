@@ -152,3 +152,17 @@ This log records what current hosts and models do, with dates, for the owner's c
   - Subagent nesting was not tested; slice 01 orchestrates from the main session.
 - **review_by:** 2027-05-05, or at the next major Claude Code change.
 
+## BL-2026-11-05-02 · Host check H6: guard Bash allowlist
+
+- **Date:** 2026-11-05. Same host, model and instance as BL-2026-11-05-01; one headless session.
+- **Question:** after the guard was changed to allow main-session Bash only within a read-only allowlist, is the bypass of finding `FND-HOSTCHECK-BASH-WRITES` closed?
+- **Result:**
+  - Denied: `echo … >> records/approvals.jsonl` (output redirection) and a file write with `python3 -c` (not an allowed script).
+  - Still allowed: a read-only `shasum` and a Write-tool file inside the write roots.
+  - Unit tests cover 38 bypass forms.
+  - Estimated usage: 0.14 USD.
+- **Limits:**
+  - n = 1.
+  - The allowlist is a parser over shell syntax. A program on the list that can write by a flag not yet covered would pass, so adding a program to the list needs a test.
+- **review_by:** 2027-05-05.
+
