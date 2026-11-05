@@ -31,7 +31,7 @@ This log records what current hosts and models do, with dates, for the owner's c
 | C6 | Product identity kept in generated images: shape, colour, hardware | 9 images: neither blind LLM judge marked identity as changed, and no arm was worst on fidelity in 2 of 3 replicates (BL-2026-10-29-01) | Active (1 pass) |
 | C9 | No third-party brand or real-person likeness in generated images | A legible magazine/book brand appeared as a prop in 1–2 of 9 images, as judged (BL-2026-10-29-01) | Active |
 | C7 | ADR-0002 journeys T1–T7 (bounded completion) | Never run on a host | Withdrawn (2026-10-30): they tested an installed package; the package is frozen and live studies ended (ADR-0005 amendment) |
-| C8 | Memory scenarios T01–T08, for any memory, host-native included | Not yet run | Pending: applies only when a memory is adopted for real project data (ADR-0005 D5/D6) |
+| C8 | Memory scenarios T01–T08, for any memory, host-native included | All eight passed on Claude Code with plain files; T07 without a real process kill (BL-2026-11-05-01) | Active (1 pass) |
 
 ## BL-2026-10-29-01 · Container test, Stage 1
 
@@ -117,3 +117,38 @@ This log records what current hosts and models do, with dates, for the owner's c
   - Chosen: 17 held-out scenarios × 1 run per arm (all 210 factor pairs) plus 14 probes per arm (`evaluation.md`).
 - **Limits:** all effect and bias parameters are assumed; quality is one latent number; judge calls share bias but not noise; leakage and scenario quality are not modelled.
 - **review_by:** 2027-04-30.
+
+## BL-2026-11-05-01 · Host check: Claude Code subagents with plain-file records (slice 01, phase 0)
+
+- **Date:** 2026-11-05. Under ADR-0005 D6, before the slice relies on the host.
+- **Host and model:** Claude Code 2.1.318, headless (`claude -p`, `--permission-mode dontAsk`, no MCP servers), model `claude-opus-5-5`, the owner's Claude plan (no API key in the environment).
+- **Design:**
+  - 11 sessions, run on the owner's real brand project (slice plan amendment).
+  - Inputs were three text records of the project, read in place at a pinned commit and never copied. Media and real people were excluded.
+  - Records were plain JSONL in the private half. The guard hook (`system/hooks/guard.py`) and two test-only subagents were used ([procedure](../../system/hostcheck/README.md)).
+  - Approvals, revocations and changes made by the check were test fixtures.
+- **Judge:** a mechanical oracle written and committed before the runs, plus a reading of every transcript. n = 1 run per check.
+- **Result:**
+  - T01–T08 all passed, and so did H1–H5.
+  - Records carried path, commit and hash.
+  - A new session recovered the state with rejected, suspended and pending items excluded.
+  - The fact sheets, from records and stateless, invented no specification.
+  - The delivery record stayed `proposed`, with a correct hash and the unknown master hash left unknown.
+  - The revoked test approval was not current.
+  - Only the real dependent was invalidated.
+  - A fresh session re-running T07 duplicated nothing.
+  - The read-only subagent had no write tool.
+  - The guard denied the following:
+    - writes outside the write roots and into protected paths;
+    - a subagent's write to the approval records;
+    - `git push`.
+  - Estimated usage: 4.1 USD over 10 runs. This is a client-side estimate, billed to the plan, not metered.
+- **Finding:** the main session appended records through Bash, which the guard's path rules do not see (finding `FND-HOSTCHECK-BASH-WRITES`).
+- **Limits:**
+  - n = 1.
+  - T07 interrupted by instruction, not by a process kill.
+  - The same model wrote and answered.
+  - Three source files only.
+  - Subagent nesting was not tested; slice 01 orchestrates from the main session.
+- **review_by:** 2027-05-05, or at the next major Claude Code change.
+
