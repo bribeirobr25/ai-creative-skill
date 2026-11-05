@@ -1,12 +1,44 @@
 # Project context
 
-**Sources:** ADR-0005 D5 (one record contract, separate instances) and the [Brain record contract](../../brain/CONTRACT.md); ADR-0004 I1, I5, I8 and the privacy and erasure rules (kept by ADR-0005 D2); ADR-0006 D7, D8; decision `rights-and-trust`; V2.5 EC `PROJECT_CONTINUITY_STATE`, §2.3, §10 (asset sidecar), §10.1 (authority dependency snapshot), §12; CAL §6.1 (canon promotion); RES §7, §11, §13; ARCH §2 (authority order), §10 (evidence state).
+**Sources:** ADR-0005 D5 (one record contract, separate instances), D6, and the [Brain record contract](../../brain/CONTRACT.md); decision `memory-architecture`; ADR-0004 I1, I5, I8 and the privacy and erasure rules (kept by ADR-0005 D2); ADR-0006 D5, D7, D8; decision `rights-and-trust`; V2.5 EC `PROJECT_CONTINUITY_STATE`, §2.3, §3, §10 (asset sidecar), §10.1 (authority dependency snapshot); CAL §6.1 (canon promotion); RES §7, §8, §10, §11, §13; ARCH §10.
 
-Each project has one shared context that every authorized agent reads, so work survives sessions and handoffs. It follows the ADR-0005 D5 record contract: emitter is not persister, superseded records are never current, contradictions fail closed, nothing is promoted automatically.
+Each project has one shared context that every authorized agent reads, so work survives sessions and handoffs. It applies the ADR-0005 D5 rules: the emitter is not the persister, superseded records are never current, contradictions fail closed, nothing is promoted automatically.
 
 ## Where it lives
 
-The specification is public. **Every real project instance is private** and lives outside this repository, in the private half (ADR-0004 I8). Each user's and each end client's data stays separate: an agency's context is one tenant per end client, and nothing crosses between them (ADR-0006 D8).
+The specification is public. **Every real project instance is private** and lives outside this repository, in the private half (ADR-0004 I8). Instances use host memory or plain files, and are checked against the memory scenarios T01–T08 before they hold real data (decision `memory-architecture`; ADR-0005 D6). Each user's and each end client's data stays separate: an agency's context is one tenant per end client, and nothing crosses between them (ADR-0006 D8).
+
+## Records
+
+Every core record (project, task, message, event, approval, review, entity, asset, scope, package, finding, budget) carries one envelope:
+
+```yaml
+id:              # required
+project_id:      # required: a project id, or `system` for work outside any project
+tenant:          # required: the user, or the agency's end client
+written_by:      # required: the role, host component or person that persisted it
+origin:          # required: agent | person_attested | external_party | system  (new here)
+channel_evidence:  # required when origin is person_attested: the host's proof of who sent it, through which channel
+access:          # required, default shared (see Access)
+privacy_class:   # required: public | private | personal
+created_at:      # required
+revision:        # required for records that change; stale writes are rejected (EC §2.3)
+```
+
+`person_attested` means the host attests that a person made the record. Whether a host can tell a person from an agent acting under the person's identity is a host property (finding `FND-AUDIT2-AGENT-IDENTITY`; README open question 1). `privacy_class` takes the Brain contract's field, which allows only `public` in this repository, and adds the values private instances need (*new here*).
+
+**Who writes what:**
+
+| Record | Created by | Changed by |
+|---|---|---|
+| Task | The requester | Only `depends_on`, `inputs` and the status fields, through recorded transitions ([collaboration.md](collaboration.md#task-record)) |
+| Message, event | The sender; the host stamps `origin` and `channel_evidence` | Never; a correction is a new record |
+| Approval | The host, only from a `person_attested` act | Never; a new approval supersedes, rejects or revokes |
+| Review | The reviewer | Never |
+| Entity or asset version, scope version | The owner role; others send change requests to the owner | Never once an approval or review is requested; then a change is a new version |
+| Package | The executor | Never; later records link to it |
+| Finding | The research role | Never; a re-check is a new finding that supersedes |
+| Budget | The host, from a budget approval | Ledger entries by executors (EC §4) |
 
 ## Contents
 
@@ -14,117 +46,100 @@ The project record extends EC `PROJECT_CONTINUITY_STATE`:
 
 ```yaml
 project:
-  project_id:        # required
-  tenant:            # required: the user, or the agency's end client
   objective:         # required: goal, audience, success signal
-  constraints: []    # deadlines, budgets refs, must-preserve, must-avoid
+  status:            # required: open | closed (closed only by the user)
+  constraints: []    # deadlines, budget refs, must-preserve, must-avoid
   facts: []          # approved facts and claims, each with source; unknowns stay UNKNOWN
   authorities: []    # entity refs whose approved versions bind others (brand kit, canon, product truth)
-  entities: []       # refs
-  assets: []         # refs
-  approvals: []      # refs (authority-and-permissions.md)
-  scopes: []         # execution scope refs
-  tasks: []          # task refs (collaboration.md)
-  messages: []       # message refs
-  events: []         # event refs
-  findings: []       # research finding refs
-  packages: []       # execution package refs
+  max_delegation_depth:  # optional; default 2 (collaboration.md CO6)
+  # indexes: entities, assets, approvals, scopes, tasks, messages, events, findings, packages, budgets
   open_questions: []
-  next_actions: []   # proposals only; a suggested step is not an authorization
-  revision:          # required; stale writes are rejected (EC §2.3)
+  next_actions: []   # proposals only (collaboration.md CO4)
 ```
 
 ## Access
 
-Shared context does not mean everyone reads everything. Every record and asset declares who may read it:
-
-```yaml
-access: shared        # shared | area:<area> | restricted:[<role_id>, ...]
-privacy_class:        # public | private | personal (the Brain contract's field, widened for the private half)
-```
+Shared context does not mean everyone reads everything (*new here*):
 
 - `shared`: every role on the project (facts, approved authorities, the plan).
-- `area:<area>`: one area's working context (draft scripts, prompts, technical research).
-- `restricted`: named roles only (budgets of other campaigns, client commercial data, consent records). Credentials are never in the context at all, only a secret locator ([authority-and-permissions.md](authority-and-permissions.md#credentials)).
+- `area:<id>`: one area's working context (draft scripts, prompts, technical research).
+- `restricted:[roles]`: named roles only (budgets of other campaigns, client commercial data, consent records). Credentials are never in the context, only a secret locator ([authority-and-permissions.md](authority-and-permissions.md#credentials)).
 
-Rules: **P1** a request carries only references its recipient may read; **P2** a role's `reads` list bounds what it may open; **P3** these are policies, and whether a host enforces them is checked when the host is chosen.
+1. **CX1** A request carries only references its recipient may read.
+2. **CX2** A role's `reads` list bounds what it may open.
+3. **CX3** Content derived from records (a summary, a handoff's text, a status line) takes the most restrictive access of its sources.
+4. **CX4** These are policies; whether a host enforces them is checked when the host is chosen.
 
 ## Entities and assets
-
-**Entity:** anything whose identity must stay stable across work.
 
 ```yaml
 entity:
   entity_id:         # required, stable across every handoff
-  kind:              # required, free label owned by an area: product, character, location, logo, offer...
+  kind:              # required, free label owned by an area: product, character, location, logo, offer, consent...
   canonical_label:   # required
   owner_role:        # required: who keeps it coherent
-  versions: []       # each version: version, lifecycle state, approval_ref, refs to defining assets
+  versions: []       # each: version, defining asset refs, dependency refs; lifecycle state derived on read
   relations: []      # { type, entity_ref }: appears_in, wears, located_in, variant_of...
-  access:
   extension: {}      # domain structure, e.g. a character sheet (README "Extensions")
 ```
 
-**Asset:** reuses the EC §10 asset sidecar (asset id, version, provider and route, request ref, reference ids, parent assets, authority dependency refs and revision snapshot, hash, review verdict, approval status), plus:
+An **asset** reuses the EC §10 asset sidecar (asset id, version, provider and route, request ref, reference ids, parent assets, authority dependency refs and revision snapshot, hash, review verdict), with its approval status derived on read, plus `tool` (required for generated assets: tool and date, ADR-0006 D8), `rights` (required: source, licence, consent refs) and `package_ref`. A deliverable's versions are assets of kind `document` or the produced assets.
 
-```yaml
-  tool:              # required for generated assets: tool and date (ADR-0006 D8)
-  rights:            # required: source, licence, consent refs
-  access:
-  package_ref:       # the execution package that produced it, if any
-```
-
-Rules: **E1** downstream roles use `entity_id`, never a name inferred from appearance (EC "Stable entity handoff"); **E2** a nickname is presentation only; **E3** an asset without a rights record is not usable for publication.
+1. **CX5** Downstream roles use `entity_id`, never a name inferred from appearance (EC "Stable entity handoff"); a nickname is presentation only.
+2. **CX6** An asset without a rights record is not usable for publication.
+3. **CX7** A consent (a likeness, a voice, a contact's opt-in) is an entity of kind `consent`, so revoking it invalidates what depends on it.
 
 ## Lifecycle
 
-Entities' versions, assets, execution scopes and other controlled artifacts share one lifecycle. It is a **projection**: the current state is derived from the records below, never edited directly.
+Entity versions, assets, deliverables, execution scopes and candidates for core pack items share one lifecycle. It is a **projection**: the current state is derived from records on read, never stored or edited.
 
-| State | Meaning | Backed by |
+| State | Meaning | Derived from |
 |---|---|---|
-| `proposed` | Created by a role; no authority yet | A `CHANGE_REQUESTED` record, or the artifact's creation |
-| `in_review` | Being checked against criteria and constraints | A review in progress ([review.md](review.md)) |
-| `approved` | An authority approved this exact version for a stated scope | A `DECISION_RECORDED` approval with its `authority_ref` |
+| `proposed` | Created by a role; no authority yet | The version's record, or a `CHANGE_REQUESTED` record |
+| `in_review` | Being checked | An open review task whose deliverable is this version |
+| `approved` | An authority approved this exact version for what the approval covers | An approval with decision `approve` |
+| `rejected` | An authority declined this version | An approval with decision `reject` |
 | `superseded` | A later approved version replaced it | The later approval's `supersedes` |
-| `invalidated` | An authority it depended on changed; it must be re-reviewed and re-approved before reuse | A recorded dependency on the changed authority (EC §10.1 `ACCEPTANCE_INVALIDATED`, same meaning) |
+| `invalidated` | Something it depended on changed or was revoked; it must be re-reviewed and re-approved before reuse | A recorded dependency on the changed authority, or a `revoke` |
 
 Mapping notes:
-- The Brain's record kinds are **events**, not states: they back the transitions above (ADR-0005 D5).
-- A review verdict `ACCEPTED` means the artifact passed review; it does not approve it. Approval is a separate authority act.
-- The Video Director's scope `status: proposed | approved | superseded` is this lifecycle without `in_review` and `invalidated`.
+- The Brain's record kinds back these states; they are not states themselves (ADR-0005 D5).
+- For an asset or deliverable, `invalidated` corresponds to EC §10.1 `ACCEPTANCE_INVALIDATED`. For an execution scope or approval it corresponds to EC §3 `APPROVAL_STALE`.
+- A review verdict `ACCEPTED` means the artifact passed review; it does not approve it.
+- The Video Director's stored scope `status` and `approval_ref` are this projection; the core derives them instead of storing them.
 - Historical records never change; only the projection does (EC §10.1).
 
-**Canon.** An entity version is canon when it is `approved` and listed in `authorities`. A choice that keeps appearing in generations is not canon; promotion needs an authority and records what was promoted, from which latitude, for which scope and from when (CAL §6.1 `canon_promotion_ref`).
+1. **CX8 · One current version.** At most one approved, current version per entity and per approval coverage. Two make a `STOP_UNRESOLVED_AUTHORITY_CONFLICT`.
+2. **CX9 · Canon.** An entity version is canon when it is `approved` and listed in `authorities`. A choice that keeps appearing in generations is not canon; promotion is an `authority_change` approval that records what was promoted, from which latitude, for which scope and from when (CAL §6.1 `canon_promotion_ref`).
 
 ## Dependencies and selective invalidation
 
-When an asset or deliverable is accepted, record which authority versions it depends on (EC §10.1). When an authority changes:
+Every version, asset, package and deliverable records, **when it is created**, which authority versions and consents it depends on. When one changes or is revoked:
 
 ```text
-authority version changes
-→ compare recorded dependencies
-→ mark only actual dependents `invalidated`
+authority version changes or is revoked
+→ follow the recorded dependencies, transitively
+→ mark only actual dependents `invalidated`, including work in progress
 → leave unrelated accepted work untouched
-→ re-review and re-approve the affected work
+→ re-review and re-approve the affected work in new tasks
 ```
 
-Dependencies are never inferred from being made in the same session. If a required authority revision cannot be recovered, work stops for the authority (`STOP_REQUIRED_AUTHORITY_MISSING`).
+Dependencies are never inferred from being made in the same session (EC §10.1). If a required authority revision cannot be recovered, work stops (`STOP_REQUIRED_AUTHORITY_MISSING`).
 
 ## External references
 
-Tools and systems the user already has stay the source of truth for their own records (a ticket in a tracker, a file in a drive). The context keeps a reference, not a copy (ADR-0004 I1: one authority per subject).
+Tools and systems the user already has stay the source of truth for their own records (a ticket, a file in a drive). The context keeps a reference, not a copy (ADR-0004 I1).
 
 ```yaml
 external_ref:
-  ref_id:            # required
-  system:            # required: the system's kind, not a credential
-  locator:           # required: stable locator
+  system:            # required: the system's kind, never a credential
+  locator:           # required
   as_of:             # required: version or timestamp observed
   retrieved_at:      # required
-  provenance:        # who fetched it and how
+  provenance:        # required: who fetched it and how
   snapshot_ref:      # optional: a stored extract, where the source's terms and privacy allow it
+  retention_ref:     # required with a snapshot: how long it is kept and how it is erased
   rights:
-  access:
 ```
 
 When a decision depends on external content, keep a snapshot or extract where permitted, so a link that disappears does not take the justification with it.
@@ -133,52 +148,47 @@ When a decision depends on external content, keep a snapshot or extract where pe
 
 ```yaml
 finding:
-  finding_id:        # required
   claim:             # required, one sentence
-  evidence: []       # RES §7 evidence records: source, outcome, relevance, strength, independence key
-  evidence_class:    # README vocabulary
+  evidence: []       # required: RES §7 evidence records, each with its independence key (RES §8)
   checked_at:        # required
   review_by:         # required: when it must be re-checked (e.g. 2 weeks for trends)
-  verdict:           # CURRENT | STALE | CONTRADICTED | UNSUPPORTED | UNVERIFIED (RES §11)
+  verdict:           # required: CURRENT | STALE | CONTRADICTED | UNSUPPORTED | UNVERIFIED (RES §11)
   counterevidence: []
-  access:
 ```
 
-Rules: **F1** a finding past `review_by` raises a `research_due` event ([collaboration.md](collaboration.md#events-and-resumption)); **F2** a finding is re-checked at the moment a decision depends on it (RES §11, act-time verification); **F3** a previous report is context, not timeless truth (RES §13); **F4** an empty result is a valid result, never filled by the model's intuition.
+1. **CX10** A finding past `review_by` raises a `research_due` event (ADR-0006 D5; decision `knowledge-freshness`).
+2. **CX11** A finding is re-checked when a decision depends on it (RES §11, act-time verification).
+3. **CX12** A previous report is context, not timeless truth (RES §13); an empty result is a valid result, never filled by the model's intuition (RES §10).
 
 ## Execution packages
 
-What is actually sent to a tool is a versioned record, so it can be reviewed before execution and compared with what came back.
+What is actually sent to a tool is a versioned record, reviewable before execution and comparable with what came back.
 
 ```yaml
 package:
-  package_id:        # required
   version:           # required
-  scope_ref:         # required: the approved execution scope it runs under
-  built_by:          # role, usually production
-  target:            # tool class and route (never only a vendor name)
+  built_for:         # required: deliverable and the execution scope version it is built for
+  built_by:          # required: the executor role, usually production
+  target:            # required: tool class and route, never only a vendor name
   payload_ref:       # required: prompt, parameters, code, structured instruction or other payload
-  inputs: []         # direction, references and authority versions it was built from
-  preflight_ref:     # review at boundary B (predicted readiness)
-  result_assets: []  # assets it produced
-  acceptance_ref:    # review at boundary C (observed acceptance)
+  inputs: []         # required: direction, references and authority versions it was built from
 ```
 
-Not every deliverable is a prompt: a website or a code-based animation has code as its payload. Linking `payload_ref`, `preflight_ref`, `result_assets` and `acceptance_ref` lets every real project produce, at no extra cost, the evidence needed to calibrate preflight against observed quality ([review.md](review.md#calibration)).
+The scope must be approved before the package runs whenever running it spends; a package that only renders locally needs no scope. The readiness review, the produced assets and their acceptance point back to the package (`subject_ref`, `package_ref`), so every real project gathers, at no extra cost, the evidence to calibrate readiness against observed quality ([review.md](review.md#calibration)). Not every payload is a prompt: a website or a code-based animation has code as its payload.
 
 ## Status view
 
-What the user sees is derived from the records on read, like `python3 -m brain status`, and never stored as truth (ADR-0006 D7). No dashboard is built (M5 dashboards stay withdrawn).
+What a person sees is derived from the records on read, like `python3 -m brain status`, and never stored as truth (ADR-0006 D7). No dashboard is built (M5 dashboards stay withdrawn). It is derived **per viewer**, showing only what that viewer may read: an end client's approver does not see the agency's operating costs.
 
 | Section | Derived from |
 |---|---|
-| Progress per deliverable | Tasks: status, outcome, lifecycle of their deliverables |
+| Progress per deliverable | Tasks and the lifecycle of their deliverables |
 | Waiting and blocked | Tasks `waiting` or `stopped`, with what they wait on and their stop codes |
-| Pending approvals | Approval requests without a recorded answer, with the exact version to approve |
-| Cost and usage | Budgets: authorized, reserved, spent; operating usage of agents |
-| Recent decisions | Approvals and supersessions since the last view |
-| Learnings | Learning candidates proposed, adopted, expired |
-| Due | Findings and knowledge past their review dates; scopes about to expire |
+| Pending approvals | Approval requests without a recorded decision, with the exact version |
+| Cost and usage | Budgets: authorized, reserved, spent |
+| Recent decisions | Approvals, rejections, revocations and supersessions since the last view |
+| Learnings | Candidates proposed; current knowledge adopted; items expired |
+| Due | Findings and knowledge past their dates; scopes about to expire |
 | Next actions | Proposals, labelled as not authorized |
 
-The host decides how and how often the view reaches people (a daily summary message, a host view, a reply on request). The view is one more reading of the records, so it cannot go stale.
+The host decides how and how often the view reaches people (a daily summary message, a host view, a reply on request).
