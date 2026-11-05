@@ -51,7 +51,7 @@ The project record extends EC `PROJECT_CONTINUITY_STATE`:
 project:
   objective:         # required: goal, audience, success signal
   status:            # required: open | closed (closed only by the user)
-  constraints: []    # deadlines, budget refs, must-preserve, must-avoid
+  constraints: []    # deadlines, spend the user stated, must-preserve, must-avoid
   facts: []          # approved facts and claims, each with source; unknowns stay UNKNOWN
   authorities: []    # entity refs whose approved versions bind others (brand kit, canon, product truth)
   max_delegation_depth:  # optional; default 2 (collaboration.md CO6)
@@ -66,7 +66,7 @@ Shared context does not mean everyone reads everything (*new here*):
 
 - `shared`: every role on the project (facts, approved authorities, the plan).
 - `area:<id>`: one area's working context (draft scripts, prompts, technical research).
-- `restricted:[roles]`: named roles only (budgets of other campaigns, client commercial data, consent records). Credentials are never in the context, only a secret locator ([authority-and-permissions.md](authority-and-permissions.md#credentials)).
+- `restricted:[roles]`: named roles only (spend of other campaigns, client commercial data, consent records). Credentials are never in the context, only a secret locator ([authority-and-permissions.md](authority-and-permissions.md#credentials)).
 
 1. **CX1** A request carries only references its recipient may read.
 2. **CX2** A role's `reads` list bounds what it may open.
@@ -188,7 +188,7 @@ What a person sees is derived from the records on read, like `python3 -m brain s
 | Progress per deliverable | Tasks and the lifecycle of their deliverables |
 | Waiting and blocked | Tasks `waiting` or `stopped`, with what they wait on and their stop codes |
 | Pending approvals | Approval requests without a recorded decision, with the exact version |
-| Cost and usage | Budgets: authorized, reserved, spent |
+| Cost and usage | Operating budget and scope spend limits: authorized, reserved, spent |
 | Recent decisions | Approvals, rejections, revocations and supersessions since the last view |
 | Learnings | Candidates proposed; current knowledge adopted; items expired |
 | Due | Findings and knowledge past their dates; scopes about to expire |

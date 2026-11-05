@@ -31,7 +31,7 @@ Same flow, but at step 2 the Director delegates the script to a script writer wi
 | `proposed_execution_scope` fields | Same-named scope fields map directly; `scope_id` is the record `id`; `shot_briefs`, `cost_estimate` and `risks` travel under `extension`; `executor_roles` defaults to production |
 | Stored `status`, `approval_ref` | Derived from approval records |
 | `references[]` (source, tool, rights, version) | Assets and entities with rights; `stable_entities` in handoffs |
-| `authorities` (brand, products, claims, budget) | Project `authorities`, `facts` and budgets |
+| `authorities` (brand, products, claims, budget) | Project `authorities` and `facts`; the scope's `spend_limit` |
 | "Changes after approval" table | AU1 (exact version; changes the approved fields allow) |
 | "v0.1 cannot record approvals" | AU2 (only the host records, from a person's act) |
 
@@ -39,5 +39,5 @@ Same flow, but at step 2 the Director delegates the script to a script writer wi
 
 | Gap | Class | Note |
 |---|---|---|
-| The Director's scope has no `budget_ref`, `schedule`, `triggers`, `stop_condition` | Accepted limitation | Optional, or filled when the scope is recorded; the Director's design stays as it is |
+| The Director's scope has no `ledger_ref`, `schedule`, `triggers`, `stop_condition` | Accepted limitation | Optional, or filled when the scope is recorded; the Director's design stays as it is |
 | Production's package format and readiness criteria per route | Domain extension | Production's own schema under `extension` and its packs |

@@ -21,7 +21,7 @@ When sources disagree (ARCH §2, summarized): law, safety and platform rules; th
 | `authority_change` | A new version of a fact, canon entity, brand rule, or a pack's core item or rule | Character costume v2 becomes canon |
 | `outward_action` | One publication, send, listing, ad launch or contact | Publish the landing page |
 | `standing_permission` | A named outward action other than publication that the user pre-approves, with limits and holders | Reply to booking inquiries with the approved template |
-| `budget` | A project budget or the system operating budget | Tool spend for this project |
+| `budget` | The monthly system operating budget | Operating budget for November |
 | `designation` | An approver for stated kinds on one tenant | The client's marketing lead approves directions |
 
 ```yaml
@@ -74,7 +74,7 @@ execution_scope:       # plus the record envelope
   version:             # required
   owner_role:          # required: who proposed it
   executor_roles: []   # optional; default production for media generation
-  budget_ref:          # required: the budget its spend draws on
+  ledger_ref:          # required: EC §4 ledger of this scope's spend (confirmed, reserved)
   permitted_operations: []   # required
   deliverables: []     # required
   preserve: []         # required: what must stay fixed
@@ -101,8 +101,8 @@ It binds like EC §3 `BATCH_TEMPLATE`: the approved template plus what is preser
 ## Budgets
 
 ```yaml
-budget:                # plus the record envelope
-  class:               # required: project | system_operating
+budget:                # the system operating budget; plus the record envelope
+  period:              # required: the month it covers
   currency:            # required
   authorized:          # required: from its budget approval
   approval_ref:        # required
@@ -110,15 +110,14 @@ budget:                # plus the record envelope
   valid_until:
 ```
 
-| Class | Covers | Approved by |
-|---|---|---|
-| `project` (*new here* as a record; README open question 5) | Spend on tools for the project's deliverables: generation, paid data, ad spend | The user |
-| `system_operating` | One monthly budget for the agents' own work on every project (model usage, delegation, tool calls) and for shared scheduled work outside any project: learning, knowledge refresh (ADR-0006 D5). There is no per-project operating budget (settled by the system owner) | The system owner |
+Two bounds, both settled by the system owner:
+- **Tool spend for a project's deliverables** (generation, paid data, ad spend) is bounded by each execution scope's `spend_limit`, which the user approves with the scope. There is no separate project budget and no budget checkpoint at intake.
+- **The agents' own work** on every project (model usage, delegation, tool calls) and shared scheduled work outside any project (learning, knowledge refresh; ADR-0006 D5) draw on one monthly system operating budget, which the system owner approves. There is no per-project operating budget.
 
-1. **AU9** A budget bounds consumption and authorizes no operation.
-2. **AU10** Available = authorized − confirmed − open reservations (EC §4). An ad launch needs both an `outward_action` approval and an execution scope for its spend; spend the platform makes after launch is reserved in full when the scope is approved, and bounded by a platform-side cap stated in it.
-3. **AU11** Tool spend for a project's deliverables draws only on that project's budget; the agents' own work draws only on the operating budget.
-4. **AU12** When a budget runs out, the tasks drawing on it stop with `STOP_COST_CAP_REACHED` until its approver raises it.
+1. **AU9** A budget or a spend limit bounds consumption and authorizes no operation.
+2. **AU10** Available = the authorized budget or the scope's spend limit − confirmed − open reservations (EC §4). An ad launch needs both an `outward_action` approval and an execution scope for its spend; spend the platform makes after launch is reserved in full when the scope is approved, and bounded by a platform-side cap stated in it.
+3. **AU11** Tool spend for a deliverable draws only on its execution scope; the agents' own work draws only on the operating budget.
+4. **AU12** When the operating budget or a scope's spend limit runs out, the tasks drawing on it stop with `STOP_COST_CAP_REACHED` until its approver raises it; a higher spend limit is a new scope version.
 
 ## Scheduled and event-driven work
 

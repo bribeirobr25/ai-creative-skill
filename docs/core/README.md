@@ -96,15 +96,16 @@ An extension never redefines a core field or vocabulary; the core never reads `d
 What this spec adds beyond its sources, each a proposal under the status line above:
 - **Collaboration:** the six delegation triggers; task `status`, `mode` and `follows`; delegation depth derived by the host; caps on open delegations and request rounds; the message types and event kinds; `STOP_APPROVAL_STALE` used for expired, revoked or superseded approvals.
 - **Records:** the envelope's `origin`, `channel_evidence` and access classes; the who-writes-what table; the `rejected` state and the derived lifecycle; one current version per entity (CX8); consent as an entity; the execution package record; the per-viewer status view.
-- **Authority:** the approval kinds, `decision`, `designation` and `consumed_by`; `holder_roles` on envelope entries; the confused-deputy check (AU7); budget records and full reservation of platform-run spend; protective actions.
+- **Authority:** the approval kinds, `decision`, `designation` and `consumed_by`; `holder_roles` on envelope entries; the confused-deputy check (AU7); the operating budget record and full reservation of platform-run spend; protective actions.
 - **Review and playbooks:** boundaries A, B and C with readiness at B; the playbook fields `final`, `continuation` and `ends_when`.
 
 ## Settled by the system owner
 
-Answered by the system owner on 2026-11-05 and decided by the merge of this specification (decision `shared-core`):
+Answered by the system owner on 2026-11-05 and decided by the merges of the PRs that record them (decision `shared-core`):
 - **Numeric defaults.** Delegation depth 2; at most 5 delegations open at once per task; at most 3 request rounds between two roles on one task ([collaboration.md](collaboration.md#limits-on-delegation), CO6, CO8).
 - **Client approvers.** A naming is evidenced by the user's own `person_attested` message naming the person, the tenant, the approval kinds and the expiry ([authority-and-permissions.md](authority-and-permissions.md#who-holds-authority)).
 - **Operating budget.** The agents' own work on every project, and shared scheduled work, draw on one monthly system operating budget the system owner approves. There is no per-project operating budget and no extra checkpoint ([authority-and-permissions.md](authority-and-permissions.md#budgets)).
+- **Project spend.** Tool spend for a project is bounded by each execution scope's spend limit, approved with the scope; there is no separate project budget or intake checkpoint.
 - **Recurring publication.** Every publication needs its own `outward_action` approval; a standing permission never covers publication, which keeps the "no auto-publishing" limit (decision `business-scope`).
 - **Host and timing.** Claude Code subagents are the first host, for the step-4 slice. The evaluation design (ADR-0006 D9), the schemas and the location of system code and private instances are decided at step 4.
 
@@ -126,4 +127,3 @@ Answered by the system owner on 2026-11-05 and decided by the merge of this spec
 2. The evaluation design, including whether execution-package readiness can be calibrated against observed assets ([review.md](review.md#calibration); ADR-0006 D9); decided at step 4.
 3. JSON Schemas and an offline validator for these records: decided at step 4.
 4. The canonical location of system code and of private project instances (the private-half layout): decided at step 4.
-5. The project budget record, and whether approving it is a user checkpoint of its own ([authority-and-permissions.md](authority-and-permissions.md#budgets)).
