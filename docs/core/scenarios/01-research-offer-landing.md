@@ -39,7 +39,7 @@
 
 | Gap | Class | Note |
 |---|---|---|
-| How a client approver's naming is evidenced | Blocking for agency use; not for a single user | README open question 5. A single user approving directly needs nothing more |
+| Whether the host can attest that the user, not an agent, sent the naming | Open question | The naming is evidenced by the user's own `person_attested` message (settled); host attestation is README open question 1 |
 | Lead capture stores personal data: consent text, retention and erasure | Accepted limitation | ADR-0004 privacy rules and D8 apply; the concrete policy comes with the private-half layout, before a real project |
 | Reading analytics needs credentials and possibly paid data | Accepted limitation | Step-2 secret store, and an execution scope if paid |
 | Website structure (sections, components) | Domain extension | Websites pack schema under `extension` |

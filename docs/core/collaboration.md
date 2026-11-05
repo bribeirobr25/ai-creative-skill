@@ -120,9 +120,9 @@ The owner integrates the result into the project context. A specialist's proposa
 
 ## Limits on delegation
 
-1. **CO6 · Depth.** Depth is derived: plan assignments are 0; a delegation is its parent's depth plus one; a task created at the request of a delegated task takes that origin's depth plus one, even when the project lead creates it. A request is refused when the resulting depth exceeds the limit set by the project or the execution scope. Default 2 (*new here*; README open question 8). Agents cannot raise it.
+1. **CO6 · Depth.** Depth is derived: plan assignments are 0; a delegation is its parent's depth plus one; a task created at the request of a delegated task takes that origin's depth plus one, even when the project lead creates it. A request is refused when the resulting depth exceeds the limit set by the project or the execution scope. Default 2 (*new here*; settled by the system owner). Agents cannot raise it.
 2. **CO7 · Parallel is not deep.** Five roles assigned in parallel by the project lead are all depth 0.
-3. **CO8 · No cycles.** A request is refused if its parent and origin chain already contains a task for the same deliverable (same type and entity refs), and a `depends_on` link that would close a loop is refused. Caps on fan-out and on request rounds between two roles may be set by the project or the scope; none is set by default.
+3. **CO8 · No cycles.** A request is refused if its parent and origin chain already contains a task for the same deliverable (same type and entity refs), and a `depends_on` link that would close a loop is refused. Caps by default (settled by the system owner): one task has at most 5 delegations open at once (plan assignments do not count), and two roles exchange at most 3 request-and-answer rounds on one task. At a cap, the task asks the user with a `question` and is `waiting` until answered. A project or scope may lower the caps; agents cannot raise them.
 4. **CO9 · Cost counts.** Every task draws on an operating budget; when it runs out, tasks stop with `STOP_COST_CAP_REACHED` until the budget's approver raises it ([authority-and-permissions.md](authority-and-permissions.md#budgets)).
 5. **CO10 · Visible chains.** A recipient that delegates again does so visibly to the owner of the original task.
 

@@ -6,7 +6,7 @@ Who may approve, how an approval is recorded, and the limits inside which agents
 
 ## Who holds authority
 
-- **The user.** For an agency, the agency user. The user may **name an approver** (for example the end client's marketing lead) for stated approval kinds on one tenant (*new here*; README open question 5). A naming is itself an approval of kind `designation`. It may cover `direction`, `authority_change` and `outward_action` only: never `designation`, `budget`, `execution_scope` or `standing_permission`, which stay with the user (decisions `agent-teams`, `tool-levels`). The user always outranks the approver they named.
+- **The user.** For an agency, the agency user. The user may **name an approver** (for example the end client's marketing lead) for stated approval kinds on one tenant (*new here*; settled by the system owner, see README). A naming is itself an approval of kind `designation`, evidenced by the user's own `person_attested` message naming the person, the tenant, the kinds and `expires_at`. It may cover `direction`, `authority_change` and `outward_action` only: never `designation`, `budget`, `execution_scope` or `standing_permission`, which stay with the user (decisions `agent-teams`, `tool-levels`). The user always outranks the approver they named.
 - **Recorded decisions.** Approved facts, canon, brand rules and scopes bind until superseded or revoked.
 - **Never an agent.** Leads coordinate; owners propose. No agent grants, holds or passes on a permission (ADR-0006 D3; ADR-0004 I3 `permissions_carried: NONE`).
 
@@ -20,8 +20,8 @@ When sources disagree (ARCH §2, summarized): law, safety and platform rules; th
 | `execution_scope` | An execution scope version, with its spend limit | 12 frames, 3 attempts each, limit 40 USD |
 | `authority_change` | A new version of a fact, canon entity, brand rule, or a pack's core item or rule | Character costume v2 becomes canon |
 | `outward_action` | One publication, send, listing, ad launch or contact | Publish the landing page |
-| `standing_permission` | A named outward action the user pre-approves, with limits and holders | Reply to booking inquiries with the approved template |
-| `budget` | A project or operating budget | Operating budget for this project |
+| `standing_permission` | A named outward action other than publication that the user pre-approves, with limits and holders | Reply to booking inquiries with the approved template |
+| `budget` | A project budget or the system operating budget | Tool spend for this project |
 | `designation` | An approver for stated kinds on one tenant | The client's marketing lead approves directions |
 
 ```yaml
@@ -102,7 +102,7 @@ It binds like EC §3 `BATCH_TEMPLATE`: the approved template plus what is preser
 
 ```yaml
 budget:                # plus the record envelope
-  class:               # required: project | project_operating | system_operating
+  class:               # required: project | system_operating
   currency:            # required
   authorized:          # required: from its budget approval
   approval_ref:        # required
@@ -112,20 +112,19 @@ budget:                # plus the record envelope
 
 | Class | Covers | Approved by |
 |---|---|---|
-| `project` (*new here* as a record) | Spend on tools for the project's deliverables: generation, paid data, ad spend | The user |
-| `project_operating` (*new here*; README open question 6) | The agents' own work on the project: model usage, delegation, tool calls | The user |
-| `system_operating` | Shared scheduled work outside any project: learning, knowledge refresh (ADR-0006 D5) | The system owner |
+| `project` (*new here* as a record; README open question 5) | Spend on tools for the project's deliverables: generation, paid data, ad spend | The user |
+| `system_operating` | One monthly budget for the agents' own work on every project (model usage, delegation, tool calls) and for shared scheduled work outside any project: learning, knowledge refresh (ADR-0006 D5). There is no per-project operating budget (settled by the system owner) | The system owner |
 
 1. **AU9** A budget bounds consumption and authorizes no operation.
 2. **AU10** Available = authorized − confirmed − open reservations (EC §4). An ad launch needs both an `outward_action` approval and an execution scope for its spend; spend the platform makes after launch is reserved in full when the scope is approved, and bounded by a platform-side cap stated in it.
-3. **AU11** A project budget is never used for system work, nor the reverse.
+3. **AU11** Tool spend for a project's deliverables draws only on that project's budget; the agents' own work draws only on the operating budget.
 4. **AU12** When a budget runs out, the tasks drawing on it stop with `STOP_COST_CAP_REACHED` until its approver raises it.
 
 ## Scheduled and event-driven work
 
 This is the home of the rule. The default, from ADR-0006's header on ADR-0002: scheduled work is read-level research and reminders. Event-driven work may do internal work and proposals (collaboration.md "Modes of operation"). D6 authority extends either one only in these ways:
 - **Spend** on a schedule or a trigger: only under an approved execution scope that names the `schedule` or `triggers`, with a `stop_condition` and `valid_until`.
-- **Outward actions** on a schedule or a trigger: only under a standing permission that names the action. Recurring publication is not settled by this spec: it meets the "no auto-publishing" limit (decision `business-scope`; README open question 7).
+- **Outward actions** on a schedule or a trigger: only under a standing permission that names the action. A standing permission never covers publication: every publication, recurring or not, needs its own `outward_action` approval, which keeps the "no auto-publishing" limit (decision `business-scope`; settled by the system owner).
 - Every effect re-checks the current authority; work without a goal, a budget and a stop condition is not authorized, whatever its cost.
 
 ## Protective actions
