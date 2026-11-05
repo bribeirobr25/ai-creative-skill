@@ -16,6 +16,7 @@ CONFIG = {
     "subagent_protected": ["*/records/approvals.jsonl"],
     "deny_paths": ["projects/demo/sources"],
     "mcp_allow": ["mcp__reader__search"],
+    "bash_scripts": ["tools"],
 }
 
 
@@ -54,7 +55,22 @@ class Decide(unittest.TestCase):
                     "curl -X POST https://example.org", "curl -d a=1 https://example.org", "vercel deploy",
                     "npm publish", "scp a b:c"]:
             self.assertFalse(self.d("Bash", {"command": cmd}), cmd)
-        self.assertTrue(self.d("Bash", {"command": "gh pr view 3"}))
+
+    def test_bash_allowlist_allows_reads(self):
+        for cmd in ["ls -la", "cat a.txt | grep x | wc -l", "shasum -a 256 f.md", "git status", "git log --oneline -3",
+                    "grep -c y f 2>/dev/null", "find . -name '*.jsonl'", "head -5 a && tail -2 b", "jq .id r.jsonl",
+                    "cat f 2>&1 | head", "python3 tools/check.py --x", "echo 'a > b'"]:
+            self.assertTrue(self.d("Bash", {"command": cmd}), cmd)
+
+    def test_bash_allowlist_denies_writes_and_escapes(self):
+        for cmd in ["echo x >> records/approvals.jsonl", "echo x > f", "cat a >| b", "ls &> out", "tee f < a",
+                    "cp a b", "mv a b", "rm -rf x", "touch f", "mkdir d", "sed -i s/a/b/ f", "sed 'w out' f",
+                    "python3 -c 'open(1)'", "python3 other/x.py", "python3", "bash -c ls", "sh x.sh",
+                    "ls; rm x", "ls\nrm x", "ls && touch y", "echo $(rm x)", "echo `rm x`", "cat <(ls)",
+                    "X=1 ls", "/bin/rm x", "git commit -m x", "git checkout .", "git -c a=b log", "git diff --output=f",
+                    "find . -delete", "find . -exec rm {} ;", "sort -o out in", "rg --pre sh x", "echo 'unclosed",
+                    "uniq a b", "dd if=a of=b", "awk '{print > \"f\"}' a", "gh pr view 3"]:
+            self.assertFalse(self.d("Bash", {"command": cmd}), cmd)
 
     def test_mcp_default_deny(self):
         self.assertFalse(self.d("mcp__mail__send_message", {}))
