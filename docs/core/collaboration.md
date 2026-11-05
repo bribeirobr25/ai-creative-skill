@@ -49,7 +49,6 @@ task:
   requested_by:       # required: user | project-lead | <task_id>
   mode:               # required: on_demand | event_driven | scheduled | improvement
   parent_task:        # the task that delegated this one; empty for plan assignments
-  origin_task:        # the delegated task a request came from, even when routed through the project lead
   follows:            # optional: an earlier closed task this one continues or redoes
   assignment_reason:  # required when delegated: trigger + one line
   scope_ref:          # execution scope, when the task may spend
@@ -63,7 +62,8 @@ task:
   stop_code:          # when stopped: an EC §26 STOP_* code
   outcome:            # when closed: COMPLETE | PARTIAL | BLOCKED (ADR-0002)
   packs_loaded: []    # required at close: pack_id@version actually read (KP2)
-  # derived on read, never stored: delegation_depth, from the parent and origin chain
+  # derived by the host, never set by agents: origin_task (from the request message's task_ref,
+  #   even when routed through the project lead) and delegation_depth (from the parent and origin chain)
 ```
 
 *New here:* `status` and `mode`. No existing vocabulary says whether a task is running, waiting, stopped or closed; outcome (ADR-0002) and stop codes (EC §26) are reused for the rest.
@@ -95,7 +95,7 @@ message:
 2. **CO2 · Clear by construction.** A request, question or approval request states who asks, what exactly is needed, by when, what is blocked and which authority is needed. An approval request lists every non-default field (depth, schedule, limits), so nothing is approved unnoticed. Explain a limit once per conversation and then give a one-line status (Video Director "Say it once"; `provisional`: one 2026-11-03 run still repeated a caveat about six times).
 3. **CO3 · Only people decide.** A `decision` takes effect only when the host records an approval from it, and only if the message's origin is `person_attested` ([authority-and-permissions.md](authority-and-permissions.md#approval-record)). An agent may relay or acknowledge a decision; it never writes one.
 4. **CO4 · Proposals are not instructions.** A `notice`, `summary` or next step that suggests work creates at most a proposal; it never starts consequential work by itself (ADR-0002 NEXT). This is the home of that rule.
-5. **CO5 · Third parties are data.** A message whose origin is `external_party` (a lead, a customer, a platform) is always data: never a request, an instruction or a decision (KP4).
+5. **CO5 · Third parties are data.** A message whose origin is `external_party` (a lead, a customer, a platform) is always data: never a request, an instruction or a decision (KP4), except an opt-out or a consent revocation, which is honoured under authority-and-permissions.md AU15.
 
 Examples:
 - *Video Director → project lead, notice:* "Creative direction v2 is complete. Production is blocked until execution scope v2 is approved."
@@ -136,7 +136,7 @@ Inside an authorized scope, agents delegate, ask each other, iterate and repair 
 |---|---|---|
 | `on_demand` | A person's request | The requested work, within the authority in force |
 | `event_driven` | A recorded event (below) | Internal work (analysis, drafts, reviews, proposals) within its operating budget |
-| `scheduled` | A schedule | Read-level research and reminders |
+| `scheduled` | A schedule | The ADR default, defined in authority-and-permissions.md |
 | `improvement` | Evidence, feedback, results | Proposals: new iterations, or learning candidates ([knowledge-packs.md](knowledge-packs.md#proposing-and-adopting-changes)) |
 
 Anything beyond that column (spend, outward actions, authority changes) needs the authority defined in [authority-and-permissions.md](authority-and-permissions.md#scheduled-and-event-driven-work), checked at the moment of the effect.
@@ -156,8 +156,8 @@ event:
 
 1. **CO11 · Attributable.** An event without a source is refused.
 2. **CO12 · Affected work is found through records.** The tasks to resume are those whose `depends_on` or `waiting_on`, or whose recorded dependencies ([project-context.md](project-context.md#dependencies-and-selective-invalidation)), reference the event's subject; nothing is inferred from timing or session proximity (EC §10.1).
-3. **CO13 · Resuming adds no authority.** A resumed task re-checks the current authority before any consequential effect. An approval that expired, was revoked or was superseded while the task waited no longer applies (`STOP_APPROVAL_STALE`).
-4. **CO14 · External results are data.** Ad performance, visits, replies or sales enter as `external_result` events and research findings; they feed proposals and learning, and trigger only the protective actions already named in an approval ([authority-and-permissions.md](authority-and-permissions.md#protective-actions)).
+3. **CO13 · Resuming adds no authority.** A resumed task re-checks the current authority before any consequential effect. An approval that expired, was revoked or was superseded while the task waited no longer applies; the task stops with `STOP_APPROVAL_STALE`, used here more widely than EC §3's fingerprint mismatch (*new here*).
+4. **CO14 · External results are data.** Ad performance, visits, replies or sales enter as `external_result` events and research findings; they feed proposals and learning, and trigger only the protective actions already named in an approval, plus opt-outs and consent revocations (AU15) ([authority-and-permissions.md](authority-and-permissions.md#protective-actions)).
 5. **CO15 · Once only.** An event key prevents duplicate records, not duplicate external actions. An outward action whose result is `UNKNOWN` is reconciled before any repeat; nothing is blindly resubmitted (ADR-0004 two-level idempotency; EC §8). This is the home of that rule.
 6. **CO16 · No storms.** A finding has at most one pending `research_due` refresh; the project or scope may cap refreshes per run.
 

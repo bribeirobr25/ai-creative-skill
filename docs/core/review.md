@@ -12,7 +12,7 @@ The framing is *new here*.
 | **B · Execution package** | Does the prompt, parameter set, code or payload faithfully carry the approved direction, and is it complete, feasible, within rights and suited to the tool? | The package ([project-context.md](project-context.md#execution-packages)) | Readiness `READY`, `NOT_READY`, `UNVERIFIED` (*new here*) | No |
 | **C · Observed result** | Does the generated or rendered asset have the fidelity, continuity, quality and technical conformance expected? | The asset | Verdict | Yes, or a local render |
 
-1. **RV1 · Predicted is not observed.** Boundary B gives *predicted readiness*, never acceptance (QA Realism §3.1). A strong prompt does not prove a strong asset: in the 2026-10-22 audit (F-A4), small labels came out wrong in 11 of 11 collection shots, and compositing the real label fixed all 14 affected labels. A boundary-A verdict `ACCEPTED` is acceptance only when the plan itself is the deliverable (QA Realism §3.1).
+1. **RV1 · Predicted is not observed.** Boundary B gives *predicted readiness*, never acceptance (QA Realism §3.1). A strong prompt does not prove a strong asset: in the 2026-10-22 audit (F-A4), small labels came out wrong in 11 of 11 labels in collection shots, and compositing the real label fixed all 14 affected labels. A boundary-A verdict `ACCEPTED` is acceptance only when the plan itself is the deliverable (QA Realism §3.1).
 2. **RV2 · Cheapest valid boundary first.** Check at A and B before paying for C. Code-based deliverables (websites, SVG logos, code-based animation) reach C by local rendering, without generation credits.
 3. **RV3 · Uninspected is unverified.** A dimension nobody looked at is `UNVERIFIED`, never passed (QA Realism §3, §10); sampled frames cannot certify motion or audio (ARCH §21).
 
@@ -29,7 +29,10 @@ review:                 # plus the record envelope; extends EC §12 (asset_id ge
   findings:             # each: dimension, severity BLOCKER | REPAIR_REQUIRED | NOTE, evidence ref
   uninspected: []       # dimensions not checked
   repair_round:         # when part of a repair loop
-  # derived on read: reviewer_independence (SMS §11), by comparing the reviewer with the subject's written_by
+  conditions:           # required: fresh_context, read_only, no_desired_verdict, each yes | no | unknown
+  # derived on read: reviewer_independence (SMS §11). INDEPENDENT only if the reviewer is neither the subject's
+  # written_by nor the owner of the task that produced or directed it, and all conditions are yes;
+  # MIXED if some hold; UNKNOWN if any is unknown
 ```
 
 ## Who reviews

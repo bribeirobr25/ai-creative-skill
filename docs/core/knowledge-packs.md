@@ -47,7 +47,7 @@ learning_candidate:
   candidate_id:     # required
   pack_id:          # required: the pack it would change
   proposed_item: {} # required: the item as it would read
-  origin:           # required: SIMULATION_ONLY | CONTROLLED_TEST | PROJECT_EMPIRICAL | THIRD_PARTY | THIRD_PARTY_TOOL_DIAGNOSTIC | USER_PREFERENCE (CAL §1.2)
+  observation_origin:  # required: SIMULATION_ONLY | CONTROLLED_TEST | PROJECT_EMPIRICAL | THIRD_PARTY | THIRD_PARTY_TOOL_DIAGNOSTIC | USER_PREFERENCE (CAL §1.2)
   evidence_refs: [] # required
   counterevidence: []
   proposed_by:      # required: role
@@ -55,5 +55,5 @@ learning_candidate:
 
 Adoption follows ADR-0006 D5 by layer:
 - **Current knowledge** enters once a reliable source states it or two sources with different RES §8 independence keys agree, with source, reliability, date and expiry. The specialist records it as an `OBSERVED` record; no approval is needed. That record closes the candidate; it appears in the specialist's digest, and the user can remove it.
-- **Core items and rules** change only through an `authority_change` approval by the user, or by the system owner for shared packs, with evidence that results improve. A repeated error is a candidate, not a rule.
+- **Core items and rules** change only through an `authority_change` approval by the user, or by the system owner for shared packs (tenant `system`; in this repository, the system owner's PR merge), with evidence that results improve. A repeated error is a candidate, not a rule.
 - Learning from one user's private results stays with that user unless they agree to share it.

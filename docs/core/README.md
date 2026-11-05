@@ -1,6 +1,6 @@
 # Shared Core v0.1 (candidate specification)
 
-**Status:** candidate, provisional and unproven (ADR-0006 D9). It authorizes nothing: no build, runtime, model run, spend, connection, publication or contact. Where it differs from a current decision (`python3 -m brain status`), the decision prevails. Items marked *new here*, including numeric defaults, are proposals that need their own owner decision before they bind. It is the specification part of the vision's step 3; the agent host and the location of system code stay open (questions 1 and 4 below), and `docs/core/` is a provisional home until the owner decides them.
+**Status:** candidate, provisional and unproven (ADR-0006 D9). It authorizes nothing: no build, runtime, model run, spend, connection, publication or contact. Where it differs from a current decision (`python3 -m brain status`), the decision prevails. Items marked *new here*, including numeric defaults, are proposals that need their own decision by the system owner before they bind. It is the specification part of the vision's step 3; the agent host and the location of system code stay open (questions 1 and 4 below), and `docs/core/` is a provisional home until the system owner decides them.
 
 The Shared Core is the set of contracts every agent and every area uses, whatever it makes: a logo, a landing page, an ad, a photoshoot, a book or a series. It defines how work is assigned, how agents and people talk, how context, assets and approvals are kept, how quality is checked and how a project continues after new events or results. Specialist knowledge stays in each specialist's packs; the core holds only what is shared.
 
@@ -75,7 +75,7 @@ Vocabularies are kept apart by owner and never merged (V2.5 SMS §13.1; QA Evide
 | Handoff evidence class | `OBSERVED`, `USER_PROVIDED`, `VERIFIED`, `INFERRED`, `UNKNOWN` | V2.5 EC `HANDOFF_PACKET` |
 | Evidence state; claim status | ARCH §10 (`VERIFIED_EXTERNAL`, `PROJECT_EMPIRICAL`…); QA Evidence & Rights claim registry | V2.5 ARCH §10; QA Evidence & Rights. Not merged with the handoff class |
 | Research freshness verdict | `CURRENT`, `STALE`, `CONTRADICTED`, `UNSUPPORTED`, `UNVERIFIED` | V2.5 RES §11 |
-| Knowledge layer, tag and strength; learning origin | `core`, `current`, `experience`; `rule` … `hypothesis`; `binding` … `option`; CAL §1.2 classes | [knowledge-packs.md](knowledge-packs.md) |
+| Knowledge layer, tag and strength; learning origin | `core`, `current`, `experience`; `rule` … `hypothesis`; `binding` … `option`; CAL §1.2 classes (`observation_origin`) | [knowledge-packs.md](knowledge-packs.md) |
 | Action disposition | `AUTO_ALLOWED`, `ASK_BEFORE`, `FORBIDDEN_OR_OUTSIDE_AUTHORITY` | V2.5 EC `AUTONOMY_ENVELOPE` |
 
 ## Extensions
@@ -90,6 +90,14 @@ extension:
 ```
 
 An extension never redefines a core field or vocabulary; the core never reads `data`; the owning area documents the schema with its packs; two areas that need the same structure promote it to the core through a reviewed change, not by copying.
+
+## New here
+
+What this spec adds beyond its sources, each a proposal under the status line above:
+- **Collaboration:** the six delegation triggers; task `status`, `mode` and `follows`; delegation depth derived by the host, default 2; the message types and event kinds; `STOP_APPROVAL_STALE` used for expired, revoked or superseded approvals.
+- **Records:** the envelope's `origin`, `channel_evidence` and access classes; the who-writes-what table; the `rejected` state and the derived lifecycle; one current version per entity (CX8); consent as an entity; the execution package record; the per-viewer status view.
+- **Authority:** the approval kinds, `decision`, `designation` and `consumed_by`; `holder_roles` on envelope entries; the confused-deputy check (AU7); budget records, the project operating budget and full reservation of platform-run spend; protective actions.
+- **Review and playbooks:** boundaries A, B and C with readiness at B; the playbook fields `final`, `continuation` and `ends_when`.
 
 ## Sources and short names
 
@@ -110,6 +118,6 @@ An extension never redefines a core field or vocabulary; the core never reads `d
 3. JSON Schemas and an offline validator for these records: deferred until a host exists.
 4. The canonical location of system code and of private project instances (the private-half layout).
 5. Who may be named as an approver for an agency's end client, and how that naming is evidenced.
-6. The project operating budget: who pays for the agents' own work, and whether it is a new user checkpoint ([authority-and-permissions.md](authority-and-permissions.md#budgets)).
+6. Budgets as approvals: the project operating budget (who pays for the agents' own work) and the project budget record; whether either is a new user checkpoint ([authority-and-permissions.md](authority-and-permissions.md#budgets)).
 7. Recurring publication under a standing permission, which meets the "no auto-publishing" limit (decision `business-scope`).
 8. Numeric defaults: delegation depth 2; caps on fan-out and on request rounds between two roles (none set).

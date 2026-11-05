@@ -10,12 +10,12 @@ The specification is public. **Every real project instance is private** and live
 
 ## Records
 
-Every core record (project, task, message, event, approval, review, entity, asset, scope, package, finding, budget) carries one envelope:
+Every core record (project, task, message, event, approval, review, entity, asset, scope, package, finding, budget, learning candidate, external reference, autonomy envelope) carries one envelope:
 
 ```yaml
 id:              # required
 project_id:      # required: a project id, or `system` for work outside any project
-tenant:          # required: the user, or the agency's end client
+tenant:          # required: the user, the agency's end client, or `system`
 written_by:      # required: the role, host component or person that persisted it
 origin:          # required: agent | person_attested | external_party | system  (new here)
 channel_evidence:  # required when origin is person_attested: the host's proof of who sent it, through which channel
@@ -31,6 +31,7 @@ revision:        # required for records that change; stale writes are rejected (
 
 | Record | Created by | Changed by |
 |---|---|---|
+| Project | The project lead, from the user's request | `status` only by the user; other fields by the project lead, with revision |
 | Task | The requester | Only `depends_on`, `inputs` and the status fields, through recorded transitions ([collaboration.md](collaboration.md#task-record)) |
 | Message, event | The sender; the host stamps `origin` and `channel_evidence` | Never; a correction is a new record |
 | Approval | The host, only from a `person_attested` act | Never; a new approval supersedes, rejects or revokes |
@@ -39,6 +40,8 @@ revision:        # required for records that change; stale writes are rejected (
 | Package | The executor | Never; later records link to it |
 | Finding | The research role | Never; a re-check is a new finding that supersedes |
 | Budget | The host, from a budget approval | Ledger entries by executors (EC §4) |
+| Learning candidate, external reference | The proposing or fetching role | Never |
+| Autonomy envelope | The host, from approvals | Only by new approvals |
 
 ## Contents
 
@@ -83,11 +86,11 @@ entity:
   extension: {}      # domain structure, e.g. a character sheet (README "Extensions")
 ```
 
-An **asset** reuses the EC §10 asset sidecar (asset id, version, provider and route, request ref, reference ids, parent assets, authority dependency refs and revision snapshot, hash, review verdict), with its approval status derived on read, plus `tool` (required for generated assets: tool and date, ADR-0006 D8), `rights` (required: source, licence, consent refs) and `package_ref`. A deliverable's versions are assets of kind `document` or the produced assets.
+An **asset** reuses the EC §10 asset sidecar (asset id, version, provider and route, request ref, reference ids, parent assets, authority dependency refs and revision snapshot, hash), with its review verdict and approval status derived on read from review and approval records, plus `kind` (required: a free label such as `document`, `image`, `video`, `code`), `tool` (required for generated assets: tool and date, ADR-0006 D8), `rights` (required: source, licence, consent refs) and `package_ref`. A deliverable's versions are assets of kind `document` or the produced assets.
 
 1. **CX5** Downstream roles use `entity_id`, never a name inferred from appearance (EC "Stable entity handoff"); a nickname is presentation only.
 2. **CX6** An asset without a rights record is not usable for publication.
-3. **CX7** A consent (a likeness, a voice, a contact's opt-in) is an entity of kind `consent`, so revoking it invalidates what depends on it.
+3. **CX7** A consent (a likeness, a voice, a contact's opt-in) is an entity of kind `consent`, so revoking it invalidates what depends on it. Each consent version must point to a `person_attested` or `external_party` evidence record, such as a signed release or a recorded opt-in; an agent never creates that evidence.
 
 ## Lifecycle
 
@@ -167,7 +170,7 @@ What is actually sent to a tool is a versioned record, reviewable before executi
 ```yaml
 package:
   version:           # required
-  built_for:         # required: deliverable and the execution scope version it is built for
+  built_for:         # required: the deliverable, and the execution scope version when running it spends
   built_by:          # required: the executor role, usually production
   target:            # required: tool class and route, never only a vendor name
   payload_ref:       # required: prompt, parameters, code, structured instruction or other payload

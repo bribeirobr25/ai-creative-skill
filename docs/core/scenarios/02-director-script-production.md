@@ -12,7 +12,7 @@
 | 2 | Director writes the 15-second script itself | video-director | Script pack loaded (`packs_loaded`) | None: no trigger applies | direction v1 `proposed`; closing check | — |
 | 3 | User approves direction v1 | — | — | — | `direction` approval | User |
 | 4 | Director drafts execution scope v1, with the spend limit the user stated | video-director | — | — | scope v1 draft | — |
-| 5 | Production quotes the scope and builds the package for it | production | Production tool knowledge (dated) | `permission` | `quote_ref` attached; package `built_for` scope v1, `inputs` = approved direction and reference versions | — |
+| 5 | Production sends a dated quote and builds the package; the Director attaches the quote to scope v1 | production | Production tool knowledge (dated) | `permission` | quote; package `built_for` scope v1, `inputs` = approved direction and reference versions | — |
 | 6 | Approval of scope v1 is requested (v1 is now fixed); the package gets a readiness review | reviewer | Review criteria | `independent_review` | `approval_request`; review B `READY` | — |
 | 7 | User approves scope v1 | — | — | — | `execution_scope` approval | User |
 | 8 | Production generates within the scope | production | — | — | EC §9 attempts; assets with tool, rights, `package_ref` | Scope v1 only (AU7) |
@@ -28,7 +28,7 @@ Same flow, but at step 2 the Director delegates the script to a script writer wi
 |---|---|
 | `direction_package` | Deliverable (asset of kind `document`); lifecycle from project-context.md |
 | `dimension_policy` latitudes preserve / bounded variation / open exploration | The scope's `preserve`, `vary` (with ranges) and `open` lists |
-| `proposed_execution_scope` fields | Execution scope fields of the same names; `executor_roles` defaults to production |
+| `proposed_execution_scope` fields | Same-named scope fields map directly; `scope_id` is the record `id`; `shot_briefs`, `cost_estimate` and `risks` travel under `extension`; `executor_roles` defaults to production |
 | Stored `status`, `approval_ref` | Derived from approval records |
 | `references[]` (source, tool, rights, version) | Assets and entities with rights; `stable_entities` in handoffs |
 | `authorities` (brand, products, claims, budget) | Project `authorities`, `facts` and budgets |

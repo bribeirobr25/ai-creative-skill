@@ -16,7 +16,7 @@
 | 8 | Episode 1, scene 3: the Director plans from approved versions | video-director | — | Plan assignment | scene direction with recorded dependencies: character v1, location v1 | — |
 | 9 | Later, the user approves a costume change: character v2 | character | — | — | `authority_change`; v1 `superseded` | User |
 | 10 | Every scene that depends on character v1, accepted or in progress, becomes `invalidated`; others stay accepted | project-lead | — | Event `authority_changed`; new re-review tasks with `follows` (no added depth) | lifecycle projection | Re-approval before reuse |
-| 11 | A generator keeps adding a scarf; it is not canon until promoted | character | — | — | repeated choice ≠ canon; the owner may propose character v3; its approval records the `canon_promotion_ref` fields | User decides |
+| 11 | A generator keeps adding a scarf; it is not canon until promoted | character | — | — | repeated choice ≠ canon; the owner may propose character v3; its `authority_change` approval carries `canon_promotion` | User decides |
 
 ## What the core needed, and what it did not
 

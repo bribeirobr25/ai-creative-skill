@@ -6,7 +6,7 @@ Who may approve, how an approval is recorded, and the limits inside which agents
 
 ## Who holds authority
 
-- **The user.** For an agency, the agency user. The user may **name an approver** (for example the end client's marketing lead) for stated approval kinds on one tenant (*new here*; README open question 5). A naming is itself an approval of kind `designation`; it never covers `designation` or `budget` unless the user says so, and the user always outranks the approver they named.
+- **The user.** For an agency, the agency user. The user may **name an approver** (for example the end client's marketing lead) for stated approval kinds on one tenant (*new here*; README open question 5). A naming is itself an approval of kind `designation`. It may cover `direction`, `authority_change` and `outward_action` only: never `designation`, `budget`, `execution_scope` or `standing_permission`, which stay with the user (decisions `agent-teams`, `tool-levels`). The user always outranks the approver they named.
 - **Recorded decisions.** Approved facts, canon, brand rules and scopes bind until superseded or revoked.
 - **Never an agent.** Leads coordinate; owners propose. No agent grants, holds or passes on a permission (ADR-0006 D3; ADR-0004 I3 `permissions_carried: NONE`).
 
@@ -34,13 +34,14 @@ approval:                 # plus the record envelope (project-context.md#records
   designation_ref:        # required when decided_by is not the user
   authority_ref:          # required: the person_attested record of their act (a message, a signed form)
   expires_at:             # required for outward_action, standing_permission and designation
+  canon_promotion:        # authority_change only, when a choice is promoted to canon: CAL §6.1 canon_promotion_ref fields
   conditions: []          # optional, e.g. protective actions
   consumed_by:            # outward_action only: the action record that used it (once only)
   supersedes:             # optional
 ```
 
 1. **AU1 · Exact version.** An approval binds to the exact version it names. A change makes a new version that needs a new approval, except changes the approved fields already allow (Video Director change table).
-2. **AU2 · Attested or nothing.** An approval exists only when the host records it from a `person_attested` act named in `authority_ref`. An agent may relay or acknowledge an approval, says once that it must be recorded, and never writes one. Whether the host can prove that a person, not an agent using the person's identity, made the act is open (finding `FND-AUDIT2-AGENT-IDENTITY`). For this repository, the owner's PR merge stays the authority for decisions (brain/CONTRACT.md).
+2. **AU2 · Attested or nothing.** An approval exists only when the host records it from a `person_attested` act named in `authority_ref`. An agent may relay or acknowledge an approval, says once that it must be recorded, and never writes one. Whether the host can prove that a person, not an agent using the person's identity, made the act is open (finding `FND-AUDIT2-AGENT-IDENTITY`). For this repository, the system owner's PR merge stays the authority for decisions (brain/CONTRACT.md).
 3. **AU3 · Tenant-bound.** An approval is valid only for its own tenant and, when `decided_by` is a named approver, only while that designation is in force and covers the kind.
 4. **AU4 · Approval is not acceptance.** Approving a direction does not authorize generation; approving a scope does not publish; passing review does not approve (ARCH V2.4 addendum).
 5. **AU5 · Once only.** An `outward_action` approval is consumed by the one action it authorized. A revoke takes effect at once for every task (collaboration.md CO13).
@@ -111,7 +112,7 @@ budget:                # plus the record envelope
 
 | Class | Covers | Approved by |
 |---|---|---|
-| `project` | Spend on tools for the project's deliverables: generation, paid data, ad spend | The user |
+| `project` (*new here* as a record) | Spend on tools for the project's deliverables: generation, paid data, ad spend | The user |
 | `project_operating` (*new here*; README open question 6) | The agents' own work on the project: model usage, delegation, tool calls | The user |
 | `system_operating` | Shared scheduled work outside any project: learning, knowledge refresh (ADR-0006 D5) | The system owner |
 
@@ -136,7 +137,7 @@ Pausing an ad, stopping a campaign, suppressing a contact who opted out, cancell
 
 ## Required elements at every outward action
 
-Before any outward effect, including one under a standing permission, the action is checked at the moment of the effect for: rights for every asset, consent for any real likeness or voice, AI-disclosure rules, the platform's ad or listing policies, and outreach consent and anti-spam law in the recipient's country (ADR-0006 D8; decision `rights-and-trust`). Outward content commits only terms from an approved offer version (roles.md RO1).
+Before any outward effect, including one under a standing permission, the action is checked at the moment of the effect for: rights for every asset, a mark check for any new logo or name, consent for any real likeness or voice, accessibility (WCAG for websites, captions for videos, alt text for images), AI-disclosure rules, the platform's ad or listing policies, and outreach consent and anti-spam law in the recipient's country (ADR-0006 D8; decision `rights-and-trust`). Outward content commits only terms from an approved offer version (roles.md RO1).
 
 ## Credentials
 

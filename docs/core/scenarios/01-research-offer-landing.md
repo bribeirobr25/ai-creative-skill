@@ -15,7 +15,7 @@
 | Page direction | Structure, copy, look | visual-brand | Hook, offer, call to action, accessibility plan | Intermediate | `direction` |
 | Build | Page code and local render | visual-brand (websites pack) | Rendered review on desktop and phone sizes; delivery record | Final | — |
 | Review | Independent acceptance | reviewer | Boundary C on the render; required elements | — | — |
-| Publish | Live page | visual-brand (act) | Rights, AI disclosure, platform terms, consent text for lead capture | — | `outward_action` |
+| Publish | Live page | visual-brand (act) | Rights, accessibility, AI disclosure, platform terms, consent text for lead capture | — | `outward_action` |
 | Measure | Results summary | growth | External results as data; what changed | Intermediate | — |
 
 `continuation`: on `external_result` or `research_due`, start the next iteration at Offer or Page direction; `ends_when`: the user closes the project, or 90 days pass, whichever comes first.
