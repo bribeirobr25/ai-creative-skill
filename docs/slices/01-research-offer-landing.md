@@ -136,3 +136,13 @@ The next slice or the learning loop (vision step 5) is a separate plan.
 | Metered API billing by accident | Pre-run check that no API key is set; usage recorded per phase |
 | Approval typed by an agent under the owner's session | Single user and manual publication; hooks deny subagent writes to approval records; recorded as an accepted risk (FND-AUDIT2-AGENT-IDENTITY) |
 | Host behaviour differs from its documentation | Phase 0 tests every host fact this plan relies on before use |
+
+## Amendments
+
+**2026-11-05 (owner).** The slice's project is the owner's own brand, named only in the private half. Owner's answers:
+- **Host check data:** it runs on that project's real text records, not on a fictional project.
+- **Reading in place:** project sources are read in place at a pinned commit. They are never copied into the private half; records carry the path, commit and SHA-256.
+- **Read-only sources:** the project's own repository and storage are never written to.
+- **Excluded:** media, real recordings and real people. Earlier pilot material is not resumed.
+
+Approvals, revocations and changes that the host check makes are test fixtures (`test: true`). They never stand for the owner's decisions.
