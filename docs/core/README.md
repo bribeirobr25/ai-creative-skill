@@ -1,6 +1,6 @@
 # Shared Core v0.1 (candidate specification)
 
-**Status:** candidate, provisional and unproven (ADR-0006 D9). It authorizes nothing: no build, runtime, model run, spend, connection, publication or contact. Where it differs from a current decision (`python3 -m brain status`), the decision prevails. Items marked *new here* are proposals that need their own decision by the system owner before they bind, except those listed under [Settled by the system owner](#settled-by-the-system-owner). It is the specification part of the vision's step 3. Claude Code subagents host the first slice (step 4); the location of system code is decided then (question 4 below), and `docs/core/` is a provisional home until it is.
+**Status:** candidate, provisional and unproven (ADR-0006 D9). It authorizes nothing: no build, runtime, model run, spend, connection, publication or contact. Where it differs from a current decision (`python3 -m brain status`), the decision prevails. Items marked *new here* are proposals that need their own decision by the system owner before they bind, except those listed under [Settled by the system owner](#settled-by-the-system-owner). It is the specification part of the vision's step 3. Claude Code subagents host the first slice (step 4). The [slice 01 plan](../slices/01-research-offer-landing.md) places system code in `system/` and project instances in the private half (decision `system-location`); `docs/core/` stays the specification's home.
 
 The Shared Core is the set of contracts every agent and every area uses, whatever it makes: a logo, a landing page, an ad, a photoshoot, a book or a series. It defines how work is assigned, how agents and people talk, how context, assets and approvals are kept, how quality is checked and how a project continues after new events or results. Specialist knowledge stays in each specialist's packs; the core holds only what is shared.
 
@@ -107,7 +107,7 @@ Answered by the system owner on 2026-11-05 and decided by the merges of the PRs 
 - **Operating budget.** The agents' own work on every project, and shared scheduled work, draw on one monthly system operating budget the system owner approves. There is no per-project operating budget and no extra checkpoint ([authority-and-permissions.md](authority-and-permissions.md#budgets)).
 - **Project spend.** Tool spend for a project is bounded by each execution scope's spend limit, approved with the scope; there is no separate project budget or intake checkpoint.
 - **Recurring publication.** Every publication needs its own `outward_action` approval; a standing permission never covers publication, which keeps the "no auto-publishing" limit (decision `business-scope`).
-- **Host and timing.** Claude Code subagents are the first host, for the step-4 slice. The evaluation design (ADR-0006 D9), the schemas and the location of system code and private instances are decided at step 4.
+- **Host and timing.** Claude Code subagents are the first host, for the step-4 slice. The [slice 01 plan](../slices/01-research-offer-landing.md) settles the evaluation design (decision `evaluation-method`) and where system code and private instances live (decision `system-location`); schemas follow at step 4.
 
 ## Sources and short names
 
@@ -124,6 +124,5 @@ Answered by the system owner on 2026-11-05 and decided by the merges of the PRs 
 ## Open questions (not decided here)
 
 1. How much of these policies the first host (Claude Code subagents) enforces mechanically: read-only review, access classes, append-only history (finding `FND-AUDIT2-EVIDENCE-GUARANTEE`) and telling a person's act from an agent acting under the person's identity (finding `FND-AUDIT2-AGENT-IDENTITY`).
-2. The evaluation design, including whether execution-package readiness can be calibrated against observed assets ([review.md](review.md#calibration); ADR-0006 D9); decided at step 4.
+2. Whether execution-package readiness can be calibrated against observed assets ([review.md](review.md#calibration)). The evaluation design itself is settled (decision `evaluation-method`).
 3. JSON Schemas and an offline validator for these records: decided at step 4.
-4. The canonical location of system code and of private project instances (the private-half layout): decided at step 4.
